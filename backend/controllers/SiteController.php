@@ -1,17 +1,27 @@
 <?php
 namespace backend\controllers;
 
+use core\useCases\auth\AuthService;
 use Yii;
+use yii\base\Module;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use core\forms\auth\LoginForm;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+    private $service;
+
+    public function __construct($id, Module $module, AuthService $service, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -70,20 +80,28 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = 'main-login';
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
+        $form = new LoginForm();
 
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $user = $this->service->auth($form);
+                Yii::$app->user->login($user, $form->rememberMe ? Yii::$app->params['user.rememberMeDuration'] : 0);
+                return $this->goBack();
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
+
+        return $this->render('login', [
+            'model' => $form,
+        ]);
     }
 
     /**

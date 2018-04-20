@@ -1,23 +1,21 @@
 {
-    "name": "yiisoft/yii2-app-advanced",
-    "description": "Yii 2 Advanced Project Template",
-    "keywords": ["yii2", "framework", "advanced", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "name": "Mednav.ru source code",
+    "description": "Web portal based on yii2 framework",
+    "keywords": ["yii2", "mednav.ru"],
+    "homepage": "http://www.mednav.ru/",
     "type": "project",
-    "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "issues": "https://github.com/pa3py6aka/mednav/issues?state=open",
+        "source": "https://github.com/pa3py6aka/mednav"
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.4.0",
-        "yiisoft/yii2": "~2.0.6",
+        "php": ">=7.1.0",
+        "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "dmstr/yii2-adminlte-asset": "^2.1",
+        "fishvision/yii2-migrate": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

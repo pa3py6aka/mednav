@@ -4,9 +4,11 @@ namespace core\useCases\auth;
 
 
 use core\access\Rbac;
+use core\components\Settings;
 use core\entities\User\User;
 use core\forms\auth\SignupForm;
 use core\repositories\UserRepository;
+use core\services\Mailer;
 use core\services\RoleManager;
 use core\services\TransactionManager;
 
@@ -27,7 +29,7 @@ class SignupService
         $this->transaction = $transaction;
     }
 
-    public function signup(SignupForm $form): void
+    public function signup(SignupForm $form): User
     {
         $user = User::requestSignup(
             $form->email,
@@ -37,13 +39,22 @@ class SignupService
         $this->transaction->wrap(function () use ($user) {
             $this->users->save($user);
             $this->roles->assign($user->id, Rbac::ROLE_USER);
+            if ($user->status == User::STATUS_WAIT) {
+                Mailer::send(
+                    $user->email,
+                    \Yii::$app->name . ': Подтверждение регистрации',
+                    'auth/confirm',
+                    ['user' => $user]
+                );
+            }
         });
+        return $user;
     }
 
     public function confirm($token): void
     {
         if (empty($token)) {
-            throw new \DomainException('Empty confirm token.');
+            throw new \DomainException('Пустой токен.');
         }
         $user = $this->users->getByEmailConfirmToken($token);
         $user->confirmSignup();

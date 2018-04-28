@@ -2,6 +2,7 @@
 
 namespace core\entities\User;
 
+use core\components\Settings;
 use core\entities\User\queries\UserQuery;
 use Yii;
 use yii\base\NotSupportedException;
@@ -21,7 +22,8 @@ use yii\web\IdentityInterface;
  *
  * @property string $auth_key
  * @property string $password_hash
- * @property string $password_reset_token
+ * @property string $password_reset_token [varchar(255)]
+ * @property string $email_confirm_token [varchar(255)]
  * @property int $created_at
  * @property int $updated_at
  *
@@ -53,18 +55,71 @@ class User extends ActiveRecord implements IdentityInterface
     public static function requestSignup($email, $password, $type): User
     {
         $user = new self();
+
+        $status = self::STATUS_ACTIVE;
+        if (Yii::$app->settings->get(Settings::USER_EMAIL_ACTIVATION)) {
+            $status = self::STATUS_WAIT;
+            $user->email_confirm_token = Yii::$app->security->generateRandomString();
+        } else if (Yii::$app->settings->get(Settings::USER_PREMODERATION)) {
+            $status = self::STATUS_ON_PREMODERATION;
+        }
+        $user->status = $status;
+
         $user->email = $email;
         $user->type = $type;
         $user->last_online = time();
-        $user->status = self::STATUS_WAIT;
         $user->setPassword($password);
         $user->generateAuthKey();
         return $user;
     }
 
-    public function isActive()
+    public function edit($email, $password, $type): void
     {
-        return $this->status == self::STATUS_ACTIVE;
+        $this->email = $email;
+        if ($password) {
+            $this->setPassword($password);
+        }
+        $this->type = $type;
+    }
+
+    public function confirmSignup(): void
+    {
+        if (!$this->isWait()) {
+            throw new \DomainException('E-mail уже подтверждён.');
+        }
+
+        if (Yii::$app->settings->get(Settings::USER_PREMODERATION)) {
+            $this->status = self::STATUS_ON_PREMODERATION;
+        } else {
+            $this->status = self::STATUS_ACTIVE;
+        }
+
+        $this->email_confirm_token = null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status === self::STATUS_WAIT;
+    }
+
+    public function isOnModeration(): bool
+    {
+        return $this->status === self::STATUS_ON_PREMODERATION;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->status === self::STATUS_DELETED;
+    }
+
+    public function updateStatus($status): void
+    {
+        $this->status = $status;
     }
 
     public static function getStatusesArray(): array
@@ -93,6 +148,29 @@ class User extends ActiveRecord implements IdentityInterface
     public function getTypeName(): string
     {
         return ArrayHelper::getValue(self::getTypesArray(), $this->type);
+    }
+
+    public function requestPasswordReset(): void
+    {
+        if (!empty($this->password_reset_token) && self::isPasswordResetTokenValid($this->password_reset_token)) {
+            throw new \DomainException('Запрос на смену пароля уже был отправлен ранее.');
+        }
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    public function resetPassword($password): void
+    {
+        if (empty($this->password_reset_token)) {
+            throw new \DomainException('Запрос на сброс пароля не был инициирован.');
+        }
+        $this->setPassword($password);
+        $this->password_reset_token = null;
+    }
+
+    public function afterFind()
+    {
+        $this->last_online = Yii::$app->redis->get('online-' . $this->id) ?: null;
+        parent::afterFind();
     }
 
     /**
@@ -208,15 +286,17 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'email' => 'Email',
-            'type' => 'Type',
-            'last_online' => 'Last Online',
-            'status' => 'Status',
+            'email' => 'E-mail',
+            'type' => 'Тип',
+            'typeName' => 'Тип',
+            'last_online' => 'Последний вход',
+            'status' => 'Статус',
+            'statusName' => 'Статус',
             'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => 'Добавлен',
+            'updated_at' => 'Обновлён',
         ];
     }
 

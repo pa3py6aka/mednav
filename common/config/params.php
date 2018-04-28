@@ -1,5 +1,6 @@
 <?php
 return [
+    'siteName' => 'Mednav.ru',
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,

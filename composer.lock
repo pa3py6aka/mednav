@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d7bbd65db2aa9201cfc65e3e9251989",
+    "content-hash": "f94537703a6bfe20e63898d42d307605",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -680,6 +680,102 @@
             "time": "2016-10-24T15:52:54+00:00"
         },
         {
+            "name": "pa3py6aka/yii2-modal-alert-widget",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pa3py6aka/yii2-modal-alert-widget.git",
+                "reference": "60cac4b78f0d9b9c2dde46b502e1dfa2e5ba3bad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pa3py6aka/yii2-modal-alert-widget/zipball/60cac4b78f0d9b9c2dde46b502e1dfa2e5ba3bad",
+                "reference": "60cac4b78f0d9b9c2dde46b502e1dfa2e5ba3bad",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm-asset",
+                    "bower-asset-library": "vendor/bower-asset"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "pa3py6aka\\yii2\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Savelyev",
+                    "homepage": "http://weblancer.net/users/alexsava"
+                }
+            ],
+            "description": "Modal alert widget for Yii2",
+            "keywords": [
+                "modal alert",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2017-11-17T16:10:34+00:00"
+        },
+        {
+            "name": "paulzi/yii2-nested-sets",
+            "version": "v1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paulzi/yii2-nested-sets.git",
+                "reference": "f75f019286b3e4af1cb2e52f140cf1741c2fd283"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paulzi/yii2-nested-sets/zipball/f75f019286b3e4af1cb2e52f140cf1741c2fd283",
+                "reference": "f75f019286b3e4af1cb2e52f140cf1741c2fd283",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/dbunit": "~1.0",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "paulzi\\nestedsets\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kochetov",
+                    "email": "creocoder@gmail.com"
+                },
+                {
+                    "name": "PaulZi",
+                    "email": "pavel.zimakoff@gmail.com"
+                }
+            ],
+            "description": "Nested Sets Behavior for Yii2",
+            "keywords": [
+                "nested sets",
+                "yii2"
+            ],
+            "time": "2018-04-02T14:28:58+00:00"
+        },
+        {
             "name": "rmrevin/yii2-fontawesome",
             "version": "2.17.1",
             "source": {
@@ -1001,22 +1097,24 @@
             "time": "2018-03-21T16:15:55+00:00"
         },
         {
-            "name": "yiisoft/yii2-swiftmailer",
-            "version": "2.1.0",
+            "name": "yiisoft/yii2-redis",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yiisoft/yii2-swiftmailer.git",
-                "reference": "563570c9aa19ca47c1b22e3032983229378e9274"
+                "url": "https://github.com/yiisoft/yii2-redis.git",
+                "reference": "ffe6bff8dc6be4bb84c9495cd3ef7ef1161c1314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/563570c9aa19ca47c1b22e3032983229378e9274",
-                "reference": "563570c9aa19ca47c1b22e3032983229378e9274",
+                "url": "https://api.github.com/repos/yiisoft/yii2-redis/zipball/ffe6bff8dc6be4bb84c9495cd3ef7ef1161c1314",
+                "reference": "ffe6bff8dc6be4bb84c9495cd3ef7ef1161c1314",
                 "shasum": ""
             },
             "require": {
-                "swiftmailer/swiftmailer": "~6.0",
-                "yiisoft/yii2": "~2.0.4"
+                "yiisoft/yii2": "~2.0.14"
+            },
+            "require-dev": {
+                "yiisoft/yii2-dev": "~2.0.14"
             },
             "type": "yii2-extension",
             "extra": {
@@ -1026,7 +1124,56 @@
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\swiftmailer\\": ""
+                    "yii\\redis\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc"
+                }
+            ],
+            "description": "Redis Cache, Session and ActiveRecord for the Yii framework",
+            "keywords": [
+                "active-record",
+                "cache",
+                "redis",
+                "session",
+                "yii2"
+            ],
+            "time": "2018-03-20T11:01:04+00:00"
+        },
+        {
+            "name": "yiisoft/yii2-swiftmailer",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-swiftmailer.git",
+                "reference": "fd917fbe63b7ea796c52902143b83b98e65bfb73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/fd917fbe63b7ea796c52902143b83b98e65bfb73",
+                "reference": "fd917fbe63b7ea796c52902143b83b98e65bfb73",
+                "shasum": ""
+            },
+            "require": {
+                "swiftmailer/swiftmailer": "~6.0",
+                "yiisoft/yii2": "~2.0.4"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\swiftmailer\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1048,7 +1195,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2017-08-04T10:48:17+00:00"
+            "time": "2018-04-24T23:17:42+00:00"
         }
     ],
     "packages-dev": [
@@ -1221,16 +1368,16 @@
         },
         {
             "name": "codeception/phpunit-wrapper",
-            "version": "7.1.0",
+            "version": "7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/phpunit-wrapper.git",
-                "reference": "cde840638d021804ce93e8f98bcb7edbf6935423"
+                "reference": "33e8ccf2f7abf5c031eeae9802b821d30ec0f7fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/cde840638d021804ce93e8f98bcb7edbf6935423",
-                "reference": "cde840638d021804ce93e8f98bcb7edbf6935423",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/33e8ccf2f7abf5c031eeae9802b821d30ec0f7fc",
+                "reference": "33e8ccf2f7abf5c031eeae9802b821d30ec0f7fc",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1407,7 @@
                 }
             ],
             "description": "PHPUnit classes used by Codeception",
-            "time": "2018-04-10T09:05:14+00:00"
+            "time": "2018-04-20T10:17:13+00:00"
         },
         {
             "name": "codeception/stub",
@@ -1839,23 +1986,23 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.7.5",
+            "version": "1.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
+                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
-                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
+                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
-                "sebastian/comparator": "^1.1|^2.0",
+                "sebastian/comparator": "^1.1|^2.0|^3.0",
                 "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
@@ -1898,7 +2045,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-02-19T10:16:54+00:00"
+            "time": "2018-04-18T13:57:24+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2151,16 +2298,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.1.3",
+            "version": "7.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a7834993ddbf4b0ed2c3b2dc1f3b1d093ef910a9"
+                "reference": "6d51299e307dc510149e0b7cd1931dd11770e1cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a7834993ddbf4b0ed2c3b2dc1f3b1d093ef910a9",
-                "reference": "a7834993ddbf4b0ed2c3b2dc1f3b1d093ef910a9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6d51299e307dc510149e0b7cd1931dd11770e1cb",
+                "reference": "6d51299e307dc510149e0b7cd1931dd11770e1cb",
                 "shasum": ""
             },
             "require": {
@@ -2179,7 +2326,7 @@
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-timer": "^2.0",
                 "phpunit/phpunit-mock-objects": "^6.1.1",
-                "sebastian/comparator": "^2.1",
+                "sebastian/comparator": "^2.1 || ^3.0",
                 "sebastian/diff": "^3.0",
                 "sebastian/environment": "^3.1",
                 "sebastian/exporter": "^3.1",
@@ -2227,7 +2374,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-13T02:28:50+00:00"
+            "time": "2018-04-18T13:41:53+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

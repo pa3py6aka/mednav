@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'name' => 'Mednav.ru',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'common\bootstrap\SetUp'],
     'controllerNamespace' => 'frontend\controllers',
@@ -16,6 +17,7 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
+            'class' => \core\components\YiiUser::class,
             'identityClass' => \core\entities\User\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
@@ -53,4 +55,9 @@ return [
         },
     ],
     'params' => $params,
+    'on afterRequest' => function($event) {
+        if (!Yii::$app->user->isGuest) {
+            Yii::$app->redis->set('online-' . Yii::$app->user->id, time());
+        }
+    },
 ];

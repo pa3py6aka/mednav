@@ -18,7 +18,7 @@ use yii\helpers\Html;
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-
+                <?php /*
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -275,7 +275,9 @@ use yii\helpers\Html;
                 <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li>
+                */ ?>
             </ul>
         </div>
     </nav>
+
 </header>

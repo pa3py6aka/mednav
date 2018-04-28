@@ -1,10 +1,9 @@
 <?php
-/* @var $this \yii\web\View */
-
 use core\entities\User\User;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
+/* @var $this \yii\web\View */
 /* @var $model \core\forms\auth\SignupForm */
 
 $this->title = "Регистрация";
@@ -44,7 +43,7 @@ $this->title = "Регистрация";
                 <?= $form->field($model, 'repeatPassword')->passwordInput() ?>
 
                 <?= $form->field($model, 'captcha')->widget(Captcha::class, [
-                    'captchaAction' => ['/auth/captcha'],
+                    'captchaAction' => ['/auth/auth/captcha'],
                     'imageOptions' => ['style' => 'cursor:pointer;', 'title' => 'Обновить картинку'],
                     'options' => ['placeholder' => 'Введите код с картинки', 'class' => 'form-control'],
                     'template' => '<label class="label col-md-3">{image}</label><div class="col-md-9 no-padding">{input}</div>',

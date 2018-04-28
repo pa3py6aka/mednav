@@ -18,7 +18,8 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'class' => \core\components\YiiUser::class,
+            'identityClass' => \core\entities\User\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],

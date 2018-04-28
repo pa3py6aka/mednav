@@ -9,7 +9,9 @@ return [
     'showScriptName' => false,
     'rules' => [
         '' => 'main/index',
-        '<_a:signup|login|logout>' => 'auth/<_a>',
+        'signup' => 'auth/signup/request',
+        'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
+        '<_a:login|logout>' => 'auth/auth/<_a>',
 
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',

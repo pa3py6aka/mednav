@@ -26,7 +26,7 @@ class SignupForm extends Model
             ['repeatPassword', 'required', 'message' => 'Повторите пароль'],
             ['repeatPassword', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли не совпадают'],
             ['captcha', 'required', 'message' => 'Укажите проверочный код'],
-            ['captcha', 'captcha', 'captchaAction' => '/auth/captcha'],
+            ['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
             ['agreement', 'required', 'requiredValue' => 1, 'message' => 'Вы должны подтвердить своё согласие'],
         ];
     }

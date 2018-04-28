@@ -1,6 +1,7 @@
 <?php
 return [
     'language' => 'ru',
+    'timeZone' => 'Europe/Moscow',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -12,6 +13,15 @@ return [
         ],
         'authManager' => [
             'class' => \yii\rbac\DbManager::class,
+        ],
+        'settings' => [
+            'class' => \core\components\SettingsManager::class,
+        ],
+        'redis' => [
+            'class' => \yii\redis\Connection::class,
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0,
         ],
     ],
 ];

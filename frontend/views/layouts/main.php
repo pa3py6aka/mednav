@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use pa3py6aka\yii2\ModalAlert;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use yii\helpers\Url;
@@ -90,11 +91,11 @@ AppAsset::register($this);
                                     <li><a href="/articles">Справочные материалы</a></li>
 
                                     <?php if (Yii::$app->user->isGuest): ?>
-                                        <li><a href="<?= Url::to(['/auth/signup']) ?>">Регистрация</a></li>
-                                        <li><a href="<?= Url::to(['/auth/login']) ?>">Вход</a></li>
+                                        <li><a href="<?= Url::to(['/auth/signup/request']) ?>">Регистрация</a></li>
+                                        <li><a href="<?= Url::to(['/auth/auth/login']) ?>">Вход</a></li>
                                     <?php else: ?>
-                                        <li><a href="<?= Url::to(['/user/cabinet']) ?>"><?= Yii::$app->user->identity->username ?></a></li>
-                                        <li><a href="<?= Url::to(['/auth/logout']) ?>" data-method="post">Выход</a></li>
+                                        <li><a href="<?= Url::to(['/user/cabinet']) ?>"><?= Yii::$app->user->identity->email ?></a></li>
+                                        <li><a href="<?= Url::to(['/auth/auth/logout']) ?>" data-method="post">Выход</a></li>
                                     <?php endif; ?>
                                 </ul>
                             </div>
@@ -150,6 +151,8 @@ AppAsset::register($this);
         </div>
     </div>
 </div><!--/container-fluid-->
+
+<?= ModalAlert::widget() ?>
 
 <?php $this->endBody() ?>
 </body>

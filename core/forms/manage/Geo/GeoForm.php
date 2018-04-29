@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 class GeoForm extends Model
 {
     public $name;
+    public $name_p;
     public $slug;
     public $popular;
     public $active;
@@ -22,6 +23,7 @@ class GeoForm extends Model
     {
         if ($geo) {
             $this->name = $geo->name;
+            $this->name_p = $geo->name_p;
             $this->slug = $geo->slug;
             $this->popular = $geo->popular;
             $this->active = $geo->active;
@@ -38,7 +40,7 @@ class GeoForm extends Model
         return [
             [['name', 'slug', 'popular', 'active'], 'required'],
             [['parentId'], 'integer'],
-            [['name', 'slug'], 'string', 'max' => 255],
+            [['name', 'name_p', 'slug'], 'string', 'max' => 255],
             [['popular', 'active'], 'boolean'],
             ['slug', SlugValidator::class],
             [['slug'], 'unique', 'targetClass' => Geo::class, 'filter' => $this->_geo ? ['<>', 'id', $this->_geo->id] : null],
@@ -64,6 +66,7 @@ class GeoForm extends Model
     {
         return [
             'name' => 'Название',
+            'name_p' => 'Название в предложном падеже',
             'slug' => 'URL',
             'popular' => 'Популярный',
             'active' => 'Показывать',

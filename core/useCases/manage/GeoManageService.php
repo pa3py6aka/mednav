@@ -16,11 +16,12 @@ class GeoManageService
         $this->repository = $repository;
     }
 
-    public function create(\core\forms\manage\Geo\GeoForm $form): Geo
+    public function create(GeoForm $form): Geo
     {
         $parent = $this->repository->get($form->parentId);
         $geo = Geo::create(
             $form->name,
+            $form->name_p,
             $form->slug,
             $form->popular,
             $form->active
@@ -31,12 +32,13 @@ class GeoManageService
         return $geo;
     }
 
-    public function edit($id, \core\forms\manage\Geo\GeoForm $form): void
+    public function edit($id, GeoForm $form): void
     {
         $geo = $this->repository->get($id);
         $this->assertIsNotRoot($geo);
         $geo->edit(
             $form->name,
+            $form->name_p,
             $form->slug,
             $form->popular,
             $form->active

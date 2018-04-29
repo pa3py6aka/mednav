@@ -17,6 +17,7 @@ class m180429_075718_create_geo_table extends Migration
         $this->createTable('{{%geo}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
+            'name_p' => $this->string()->notNull()->defaultValue(''),
             'slug' => $this->string()->notNull(),
             'popular' => $this->boolean()->notNull()->defaultValue(false),
             'active' => $this->boolean()->notNull()->defaultValue(true),

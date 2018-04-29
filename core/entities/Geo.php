@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property string $name
+ * @property string $name_p [varchar(255)]
  * @property string $slug
  * @property int $popular
  * @property int $active
@@ -28,19 +29,21 @@ use yii\db\ActiveRecord;
  */
 class Geo extends ActiveRecord
 {
-    public static function create($name, $slug, $popular, $active): Geo
+    public static function create($name, $name_p, $slug, $popular, $active): Geo
     {
         $geo = new static();
         $geo->name = $name;
+        $geo->name_p = $name_p;
         $geo->slug = $slug;
         $geo->popular = $popular;
         $geo->active = $active;
         return $geo;
     }
 
-    public function edit($name, $slug, $popular, $active): void
+    public function edit($name, $name_p, $slug, $popular, $active): void
     {
         $this->name = $name;
+        $this->name_p = $name_p;
         $this->slug = $slug;
         $this->popular = $popular;
         $this->active = $active;
@@ -90,6 +93,7 @@ class Geo extends ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
+            'name_p' => 'Название в предложном падеже',
             'slug' => 'URL',
             'popular' => 'Популярный',
             'active' => 'Показывать',

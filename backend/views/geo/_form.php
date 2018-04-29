@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
         <div class="box-body">
             <?= $form->field($model, 'parentId')->dropDownList($model->parentCategoriesList()) ?>
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'name_p')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'active')->checkbox() ?>
             <?= $form->field($model, 'popular')->checkbox() ?>

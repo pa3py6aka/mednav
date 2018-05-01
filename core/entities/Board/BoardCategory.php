@@ -37,6 +37,7 @@ use yii\db\ActiveRecord;
  * @property int $depth
  *
  * @property BoardCategoryRegion[] $regions
+ * @property BoardCategoryParameter[] $parameters
  *
  * @property BoardCategory $parent
  * @property BoardCategory[] $parents
@@ -208,6 +209,11 @@ class BoardCategory extends ActiveRecord
     public function getRegions(): ActiveQuery
     {
         return $this->hasMany(BoardCategoryRegion::class, ['category_id' => 'id']);
+    }
+
+    public function getParameters(): ActiveQuery
+    {
+        return $this->hasMany(BoardCategoryParameter::class, ['category_id' => 'id']);
     }
 
     /**

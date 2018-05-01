@@ -15,6 +15,7 @@ class BoardCategoryForm extends Model
     public $enabled;
     public $notShowOnMain;
     public $childrenOnlyParent;
+    public $parameters;
     public $slug;
     public $metaTitle;
     public $metaDescription;
@@ -41,6 +42,7 @@ class BoardCategoryForm extends Model
             $this->enabled = $category->enabled;
             $this->notShowOnMain = $category->not_show_on_main;
             $this->childrenOnlyParent = $category->children_only_parent;
+            $this->parameters = $category->getParameters()->select('parameter_id')->column();
             $this->slug = $category->slug;
             $this->metaTitle = $category->meta_title;
             $this->metaDescription = $category->meta_description;
@@ -72,12 +74,14 @@ class BoardCategoryForm extends Model
             ['pagination', 'integer'],
             [['metaDescription', 'metaKeywords', 'descriptionTop', 'descriptionBottom', 'metaDescriptionItem'], 'string'],
             [['slug'], 'unique', 'targetClass' => BoardCategory::class, 'filter' => $this->_category ? ['<>', 'id', $this->_category->id] : null],
+            ['parameters', 'each', 'rule' => ['integer']],
         ];
     }
 
     public function beforeValidate()
     {
         $this->slug = $this->slug ? Inflector::slug($this->slug) : Inflector::slug($this->name);
+        $this->parameters = $this->parameters ?: [];
         return parent::beforeValidate();
     }
 
@@ -98,6 +102,7 @@ class BoardCategoryForm extends Model
             'enabled' => 'Доступен для добавления объявлений',
             'notShowOnMain' => 'Не выводить на главной',
             'childrenOnlyParent' => 'Выводить дочерние разделы только в родителе',
+            'parameters' => 'Параметры',
             'slug' => 'Алиас',
             'metaTitle' => 'Meta Title',
             'title' => 'Заголовок',

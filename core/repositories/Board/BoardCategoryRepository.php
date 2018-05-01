@@ -4,6 +4,7 @@ namespace core\repositories\Board;
 
 
 use core\entities\Board\BoardCategory;
+use core\entities\Board\BoardCategoryParameter;
 use core\entities\Board\BoardCategoryRegion;
 use core\repositories\NotFoundException;
 
@@ -38,6 +39,13 @@ class BoardCategoryRepository
     public function saveRegion(BoardCategoryRegion $region): void
     {
         if (!$region->save()) {
+            throw new \RuntimeException('Ошибка записи в базу.');
+        }
+    }
+
+    public function saveParameter(BoardCategoryParameter $parameter): void
+    {
+        if (!$parameter->save()) {
             throw new \RuntimeException('Ошибка записи в базу.');
         }
     }

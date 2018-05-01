@@ -4,6 +4,7 @@ namespace core\useCases\manage\Board;
 
 
 use core\entities\Board\BoardCategory;
+use core\entities\Board\BoardCategoryParameter;
 use core\entities\Board\BoardCategoryRegion;
 use core\forms\manage\Board\BoardCategoryForm;
 use core\forms\manage\Board\BoardCategoryRegionForm;
@@ -52,7 +53,13 @@ class BoardCategoryManageService
             $category->makeRoot();
         }
 
-        $this->repository->save($category);
+        $this->transaction->wrap(function () use ($category, $form) {
+            $this->repository->save($category);
+            foreach ($form->parameters as $parameter) {
+                $categoryParameter = BoardCategoryParameter::create($category->id, $parameter);
+                $this->repository->saveParameter($categoryParameter);
+            }
+        });
 
         return $category;
     }
@@ -82,7 +89,8 @@ class BoardCategoryManageService
             $form->active
         );
 
-        if ($form->parentId != $category->parent->id) {
+        $currentParentId = $category->parent ? $category->parent->id : '';
+        if ($form->parentId != $currentParentId) {
             if ($form->parentId) {
                 $parent = $this->repository->get($form->parentId);
                 $category->appendTo($parent);
@@ -91,7 +99,14 @@ class BoardCategoryManageService
             }
         }
 
-        $this->repository->save($category);
+        $this->transaction->wrap(function () use ($category, $form) {
+            $this->repository->save($category);
+            BoardCategoryParameter::deleteAll(['category_id' => $category->id]);
+            foreach ($form->parameters as $parameter) {
+                $categoryParameter = BoardCategoryParameter::create($category->id, $parameter);
+                $this->repository->saveParameter($categoryParameter);
+            }
+        });
     }
 
     public function attachRegions($categoryId, array $regionIds): void

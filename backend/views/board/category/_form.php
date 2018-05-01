@@ -1,8 +1,10 @@
 <?php
 
+use core\entities\Board\BoardParameter;
 use core\helpers\MarkHelper;
 use core\helpers\PaginationHelper;
 use mihaildev\ckeditor\CKEditor;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -25,6 +27,7 @@ MarkHelper::js($this);
             <?= $form->field($model, 'enabled')->checkbox() ?>
             <?= $form->field($model, 'notShowOnMain')->checkbox() ?>
             <?= $form->field($model, 'childrenOnlyParent')->checkbox() ?>
+            <?= $form->field($model, 'parameters')->checkboxList(ArrayHelper::map(BoardParameter::find()->asArray()->all(), 'id', 'name')) ?>
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'metaTitle')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'metaDescription')->textarea(['rows' => 4]) ?>

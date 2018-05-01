@@ -77,7 +77,7 @@ class BoardCategoryForm extends Model
 
     public function beforeValidate()
     {
-        $this->slug = Inflector::slug($this->slug);
+        $this->slug = $this->slug ? Inflector::slug($this->slug) : Inflector::slug($this->name);
         return parent::beforeValidate();
     }
 

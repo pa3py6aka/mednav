@@ -32,7 +32,7 @@ class GeoRepository
 
     public function remove(Geo $geo)
     {
-        if (!$geo->delete()) {
+        if (!$geo->deleteWithChildren()) {
             throw new \RuntimeException('Ошибка при удалении из базы.');
         }
     }

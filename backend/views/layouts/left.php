@@ -11,6 +11,11 @@
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/user/settings']],
                     ]],
                     ['label' => 'Гео', 'icon' => 'globe', 'url' => ['/geo/index'], 'active' => $this->context->id == 'geo'],
+                    ['label' => 'Доска объявлений', 'icon' => 'newspaper-o', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/board/category/index']],
+                        ['label' => 'Объявления', 'icon' => 'newspaper-o', 'url' => ['/board/board/index']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/board/settings/index']],
+                    ]],
                     [
                         'label' => 'Выйти',
                         'url' => ['site/logout'],

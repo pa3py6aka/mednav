@@ -18,7 +18,8 @@
         "fishvision/yii2-migrate": "*",
         "pa3py6aka/yii2-modal-alert-widget": "^1.2",
         "yiisoft/yii2-redis": "~2.0.0",
-        "paulzi/yii2-nested-sets": "^1.0"
+        "paulzi/yii2-nested-sets": "^1.0",
+        "mihaildev/yii2-ckeditor": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

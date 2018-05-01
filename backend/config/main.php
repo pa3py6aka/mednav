@@ -14,6 +14,9 @@ return [
     'bootstrap' => ['log', 'common\bootstrap\SetUp'],
     'modules' => [],
     'components' => [
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -46,4 +49,15 @@ return [
         },
     ],
     'params' => $params,
+
+    'as access' => [
+        'class' => \yii\filters\AccessControl::class,
+        'except' => ['site/login', 'site/error', 'site/logout'],
+        'rules' => [
+            [
+                'allow' => true,
+                'roles' => [\core\access\Rbac::ROLE_ADMIN],
+            ],
+        ],
+    ],
 ];

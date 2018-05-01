@@ -1,17 +1,17 @@
 <?php
 
-namespace core\entities\queries;
+namespace core\entities\Board\queries;
 
 
 use paulzi\nestedsets\NestedSetsQueryTrait;
 use yii\db\ActiveQuery;
 
 /**
- * This is the ActiveQuery class for [[\core\entities\Geo]].
+ * This is the ActiveQuery class for [[\core\entities\Board\BoardCategory]].
  *
- * @see \core\entities\Geo
+ * @see \core\entities\Board\BoardCategory
  */
-class GeoQuery extends ActiveQuery
+class BoardCategoryQuery extends ActiveQuery
 {
     use NestedSetsQueryTrait;
 
@@ -20,14 +20,9 @@ class GeoQuery extends ActiveQuery
         return $this->andWhere(['active' => 1]);
     }
 
-    public function notRoot()
-    {
-        return $this->andWhere(['>', 'depth', 0]);
-    }
-
     /**
      * @inheritdoc
-     * @return \core\entities\Geo[]|array
+     * @return \core\entities\Board\BoardCategory[]|array
      */
     public function all($db = null)
     {
@@ -36,7 +31,7 @@ class GeoQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \core\entities\Geo|array|null
+     * @return \core\entities\Board\BoardCategory|array|null
      */
     public function one($db = null)
     {

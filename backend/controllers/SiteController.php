@@ -1,9 +1,11 @@
 <?php
 namespace backend\controllers;
 
+use core\grid\TreeViewColumn;
 use core\useCases\auth\AuthService;
 use Yii;
 use yii\base\Module;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -29,21 +31,22 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
+                'only' => ['login', 'error', 'logout'],
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -114,5 +117,26 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionTreeLoad()
+    {
+        $id = Yii::$app->request->post('id');
+        $entityClass = Yii::$app->request->post('entity');
+        $entity = $entityClass::find()->where(['id' => $id])->limit(1)->one();
+
+        $rows = [];
+        foreach ($entity->getChildren()->all() as $row) {
+            $rows[] = '<tr data-key="' . $row->id . '" data-parent="' . $entity->id . '">
+                           <td>' . $row->id . '</td>
+                           <td class="tree-cell">' . TreeViewColumn::cellContent($row, $entityClass) . '</td>
+                           <td>
+                               <a href="' . Url::to(['/board/category/update', 'id' => $row->id, 'tab' => 'geo']) . '" aria-label="Привязка к регионам"><span class="glyphicon glyphicon-globe"></span></a> 
+                               <a href="' . Url::to(['/board/category/delete', 'id' => $row->id]) . '" title="Удалить" aria-label="Удалить" data-pjax="0" data-confirm="Вы уверены?"><span class="glyphicon glyphicon-trash"></span></a>
+                           </td>
+                       </tr>';
+        }
+
+        return implode("\n", $rows);
     }
 }

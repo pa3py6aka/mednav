@@ -13,11 +13,27 @@ use yii\db\ActiveRecord;
  * @property int $parameter_id
  * @property string $name
  * @property string $slug
+ * @property int $sort [int(11)]
  *
  * @property BoardParameter $parameter
  */
 class BoardParameterOption extends ActiveRecord
 {
+    public static function create($parameterId, $name, $slug): BoardParameterOption
+    {
+        $option = new static();
+        $option->parameter_id = $parameterId;
+        $option->name = $name;
+        $option->slug = $slug;
+        return $option;
+    }
+
+    public function edit($name, $slug): void
+    {
+        $this->name = $name;
+        $this->slug = $slug;
+    }
+
     public static function tableName(): string
     {
         return '{{%board_parameter_options}}';

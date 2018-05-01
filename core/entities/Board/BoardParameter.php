@@ -5,6 +5,7 @@ namespace core\entities\Board;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%board_parameters}}".
@@ -15,12 +16,48 @@ use yii\db\ActiveRecord;
  * @property int $active
  * @property int $sort
  *
+ * @property string $typeName
+ *
  * @property BoardCategoryParameter[] $boardCategoryParameters
  * @property BoardCategory[] $categories
  * @property BoardParameterOption[] $boardParameterOptions
  */
 class BoardParameter extends ActiveRecord
 {
+    public const TYPE_DROPDOWN = 1;
+    public const TYPE_STRING = 2;
+    public const TYPE_CHECKBOX = 3;
+
+    public static function create($name, $type, $active): BoardParameter
+    {
+        $parameter = new static();
+        $parameter->name = $name;
+        $parameter->type = $type;
+        $parameter->active = $active;
+        return $parameter;
+    }
+
+    public function edit($name, $type, $active): void
+    {
+        $this->name = $name;
+        $this->type = $type;
+        $this->active = $active;
+    }
+
+    public static function typesArray(): array
+    {
+        return [
+            self::TYPE_DROPDOWN => 'Выпадающий список',
+            self::TYPE_STRING => 'Текстовое поле',
+            self::TYPE_CHECKBOX => 'Checkbox',
+        ];
+    }
+
+    public function getTypeName(): string
+    {
+        return ArrayHelper::getValue(self::typesArray(), $this->type, '-');
+    }
+
     public static function tableName(): string
     {
         return '{{%board_parameters}}';

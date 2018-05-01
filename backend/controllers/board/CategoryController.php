@@ -127,20 +127,6 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function actionSettings()
-    {
-        $form = new GeoSettingsForm();
-
-        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            if (Yii::$app->settings->saveForm($form)) {
-                Yii::$app->session->setFlash("success", "Настройки успешно сохранены");
-                return $this->render('settings', ['model' => $form]);
-            }
-        }
-
-        return $this->render('settings', ['model' => $form]);
-    }
-
     public function actionDelete($id)
     {
         try {

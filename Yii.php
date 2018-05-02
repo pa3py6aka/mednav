@@ -17,6 +17,7 @@ class Yii extends \yii\BaseYii
  *
  * @property \core\components\SettingsManager $settings Settings component.
  * @property \yii\redis\Connection $redis
+ * @property \yii2tech\filedb\Connection $filedb
  */
 abstract class BaseApplication extends yii\base\Application
 {

@@ -23,5 +23,10 @@ return [
             'port' => 6379,
             'database' => 0,
         ],
+        'filedb' => [
+            'class' => \yii2tech\filedb\Connection::class,
+            'path' => '@core/data',
+            'format' => 'json',
+        ],
     ],
 ];

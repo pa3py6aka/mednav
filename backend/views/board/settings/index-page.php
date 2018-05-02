@@ -6,7 +6,7 @@ use yii\bootstrap\Html;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $model \yii\base\Model */
+/* @var $model \core\forms\manage\Board\BoardSettingsIndexForm */
 
 ?>
 <?= $form->field($model, SettingsManager::BOARD_META_TITLE)->textInput() ?>

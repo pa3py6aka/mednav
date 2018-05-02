@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce316a94a8206f861d335c0538fddfd0",
+    "content-hash": "0acf6c37868d2234db644dbc55b1bde1",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -932,6 +932,54 @@
                 "mailer"
             ],
             "time": "2017-09-30T22:39:41+00:00"
+        },
+        {
+            "name": "yii2tech/filedb",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2tech/filedb.git",
+                "reference": "196174624326dc3864f1276e8934cde7a9b250fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2tech/filedb/zipball/196174624326dc3864f1276e8934cde7a9b250fc",
+                "reference": "196174624326dc3864f1276e8934cde7a9b250fc",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.14"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii2tech\\filedb\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "Provides ActiveRecord interface for data declared in static files",
+            "keywords": [
+                "active",
+                "filedb",
+                "record",
+                "static",
+                "yii2"
+            ],
+            "time": "2018-04-09T08:12:49+00:00"
         },
         {
             "name": "yiisoft/yii2",

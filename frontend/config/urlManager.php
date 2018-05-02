@@ -13,6 +13,10 @@ return [
         'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
 
+        'board/<region:[\w-]+>/<category:[\w-]+>' => 'board/board/index',
+        'board/<region:[\w-]+>' => 'board/board/index',
+        'board' => 'board/board/index',
+
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
         '<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_c>/<_a>',

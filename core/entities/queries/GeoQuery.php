@@ -25,6 +25,16 @@ class GeoQuery extends ActiveQuery
         return $this->andWhere(['>', 'depth', 0]);
     }
 
+    public function countries()
+    {
+        return $this->andWhere(['depth' => 1]);
+    }
+
+    public function popular()
+    {
+        return $this->andWhere(['popular' => 1]);
+    }
+
     /**
      * @inheritdoc
      * @return \core\entities\Geo[]|array

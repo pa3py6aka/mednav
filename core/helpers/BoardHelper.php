@@ -1,0 +1,79 @@
+<?php
+
+namespace core\helpers;
+
+
+use core\components\SettingsManager;
+use core\entities\Board\Board;
+use core\entities\Board\BoardCategory;
+use core\entities\Board\BoardCategoryRegion;
+use core\entities\Geo;
+use Yii;
+use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
+
+class BoardHelper
+{
+    public static function generateIndexTitle()
+    {
+
+    }
+
+    public static function categoryDescriptionBlock($position, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
+    {
+        $constOn = $position == 'top' ? SettingsManager::BOARD_DESCRIPTION_TOP_ON : SettingsManager::BOARD_DESCRIPTION_BOTTOM_ON;
+        $const = $position == 'top' ? SettingsManager::BOARD_DESCRIPTION_TOP : SettingsManager::BOARD_DESCRIPTION_BOTTOM;
+        $text = '';
+        if ($categoryRegion && $categoryRegion->{'description_' . $position . '_on'}) {
+            $text = $categoryRegion->{'description_' . $position};
+        } else if ($category && $category->{'description_' . $position . '_on'}) {
+            $text = $category->{'description_' . $position};
+        } else if (Yii::$app->settings->get($const)) {
+            $text = Yii::$app->settings->get($const);
+        }
+
+        if ($text) {
+            return '<div class="row">' .
+                       '<div class="col-md-12 col-sm-12 hidden-xs"><div class="list-category-desc">' .
+                           $text .
+                       '</div></div>' .
+                   '</div>';
+        }
+
+        return '';
+    }
+
+    public static function breadCrumbs(BoardCategory $category = null, Geo $geo = null)
+    {
+        $items[] = ['label' => Yii::$app->settings->get(SettingsManager::BOARD_NAME), 'url' => ['/board/board/index']];
+        if ($category) {
+            foreach ($category->parents as $parent) {
+                $items[] = ['label' => $parent->name, 'url' => self::categoryUrl($parent, $geo)];
+            }
+            $items[] = ['label' => $category->name, 'url' => self::categoryUrl($category, $geo)];
+        }
+
+        return Breadcrumbs::widget(['links' => $items]);
+    }
+
+    public static function categoryUrl(BoardCategory $category = null, Geo $geo = null)
+    {
+        return Url::to(['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all']);
+    }
+
+    public static function getCountInCategory(BoardCategory $category, $regionId = null): int
+    {
+        $query = Board::find()
+            ->alias('b')
+            ->leftJoin(BoardCategory::tableName() . ' c', 'b.category_id=c.id')
+            ->where(['c.tree' => $category->tree, 'b.status' => Board::STATUS_ACTIVE])
+            ->andWhere(['>=', 'c.lft', $category->lft])
+            ->andWhere(['<=', 'c.rgt', $category->rgt]);
+
+        if ($regionId) {
+            $query->andWhere(['b.geo_id' => $regionId]);
+        }
+
+        return $query->count();
+    }
+}

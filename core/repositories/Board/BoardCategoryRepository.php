@@ -36,6 +36,11 @@ class BoardCategoryRepository
         return BoardCategoryRegion::find()->where(['category_id' => $categoryId, 'geo_id' => $regionId])->limit(1)->one();
     }
 
+    public function getRegionBySlug($category, $region)
+    {
+
+    }
+
     public function saveRegion(BoardCategoryRegion $region): void
     {
         if (!$region->save()) {

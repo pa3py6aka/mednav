@@ -10,4 +10,5 @@ use yii\helpers\Url;
     <li role="presentation"<?= $tab == 'terms' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/board/settings/terms']) ?>">Сроки</a></li>
     <?php /*<li role="presentation"<?= $tab == 'special' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/board/settings/special']) ?>">Спецразмещение</a></li> */ ?>
     <li role="presentation"<?= $tab == 'parameters' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/board/parameters/index']) ?>">Параметры</a></li>
+    <li role="presentation"<?= strpos($tab, 'currencies') ? ' class="active"' : '' ?>><a href="<?= Url::to(['/settings/currencies', 'for' => 'board']) ?>">Ден. единицы</a></li>
 </ul>

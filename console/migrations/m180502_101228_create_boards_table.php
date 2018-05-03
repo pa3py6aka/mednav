@@ -12,6 +12,8 @@ class m180502_101228_create_boards_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
         $this->createTable('{{%boards}}', [
             'id' => $this->primaryKey(),
             'author_id' => $this->integer()->notNull(),
@@ -32,7 +34,7 @@ class m180502_101228_create_boards_table extends Migration
             'active_until' => $this->integer()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('idx-boards-slug', '{{%boards}}', 'slug', true);
         $this->addForeignKey('fk-boards-author_id', '{{%boards}}', 'author_id', '{{%users}}', 'id', 'RESTRICT', 'CASCADE');

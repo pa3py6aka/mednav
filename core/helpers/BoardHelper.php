@@ -7,8 +7,11 @@ use core\components\SettingsManager;
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardCategoryRegion;
+use core\entities\Board\BoardParameter;
 use core\entities\Geo;
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
@@ -75,5 +78,42 @@ class BoardHelper
         }
 
         return $query->count();
+    }
+
+    /**
+     * Генерирует поля параметров для формы в зависимости от региона
+     * @param BoardCategory $category
+     * @param $formName
+     * @return string
+     */
+    public static function generateParameterFields(BoardCategory $category, $formName)
+    {
+        $parameters = $category->getParametersForForm();
+        $html = [];
+        foreach ($parameters as $parameter) {
+            $parameter = $parameter->parameter;
+            if (!$parameter->active) {
+                continue;
+            }
+            if ($parameter->type == BoardParameter::TYPE_DROPDOWN) {
+                $label = Html::tag('label', $parameter->name, ['class' => 'control-label']);
+                $options = ArrayHelper::map($parameter->boardParameterOptions, 'id', 'name');
+                $select = Html::dropDownList($formName . '[params][' . $parameter->id . ']', null, $options, ['class' => 'form-control']);
+                $html[] = Html::tag('div', $label . "\n" . $select, ['class' => 'form-group']);
+            }
+
+            if ($parameter->type == BoardParameter::TYPE_STRING) {
+                $label = Html::tag('label', $parameter->name, ['class' => 'control-label']);
+                $input = Html::input('text', $formName . '[params][' . $parameter->id . ']', null, ['class' => 'form-control']);
+                $html[] = Html::tag('div', $label . "\n" . $input, ['class' => 'form-group']);
+            }
+
+            if ($parameter->type == BoardParameter::TYPE_CHECKBOX) {
+                $checkbox = Html::checkbox($formName . '[params][' . $parameter->id . ']', false, ['label' => $parameter->name]);
+                $html[] = Html::tag('div', $checkbox, ['class' => 'form-group']);
+            }
+        }
+
+        return implode("\n", $html);
     }
 }

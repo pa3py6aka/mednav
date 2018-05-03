@@ -12,10 +12,12 @@ class m180501_111428_create_board_category_parameters_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
         $this->createTable('{{%board_category_parameters}}', [
             'category_id' => $this->integer()->notNull(),
             'parameter_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->addPrimaryKey('pk-board_category_parameters', '{{%board_category_parameters}}', ['category_id', 'parameter_id']);
         $this->createIndex('idx-board_category_parameters-category_id', '{{%board_category_parameters}}', 'category_id');

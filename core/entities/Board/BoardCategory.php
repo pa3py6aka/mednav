@@ -217,6 +217,14 @@ class BoardCategory extends ActiveRecord
     }
 
     /**
+     * @return BoardCategoryParameter[]|array
+     */
+    public function getParametersForForm()
+    {
+        return $this->getParameters()->with('parameter.boardParameterOptions')->all();
+    }
+
+    /**
      * @inheritdoc
      * @return BoardCategoryQuery the active query used by this AR class.
      */

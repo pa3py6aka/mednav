@@ -94,7 +94,7 @@ AppAsset::register($this);
                                         <li><a href="<?= Url::to(['/auth/signup/request']) ?>">Регистрация</a></li>
                                         <li><a href="<?= Url::to(['/auth/auth/login']) ?>">Вход</a></li>
                                     <?php else: ?>
-                                        <li><a href="<?= Url::to(['/user/cabinet']) ?>"><?= Yii::$app->user->identity->email ?></a></li>
+                                        <li><a href="<?= Url::to(['/user/cabinet/index']) ?>">Личный кабинет</a></li>
                                         <li><a href="<?= Url::to(['/auth/auth/logout']) ?>" data-method="post">Выход</a></li>
                                     <?php endif; ?>
                                 </ul>
@@ -119,7 +119,7 @@ AppAsset::register($this);
                 <div class="col-md-3 col-sm-4">
                     <div class="logo-footer"><a href="/"><img src="img/mednav-f.png" alt="B2b площадка для закупки медицинского оборудования, мед. мебели и расходных материалов."></a></div>
                     <div class="footer-about">B2B площадка для закупщиков<br /> и поставщиков медицинского оборудования,<br /> мебели и расходных материалов в России<br /><br />
-                        &copy; 2017 Все права защищены.<br /></div>
+                        &copy; <?= date('Y') ?> Все права защищены.<br /></div>
                 </div>
                 <div class="col-md-3 col-sm-4 hidden-xs">
                     <div id="footer-lnk-block">

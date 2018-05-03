@@ -97,6 +97,6 @@ class BoardParameter extends ActiveRecord
 
     public function getBoardParameterOptions(): ActiveQuery
     {
-        return $this->hasMany(BoardParameterOption::class, ['parameter_id' => 'id']);
+        return $this->hasMany(BoardParameterOption::class, ['parameter_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace core\entities\Board;
 
+use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\User\User;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -21,7 +23,7 @@ use yii\db\ActiveRecord;
  * @property string $keywords
  * @property string $note
  * @property int $price
- * @property int $currency
+ * @property int $currency_id
  * @property int $price_from
  * @property string $full_text
  * @property int $term_id
@@ -35,6 +37,7 @@ use yii\db\ActiveRecord;
  * @property BoardCategory $category
  * @property Geo $geo
  * @property BoardTerm $term
+ * @property Currency $currency
  */
 class Board extends ActiveRecord
 {
@@ -47,6 +50,13 @@ class Board extends ActiveRecord
     public static function tableName(): string
     {
         return '{{%boards}}';
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**
@@ -81,7 +91,7 @@ class Board extends ActiveRecord
             'keywords' => 'Keywords',
             'note' => 'Note',
             'price' => 'Price',
-            'currency' => 'Currency',
+            'currency' => 'Ден. единица',
             'price_from' => 'Price From',
             'full_text' => 'Full Text',
             'term_id' => 'Term ID',
@@ -111,5 +121,10 @@ class Board extends ActiveRecord
     public function getTerm()
     {
         return $this->hasOne(BoardTerm::class, ['id' => 'term_id']);
+    }
+
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::class, ['id' => 'currency_id']);
     }
 }

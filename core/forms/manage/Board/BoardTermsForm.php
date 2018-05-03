@@ -14,6 +14,8 @@ class BoardTermsForm extends Model
     public $default;
     public $notification;
 
+    private $maxId;
+
     public function __construct(array $config = [])
     {
         $terms = BoardTerm::find()->all();
@@ -23,6 +25,7 @@ class BoardTermsForm extends Model
             $this->daysHuman[$term->id] = $term->daysHuman;
             $this->default[$term->id] = $term->default;
             $this->notification[$term->id] = $term->notification;
+            $this->maxId = $term->id;
         }
         parent::__construct($config);
     }
@@ -46,8 +49,8 @@ class BoardTermsForm extends Model
 
     public function save()
     {
-        foreach ($this->id as $id) {
-            if ($id && $this->days[$id] && $this->daysHuman[$id] && $this->notification[$id]) {
+        foreach ($this->days as $id => $days) {
+            if ($this->days[$id] && $this->daysHuman[$id] && $this->notification[$id]) {
                 $term = BoardTerm::find()->where(['id' => $id])->one();
                 if (!$term) {
                     $term = new BoardTerm();
@@ -58,7 +61,16 @@ class BoardTermsForm extends Model
                 $term->default = $this->default[$id];
                 $term->notification = $this->notification[$id];
                 $term->save();
+            } else {
+                if ($term = BoardTerm::find()->where(['id' => $id])->one()) {
+                    $term->delete();
+                }
             }
         }
+    }
+
+    public function getMaxId()
+    {
+        return $this->maxId;
     }
 }

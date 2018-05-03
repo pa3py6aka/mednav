@@ -6,6 +6,7 @@ use yii\bootstrap\Html;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $model \core\forms\manage\Board\BoardTermsForm */
 
+$count = 10;
 ?>
 <table class="table table-striped table-bordered without-margin">
     <tr>
@@ -15,7 +16,8 @@ use yii\bootstrap\Html;
         <th>Уведомлять о продлении за</th>
         <th>Выбран по умолчанию</th>
     </tr>
-    <?php for ($i = 1; $i <= 10; $i++): ?>
+    <?php for ($i = 1; $i <= $count; $i++): ?>
+        <?php if (isset($model->id[$i]) || $model->getMaxId() < $i): ?>
         <tr>
             <td><?= $i ?></td>
             <td><?= Html::activeInput('number', $model, 'days[' . $i . ']', ['class' => 'form-control']) ?></td>
@@ -23,6 +25,9 @@ use yii\bootstrap\Html;
             <td><?= Html::activeInput('number', $model, 'notification[' . $i . ']', ['class' => 'form-control']) ?></td>
             <td><?= Html::activeCheckbox($model, 'default[' . $i . ']') ?></td>
         </tr>
+        <?php elseif ($model->getMaxId() > $i): ?>
+            <?php $count++; ?>
+        <?php endif; ?>
     <?php endfor; ?>
 </table>
 

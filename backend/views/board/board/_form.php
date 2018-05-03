@@ -2,6 +2,7 @@
 
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardTerm;
+use core\entities\Currency;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -41,15 +42,16 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'price')->input('number') ?>
 
-        <?= $form->field($model, 'currency')->textInput() ?>
+        <?= $form->field($model, 'currency')
+                ->dropDownList(ArrayHelper::map(Currency::find()->asArray()->all(), 'id', 'name')) ?>
 
         <?= $form->field($model, 'priceFrom')->checkbox() ?>
 
         <?= $form->field($model, 'fullText')
-            ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']]) ?>
+                ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']]) ?>
 
         <?= $form->field($model, 'termId')
-            ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
+                ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
 
         <?= $form->field($model, 'geoId')->textInput() ?>
 

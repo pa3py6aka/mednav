@@ -48,8 +48,8 @@ class CurrenciesForm extends Model
 
     public function save()
     {
-        foreach ($this->id as $id) {
-            if ($id && $this->name[$id] && $this->sign[$id]) {
+        foreach ($this->name as $id => $name) {
+            if ($this->name[$id] && $this->sign[$id]) {
                 $currency = Currency::find()->where(['id' => $id])->one();
                 if (!$currency) {
                     $currency = new Currency();

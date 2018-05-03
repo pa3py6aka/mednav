@@ -7,9 +7,11 @@ use core\components\SettingsManager;
 use core\entities\Board\BoardCategory;
 use core\forms\manage\Board\BoardCreateForm;
 use core\helpers\BoardHelper;
+use core\useCases\manage\Board\BoardManageService;
 use Yii;
 use core\entities\Board\Board;
 use backend\forms\BoardSearch;
+use yii\base\Module;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -19,6 +21,14 @@ use yii\filters\VerbFilter;
  */
 class BoardController extends Controller
 {
+    private $service;
+
+    public function __construct($id, Module $module, BoardManageService $service, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
+
     /**
      * @inheritdoc
      */
@@ -87,13 +97,11 @@ class BoardController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-
-                return $this->redirect(['view', 'id' => 100]);
+                $board = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $board->id]);
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
-
-
         }
 
         return $this->render('create', [

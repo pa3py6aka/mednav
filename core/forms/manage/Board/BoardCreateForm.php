@@ -19,6 +19,7 @@ class BoardCreateForm extends Model
     public $currency;
     public $priceFrom;
     public $fullText;
+    public $tags;
     public $termId;
     public $geoId;
     public $params;
@@ -30,13 +31,22 @@ class BoardCreateForm extends Model
             [['name', 'categoryId', 'price', 'currency', 'fullText', 'termId', 'geoId'], 'required'],
             [['name', 'slug', 'title'], 'string', 'max' => 255],
             [['authorId', 'currency', 'termId', 'geoId'], 'integer'],
-            [['description', 'keywords', 'fullText'], 'string'],
+            [['description', 'keywords', 'fullText', 'tags'], 'string'],
             ['note', 'string', 'max' => 100],
             ['priceFrom', 'boolean'],
-            [['categoryId', 'params'], 'each', 'rule' => ['integer']],
+            [['categoryId'], 'each', 'rule' => ['integer']],
+            [['params'], 'each', 'rule' => ['safe']],
             ['photos', 'each', 'rule' => ['string']],
             ['price', 'match', 'pattern' => '/^[0-9]+((\.|,)[0-9]+)?$/uis']
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if (!$this->slug) {
+            $this->slug = $this->name;
+        }
+        return parent::beforeValidate();
     }
 
     public function attributeLabels()
@@ -54,6 +64,7 @@ class BoardCreateForm extends Model
             'currency' => 'Ден. единица',
             'priceFrom' => 'Цена от',
             'fullText' => 'Полное описание',
+            'tags' => 'Теги',
             'termId' => 'Срок размещения',
             'geoId' => 'Регион',
             'params' => 'Параметры',

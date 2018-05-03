@@ -93,11 +93,10 @@ class UploadAction extends Action
     private function generateFileName(UploadedFile $file, $n = 1): string
     {
         $num = $n > 1 ? '-' . $n : '';
-        $name = Inflector::slug($file->baseName) . $num . '.' . $file->extension;
+        $name = substr(Inflector::slug($file->baseName), 0, 220) . $num . '.' . $file->extension;
         if (!is_file($this->path . '/' . $name)) {
             return $name;
         } else {
-            //$n++;
             return $this->generateFileName($file, ++$n);
         }
     }

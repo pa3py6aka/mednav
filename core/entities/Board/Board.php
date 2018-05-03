@@ -5,10 +5,12 @@ namespace core\entities\Board;
 use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\User\User;
+use core\helpers\PriceHelper;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use Zelenin\yii\behaviors\Slug;
 
 /**
  * This is the model class for table "{{%boards}}".
@@ -33,11 +35,15 @@ use yii\db\ActiveRecord;
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property BoardParameter[] $parameters
+ * @property BoardTagAssignment[] $tagsAssignments
+ * @property BoardTag[] $tags
  * @property User $author
  * @property BoardCategory $category
  * @property Geo $geo
  * @property BoardTerm $term
  * @property Currency $currency
+ * @property BoardPhoto[] $photos
  */
 class Board extends ActiveRecord
 {
@@ -46,6 +52,49 @@ class Board extends ActiveRecord
     const STATUS_NOT_ACTIVE = 3;
     const STATUS_ACTIVE = 5;
     const STATUS_ARCHIVE = 8;
+
+    public static function create
+    (
+        $authorId,
+        $name,
+        $slug,
+        $categoryId,
+        $title,
+        $description,
+        $keywords,
+        $note,
+        $price,
+        $currencyId,
+        $priceFrom,
+        $fullText,
+        $termId,
+        $geoId
+    ): Board
+    {
+        $board = new static();
+        $board->author_id = $authorId;
+        $board->name = $name;
+        $board->slug = $slug;
+        $board->category_id = $categoryId;
+        $board->title = $title;
+        $board->description = $description;
+        $board->keywords = $keywords;
+        $board->note = $note;
+        $board->price = PriceHelper::optimize($price);
+        $board->currency_id = $currencyId;
+        $board->price_from = $priceFrom;
+        $board->full_text = $fullText;
+        $board->term_id = $termId;
+        $board->geo_id = $geoId;
+        $board->status = self::STATUS_ACTIVE;
+        return $board;
+    }
+
+    public function updateActiveUntil(): void
+    {
+        $term = BoardTerm::findOne($this->term_id);
+        $this->active_until = time() + ($term->days * 24 * 60 * 60);
+    }
 
     public static function tableName(): string
     {
@@ -56,6 +105,12 @@ class Board extends ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            'slug' => [
+                'class' => Slug::class,
+                'slugAttribute' => 'slug',
+                'attribute' => 'slug',
+                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
+            ]
         ];
     }
 
@@ -126,5 +181,25 @@ class Board extends ActiveRecord
     public function getCurrency()
     {
         return $this->hasOne(Currency::class, ['id' => 'currency_id']);
+    }
+
+    public function getTagsAssignments(): ActiveQuery
+    {
+        return $this->hasMany(BoardTagAssignment::class, ['board_id' => 'id']);
+    }
+
+    public function getTags(): ActiveQuery
+    {
+        return $this->hasMany(BoardTag::class, ['id' => 'tag_id'])->viaTable('{{%board_tags_assignment}}', ['board_id' => 'id']);
+    }
+
+    public function getParameters(): ActiveQuery
+    {
+        return $this->hasMany(BoardParameter::class, ['id' => 'parameter_id'])->viaTable('{{%board_parameters_assignment}}', ['board_id' => 'id']);
+    }
+
+    public function getPhotos(): ActiveQuery
+    {
+        return $this->hasMany(BoardPhoto::class, ['board_id' => 'id']);
     }
 }

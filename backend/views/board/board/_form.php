@@ -54,6 +54,8 @@ ImagesManagerAsset::register($this);
         <?= $form->field($model, 'fullText')
                 ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']]) ?>
 
+        <?= $form->field($model, 'tags')->textInput() ?>
+
         <?= $form->field($model, 'termId')
                 ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
 

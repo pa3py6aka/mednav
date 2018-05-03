@@ -54,16 +54,23 @@
                 $link.find('.overlay').remove();
             }
         }
-
-        function addImageItem() {
-            var $last = $photosBlock.find('.add-image-item').last();
-            var $newItem = $last.clone();
-            $newItem.find('img').attr('src', '/img/add_image.png');
-            $newItem.find('.remove-btn').removeClass('hidden').addClass('hidden');
-            $newItem.find('.overlay').remove();
-            $newItem.find('input[type=file]').val('');
-            $newItem.find('input[type=hidden]').remove();
-            $last.after($newItem);
-        }
     });
+
+    $photosBlock.on('click', '.remove-btn', function () {
+        if ($photosBlock.find('.add-image-item').length < 2) {
+            addImageItem();
+        }
+        $(this).parent().remove();
+    });
+
+    function addImageItem() {
+        var $last = $photosBlock.find('.add-image-item').last();
+        var $newItem = $last.clone();
+        $newItem.find('img').attr('src', '/img/add_image.png');
+        $newItem.find('.remove-btn').removeClass('hidden').addClass('hidden');
+        $newItem.find('.overlay').remove();
+        $newItem.find('input[type=file]').val('');
+        $newItem.find('input[type=hidden]').remove();
+        $last.after($newItem);
+    }
 })(jQuery);

@@ -2,6 +2,8 @@
 
 namespace backend\controllers\board;
 
+use core\actions\UploadAction;
+use core\components\SettingsManager;
 use core\entities\Board\BoardCategory;
 use core\forms\manage\Board\BoardCreateForm;
 use core\helpers\BoardHelper;
@@ -24,10 +26,25 @@ class BoardController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => UploadAction::class,
+                'baseUrl' => Yii::$app->params['frontendHostInfo'] . '/tmp',
+                'sizes' => [
+                    'small' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_SMALL_SIZE)],
+                    'big' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_BIG_SIZE)],
+                    'max' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_MAX_SIZE)],
+                ]
             ],
         ];
     }

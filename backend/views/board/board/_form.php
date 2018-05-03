@@ -1,8 +1,10 @@
 <?php
 
+use backend\assets\ImagesManagerAsset;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardTerm;
 use core\entities\Currency;
+use core\forms\manage\Geo\GeoForm;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -11,6 +13,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model \core\forms\manage\Board\BoardCreateForm */
 /* @var $form yii\widgets\ActiveForm */
+
+ImagesManagerAsset::register($this);
 ?>
 
 <div class="board-form box box-primary">
@@ -53,9 +57,17 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'termId')
                 ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
 
-        <?= $form->field($model, 'geoId')->textInput() ?>
+        <?= $form->field($model, 'geoId')
+                ->dropDownList(GeoForm::parentCategoriesList(false), ['prompt' => '']) ?>
 
-        <?= $form->field($model, 'photos')->textInput() ?>
+        <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
+            <div class="add-image-item">
+                <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
+                <input type="file" class="hidden">
+                <span class="remove-btn fa fa-remove hidden"></span>
+            </div>
+            <div class="help-block"></div>
+        </div>
 
     </div>
     <div class="box-footer">

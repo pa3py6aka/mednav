@@ -42,7 +42,8 @@ ImagesManagerAsset::register($this);
 
         <?= $form->field($model, 'keywords')->textarea(['rows' => 4]) ?>
 
-        <?= $form->field($model, 'note')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'note')
+                ->textInput(['maxlength' => true, 'placeholder' => 'Прим: Состояние Новый/БУ, страна производитель и др. информация']) ?>
 
         <?= $form->field($model, 'price')->input('number') ?>
 

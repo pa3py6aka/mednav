@@ -37,6 +37,9 @@ class BoardParameterManageService
     public function remove($id): void
     {
         $parameter = $this->repository->get($id);
+        if ($parameter->id == 1) {
+            throw new \DomainException("Системный параметр нельзя удалять.");
+        }
         $this->repository->remove($parameter);
     }
 

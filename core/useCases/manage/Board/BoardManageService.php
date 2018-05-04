@@ -9,6 +9,8 @@ use core\entities\Board\BoardTag;
 use core\entities\Board\BoardTagAssignment;
 use core\forms\manage\Board\BoardCreateForm;
 use core\forms\manage\Board\BoardParameterForm;
+use core\helpers\BoardHelper;
+use core\helpers\MarkHelper;
 use core\repositories\Board\BoardRepository;
 use core\services\TransactionManager;
 use Yii;
@@ -33,7 +35,7 @@ class BoardManageService
             $form->categoryId,
             $form->title,
             $form->description,
-            $form->keywords,
+            $form->keywords ?: trim($form->tags),
             $form->note,
             $form->price,
             $form->currency,
@@ -48,8 +50,8 @@ class BoardManageService
             $this->repository->save($board);
             $this->saveTags($board, $form->tags);
             $this->saveParameters($board, $form->params);
-            $photoService = Yii::createObject(BoardPhotoService::class);
-            $photoService->savePhotos($board->id, $form->photos);
+            $this->updateColumns($board);
+            Yii::createObject(BoardPhotoService::class)->savePhotos($board->id, $form->photos);
         });
 
         return $board;
@@ -86,6 +88,23 @@ class BoardManageService
             $param = $this->repository->getParameter($id);
             $assignment = BoardParameterAssignment::create($board->id, $param->id, $param->type, $value);
             $this->repository->saveParameterAssignment($assignment);
+        }
+    }
+
+    private function updateColumns(Board $board): void
+    {
+        $toSave = false;
+        if (empty($board->title)) {
+            $board->title = MarkHelper::generateStringByMarks($board->category->meta_title_item, MarkHelper::MARKS_BOARD, $board);
+            $toSave = true;
+        }
+        if (empty($board->description)) {
+            $board->description = MarkHelper::generateStringByMarks($board->category->meta_description_item, MarkHelper::MARKS_BOARD, $board);
+            $toSave = true;
+        }
+
+        if ($toSave) {
+            $this->repository->save($board);
         }
     }
 

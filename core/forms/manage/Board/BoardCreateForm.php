@@ -3,6 +3,7 @@
 namespace core\forms\manage\Board;
 
 
+use core\entities\Board\BoardCategory;
 use yii\base\Model;
 
 class BoardCreateForm extends Model
@@ -34,7 +35,8 @@ class BoardCreateForm extends Model
             [['description', 'keywords', 'fullText', 'tags'], 'string'],
             ['note', 'string', 'max' => 100],
             ['priceFrom', 'boolean'],
-            [['categoryId'], 'each', 'rule' => ['integer']],
+            ['categoryId', 'integer'],
+            ['categoryId', 'exist', 'targetClass' => BoardCategory::class, 'targetAttribute' => 'id'],
             [['params'], 'each', 'rule' => ['safe']],
             ['photos', 'each', 'rule' => ['string']],
             ['price', 'match', 'pattern' => '/^[0-9]+((\.|,)[0-9]+)?$/uis']
@@ -46,6 +48,12 @@ class BoardCreateForm extends Model
         if (!$this->slug) {
             $this->slug = $this->name;
         }
+        if (is_array($this->categoryId)) {
+            $this->categoryId = array_diff($this->categoryId, ['', 0]);
+            $categoryId = array_pop($this->categoryId);
+            $this->categoryId = $categoryId;
+        }
+
         return parent::beforeValidate();
     }
 

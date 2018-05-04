@@ -58,6 +58,11 @@ class BoardParameter extends ActiveRecord
         return ArrayHelper::getValue(self::typesArray(), $this->type, '-');
     }
 
+    public function isOptionsEnabled(): bool
+    {
+        return $this->type === self::TYPE_DROPDOWN;
+    }
+
     public static function tableName(): string
     {
         return '{{%board_parameters}}';

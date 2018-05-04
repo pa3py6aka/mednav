@@ -7,6 +7,10 @@ return [
     'hostInfo' => $params['frontendHostInfo'],
     'enablePrettyUrl' => true,
     'showScriptName' => false,
+    'normalizer' => [
+        'class' => \yii\web\UrlNormalizer::class,
+        'action' => \yii\web\UrlNormalizer::ACTION_REDIRECT_PERMANENT,
+    ],
     'rules' => [
         '' => 'main/index',
         'signup' => 'auth/signup/request',

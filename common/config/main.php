@@ -28,5 +28,11 @@ return [
             'path' => '@core/data',
             'format' => 'json',
         ],
+        'formatter' => [
+            'dateFormat' => 'php: d.m.Y',
+            'datetimeFormat' => 'php: d.m.Y H:i',
+            'timeFormat' => 'php: H:i',
+            'booleanFormat' => ['<i class="fa fa-remove text-red"></i>', '<i class="fa fa-check text-green"></i>']
+        ]
     ],
 ];

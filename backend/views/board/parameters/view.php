@@ -21,7 +21,7 @@ $this->title = 'Настройки Доски Объявлений';
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="parameters">
                 <br>
-                <div class="col-md-6">
+                <div class="col-md-<?= $parameter->isOptionsEnabled() ? 6 : 12 ?>">
                     <div class="form-group">
                         <?= Html::a('Редактировать', ['/board/parameters/update', 'id' => $parameter->id], ['class' => 'btn btn-success btn-flat']) ?>
                         <?= Html::a('Удалить', ['/board/parameters/delete', 'id' => $parameter->id], ['class' => 'btn btn-danger btn-flat', 'data' => [
@@ -44,6 +44,7 @@ $this->title = 'Настройки Доски Объявлений';
                         ]
                     ]) ?>
                 </div>
+                <?php if ($parameter->isOptionsEnabled()): ?>
                 <div class="col-md-6">
                     <div class="form-group">
                         <?= Html::a('Добавить опцию', ['/board/parameters/option-create', 'id' => $parameter->id], ['class' => 'btn btn-success btn-flat']) ?>
@@ -64,6 +65,7 @@ $this->title = 'Настройки Доски Объявлений';
                         ],
                     ]) ?>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

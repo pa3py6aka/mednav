@@ -109,11 +109,36 @@ class BoardHelper
             }
 
             if ($parameter->type == BoardParameter::TYPE_CHECKBOX) {
+                $unchecked = Html::hiddenInput($formName . '[params][' . $parameter->id . ']', 0);
                 $checkbox = Html::checkbox($formName . '[params][' . $parameter->id . ']', false, ['label' => $parameter->name]);
-                $html[] = Html::tag('div', $checkbox, ['class' => 'form-group']);
+                $html[] = Html::tag('div', $unchecked . "\n" . $checkbox, ['class' => 'form-group']);
             }
         }
 
         return implode("\n", $html);
+    }
+
+    public static function statusBadge($status, $name): string
+    {
+        switch ($status) {
+            case Board::STATUS_DELETED:
+                $color = 'gray';
+                break;
+            case Board::STATUS_ON_MODERATION:
+                $color = 'red';
+                break;
+            case Board::STATUS_NOT_ACTIVE:
+                $color = 'black';
+                break;
+            case Board::STATUS_ACTIVE:
+                $color = 'green';
+                break;
+            case Board::STATUS_ARCHIVE:
+                $color = 'light-blue';
+                break;
+            default: $color = 'yellow';
+        }
+
+        return Html::tag('span', $name, ['class' => 'badge bg-' . $color]);
     }
 }

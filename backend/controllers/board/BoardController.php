@@ -128,15 +128,14 @@ class BoardController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing Board model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
+    public function actionDelete($id, $hard = 0)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->service->remove($id, !(bool) $hard);
+            Yii::$app->session->setFlash('success', 'Объявление удалено' . ($hard ? ' полностью из базы' : ''));
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }

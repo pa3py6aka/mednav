@@ -10,6 +10,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use Zelenin\yii\behaviors\Slug;
 
 /**
@@ -35,7 +36,11 @@ use Zelenin\yii\behaviors\Slug;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property BoardParameter[] $parameters
+ * @property string $priceString
+ * @property string $statusName
+ * @property string|null $defaultType
+ *
+ * @property BoardParameterAssignment[] $boardParameters
  * @property BoardTagAssignment[] $tagsAssignments
  * @property BoardTag[] $tags
  * @property User $author
@@ -52,6 +57,8 @@ class Board extends ActiveRecord
     const STATUS_NOT_ACTIVE = 3;
     const STATUS_ACTIVE = 5;
     const STATUS_ARCHIVE = 8;
+
+    public $userSlug;
 
     public static function create
     (
@@ -74,7 +81,7 @@ class Board extends ActiveRecord
         $board = new static();
         $board->author_id = $authorId;
         $board->name = $name;
-        $board->slug = $slug;
+        $board->userSlug = $slug;
         $board->category_id = $categoryId;
         $board->title = $title;
         $board->description = $description;
@@ -96,9 +103,47 @@ class Board extends ActiveRecord
         $this->active_until = time() + ($term->days * 24 * 60 * 60);
     }
 
+    public function getPriceString(): string
+    {
+        return ($this->price_from ? 'от ' : '') . PriceHelper::normalize($this->price) . ' ' . $this->currency->sign;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status == self::STATUS_ACTIVE && time() < $this->active_until;
+    }
+
     public static function tableName(): string
     {
         return '{{%boards}}';
+    }
+
+    public static function statusesArray(): array
+    {
+        return [
+            self::STATUS_DELETED => 'Удалён',
+            self::STATUS_ON_MODERATION => 'На модерации',
+            self::STATUS_NOT_ACTIVE => 'Не активно',
+            self::STATUS_ACTIVE => 'Опубликовано',
+            self::STATUS_ARCHIVE => 'В архиве',
+        ];
+    }
+
+    public function getStatusName(): string
+    {
+        return ArrayHelper::getValue(self::statusesArray(), $this->status, '-');
+    }
+
+    /**
+     * Значение типа объявления(куплю/продам/etc)
+     * @return null|string
+     */
+    public function getDefaultType(): ?string
+    {
+        if ($type = $this->getBoardParameters()->where(['parameter_id' => 1])->limit(1)->one()) {
+            return $type->option->name;
+        }
+        return null;
     }
 
     public function behaviors(): array
@@ -108,7 +153,7 @@ class Board extends ActiveRecord
             'slug' => [
                 'class' => Slug::class,
                 'slugAttribute' => 'slug',
-                'attribute' => 'slug',
+                'attribute' => 'userSlug',
                 'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ]
         ];
@@ -137,24 +182,26 @@ class Board extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'author_id' => 'Author ID',
-            'name' => 'Name',
+            'author_id' => 'Автор',
+            'name' => 'Название',
             'slug' => 'Slug',
-            'category_id' => 'Category ID',
+            'category_id' => 'Раздел',
             'title' => 'Title',
             'description' => 'Description',
             'keywords' => 'Keywords',
-            'note' => 'Note',
-            'price' => 'Price',
+            'note' => 'Примечание',
+            'price' => 'Цена',
+            'priceString' => 'Цена',
             'currency' => 'Ден. единица',
-            'price_from' => 'Price From',
-            'full_text' => 'Full Text',
-            'term_id' => 'Term ID',
-            'geo_id' => 'Geo ID',
-            'status' => 'Status',
-            'active_until' => 'Active Until',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'price_from' => 'Цена от',
+            'full_text' => 'Полное описание',
+            'term_id' => 'Срок опубликования',
+            'geo_id' => 'Регион',
+            'status' => 'Статус',
+            'statusName' => 'Статус',
+            'active_until' => 'Активно до',
+            'created_at' => 'Дата добавления',
+            'updated_at' => 'Дата обновления',
         ];
     }
 
@@ -193,9 +240,9 @@ class Board extends ActiveRecord
         return $this->hasMany(BoardTag::class, ['id' => 'tag_id'])->viaTable('{{%board_tags_assignment}}', ['board_id' => 'id']);
     }
 
-    public function getParameters(): ActiveQuery
+    public function getBoardParameters(): ActiveQuery
     {
-        return $this->hasMany(BoardParameter::class, ['id' => 'parameter_id'])->viaTable('{{%board_parameters_assignment}}', ['board_id' => 'id']);
+        return $this->hasMany(BoardParameterAssignment::class, ['board_id' => 'id']);
     }
 
     public function getPhotos(): ActiveQuery

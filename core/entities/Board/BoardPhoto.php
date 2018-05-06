@@ -27,6 +27,12 @@ class BoardPhoto extends ActiveRecord
         return $photo;
     }
 
+    public function getUrl($type = 'small', $absolute = false): string
+    {
+        return ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '/')
+            . str_replace('/max/', '/' . $type . '/', $this->file);
+    }
+
     /**
      * @inheritdoc
      */

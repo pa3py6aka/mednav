@@ -12,16 +12,17 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use Zelenin\yii\behaviors\Slug;
 
 /**
  * This is the model class for table "{{%boards}}".
  *
- * @property int $id
- * @property int $author_id
+ * @property int $id [int(11)]
+ * @property int $author_id [int(11)]
  * @property string $name
  * @property string $slug
- * @property int $category_id
+ * @property int $category_id [int(11)]
  * @property string $title
  * @property string $description
  * @property string $keywords
@@ -30,18 +31,20 @@ use Zelenin\yii\behaviors\Slug;
  * @property int $currency_id
  * @property int $price_from
  * @property string $full_text
- * @property int $term_id
- * @property int $geo_id
+ * @property int $term_id [int(11)]
+ * @property int $geo_id [int(11)]
+ * @property int $main_photo_id [int(11)]
  * @property int $status
- * @property int $active_until
- * @property int $created_at
- * @property int $updated_at
+ * @property int $active_until [int(11)]
+ * @property int $created_at [int(11)]
+ * @property int $updated_at [int(11)]
  *
  * @property string $priceString
  * @property string $statusName
  * @property string|null $defaultType
  *
  * @property BoardParameterAssignment[] $boardParameters
+ * @property BoardParameterAssignment $typeBoardParameter
  * @property BoardTagAssignment[] $tagsAssignments
  * @property BoardTag[] $tags
  * @property User $author
@@ -50,6 +53,7 @@ use Zelenin\yii\behaviors\Slug;
  * @property BoardTerm $term
  * @property Currency $currency
  * @property BoardPhoto[] $photos
+ * @property BoardPhoto $mainPhoto
  */
 class Board extends ActiveRecord
 {
@@ -145,6 +149,11 @@ class Board extends ActiveRecord
         return ($this->price_from ? 'от ' : '') . PriceHelper::normalize($this->price) . ' ' . $this->currency->sign;
     }
 
+    public function getUrl(): string
+    {
+        return Url::to(['/board/board/view', 'slug' => $this->slug]);
+    }
+
     public function isActive(): bool
     {
         return $this->status == self::STATUS_ACTIVE && time() < $this->active_until;
@@ -177,7 +186,7 @@ class Board extends ActiveRecord
      */
     public function getDefaultType(): ?string
     {
-        if ($type = $this->getBoardParameters()->where(['parameter_id' => 1])->limit(1)->one()) {
+        if ($type = $this->typeBoardParameter) {
             return $type->option->name;
         }
         return null;
@@ -282,9 +291,20 @@ class Board extends ActiveRecord
         return $this->hasMany(BoardParameterAssignment::class, ['board_id' => 'id']);
     }
 
+    public function getTypeBoardParameter(): ActiveQuery
+    {
+        return $this->hasOne(BoardParameterAssignment::class, ['board_id' => 'id'])
+            ->andWhere(['parameter_id' => 1]);
+    }
+
     public function getPhotos(): ActiveQuery
     {
         return $this->hasMany(BoardPhoto::class, ['board_id' => 'id']);
+    }
+
+    public function getMainPhoto(): ActiveQuery
+    {
+        return $this->hasOne(BoardPhoto::class, ['id' => 'main_photo_id']);
     }
 
     /**

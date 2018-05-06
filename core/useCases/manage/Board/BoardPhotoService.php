@@ -3,6 +3,7 @@
 namespace core\useCases\manage\Board;
 
 
+use core\entities\Board\Board;
 use core\entities\Board\BoardPhoto;
 use core\repositories\Board\BoardPhotoRepository;
 use Yii;
@@ -22,7 +23,7 @@ class BoardPhotoService
         $this->tmpPath = Yii::getAlias('@tmp');
     }
 
-    public function savePhotos($boardId, $photos): void
+    public function savePhotos(Board $board, $photos): void
     {
         if (!is_array($photos) || !count($photos)) {
             return;
@@ -44,7 +45,7 @@ class BoardPhotoService
             $toBase = '';
             if (is_file($this->tmpPath . '/' . $photo)) {
                 $original = substr($photo, 6);
-                $fileName = FileHelper::createFileName($dirStart . '/' . $this->defaultType . '/' . $boardId . '-' . $original);
+                $fileName = FileHelper::createFileName($dirStart . '/' . $this->defaultType . '/' . $board->id . '-' . $original);
                 foreach ($this->folders as $type) {
 
                     if (!copy($this->tmpPath . '/' . $type . '_' . $original, $dirStart . '/' . $type . '/' . $fileName)) {
@@ -56,8 +57,11 @@ class BoardPhotoService
                     }
                 }
 
-                $boardPhoto = BoardPhoto::create($boardId, $toBase, $k);
+                $boardPhoto = BoardPhoto::create($board->id, $toBase, $k);
                 $this->repository->save($boardPhoto);
+                if (!$board->main_photo_id) {
+                    $board->main_photo_id = $boardPhoto->id;
+                }
             }
         }
 

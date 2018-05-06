@@ -8,6 +8,7 @@ use core\entities\Board\BoardParameter;
 use core\entities\Board\BoardParameterAssignment;
 use core\entities\Board\BoardTagAssignment;
 use core\repositories\NotFoundException;
+use yii\data\ActiveDataProvider;
 
 class BoardRepository
 {

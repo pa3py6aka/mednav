@@ -55,7 +55,8 @@ class BoardManageService
             $this->saveTags($board, $form->tags);
             $this->saveParameters($board, $form->params);
             $this->updateColumns($board);
-            Yii::createObject(BoardPhotoService::class)->savePhotos($board->id, $form->photos);
+            Yii::createObject(BoardPhotoService::class)->savePhotos($board, $form->photos);
+            $this->repository->save($board);
         });
 
         return $board;
@@ -87,9 +88,8 @@ class BoardManageService
         $this->transaction->wrap(function () use ($form, $board) {
             $this->saveTags($board, $form->tags);
             $this->saveParameters($board, $form->params);
-            if (!$this->updateColumns($board)) {
-                $this->repository->save($board);
-            }
+            $this->updateColumns($board);
+            $this->repository->save($board);
         });
     }
 
@@ -127,22 +127,14 @@ class BoardManageService
         }
     }
 
-    private function updateColumns(Board $board): bool
+    private function updateColumns(Board $board): void
     {
-        $toSave = false;
         if (empty($board->title)) {
             $board->title = MarkHelper::generateStringByMarks($board->category->meta_title_item, MarkHelper::MARKS_BOARD, $board);
-            $toSave = true;
         }
         if (empty($board->description)) {
             $board->description = MarkHelper::generateStringByMarks($board->category->meta_description_item, MarkHelper::MARKS_BOARD, $board);
-            $toSave = true;
         }
-
-        if ($toSave) {
-            $this->repository->save($board);
-        }
-        return $toSave;
     }
 
     public function remove($id, $safe = true): void

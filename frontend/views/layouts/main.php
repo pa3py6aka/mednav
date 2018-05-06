@@ -117,7 +117,7 @@ AppAsset::register($this);
         <div class="col-md-12 footer-wrap">
             <div class="row">
                 <div class="col-md-3 col-sm-4">
-                    <div class="logo-footer"><a href="/"><img src="img/mednav-f.png" alt="B2b площадка для закупки медицинского оборудования, мед. мебели и расходных материалов."></a></div>
+                    <div class="logo-footer"><a href="/"><img src="/img/mednav-f.png" alt="B2b площадка для закупки медицинского оборудования, мед. мебели и расходных материалов."></a></div>
                     <div class="footer-about">B2B площадка для закупщиков<br /> и поставщиков медицинского оборудования,<br /> мебели и расходных материалов в России<br /><br />
                         &copy; <?= date('Y') ?> Все права защищены.<br /></div>
                 </div>

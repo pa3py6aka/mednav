@@ -5,7 +5,7 @@ namespace backend\controllers\board;
 use core\actions\UploadAction;
 use core\components\SettingsManager;
 use core\entities\Board\BoardCategory;
-use core\forms\manage\Board\BoardCreateForm;
+use core\forms\manage\Board\BoardManageForm;
 use core\helpers\BoardHelper;
 use core\useCases\manage\Board\BoardManageService;
 use Yii;
@@ -78,6 +78,7 @@ class BoardController extends Controller
      * Displays a single Board model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -93,7 +94,7 @@ class BoardController extends Controller
      */
     public function actionCreate()
     {
-        $form = new BoardCreateForm();
+        $form = new BoardManageForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
@@ -114,18 +115,24 @@ class BoardController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $board = $this->findModel($id);
+        $form = new BoardManageForm($board);
+        $form->scenario = BoardManageForm::SCENARIO_ADMIN_EDIT;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $this->service->edit($id, $form);
+            Yii::$app->session->setFlash('success', 'Объявление обновлено');
+            return $this->redirect(['view', 'id' => $board->id]);
         }
+
+        return $this->render('update', [
+            'model' => $form,
+            'board' => $board,
+        ]);
     }
 
     public function actionDelete($id, $hard = 0)
@@ -146,7 +153,7 @@ class BoardController extends Controller
         $formName = Yii::$app->request->post('formName');
         $category = BoardCategory::findOne($id);
         return $this->asJson([
-            'items' => $category->getChildren()->select(['id', 'name'])->asArray()->all(),
+            'items' => $category->getChildren()->active()->select(['id', 'name'])->asArray()->all(),
             'params' => BoardHelper::generateParameterFields($category, $formName),
         ]);
     }

@@ -26,24 +26,34 @@ class BoardCategoriesListWidget extends Widget
             if ($this->category) {
                 $categories = $this->category->getDescendants()->all();
             } else {
-                $categories = BoardCategory::find()->roots()->all();
+                $query = BoardCategory::find()->roots();
+                if (!$this->region) {
+                    $query->andWhere(['not_show_on_main' => 0]);
+                }
+                $categories = $query->all();
             }
+            $isMainPage = !$this->region && !$this->category;
 
-            return $this->render('board-categories-list', ['categories' => $categories, 'geo' => $this->region]);
+            return $this->render('board-categories-list', [
+                'categories' => $categories,
+                'geo' => $this->region,
+                'isMainPage' => $isMainPage
+            ]);
         }, 60);
     }
 
-    public static function generateList(BoardCategory $category, $region)
+    public static function generateList(BoardCategory $category, $region, $isMainPage)
     {
         $html = '';
-        if ($children = $category->children) {
+        $children = $isMainPage ? $category->getChildren()->andWhere(['not_show_on_main' => 0])->all() : $category->children;
+        if ($children) {
             $html = '<ul class="list-section-listing">';
             foreach ($children as $child) {
                 $html .= '<li>';
                 $html .= Html::a($child->name, BoardHelper::categoryUrl($child, $region));
                 $html .= ' <sup class="list-section-count">' . BoardHelper::getCountInCategory($child) . '</sup></li>';
                 $html .= '</li>';
-                $html .= self::generateList($child, $region);
+                $html .= self::generateList($child, $region, $isMainPage);
             }
             $html .= '</ul>';
         }

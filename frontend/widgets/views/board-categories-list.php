@@ -5,6 +5,7 @@ use frontend\widgets\BoardCategoriesListWidget;
 
 /* @var $categories \core\entities\Board\BoardCategory[] */
 /* @var $geo \core\entities\Geo|null */
+/* @var $isMainPage bool */
 
 ?>
 <div class="list-section">
@@ -15,7 +16,7 @@ use frontend\widgets\BoardCategoriesListWidget;
                  <span>&ndash;</span> <a href="<?= BoardHelper::categoryUrl($category, $geo) ?>"><?= $category->name ?></a>
                  <sup class="list-section-count"><?= BoardHelper::getCountInCategory($category) ?></sup>
             </div>
-            <?= BoardCategoriesListWidget::generateList($category, $geo) ?>
+            <?= BoardCategoriesListWidget::generateList($category, $geo, $isMainPage) ?>
         </div>
         <?php endforeach; ?>
     </div>

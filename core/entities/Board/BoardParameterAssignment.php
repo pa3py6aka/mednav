@@ -36,15 +36,15 @@ class BoardParameterAssignment extends ActiveRecord
         return $assignment;
     }
 
-    public function getValueByType()
+    public function getValueByType($forForm = false)
     {
         $type = $this->parameter->type;
         if ($type == BoardParameter::TYPE_DROPDOWN) {
-            $value = $this->option->name;
+            $value = $forForm ? $this->option_id : $this->option->name;
         } else if ($type == BoardParameter::TYPE_STRING) {
             $value = $this->value;
         } else if ($type == BoardParameter::TYPE_CHECKBOX) {
-            $value = Yii::$app->formatter->asBoolean($this->value);
+            $value = $forForm ? $this->value : Yii::$app->formatter->asBoolean($this->value);
         } else {
             $value = null;
         }

@@ -69,7 +69,8 @@ class BoardHelper
         $query = Board::find()
             ->alias('b')
             ->leftJoin(BoardCategory::tableName() . ' c', 'b.category_id=c.id')
-            ->where(['c.tree' => $category->tree, 'b.status' => Board::STATUS_ACTIVE])
+            ->active('b')
+            ->andWhere(['c.tree' => $category->tree])
             ->andWhere(['>=', 'c.lft', $category->lft])
             ->andWhere(['<=', 'c.rgt', $category->rgt]);
 
@@ -84,9 +85,10 @@ class BoardHelper
      * Генерирует поля параметров для формы в зависимости от региона
      * @param BoardCategory $category
      * @param $formName
+     * @param array $values
      * @return string
      */
-    public static function generateParameterFields(BoardCategory $category, $formName)
+    public static function generateParameterFields(BoardCategory $category, $formName, $values = [])
     {
         $parameters = $category->getParametersForForm();
         $html = [];
@@ -95,22 +97,23 @@ class BoardHelper
             if (!$parameter->active) {
                 continue;
             }
+            $value = isset($values[$parameter->id]) ? $values[$parameter->id] : null;
             if ($parameter->type == BoardParameter::TYPE_DROPDOWN) {
                 $label = Html::tag('label', $parameter->name, ['class' => 'control-label']);
                 $options = ArrayHelper::map($parameter->boardParameterOptions, 'id', 'name');
-                $select = Html::dropDownList($formName . '[params][' . $parameter->id . ']', null, $options, ['class' => 'form-control']);
+                $select = Html::dropDownList($formName . '[params][' . $parameter->id . ']', $value, $options, ['class' => 'form-control']);
                 $html[] = Html::tag('div', $label . "\n" . $select, ['class' => 'form-group']);
             }
 
             if ($parameter->type == BoardParameter::TYPE_STRING) {
                 $label = Html::tag('label', $parameter->name, ['class' => 'control-label']);
-                $input = Html::input('text', $formName . '[params][' . $parameter->id . ']', null, ['class' => 'form-control']);
+                $input = Html::input('text', $formName . '[params][' . $parameter->id . ']', $value, ['class' => 'form-control']);
                 $html[] = Html::tag('div', $label . "\n" . $input, ['class' => 'form-group']);
             }
 
             if ($parameter->type == BoardParameter::TYPE_CHECKBOX) {
                 $unchecked = Html::hiddenInput($formName . '[params][' . $parameter->id . ']', 0);
-                $checkbox = Html::checkbox($formName . '[params][' . $parameter->id . ']', false, ['label' => $parameter->name]);
+                $checkbox = Html::checkbox($formName . '[params][' . $parameter->id . ']', (bool) $value, ['label' => $parameter->name]);
                 $html[] = Html::tag('div', $unchecked . "\n" . $checkbox, ['class' => 'form-group']);
             }
         }

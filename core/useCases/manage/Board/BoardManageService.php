@@ -7,7 +7,7 @@ use core\entities\Board\Board;
 use core\entities\Board\BoardParameterAssignment;
 use core\entities\Board\BoardTag;
 use core\entities\Board\BoardTagAssignment;
-use core\forms\manage\Board\BoardCreateForm;
+use core\forms\manage\Board\BoardManageForm;
 use core\forms\manage\Board\BoardParameterForm;
 use core\helpers\BoardHelper;
 use core\helpers\MarkHelper;
@@ -26,10 +26,14 @@ class BoardManageService
         $this->transaction = $transaction;
     }
 
-    public function create(BoardCreateForm $form): Board
+    public function create(BoardManageForm $form): Board
     {
+        $userId = in_array($form->scenario, [BoardManageForm::SCENARIO_USER_EDIT, BoardManageForm::SCENARIO_USER_CREATE])
+            ? Yii::$app->user->id
+            : ($form->authorId ?: Yii::$app->user->id);
+
         $board = Board::create(
-            $form->authorId ?: Yii::$app->user->id,
+            $userId,
             $form->name,
             $form->slug,
             $form->categoryId,
@@ -37,7 +41,7 @@ class BoardManageService
             $form->description,
             $form->keywords ?: trim($form->tags),
             $form->note,
-            $form->price,
+            $form->price ?: 0,
             $form->currency,
             $form->priceFrom,
             $form->fullText,
@@ -55,6 +59,38 @@ class BoardManageService
         });
 
         return $board;
+    }
+
+    public function edit($id, BoardManageForm $form): void
+    {
+        $board = $this->repository->get($id);
+        $userId = in_array($form->scenario, [BoardManageForm::SCENARIO_USER_EDIT, BoardManageForm::SCENARIO_USER_CREATE])
+            ? $board->author_id
+            : ($form->authorId ?: Yii::$app->user->id);
+
+        $board->edit(
+            $userId,
+            $form->name,
+            $form->slug,
+            $form->categoryId,
+            $form->title,
+            $form->description,
+            $form->keywords ?: trim($form->tags),
+            $form->note,
+            $form->price ?: 0,
+            $form->currency,
+            $form->priceFrom,
+            $form->fullText,
+            $form->geoId
+        );
+
+        $this->transaction->wrap(function () use ($form, $board) {
+            $this->saveTags($board, $form->tags);
+            $this->saveParameters($board, $form->params);
+            if (!$this->updateColumns($board)) {
+                $this->repository->save($board);
+            }
+        });
     }
 
     private function saveTags(Board $board, string $tags): void
@@ -91,7 +127,7 @@ class BoardManageService
         }
     }
 
-    private function updateColumns(Board $board): void
+    private function updateColumns(Board $board): bool
     {
         $toSave = false;
         if (empty($board->title)) {
@@ -106,14 +142,7 @@ class BoardManageService
         if ($toSave) {
             $this->repository->save($board);
         }
-    }
-
-    public function edit($id, BoardParameterForm $form): void
-    {
-        $parameter = $this->repository->get($id);
-        $parameter->edit($form->name, $form->type, $form->active);
-        $this->repository->save($parameter);
-
+        return $toSave;
     }
 
     public function remove($id, $safe = true): void

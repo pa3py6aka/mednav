@@ -1,14 +1,19 @@
 <?php
+
+use yii\helpers\ReplaceArrayValue;
+
 return [
     'id' => 'app-common-tests',
     'basePath' => dirname(__DIR__),
     'components' => [
         'user' => [
-            'class' => 'yii\web\User',
-            'identityClass' => 'common\models\User',
+            'class' => \core\components\YiiUser::class,
+            'identityClass' => \core\entities\User\User::class,
+            //'enableAutoLogin' => true,
+            'identityCookie' => new ReplaceArrayValue(['name' => '_identity', 'httpOnly' => true]),
         ],
-        'request' => [
+        /*'request' => [
             'cookieValidationKey' => 'test',
-        ],
+        ],*/
     ],
 ];

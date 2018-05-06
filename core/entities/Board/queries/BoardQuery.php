@@ -3,7 +3,7 @@
 namespace core\entities\Board\queries;
 
 
-use paulzi\nestedsets\NestedSetsQueryTrait;
+use core\entities\Board\Board;
 use yii\db\ActiveQuery;
 
 /**
@@ -13,9 +13,10 @@ use yii\db\ActiveQuery;
  */
 class BoardQuery extends ActiveQuery
 {
-    public function active()
+    public function active($alias = null)
     {
-        return $this->andWhere(['active' => 1]);
+        return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ACTIVE])
+            ->andWhere(['>', ($alias ? $alias . '.' : '') . 'active_until', time()]);
     }
 
     /**

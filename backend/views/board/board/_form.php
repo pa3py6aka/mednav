@@ -1,9 +1,9 @@
 <?php
 
 use backend\assets\ImagesManagerAsset;
-use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardTerm;
 use core\entities\Currency;
+use core\forms\manage\Board\BoardManageForm;
 use core\forms\manage\Geo\GeoForm;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
@@ -11,9 +11,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model \core\forms\manage\Board\BoardCreateForm */
+/* @var $model BoardManageForm */
+/* @var $board core\entities\Board\Board|null */
 /* @var $form yii\widgets\ActiveForm */
 
+$board = isset($board) ? $board : null;
 ImagesManagerAsset::register($this);
 ?>
 
@@ -27,14 +29,31 @@ ImagesManagerAsset::register($this);
         <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
         <div id="category-block">
-            <?= $form->field($model, 'categoryId[0]')
-                ->dropDownList(
-                    ArrayHelper::map(BoardCategory::find()->roots()->asArray()->all(), 'id', 'name'),
-                    ['prompt' => 'Выберите раздел']
-                ) ?>
+            <?= $model->getCategoryDropdowns($form) ?>
+            <?php /*foreach ($model->categoryId as $n => $categoryId): ?>
+                <?php
+                $categories = $n == 0 ? BoardCategory::find()->roots()->asArray()->all() : BoardCategory::findOne($model->categoryId[$n - 1])->children;
+                if ($n == 0) {
+                    echo $form->field($model, 'categoryId[' . $n . ']')
+                            ->dropDownList(
+                                ArrayHelper::map($categories, 'id', 'name'),
+                                ['prompt' => 'Выберите раздел']
+                            );
+                } else {
+                    $dropdown = Html::activeDropDownList($model, 'categoryId[' . $n . ']', ArrayHelper::map($categories, 'id', 'name'), ['class' => 'form-control']);
+                    echo Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
+                }
+                ?>
+            <?php endforeach; ?>
+            <?php if ($model->categoryId[$n] && $children = BoardCategory::findOne($model->categoryId[$n])->getChildren()->active()->all()) {
+                $dropdown = Html::activeDropDownList($model, 'categoryId[' . ($n + 1) . ']', ArrayHelper::map($children, 'id', 'name'), ['class' => 'form-control', 'prompt' => '']);
+                echo Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
+            }*/ ?>
         </div>
 
-        <div id="parameters-block"></div>
+        <div id="parameters-block">
+            <?= $model->getParametersBlock() ?>
+        </div>
 
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -45,7 +64,7 @@ ImagesManagerAsset::register($this);
         <?= $form->field($model, 'note')
                 ->textInput(['maxlength' => true, 'placeholder' => 'Прим: Состояние Новый/БУ, страна производитель и др. информация']) ?>
 
-        <?= $form->field($model, 'price')->input('number') ?>
+        <?= $form->field($model, 'price')->textInput() ?>
 
         <?= $form->field($model, 'currency')
                 ->dropDownList(ArrayHelper::map(Currency::find()->asArray()->all(), 'id', 'name')) ?>
@@ -57,12 +76,14 @@ ImagesManagerAsset::register($this);
 
         <?= $form->field($model, 'tags')->textInput() ?>
 
-        <?= $form->field($model, 'termId')
-                ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
+        <?= $model->scenario == BoardManageForm::SCENARIO_ADMIN_EDIT ? ''
+                : $form->field($model, 'termId')
+                    ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
 
         <?= $form->field($model, 'geoId')
                 ->dropDownList(GeoForm::parentCategoriesList(false), ['prompt' => '']) ?>
 
+        <?php if (!$board): ?>
         <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
             <div class="add-image-item">
                 <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
@@ -71,10 +92,11 @@ ImagesManagerAsset::register($this);
             </div>
             <div class="help-block"></div>
         </div>
+        <?php endif; ?>
 
     </div>
     <div class="box-footer">
-        <?= Html::submitButton('Добавить', ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::submitButton($board ? 'Сохранить' : 'Добавить', ['class' => 'btn btn-success btn-flat']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

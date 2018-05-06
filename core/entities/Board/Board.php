@@ -2,6 +2,7 @@
 
 namespace core\entities\Board;
 
+use core\entities\Board\queries\BoardQuery;
 use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\User\User;
@@ -97,6 +98,38 @@ class Board extends ActiveRecord
         return $board;
     }
 
+    public function edit
+    (
+        $authorId,
+        $name,
+        $slug,
+        $categoryId,
+        $title,
+        $description,
+        $keywords,
+        $note,
+        $price,
+        $currencyId,
+        $priceFrom,
+        $fullText,
+        $geoId
+    ): void
+    {
+        $this->author_id = $authorId;
+        $this->name = $name;
+        $this->userSlug = $slug;
+        $this->category_id = $categoryId;
+        $this->title = $title;
+        $this->description = $description;
+        $this->keywords = $keywords;
+        $this->note = $note;
+        $this->price = PriceHelper::optimize($price);
+        $this->currency_id = $currencyId;
+        $this->price_from = $priceFrom;
+        $this->full_text = $fullText;
+        $this->geo_id = $geoId;
+    }
+
     public function updateActiveUntil(): void
     {
         $term = BoardTerm::findOne($this->term_id);
@@ -105,6 +138,9 @@ class Board extends ActiveRecord
 
     public function getPriceString(): string
     {
+        if (!$this->price) {
+            return 'По запросу';
+        }
         return ($this->price_from ? 'от ' : '') . PriceHelper::normalize($this->price) . ' ' . $this->currency->sign;
     }
 
@@ -248,5 +284,14 @@ class Board extends ActiveRecord
     public function getPhotos(): ActiveQuery
     {
         return $this->hasMany(BoardPhoto::class, ['board_id' => 'id']);
+    }
+
+    /**
+     * @inheritdoc
+     * @return BoardQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new BoardQuery(get_called_class());
     }
 }

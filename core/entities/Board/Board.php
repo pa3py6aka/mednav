@@ -118,6 +118,7 @@ class Board extends ActiveRecord
         $this->author_id = $authorId;
         $this->name = $name;
         $this->userSlug = $slug;
+        $this->slug = null;
         $this->category_id = $categoryId;
         $this->title = $title;
         $this->description = $description;

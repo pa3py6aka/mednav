@@ -32,7 +32,7 @@ class BoardCategoriesListWidget extends Widget
         $cacheKey = self::CACHE_KEY_PREFIX . ($this->category ? $this->category->id : 0) . '-' . ($this->region ? $this->region->id : 0);
         return \Yii::$app->cache->getOrSet($cacheKey, function () {
             if ($this->category) {
-                $categories = $this->category->getDescendants()->active()->all();
+                $categories = $this->category->getChildren()->active()->all();
             } else {
                 $query = BoardCategory::find()->active()->roots();
                 if (!$this->region) {

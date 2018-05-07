@@ -9,22 +9,30 @@ use core\helpers\BoardHelper;
 /* @var $board \core\entities\Board\Board */
 
 ?>
-<?php foreach ($provider->models as $board): ?>
+<?php if (!count($provider->models)): ?>
     <div class="list-item">
         <div class="row">
-            <div class="col-md-2 col-sm-2 col-xs-12">
-                <a href="<?= $board->getUrl() ?>">
-                    <img src="<?= $board->mainPhoto ? $board->mainPhoto->getUrl() : '/img/100.png' ?>" alt="<?= $board->title ?>" class="img-responsive">
-                </a>
-            </div>
-            <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="text-col2">
-                    <span class="do-item-bs"><?= $board->typeBoardParameter ? $board->typeBoardParameter->option->name : '' ?></span> <a href="<?= $board->getUrl() ?>"><?= Html::encode($board->name) ?></a>
-                </div>
-                <div class="desc-col"><?= Html::encode($board->note) ?></div>
-                <div class="list-vendor-info"><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> <?= Yii::$app->formatter->asDate($board->created_at) ?> / <a href="#">ООО Компания оптовых цен НВ-Лаб</a> / <?= $board->geo->name ?> / <a href="<?= BoardHelper::categoryUrl($board->category, $geo) ?>" class="list-lnk"><?= $board->category->name ?></a></div>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-12"><div class="price-col"><?= $board->getPriceString() ?></div></div>
+            <div class="col-xs-12" style="text-align:center;"><h3>По данному запросу объявлений не найдено</h3></div>
         </div>
     </div>
-<?php endforeach; ?>
+<?php else: ?>
+    <?php foreach ($provider->models as $board): ?>
+        <div class="list-item">
+            <div class="row">
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <a href="<?= $board->getUrl() ?>">
+                        <img src="<?= $board->mainPhoto ? $board->mainPhoto->getUrl() : '/img/100.png' ?>" alt="<?= $board->title ?>" class="img-responsive">
+                    </a>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="text-col2">
+                        <span class="do-item-bs"><?= $board->typeBoardParameter ? $board->typeBoardParameter->option->name : '' ?></span> <a href="<?= $board->getUrl() ?>"><?= Html::encode($board->name) ?></a>
+                    </div>
+                    <div class="desc-col"><?= Html::encode($board->note) ?></div>
+                    <div class="list-vendor-info"><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> <?= Yii::$app->formatter->asDate($board->created_at) ?> / <a href="#">ООО Компания оптовых цен НВ-Лаб</a> / <?= $board->geo->name ?> / <a href="<?= BoardHelper::categoryUrl($board->category, $geo) ?>" class="list-lnk"><?= $board->category->name ?></a></div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-12"><div class="price-col"><?= $board->getPriceString() ?></div></div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

@@ -20,6 +20,7 @@ return [
         'board/<region:[\w-]+>/<category:[\w-]+>' => 'board/board/index',
         'board/<region:[\w-]+>' => 'board/board/index',
         'board' => 'board/board/index',
+        'boards/<slug:[\w-]+>' => 'board/board/view',
 
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',

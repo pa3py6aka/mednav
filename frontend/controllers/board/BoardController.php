@@ -33,7 +33,7 @@ class BoardController extends Controller
 
     public function actionIndex($category = null, $region = null)
     {
-        $geo = $region && $region != 'all' ? $this->geoRepository->getBySlug($region) : null;
+        $geo = $region && $region != 'all-regions' ? $this->geoRepository->getBySlug($region) : null;
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
         

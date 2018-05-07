@@ -61,7 +61,7 @@ class BoardHelper
 
     public static function categoryUrl(BoardCategory $category = null, Geo $geo = null)
     {
-        return Url::to(['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all']);
+        return Url::to(['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all-regions']);
     }
 
     public static function getCountInCategory(BoardCategory $category, $regionId = null): int

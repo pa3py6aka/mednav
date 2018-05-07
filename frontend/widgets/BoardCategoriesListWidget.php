@@ -24,7 +24,7 @@ class BoardCategoriesListWidget extends Widget
     public function init()
     {
         parent::init();
-        $this->isMainPage = !$this->region && !$this->category;
+        $this->isMainPage = !$this->category;
     }
 
     public function run()
@@ -35,9 +35,9 @@ class BoardCategoriesListWidget extends Widget
                 $categories = $this->category->getChildren()->active()->all();
             } else {
                 $query = BoardCategory::find()->active()->roots();
-                if (!$this->region) {
+                //if (!$this->region) {
                     $query->andWhere(['not_show_on_main' => 0]);
-                }
+                //}
                 $categories = $query->all();
             }
 

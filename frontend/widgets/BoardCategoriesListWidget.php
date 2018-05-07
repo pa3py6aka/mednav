@@ -64,7 +64,7 @@ class BoardCategoriesListWidget extends Widget
             $html = '<ul class="list-section-listing">';
             foreach ($children as $child) {
                 $html .= '<li>';
-                $html .= Html::a($child->name, BoardHelper::categoryUrl($child, $this->region));
+                $html .= Html::a($child->name, BoardHelper::categoryUrl($child, $this->region, false, false));
                 $html .= ' <sup class="list-section-count">' . BoardHelper::getCountInCategory($child) . '</sup></li>';
                 $html .= '</li>';
                 $html .= $this->generateList($child);

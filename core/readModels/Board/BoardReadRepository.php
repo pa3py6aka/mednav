@@ -50,16 +50,19 @@ class BoardReadRepository
                     'price' => [
                         'asc' => ['b.price' => SORT_ASC],
                         'desc' => ['b.price' => SORT_DESC],
+                        'label' => 'Цена'
                     ],
                     'date' => [
                         'asc' => ['b.updated_at' => SORT_ASC],
                         'desc' => ['b.updated_at' => SORT_DESC],
+                        'label' => 'Дата',
                     ],
                 ],
             ],
             'pagination' => [
                 'pageSizeLimit' => [2, 250],
-                'defaultPageSize' => 2
+                'defaultPageSize' => 2,
+                'forcePageParam' => false,
             ]
         ]);
     }

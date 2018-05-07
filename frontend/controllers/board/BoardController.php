@@ -7,6 +7,7 @@ use core\readModels\Board\BoardReadRepository;
 use core\repositories\Board\BoardCategoryRepository;
 use core\repositories\Board\BoardRepository;
 use core\repositories\GeoRepository;
+use Yii;
 use yii\base\Module;
 use yii\web\Controller;
 
@@ -36,14 +37,30 @@ class BoardController extends Controller
         $geo = $region && $region != 'all-regions' ? $this->geoRepository->getBySlug($region) : null;
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
-        
-        $provider = $this->readRepository->getAllByFilter($category, $geo, (int) \Yii::$app->request->get('type'));
+        $type =  (int) Yii::$app->request->get('type');
+
+        $provider = $this->readRepository->getAllByFilter($category, $geo, $type);
+
+        // Вывод объявлений по клику "показать ещё"
+        if (Yii::$app->request->get('showMore')) {
+            return $this->asJson([
+                'result' => 'success',
+                'html' => $this->renderPartial('card-items-block', [
+                    'provider' => $provider,
+                    'geo' => $geo,
+                ]),
+                'nextPageUrl' => $provider->getPagination()->pageCount > $provider->getPagination()->page + 1
+                                    ? $provider->getPagination()->createUrl($provider->getPagination()->page + 1)
+                                    : false
+            ]);
+        }
 
         return $this->render('index', [
             'category' => $category,
             'geo' => $geo,
             'categoryRegion' => $categoryRegion,
             'provider' => $provider,
+            'type' => $type,
         ]);
     }
 }

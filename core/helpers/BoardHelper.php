@@ -8,6 +8,7 @@ use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardCategoryRegion;
 use core\entities\Board\BoardParameter;
+use core\entities\Board\BoardParameterOption;
 use core\entities\Geo;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -59,9 +60,35 @@ class BoardHelper
         return Breadcrumbs::widget(['links' => $items]);
     }
 
-    public static function categoryUrl(BoardCategory $category = null, Geo $geo = null)
+    public static function typeParameterOptions(): array
     {
-        return Url::to(['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all-regions']);
+        return ArrayHelper::map(BoardParameterOption::findAll(['parameter_id' => 1]), 'id', 'name');
+    }
+
+    public static function categoryUrl(BoardCategory $category = null, Geo $geo = null, $forFilter = false, $withParams = true)
+    {
+        if ($withParams) {
+            $queryParams = Yii::$app->request->getQueryParams();
+            $params = [];
+            if (isset($queryParams['sort'])) {
+                $params['sort'] = $queryParams['sort'];
+            }
+            if (!$forFilter) {
+                if (isset($queryParams['type'])) {
+                    $params['type'] = $queryParams['type'];
+                }
+            }
+        } else {
+            $params = [];
+        }
+
+        if (!$category && !$geo) {
+            $url = ['/board/board/index'];
+        } else {
+            $url = ['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all-regions'];
+        }
+
+        return Url::to(array_merge($url, $params));
     }
 
     public static function getCountInCategory(BoardCategory $category, $regionId = null): int

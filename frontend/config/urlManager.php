@@ -17,9 +17,15 @@ return [
         'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
 
+
+        'board/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'board/board/index',
+        'board/<region:[\w-]+>/page<page:\d+>' => 'board/board/index',
+        'board/page<page:\d+>' => 'board/board/index',
+
         'board/<region:[\w-]+>/<category:[\w-]+>' => 'board/board/index',
         'board/<region:[\w-]+>' => 'board/board/index',
         'board' => 'board/board/index',
+
         'boards/<slug:[\w-]+>' => 'board/board/view',
 
         '<_c:[\w\-]+>' => '<_c>/index',

@@ -12,8 +12,8 @@ use core\helpers\PaginationHelper;
 /* @var $geo \core\entities\Geo|null */
 /* @var $categoryRegion \core\entities\Board\BoardCategoryRegion|null */
 /* @var $provider \yii\data\ActiveDataProvider */
+/* @var $type int */
 
-/* @var $board \core\entities\Board\Board */
 
 $this->title = 'Главная';
 
@@ -42,24 +42,17 @@ $this->title = 'Главная';
             <div class="col-md-12">
                 <div class="list-panel-sort">
                     <div style="float: left; margin-right: 15px;">
-                        <form class="form-inline">
-                            Тип: <select class="form-control input-sm">
-                                <option>Все</option>
-                                <option>Продам</option>
-                                <option>Куплю</option>
-                                <option>Сервис</option>
-                            </select>
-                        </form>
+                        <?= Html::beginForm(BoardHelper::categoryUrl($category, $geo, true), 'get', ['class' => 'form-inline filter-form-auto']) ?>
+                            Тип: <?= Html::dropDownList('type', $type, BoardHelper::typeParameterOptions(), ['class' => 'form-control input-sm', 'prompt' => 'Все']) ?>
+                        <?= Html::endForm() ?>
                     </div>
                     <div>
-                        Сортировать по: <a href="#">Цена</a> <a href="#">Дата</a>
+                        Сортировать по: <?= $provider->sort->link('price', ['class' => 'sort']) ?> &nbsp; <?= $provider->sort->link('date', ['class' => 'sort']) ?>
                         <span>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegion"><?= $geo ? $geo->name : 'Все регионы' ?></button>
                         </span>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -69,25 +62,12 @@ $this->title = 'Главная';
         </div>
         <!-- // context-block-->
 
-        <?php foreach ($provider->models as $board): ?>
-            <div class="list-item">
-                <div class="row">
-                    <div class="col-md-2 col-sm-2 col-xs-12">
-                        <a href="<?= $board->getUrl() ?>">
-                            <img src="<?= $board->mainPhoto ? $board->mainPhoto->getUrl() : '/img/100.png' ?>" alt="<?= $board->title ?>" class="img-responsive">
-                        </a>
-                    </div>
-                    <div class="col-md-8 col-sm-8 col-xs-12">
-                        <div class="text-col2">
-                            <span class="do-item-bs"><?= $board->typeBoardParameter ? $board->typeBoardParameter->option->name : '' ?></span> <a href="<?= $board->getUrl() ?>"><?= Html::encode($board->name) ?></a>
-                        </div>
-                        <div class="desc-col"><?= Html::encode($board->note) ?></div>
-                        <div class="list-vendor-info"><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> <?= Yii::$app->formatter->asDate($board->created_at) ?> / <a href="#">ООО Компания оптовых цен НВ-Лаб</a> / <?= $board->geo->name ?> / <a href="<?= BoardHelper::categoryUrl($board->category, $geo) ?>" class="list-lnk"><?= $board->category->name ?></a></div>
-                    </div>
-                    <div class="col-md-2 col-sm-2 col-xs-12"><div class="price-col"><?= $board->getPriceString() ?></div></div>
-                </div>
-            </div>
-        <?php endforeach; ?>
+        <div class="card-items-block">
+            <?= $this->render('card-items-block', [
+                'provider' => $provider,
+                'geo' => $geo,
+            ]) ?>
+        </div>
 
         <!-- context-block-->
         <div class="row">
@@ -95,14 +75,14 @@ $this->title = 'Главная';
         </div>
         <!-- // context-block-->
 
-        <div class="list-pagination">
+        <div class="list-pagination has-overlay">
             <?php if ($category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>
                 <?= LinkPager::widget([
                     'pagination' => $provider->pagination
                 ]) ?>
-            <?php else: ?>
+            <?php elseif ($provider->pagination->pageCount > $provider->pagination->page + 1): ?>
                 <br>
-                <p id="list-btn-scroll" class="btn btn-list" data-page="<?= $provider->pagination->page + 1 ?>">Показать ещё</p>
+                <p id="list-btn-scroll" class="btn btn-list" data-url="<?= $provider->pagination->createUrl($provider->pagination->page + 1) ?>">Показать ещё</p>
             <?php endif; ?>
         </div>
 

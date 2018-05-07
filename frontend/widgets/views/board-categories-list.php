@@ -11,7 +11,7 @@ use frontend\widgets\BoardCategoriesListWidget;
         <?php foreach ($categories as $category): ?>
         <div class="col-md-4 col-sm-12 col-xs-12">
             <div class="list-section-parent">
-                 <span>&ndash;</span> <a href="<?= BoardHelper::categoryUrl($category, $widget->region) ?>"><?= $category->name ?></a>
+                 <span>&ndash;</span> <a href="<?= BoardHelper::categoryUrl($category, $widget->region, false, false) ?>"><?= $category->name ?></a>
                  <sup class="list-section-count"><?= BoardHelper::getCountInCategory($category) ?></sup>
             </div>
             <?= $widget->generateList($category) ?>

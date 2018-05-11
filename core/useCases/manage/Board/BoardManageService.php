@@ -9,6 +9,7 @@ use core\entities\Board\BoardTag;
 use core\entities\Board\BoardTagAssignment;
 use core\forms\manage\Board\BoardManageForm;
 use core\forms\manage\Board\BoardParameterForm;
+use core\forms\manage\Board\BoardPhotosForm;
 use core\helpers\BoardHelper;
 use core\helpers\MarkHelper;
 use core\repositories\Board\BoardRepository;
@@ -55,7 +56,7 @@ class BoardManageService
             $this->saveTags($board, $form->tags);
             $this->saveParameters($board, $form->params);
             $this->updateColumns($board);
-            Yii::createObject(BoardPhotoService::class)->savePhotos($board, $form->photos);
+            Yii::createObject(BoardPhotoService::class)->savePhotosFromTempFolder($board, $form->photos);
             $this->repository->save($board);
         });
 
@@ -135,6 +136,15 @@ class BoardManageService
         if (empty($board->description)) {
             $board->description = MarkHelper::generateStringByMarks($board->category->meta_description_item, MarkHelper::MARKS_BOARD, $board);
         }
+    }
+
+    public function addPhotos($id, BoardPhotosForm $form): void
+    {
+        $board = $this->repository->get($id);
+        foreach ($form->files as $file) {
+            Yii::createObject(BoardPhotoService::class)->addPhoto($board, $file);
+        }
+        $this->repository->save($board);
     }
 
     public function massRemove(array $ids): int

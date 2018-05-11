@@ -7,6 +7,7 @@ use Imagine\Exception\RuntimeException;
 use Yii;
 use yii\base\Action;
 use yii\helpers\Inflector;
+use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use yii\validators\ImageValidator;
 use yii\web\Response;
@@ -16,12 +17,13 @@ class UploadAction extends Action
 {
     public $path = '@frontend/web/tmp';
     public $baseUrl = '/tmp';
-    public $maxSize = 1024 * 1024 * 10;
-    public $extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+    public $maxSize;
+    public $extensions;
 
     public $sizes = [
         'small' => ['width' => '100', 'height' => null],
-        'big' => ['width' => '2500', 'height' => null],
+        'big' => ['width' => '250', 'height' => null],
         'max' => ['width' => '500', 'height' => null],
     ];
 
@@ -30,6 +32,12 @@ class UploadAction extends Action
     public function init()
     {
         $this->path = Yii::getAlias($this->path);
+        if (!$this->maxSize) {
+            $this->maxSize = Yii::$app->params['maxFileSize'];
+        }
+        if (!$this->extensions) {
+            $this->extensions = Yii::$app->params['imageExtensions'];
+        }
         parent::init();
     }
 
@@ -72,7 +80,7 @@ class UploadAction extends Action
             throw new \DomainException("Ошибка сохранения файла");
         }
 
-        unlink($original);
+        FileHelper::unlink($original);
         return $this->returnType . '_' . $fileName;
     }
 

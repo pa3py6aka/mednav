@@ -21,6 +21,7 @@ class m180506_210346_add_main_photo_id_column_to_boards extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-boards-main_photo_id', '{{%boards}}');
         $this->dropColumn('{{%boards}}', 'main_photo_id');
     }
 }

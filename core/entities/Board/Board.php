@@ -316,7 +316,7 @@ class Board extends ActiveRecord
 
     public function getPhotos(): ActiveQuery
     {
-        return $this->hasMany(BoardPhoto::class, ['board_id' => 'id']);
+        return $this->hasMany(BoardPhoto::class, ['board_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
     }
 
     public function getMainPhoto(): ActiveQuery

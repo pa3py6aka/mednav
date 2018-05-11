@@ -22,7 +22,8 @@
         "mihaildev/yii2-ckeditor": "*",
         "yii2tech/filedb": "^1.0",
         "yiisoft/yii2-imagine": "^2.1",
-        "zelenin/yii2-slug-behavior": "~1.5.1"
+        "zelenin/yii2-slug-behavior": "~1.5.1",
+        "kartik-v/yii2-widget-fileinput": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

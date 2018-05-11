@@ -6,8 +6,10 @@ use core\actions\UploadAction;
 use core\components\SettingsManager;
 use core\entities\Board\BoardCategory;
 use core\forms\manage\Board\BoardManageForm;
+use core\forms\manage\Board\BoardPhotosForm;
 use core\helpers\BoardHelper;
 use core\useCases\manage\Board\BoardManageService;
+use core\useCases\manage\Board\BoardPhotoService;
 use Yii;
 use core\entities\Board\Board;
 use backend\forms\BoardSearch;
@@ -39,6 +41,8 @@ class BoardController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-photo' => ['POST'],
+                    'move-photo' => ['POST'],
                 ],
             ],
         ];
@@ -101,10 +105,26 @@ class BoardController extends Controller
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView($id, $tab = 'main')
     {
+        $board = $this->findModel($id);
+
+        $photosForm = new BoardPhotosForm();
+        if ($photosForm->load(Yii::$app->request->post()) && $photosForm->validate()) {
+            try {
+                $this->service->addPhotos($board->id, $photosForm);
+                Yii::$app->session->setFlash('success', 'Фотографии загружены');
+                return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $board,
+            'photosForm' => $photosForm,
+            'tab' => $tab,
         ]);
     }
 
@@ -166,6 +186,31 @@ class BoardController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionMovePhoto($board_id, $photo_id, $direction)
+    {
+        $board = $this->findModel($board_id);
+        try {
+            Yii::createObject(BoardPhotoService::class)->movePhoto($board, $photo_id, $direction);
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
+    }
+
+    public function actionDeletePhoto($id, $photo_id)
+    {
+        $board = $this->findModel($id);
+        try {
+            Yii::createObject(BoardPhotoService::class)->removePhoto($board, $photo_id);
+            Yii::$app->session->setFlash('info', 'Фотография удалена');
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
     }
 
     public function actionGetChildren()

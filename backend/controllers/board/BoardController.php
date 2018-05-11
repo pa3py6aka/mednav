@@ -60,15 +60,36 @@ class BoardController extends Controller
     }
 
     /**
-     * Lists all Board models.
+     * Листинг размещённых объявлений.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionActive()
     {
+        $ids = (array) Yii::$app->request->post('ids');
+        if (count($ids)) {
+            $count = $this->service->massRemove($ids);
+            Yii::$app->session->setFlash('info', 'Удалено объявлений: ' . $count);
+        }
+
         $searchModel = new BoardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('active', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Листинг объявлений в архиве.
+     * @return mixed
+     */
+    public function actionArchive()
+    {
+        $searchModel = new BoardSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'archive');
+
+        return $this->render('archive', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

@@ -5,7 +5,6 @@ namespace frontend\controllers\board;
 
 use core\readModels\Board\BoardReadRepository;
 use core\repositories\Board\BoardCategoryRepository;
-use core\repositories\Board\BoardRepository;
 use core\repositories\GeoRepository;
 use Yii;
 use yii\base\Module;

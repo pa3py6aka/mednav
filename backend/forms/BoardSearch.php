@@ -12,6 +12,9 @@ use core\entities\Board\Board;
  */
 class BoardSearch extends Board
 {
+    public $author;
+    public $typeParameter;
+
     /**
      * @inheritdoc
      */
@@ -20,6 +23,7 @@ class BoardSearch extends Board
         return [
             [['id', 'author_id', 'category_id', 'price', 'currency', 'term_id', 'geo_id', 'status', 'active_until', 'created_at', 'updated_at'], 'integer'],
             [['name', 'slug', 'title', 'description', 'keywords', 'note', 'price_from', 'full_text'], 'safe'],
+            [['author', 'typeParameter'], 'safe'],
         ];
     }
 
@@ -39,16 +43,38 @@ class BoardSearch extends Board
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $tab = 'active')
     {
-        $query = Board::find();
+        $query = Board::find()
+            ->alias('b')
+            ->with('author', 'category', 'typeBoardParameter.option')
+            ->joinWith('typeBoardParameter param');
+
+        if ($tab == 'active') {
+            $query->active('b');
+        } else if ($tab == 'archive') {
+            $query->archive('b');
+        } else if ($tab == 'moderation') {
+            $query->onModeration('b');
+        } else if ($tab == 'deleted') {
+            $query->deleted('b');
+        }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
+            'sort' => ['defaultOrder' => ['b.id' => SORT_DESC]]
         ]);
+
+        $dataProvider->sort->attributes['b.id'] = [
+            'asc' => ['b.id' => SORT_ASC],
+            'desc' => ['b.id' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['author'] = [
+            'asc' => ['b.author_id' => SORT_ASC],
+            'desc' => ['b.author_id' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -71,6 +97,7 @@ class BoardSearch extends Board
             'active_until' => $this->active_until,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'param.option_id' => $this->typeParameter,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

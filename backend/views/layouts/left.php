@@ -13,7 +13,7 @@
                     ['label' => 'Гео', 'icon' => 'globe', 'url' => ['/geo/index'], 'active' => $this->context->id == 'geo'],
                     ['label' => 'Доска объявлений', 'icon' => 'newspaper-o', 'items' => [
                         ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/board/category/index']],
-                        ['label' => 'Объявления', 'icon' => 'newspaper-o', 'url' => ['/board/board/index']],
+                        ['label' => 'Объявления', 'icon' => 'newspaper-o', 'url' => ['/board/board/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/board/settings/main']],
                     ]],
                     [

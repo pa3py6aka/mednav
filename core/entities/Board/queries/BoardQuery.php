@@ -19,6 +19,25 @@ class BoardQuery extends ActiveQuery
             ->andWhere(['>', ($alias ? $alias . '.' : '') . 'active_until', time()]);
     }
 
+    public function archive($alias = null)
+    {
+        return $this->andWhere([
+            'or',
+            [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ARCHIVE],
+            ['<=', ($alias ? $alias . '.' : '') . 'active_until', time()]
+        ]);
+    }
+
+    public function onModeration($alias = null)
+    {
+        return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ON_MODERATION]);
+    }
+
+    public function deleted($alias = null)
+    {
+        return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_DELETED]);
+    }
+
     /**
      * @inheritdoc
      * @return \core\entities\Board\BoardCategory[]|array

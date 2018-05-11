@@ -3,6 +3,7 @@
 namespace core\grid;
 
 
+use core\helpers\BoardHelper;
 use yii\bootstrap\Html;
 use yii\grid\DataColumn;
 
@@ -20,7 +21,7 @@ class TreeViewColumn extends DataColumn
 
     public static function cellContent($model, $entity)
     {
-        $childrenCount = $model->getDescendants()->count();
+        $childrenCount = BoardHelper::getCountInCategory($model);
 
         $indent = ($model->depth > 0 ? str_repeat('&nbsp; &nbsp; &nbsp; &nbsp;', $model->depth - 0) . ' ' : '');
 

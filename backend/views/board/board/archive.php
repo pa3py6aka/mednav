@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use core\entities\Board\Board;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\BoardSearch */
@@ -15,7 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Добавить объявление', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
     </div>
     <div class="box-body table-responsive">
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?= $this->render('_tabs', ['tab' => 'archive']) ?>
+
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -24,10 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 //['class' => 'yii\grid\SerialColumn'],
 
                 //'id',
-                'author_id',
                 'name',
-                'slug',
-                'category_id',
+                [
+                    'attribute' => 'author_id',
+                    'value' => function (Board $board) {
+                        return Html::a($board->author->email, ['/user/view', 'id' => $board->author_id]);
+                    },
+                    'format' => 'raw',
+                ],
+
+                //'slug',
+                [
+                    'attribute' => 'category_id',
+                    'value' => function (Board $board) {
+                        return Html::a($board->category->name, ['/board/category/update', 'id' => $board->category_id]);
+                    },
+                    'format' => 'raw',
+                ],
                 // 'title',
                 // 'description:ntext',
                 // 'keywords:ntext',

@@ -5,6 +5,7 @@ namespace core\entities\Board;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "{{%board_photos}}".
@@ -31,6 +32,31 @@ class BoardPhoto extends ActiveRecord
     {
         return ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '/')
             . str_replace('/max/', '/' . $type . '/', $this->file);
+    }
+
+    public function getPhotos(): array
+    {
+        return [
+            'small' => str_replace('/max/', '/small/', $this->file),
+            'big' => str_replace('/max/', '/big/', $this->file),
+            'max' => $this->file,
+        ];
+    }
+
+    public function removePhotos()
+    {
+        $path = Yii::getAlias('@frontend/web/');
+        foreach ($this->getPhotos() as $file) {
+            if (is_file($path . $file)) {
+                FileHelper::unlink($path . $file);
+            }
+        }
+    }
+
+    public function afterDelete()
+    {
+        $this->removePhotos();
+        return parent::afterDelete();
     }
 
     /**

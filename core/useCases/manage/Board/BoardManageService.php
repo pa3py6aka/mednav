@@ -137,6 +137,11 @@ class BoardManageService
         }
     }
 
+    public function massRemove(array $ids): int
+    {
+        return $this->repository->massRemove($ids);
+    }
+
     public function remove($id, $safe = true): void
     {
         $board = $this->repository->get($id);

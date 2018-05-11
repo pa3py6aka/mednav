@@ -12,6 +12,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use Zelenin\yii\behaviors\Slug;
 
@@ -157,6 +158,22 @@ class Board extends ActiveRecord
     public function isActive(): bool
     {
         return $this->status == self::STATUS_ACTIVE && time() < $this->active_until;
+    }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        // Удаляем изображения объявления
+        if ($this->photos) {
+            foreach ($this->photos as $photo) {
+                $photo->removePhotos();
+            }
+        }
+
+        return true;
     }
 
     public static function tableName(): string

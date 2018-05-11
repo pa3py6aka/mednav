@@ -68,4 +68,9 @@ class BoardRepository
             throw new \RuntimeException('Ошибка при удалении из базы.');
         }
     }
+
+    public function massRemove(array $ids): int
+    {
+        return Board::updateAll(['status' => Board::STATUS_DELETED], ['id' => $ids]);
+    }
 }

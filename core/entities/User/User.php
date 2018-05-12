@@ -17,6 +17,7 @@ use yii\web\IdentityInterface;
  * @property int $id
  * @property string $email
  * @property int $type
+ * @property int $company_id [int(11)]
  * @property int $last_online
  * @property int $status
  *

@@ -37,7 +37,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
                 ['class' => CheckboxColumn::class],
-                'name',
+                [
+                    'attribute' => 'name',
+                    'value' => function (Board $board) {
+                        return Html::a($board->name, ['/board/board/view', 'id' => $board->id]);
+                    },
+                    'format' => 'raw',
+                ],
                 [
                     'attribute' => 'typeParameter',
                     'label' => 'Тип',
@@ -47,20 +53,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filter' => ArrayHelper::map(BoardParameterOption::find()->where(['parameter_id' => 1])->asArray()->all(), 'id', 'name'),
                 ],
                 [
-                    'attribute' => 'userType',
-                    'label' => 'Профиль',
-                    'value' => function (Board $board) {
-                        return $board->author->typeName;
-                    },
-                    'filter' => User::getTypesArray(),
-                ],
-                [
                     'attribute' => 'author',
                     'label' => 'Пользователь',
                     'value' => function (Board $board) {
                         return $board->author_id . ' ' . Html::a($board->author->getVisibleName(), ['/user/view', 'id' => $board->author_id]);
                     },
                     'format' => 'raw',
+                ],
+                [
+                    'attribute' => 'userType',
+                    'label' => 'Профиль',
+                    'value' => function (Board $board) {
+                        return $board->author->typeName;
+                    },
+                    'filter' => User::getTypesArray(),
                 ],
                 [
                     'attribute' => 'category_id',
@@ -74,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'created_at:datetime:Размещено',
                 'active_until:datetime',
-                ['class' => \yii\grid\ActionColumn::class],
+                ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} {delete}'],
             ],
         ]); ?>
     </div>

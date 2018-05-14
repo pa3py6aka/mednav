@@ -99,7 +99,7 @@ class Board extends ActiveRecord
         $board->full_text = $fullText;
         $board->term_id = $termId;
         $board->geo_id = $geoId;
-        $board->status = self::STATUS_ACTIVE;
+        $board->setStatus(self::STATUS_ACTIVE);
         return $board;
     }
 
@@ -147,7 +147,12 @@ class Board extends ActiveRecord
         $from = !$this->active_until || $this->active_until < time() ? time() : $this->active_until;
         $this->active_until = $from + ($term->days * 24 * 60 * 60);
         $this->term_id = $term->id;
-        $this->status = self::STATUS_ACTIVE;
+        $this->setStatus(self::STATUS_ACTIVE);
+    }
+
+    public function setStatus($status): void
+    {
+        $this->status = $status;
     }
 
     public function getPriceString(): string

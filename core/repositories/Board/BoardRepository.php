@@ -69,8 +69,12 @@ class BoardRepository
         }
     }
 
-    public function massRemove(array $ids): int
+    public function massRemove(array $ids, $hardRemove = false): int
     {
-        return Board::updateAll(['status' => Board::STATUS_DELETED], ['id' => $ids]);
+        if ($hardRemove) {
+            return Board::deleteAll(['id' => $ids]);
+        } else {
+            return Board::updateAll(['status' => Board::STATUS_DELETED], ['id' => $ids]);
+        }
     }
 }

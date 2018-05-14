@@ -98,6 +98,40 @@ class BoardController extends Controller
     }
 
     /**
+     * Листинг объявлений на проверку.
+     * @return mixed
+     */
+    public function actionModeration()
+    {
+        $this->selectedActionHandle();
+
+        $searchModel = new BoardSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'moderation');
+
+        return $this->render('moderation', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Листинг удалённых объявлений.
+     * @return mixed
+     */
+    public function actionDeleted()
+    {
+        $this->selectedActionHandle(true);
+
+        $searchModel = new BoardSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'deleted');
+
+        return $this->render('deleted', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * Displays a single Board model.
      * @param integer $id
      * @return mixed
@@ -224,19 +258,23 @@ class BoardController extends Controller
 
     /**
      * Отслеживание нажатия кнопок действий с выбранными элементами (Удалить выбранные,продлить и так далее)
+     * @param bool $hardRemove флаг удалять сообщения полностью из базы или нет
      */
-    private function selectedActionHandle(): void
+    private function selectedActionHandle($hardRemove = false): void
     {
         $ids = (array) Yii::$app->request->post('ids');
         $action = Yii::$app->request->post('action');
         if (count($ids)) {
             if ($action == 'remove') {
-                $count = $this->service->massRemove($ids);
+                $count = $this->service->massRemove($ids, $hardRemove);
                 Yii::$app->session->setFlash('info', 'Удалено объявлений: ' . $count);
             } else if ($action == 'extend') {
                 $term = Yii::$app->request->post('term');
                 $this->service->extend($ids, $term);
                 Yii::$app->session->setFlash('info', 'Продлено объявлений: ' . count($ids));
+            } else if ($action == 'publish') {
+                $this->service->publish($ids);
+                Yii::$app->session->setFlash('info', 'Опубликовано объявлений: ' . count($ids));
             }
         }
     }

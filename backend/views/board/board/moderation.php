@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="board-index box box-primary">
     <div class="box-header with-border">
         <?= Html::a('Добавить объявление', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
-        <?= AdminLteHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'primary') ?>
+        <?= AdminLteHelper::actionButtonForSelected('Разместить выбранные', 'publish', 'primary') ?>
         <?= AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
 
         <div class="box-tools">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="box-body table-responsive">
-        <?= $this->render('_tabs', ['tab' => 'archive']) ?>
+        <?= $this->render('_tabs', ['tab' => 'moderation']) ?>
 
         <?= GridView::widget([
             'id' => 'grid',
@@ -53,7 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'filter' => ArrayHelper::map(BoardParameterOption::find()->where(['parameter_id' => 1])->asArray()->all(), 'id', 'name'),
                 ],
-                ['class' => \core\grid\ExtendColumn::class],
                 [
                     'attribute' => 'author',
                     'label' => 'Пользователь',
@@ -80,13 +79,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'format' => 'raw',
                 ],
-                'created_at:datetime:Размещено',
-                ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} {delete}'],
+                'created_at:datetime:Создано',
+                'term.daysHuman:text:Срок',
+                ['class' => \core\grid\ModeratorActionColumn::class],
             ],
         ]); ?>
     </div>
     <div class="box-footer">
-        <?= AdminLteHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'primary') ?>
+        <?= AdminLteHelper::actionButtonForSelected('Разместить выбранные', 'publish', 'primary') ?>
         <?= AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
     </div>
 </div>

@@ -30,12 +30,15 @@ MarkHelper::js($this);
             <?= $form->field($model, 'parameters')
                 ->checkboxList(ArrayHelper::map(BoardParameter::find()->asArray()->all(), 'id', 'name'), [
                     'item' => function($index, $label, $name, $checked, $value) {
-                        $disable = !$index;
-                        if ($index === 0) {
+                        $disable = false;
+                        $hiddenType = '';
+                        if ($value == '1') {
                             $checked = true;
+                            $disable = true;
+                            $hiddenType = Html::hiddenInput($name, $value);
                         }
                         $checkbox = Html::checkbox($name, $checked, ['value' => $value, 'disabled' => $disable]);
-                        return Html::label($checkbox . ' ' . $label);
+                        return $hiddenType . Html::label($checkbox . ' ' . $label);
                     }
                 ]) ?>
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>

@@ -49,7 +49,7 @@ class BoardManageService
             $form->termId,
             $form->geoId
         );
-        $board->updateActiveUntil();
+        $board->extend();
 
         $this->transaction->wrap(function () use ($form, $board) {
             $this->repository->save($board);
@@ -145,6 +145,19 @@ class BoardManageService
             Yii::createObject(BoardPhotoService::class)->addPhoto($board, $file);
         }
         $this->repository->save($board);
+    }
+
+    public function extend($ids, $termId = null): void
+    {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        foreach ($ids as $id) {
+            $board = $this->repository->get($id);
+            $board->extend($termId);
+            $this->repository->save($board);
+        }
     }
 
     public function massRemove(array $ids): int

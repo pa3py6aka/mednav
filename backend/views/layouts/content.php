@@ -13,12 +13,10 @@ use dmstr\widgets\Alert;
             echo '<h1>' . Html::encode($this->title) . '</h1>';
         } ?>
 
-        <?=
-        Breadcrumbs::widget(
-            [
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]
-        ) ?>
+        <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'homeLink' => ['label' => 'Панель управления', 'url' => ['/site/index']],
+        ]) ?>
     </section>
 
     <section class="content">

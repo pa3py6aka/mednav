@@ -3,10 +3,12 @@
 namespace core\entities\User;
 
 use core\components\Settings;
+use core\entities\Company\Company;
 use core\entities\User\queries\UserQuery;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
@@ -30,6 +32,8 @@ use yii\web\IdentityInterface;
  *
  * @property string $statusName
  * @property string $typeName
+ *
+ * @property Company $company
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -149,6 +153,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function getTypeName(): string
     {
         return ArrayHelper::getValue(self::getTypesArray(), $this->type);
+    }
+
+    public function getVisibleName(): string
+    {
+        if ($this->company_id) {
+            return $this->company->name;
+        }
+        return $this->email;
     }
 
     public function requestPasswordReset(): void
@@ -299,6 +311,11 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => 'Добавлен',
             'updated_at' => 'Обновлён',
         ];
+    }
+
+    public function getCompany(): ActiveQuery
+    {
+        return $this->hasOne(Company::class, ['id' => 'company_id']);
     }
 
     public static function find(): UserQuery

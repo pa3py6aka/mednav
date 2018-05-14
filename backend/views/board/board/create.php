@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model \core\forms\manage\Board\BoardManageForm */
 
 $this->title = 'Новое объявление';
-$this->params['breadcrumbs'][] = ['label' => 'Объявления', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Объявления', 'url' => ['active']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="board-create">

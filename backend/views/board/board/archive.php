@@ -3,6 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use core\entities\Board\Board;
+use yii\helpers\ArrayHelper;
+use core\entities\Board\BoardParameterOption;
+use core\helpers\PaginationHelper;
+use yii\grid\CheckboxColumn;
+use core\entities\User\User;
+use core\helpers\BoardHelper;
+use core\helpers\AdminLteHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\BoardSearch */
@@ -14,52 +21,66 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="board-index box box-primary">
     <div class="box-header with-border">
         <?= Html::a('Добавить объявление', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+        <?= AdminLteHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'primary') ?>
+        <?= AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
+
+        <div class="box-tools">
+            <?= PaginationHelper::pageSizeSelector($dataProvider->pagination) ?>
+        </div>
     </div>
     <div class="box-body table-responsive">
         <?= $this->render('_tabs', ['tab' => 'archive']) ?>
 
         <?= GridView::widget([
+            'id' => 'grid',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
-
-                //'id',
+                ['class' => CheckboxColumn::class],
                 'name',
                 [
-                    'attribute' => 'author_id',
+                    'attribute' => 'typeParameter',
+                    'label' => 'Тип',
                     'value' => function (Board $board) {
-                        return Html::a($board->author->email, ['/user/view', 'id' => $board->author_id]);
+                        return $board->getDefaultType();
+                    },
+                    'filter' => ArrayHelper::map(BoardParameterOption::find()->where(['parameter_id' => 1])->asArray()->all(), 'id', 'name'),
+                ],
+                ['class' => \core\grid\ExtendColumn::class],
+                [
+                    'attribute' => 'userType',
+                    'label' => 'Профиль',
+                    'value' => function (Board $board) {
+                        return $board->author->typeName;
+                    },
+                    'filter' => User::getTypesArray(),
+                ],
+                [
+                    'attribute' => 'author',
+                    'label' => 'Пользователь',
+                    'value' => function (Board $board) {
+                        return $board->author_id . ' ' . Html::a($board->author->getVisibleName(), ['/user/view', 'id' => $board->author_id]);
                     },
                     'format' => 'raw',
                 ],
-
-                //'slug',
                 [
                     'attribute' => 'category_id',
                     'value' => function (Board $board) {
-                        return Html::a($board->category->name, ['/board/category/update', 'id' => $board->category_id]);
+                        return Html::a($board->category->name, ['/board/category/update', 'id' => $board->category_id], [
+                            'data-toggle' => 'tooltip',
+                            'title' => BoardHelper::categoryParentsString($board->category),
+                        ]);
                     },
                     'format' => 'raw',
                 ],
-                // 'title',
-                // 'description:ntext',
-                // 'keywords:ntext',
-                // 'note',
-                // 'price',
-                // 'currency',
-                // 'price_from',
-                // 'full_text:ntext',
-                // 'term_id',
-                // 'geo_id',
-                // 'status',
-                // 'active_until',
-                // 'created_at',
-                // 'updated_at',
-
-                ['class' => 'yii\grid\ActionColumn'],
+                'created_at:datetime:Размещено',
+                ['class' => \yii\grid\ActionColumn::class],
             ],
         ]); ?>
+    </div>
+    <div class="box-footer">
+        <?= AdminLteHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'primary') ?>
+        <?= AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
     </div>
 </div>

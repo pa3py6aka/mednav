@@ -14,6 +14,7 @@ class BoardSearch extends Board
 {
     public $author;
     public $typeParameter;
+    public $userType;
 
     /**
      * @inheritdoc
@@ -23,7 +24,7 @@ class BoardSearch extends Board
         return [
             [['id', 'author_id', 'category_id', 'price', 'currency', 'term_id', 'geo_id', 'status', 'active_until', 'created_at', 'updated_at'], 'integer'],
             [['name', 'slug', 'title', 'description', 'keywords', 'note', 'price_from', 'full_text'], 'safe'],
-            [['author', 'typeParameter'], 'safe'],
+            [['author', 'typeParameter', 'userType'], 'safe'],
         ];
     }
 
@@ -47,7 +48,8 @@ class BoardSearch extends Board
     {
         $query = Board::find()
             ->alias('b')
-            ->with('author', 'category', 'typeBoardParameter.option')
+            ->with('category', 'typeBoardParameter.option')
+            ->joinWith('author u')
             ->joinWith('typeBoardParameter param');
 
         if ($tab == 'active') {
@@ -64,7 +66,11 @@ class BoardSearch extends Board
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['b.id' => SORT_DESC]]
+            'sort' => ['defaultOrder' => ['b.id' => SORT_DESC]],
+            'pagination' => [
+                'pageSizeLimit' => [15, 500],
+                'defaultPageSize' => 15,
+            ],
         ]);
 
         $dataProvider->sort->attributes['b.id'] = [
@@ -74,6 +80,10 @@ class BoardSearch extends Board
         $dataProvider->sort->attributes['author'] = [
             'asc' => ['b.author_id' => SORT_ASC],
             'desc' => ['b.author_id' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['userType'] = [
+            'asc' => ['u.type' => SORT_ASC],
+            'desc' => ['u.type' => SORT_DESC],
         ];
 
         $this->load($params);
@@ -98,6 +108,7 @@ class BoardSearch extends Board
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'param.option_id' => $this->typeParameter,
+            'u.type' => $this->userType,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

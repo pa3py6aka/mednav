@@ -136,10 +136,18 @@ class Board extends ActiveRecord
         $this->geo_id = $geoId;
     }
 
-    public function updateActiveUntil(): void
+    /**
+     * Продлевает объявление на указанный срок. Если текущий срок не вышел, то срок увеличивается,
+     * если вышел, то объявление продлевается от текущего времени
+     * @param null $termId Если не указан, продлевается на срок указанный ранее
+     */
+    public function extend($termId = null): void
     {
-        $term = BoardTerm::findOne($this->term_id);
-        $this->active_until = time() + ($term->days * 24 * 60 * 60);
+        $term = BoardTerm::findOne($termId ?: $this->term_id);
+        $from = !$this->active_until || $this->active_until < time() ? time() : $this->active_until;
+        $this->active_until = $from + ($term->days * 24 * 60 * 60);
+        $this->term_id = $term->id;
+        $this->status = self::STATUS_ACTIVE;
     }
 
     public function getPriceString(): string

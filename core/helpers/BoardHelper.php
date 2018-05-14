@@ -148,6 +148,16 @@ class BoardHelper
         return implode("\n", $html);
     }
 
+    public static function categoryParentsString(BoardCategory $boardCategory): string
+    {
+        $items = [];
+        foreach ($boardCategory->parents as $parent) {
+            $items[] = $parent->name;
+        }
+        $items[] = $boardCategory->name;
+        return implode(' / ', $items);
+    }
+
     public static function statusBadge($status, $name): string
     {
         switch ($status) {

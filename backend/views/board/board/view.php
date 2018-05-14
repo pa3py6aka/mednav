@@ -14,7 +14,7 @@ use yii\helpers\Url;
 /* @var $tab string */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Доска объявлений', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Доска объявлений', 'url' => ['active']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="board-view box box-primary">

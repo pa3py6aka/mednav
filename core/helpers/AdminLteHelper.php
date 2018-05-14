@@ -4,6 +4,7 @@ namespace core\helpers;
 
 
 use yii\helpers\Html;
+use yii\web\JqueryAsset;
 
 class AdminLteHelper
 {
@@ -30,5 +31,11 @@ class AdminLteHelper
         $ul = Html::ul([$hardButton], ['class' => 'dropdown-menu', 'role' => 'menu', 'encode' => false]);
 
         return Html::tag('div', $softButton . $caret . $ul, ['class' => 'btn-group']);
+    }
+
+    public static function actionButtonForSelected($content, $action, $color)
+    {
+        \Yii::$app->view->registerJsFile('/js/action-for-selected-rows.js', ['depends' => [JqueryAsset::class]], 'action-for-selected-rows');
+        return Html::button($content, ['class' => 'action-btn btn btn-flat btn-' . $color, 'data-action' => $action]);
     }
 }

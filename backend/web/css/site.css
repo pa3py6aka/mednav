@@ -122,6 +122,13 @@ a.desc:after {
 .tree-cell .tree-arrow {
     cursor: pointer;
 }
+.extend-cell > form {
+    display:flex;
+}
+.extend-cell select {
+    width: 84px !important;
+    margin-right: 2px;
+}
 
 /* Стили по загрузке фото в формах */
 .photos-block .help-block {

@@ -69,11 +69,7 @@ class BoardController extends Controller
      */
     public function actionActive()
     {
-        $ids = (array) Yii::$app->request->post('ids');
-        if (count($ids)) {
-            $count = $this->service->massRemove($ids);
-            Yii::$app->session->setFlash('info', 'Удалено объявлений: ' . $count);
-        }
+        $this->selectedActionHandle();
 
         $searchModel = new BoardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -90,6 +86,8 @@ class BoardController extends Controller
      */
     public function actionArchive()
     {
+        $this->selectedActionHandle();
+
         $searchModel = new BoardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'archive');
 
@@ -225,13 +223,32 @@ class BoardController extends Controller
     }
 
     /**
+     * Отслеживание нажатия кнопок действий с выбранными элементами (Удалить выбранные,продлить и так далее)
+     */
+    private function selectedActionHandle(): void
+    {
+        $ids = (array) Yii::$app->request->post('ids');
+        $action = Yii::$app->request->post('action');
+        if (count($ids)) {
+            if ($action == 'remove') {
+                $count = $this->service->massRemove($ids);
+                Yii::$app->session->setFlash('info', 'Удалено объявлений: ' . $count);
+            } else if ($action == 'extend') {
+                $term = Yii::$app->request->post('term');
+                $this->service->extend($ids, $term);
+                Yii::$app->session->setFlash('info', 'Продлено объявлений: ' . count($ids));
+            }
+        }
+    }
+
+    /**
      * Finds the Board model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return Board the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    private function findModel($id)
     {
         if (($model = Board::findOne($id)) !== null) {
             return $model;

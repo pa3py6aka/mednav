@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $board core\entities\Board\Board */
 
 $this->title = 'Редактирование объявления №' . $board->id;
-$this->params['breadcrumbs'][] = ['label' => 'Доска объявлений', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Доска объявлений', 'url' => ['active']];
 $this->params['breadcrumbs'][] = ['label' => '#' . $board->id, 'url' => ['view', 'id' => $board->id]];
 $this->params['breadcrumbs'][] = 'Редактирование';
 ?>

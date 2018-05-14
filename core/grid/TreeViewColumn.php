@@ -21,7 +21,9 @@ class TreeViewColumn extends DataColumn
 
     public static function cellContent($model, $entity)
     {
-        $childrenCount = BoardHelper::getCountInCategory($model);
+        $childrenCount = $model->getChildren()->count();
+
+        $adCount = BoardHelper::getCountInCategory($model);
 
         $indent = ($model->depth > 0 ? str_repeat('&nbsp; &nbsp; &nbsp; &nbsp;', $model->depth - 0) . ' ' : '');
 
@@ -29,7 +31,7 @@ class TreeViewColumn extends DataColumn
 
         $icon = Html::tag('span', '', ['class' => 'fa fa-' . ($childrenCount ? 'folder' : 'file-o')]) . ' ';
 
-        $counts = $childrenCount ? ' (' . $childrenCount . ')' : '';
+        $counts = $adCount ? ' (' . $adCount . ')' : '';
 
         $string = $indent . $arrow . $icon . Html::a(Html::encode($model->name), ['/board/category/update', 'id' => $model->id]) . $counts;
 

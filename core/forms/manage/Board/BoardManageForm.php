@@ -51,7 +51,7 @@ class BoardManageForm extends Model
             $this->description = $board->description;
             $this->keywords = $board->keywords;
             $this->note = $board->note;
-            $this->price = $board->price / 100;
+            $this->price = $board->price ? $board->price / 100 : '';
             $this->currency = $board->currency_id;
             $this->priceFrom = $board->price_from;
             $this->fullText = $board->full_text;

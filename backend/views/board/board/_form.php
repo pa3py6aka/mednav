@@ -30,25 +30,6 @@ ImagesManagerAsset::register($this);
 
         <div id="category-block">
             <?= $model->getCategoryDropdowns($form) ?>
-            <?php /*foreach ($model->categoryId as $n => $categoryId): ?>
-                <?php
-                $categories = $n == 0 ? BoardCategory::find()->roots()->asArray()->all() : BoardCategory::findOne($model->categoryId[$n - 1])->children;
-                if ($n == 0) {
-                    echo $form->field($model, 'categoryId[' . $n . ']')
-                            ->dropDownList(
-                                ArrayHelper::map($categories, 'id', 'name'),
-                                ['prompt' => 'Выберите раздел']
-                            );
-                } else {
-                    $dropdown = Html::activeDropDownList($model, 'categoryId[' . $n . ']', ArrayHelper::map($categories, 'id', 'name'), ['class' => 'form-control']);
-                    echo Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
-                }
-                ?>
-            <?php endforeach; ?>
-            <?php if ($model->categoryId[$n] && $children = BoardCategory::findOne($model->categoryId[$n])->getChildren()->active()->all()) {
-                $dropdown = Html::activeDropDownList($model, 'categoryId[' . ($n + 1) . ']', ArrayHelper::map($children, 'id', 'name'), ['class' => 'form-control', 'prompt' => '']);
-                echo Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
-            }*/ ?>
         </div>
 
         <div id="parameters-block">
@@ -64,12 +45,19 @@ ImagesManagerAsset::register($this);
         <?= $form->field($model, 'note')
                 ->textInput(['maxlength' => true, 'placeholder' => 'Прим: Состояние Новый/БУ, страна производитель и др. информация']) ?>
 
-        <?= $form->field($model, 'price')->textInput() ?>
-
-        <?= $form->field($model, 'currency')
-                ->dropDownList(ArrayHelper::map(Currency::find()->asArray()->all(), 'id', 'name')) ?>
-
-        <?= $form->field($model, 'priceFrom')->checkbox() ?>
+        <div class="container-fluid no-padding">
+            <div class="col-xs-6 no-padding">
+                <?= $form->field($model, 'price')->textInput() ?>
+            </div>
+            <div class="col-xs-3" style="margin-top:24px;">
+                <?= $form->field($model, 'currency')
+                    ->dropDownList(ArrayHelper::map(Currency::find()->asArray()->all(), 'id', 'sign'))->label(false) ?>
+            </div>
+            <div class="col-xs-3" style="margin-top:30px;">
+                <?= Html::activeCheckbox($model, 'priceFrom') ?>
+                <?php //= $form->field($model, 'priceFrom')->checkbox() ?>
+            </div>
+        </div>
 
         <?= $form->field($model, 'fullText')
                 ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']]) ?>

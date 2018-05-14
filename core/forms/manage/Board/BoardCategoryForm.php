@@ -87,8 +87,8 @@ class BoardCategoryForm extends Model
 
     public static function parentCategoriesList()
     {
-        $categories = ArrayHelper::map(BoardCategory::find()->orderBy('lft')->asArray()->all(), 'id', function (array $category) {
-            return ($category['depth'] > 0 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'];
+        $categories = ArrayHelper::map(BoardCategory::find()->orderBy('tree, lft')->asArray()->all(), 'id', function (array $category) {
+            return ($category['depth'] > 0 ? str_repeat('-', $category['depth']) . ' ' : '') . $category['name'];
         });
 
         return $categories;

@@ -27,7 +27,17 @@ MarkHelper::js($this);
             <?= $form->field($model, 'enabled')->checkbox() ?>
             <?= $form->field($model, 'notShowOnMain')->checkbox() ?>
             <?= $form->field($model, 'childrenOnlyParent')->checkbox() ?>
-            <?= $form->field($model, 'parameters')->checkboxList(ArrayHelper::map(BoardParameter::find()->asArray()->all(), 'id', 'name')) ?>
+            <?= $form->field($model, 'parameters')
+                ->checkboxList(ArrayHelper::map(BoardParameter::find()->asArray()->all(), 'id', 'name'), [
+                    'item' => function($index, $label, $name, $checked, $value) {
+                        $disable = !$index;
+                        if ($index === 0) {
+                            $checked = true;
+                        }
+                        $checkbox = Html::checkbox($name, $checked, ['value' => $value, 'disabled' => $disable]);
+                        return Html::label($checkbox . ' ' . $label);
+                    }
+                ]) ?>
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'metaTitle')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'metaDescription')->textarea(['rows' => 4]) ?>

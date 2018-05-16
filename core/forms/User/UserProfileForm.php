@@ -30,7 +30,7 @@ class UserProfileForm extends Model
         $this->name = $user->name;
         $this->patronymic = $user->patronymic;
         $this->gender = $user->gender;
-        $this->birthday = date('d.m.Y', strtotime($user->birthday));
+        $this->birthday = date('d.m.Y', $user->birthday ? strtotime($user->birthday) : strtotime('-30 years'));
         $this->phone = $user->phone;
         $this->site = $user->site;
         $this->skype = $user->skype;

@@ -4,6 +4,7 @@ namespace core\entities\User;
 
 use core\components\Settings;
 use core\entities\Company\Company;
+use core\entities\Geo;
 use core\entities\User\queries\UserQuery;
 use Yii;
 use yii\base\NotSupportedException;
@@ -20,6 +21,16 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property int $type
  * @property int $company_id [int(11)]
+ * @property int $geo_id [int(11)]
+ * @property string $last_name [varchar(255)]
+ * @property string $name [varchar(255)]
+ * @property string $patronymic [varchar(255)]
+ * @property bool $gender [tinyint(3)]
+ * @property string $birthday [date]
+ * @property string $phone [varchar(25)]
+ * @property string $site [varchar(255)]
+ * @property string $skype [varchar(255)]
+ * @property string $organization [varchar(255)]
  * @property int $last_online
  * @property int $status
  *
@@ -34,6 +45,7 @@ use yii\web\IdentityInterface;
  * @property string $typeName
  *
  * @property Company $company
+ * @property Geo $geo
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -45,13 +57,17 @@ class User extends ActiveRecord implements IdentityInterface
     const TYPE_USER = 1;
     const TYPE_COMPANY = 2;
 
+    const GENDER_NOT_SET = 0;
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+
     public static function create($email, $password, $type): User
     {
         $user = new self();
         $user->email = $email;
-        $user->type = $type;
         $user->last_online = time();
         $user->status = self::STATUS_ACTIVE;
+        $user->setType($type);
         $user->setPassword($password);
         $user->generateAuthKey();
         return $user;
@@ -71,8 +87,8 @@ class User extends ActiveRecord implements IdentityInterface
         $user->status = $status;
 
         $user->email = $email;
-        $user->type = $type;
         $user->last_online = time();
+        $user->setType($type);
         $user->setPassword($password);
         $user->generateAuthKey();
         return $user;
@@ -84,7 +100,7 @@ class User extends ActiveRecord implements IdentityInterface
         if ($password) {
             $this->setPassword($password);
         }
-        $this->type = $type;
+        $this->setType($type);
     }
 
     public function confirmSignup(): void
@@ -122,6 +138,18 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->status === self::STATUS_DELETED;
     }
 
+    public function isProfileEmpty(): bool
+    {
+        return empty($this->name)
+            || empty($this->email)
+            || ($this->type == self::TYPE_USER && empty($this->geo_id));
+    }
+
+    public function isCompany(): bool
+    {
+        return $this->type === self::TYPE_COMPANY;
+    }
+
     public function updateStatus($status): void
     {
         $this->status = $status;
@@ -153,6 +181,20 @@ class User extends ActiveRecord implements IdentityInterface
     public function getTypeName(): string
     {
         return ArrayHelper::getValue(self::getTypesArray(), $this->type);
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+    public static function gendersArray(): array
+    {
+        return [
+            self::GENDER_NOT_SET => 'Не указан',
+            self::GENDER_MALE => 'Мужской',
+            self::GENDER_FEMALE => 'Женский',
+        ];
     }
 
     public function getVisibleName(): string
@@ -305,6 +347,16 @@ class User extends ActiveRecord implements IdentityInterface
             'last_online' => 'Последний вход',
             'status' => 'Статус',
             'statusName' => 'Статус',
+            'last_name' => 'Фамилия',
+            'name' => 'Имя',
+            'patronymic' => 'Отчество',
+            'gender' => 'Пол',
+            'birthday' => 'Дата рождения',
+            'phone' => 'Телефон',
+            'site' => 'Вэб-сайт',
+            'skype' => 'Skype',
+            'organization' => 'Организация',
+            'geo_id' => 'Регион',
             'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
@@ -318,8 +370,13 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Company::class, ['id' => 'company_id']);
     }
 
+    public function getGeo(): ActiveQuery
+    {
+        return $this->hasOne(Geo::class, ['id' => 'geo_id']);
+    }
+
     public static function find(): UserQuery
     {
-        return new \core\entities\User\queries\UserQuery(get_called_class());
+        return new UserQuery(get_called_class());
     }
 }

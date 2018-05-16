@@ -926,6 +926,9 @@ a.footer-lnk-add, a.footer-lnk-green:hover {
 
 /* ADDED */
 .no-padding {padding:0 !important;}
+.required label:after {content:" *";color:red;}
+.main-container > .alert {margin-bottom:6px;}
+
 a.sort.asc, a.sort.desc {font-weight:bold;}
 a.sort.desc:after {content:'\e156';font-family:'Glyphicons Halflings';margin-left:2px;}
 a.sort.asc:after {content:'\e155';font-family:'Glyphicons Halflings';margin-left:2px;}
@@ -934,6 +937,8 @@ a.sort.asc:after {content:'\e155';font-family:'Glyphicons Halflings';margin-left
 .has-overlay .overlay {z-index:50;background:rgba(255,255,255,0.7);border-radius:3px;}
 .has-overlay > .overlay {position:absolute;top:0;left:0;width:100%;height:100%;}
 .has-overlay .overlay > .fa {position:absolute;top:50%;left:50%;margin-left:-15px;margin-top:-15px;color:#000;font-size:30px;}
+
+.region-select-link {font-size:18px;border-bottom:1px dashed;color:#2d5d9c;cursor:pointer;}
 
 
 

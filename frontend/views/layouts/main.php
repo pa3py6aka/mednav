@@ -3,7 +3,6 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use pa3py6aka\yii2\ModalAlert;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use yii\helpers\Url;
@@ -28,7 +27,7 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="container-fluid">
+<div class="container-fluid main-container">
     <div id="wrap">
         <!--block top-->
         <div class="row">
@@ -83,7 +82,7 @@ AppAsset::register($this);
                                 </button>
                             </div>
                             <div id="navMenu-collapse" class="collapse navbar-collapse">
-                                <ul id="w1" class="navbar-nav navbar-left nav"><li><a href="/trade">Каталог товаров</a></li>
+                                <ul class="navbar-nav navbar-left nav"><li><a href="/trade">Каталог товаров</a></li>
                                     <li><a href="<?= Url::to(['/board/board/index']) ?>">Объявления</a></li>
                                     <li><a href="/company">Компании</a></li>
                                     <li><a href="/expo">Выставки</a></li>
@@ -94,7 +93,7 @@ AppAsset::register($this);
                                         <li><a href="<?= Url::to(['/auth/signup/request']) ?>">Регистрация</a></li>
                                         <li><a href="<?= Url::to(['/auth/auth/login']) ?>">Вход</a></li>
                                     <?php else: ?>
-                                        <li><a href="<?= Url::to(['/user/cabinet/index']) ?>">Личный кабинет</a></li>
+                                        <li><a href="<?= Url::to(['/user/account/index']) ?>">Личный кабинет</a></li>
                                         <li><a href="<?= Url::to(['/auth/auth/logout']) ?>" data-method="post">Выход</a></li>
                                     <?php endif; ?>
                                 </ul>
@@ -106,6 +105,9 @@ AppAsset::register($this);
         </div>
         <!--// menu-->
     </div>
+
+    <?php //= \common\widgets\Alert::widget() ?>
+    <?= \pa3py6aka\yii2\ModalAlert::widget() ?>
 
     <div class="scrollup hidden-sm hidden-xs">
         <i class="fa fa-chevron-up"></i>
@@ -151,8 +153,6 @@ AppAsset::register($this);
         </div>
     </div>
 </div><!--/container-fluid-->
-
-<?= ModalAlert::widget() ?>
 
 <?php $this->endBody() ?>
 </body>

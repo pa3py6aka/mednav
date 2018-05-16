@@ -34,7 +34,7 @@ class ResetController extends Controller
                 return $this->goHome();
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', [['Ошибка', $e->getMessage()]]);
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
 
@@ -63,7 +63,7 @@ class ResetController extends Controller
                 Yii::$app->session->setFlash('success', [['Пароль сброшен', 'Новый пароль успешно установлен.']]);
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', [['Ошибка', $e->getMessage()]]);
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
             return $this->goHome();
         }

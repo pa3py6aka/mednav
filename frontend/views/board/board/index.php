@@ -153,4 +153,4 @@ $this->title = 'Главная';
     </div>
 </div>
 
-<?= RegionsModalWidget::widget(['category' => $category]) ?>
+<?= RegionsModalWidget::widget(['category' => $category, 'type' => 'board']) ?>

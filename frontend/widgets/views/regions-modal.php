@@ -1,11 +1,8 @@
 <?php
 
-use core\helpers\BoardHelper;
-
-/* @var $category \core\entities\Board\BoardCategory|null  */
+/* @var $widget \frontend\widgets\RegionsModalWidget */
 /* @var $countries array */
 
-//$countries = \core\entities\Geo::find()->countries()->active()->all();
 $n = 1;
 
 ?>
@@ -34,12 +31,8 @@ $n = 1;
                             <div class="col-md-12">
                                 <p class="geo-pop">
                                     <?php foreach ($country['popular'] as $popularCountry): ?>
-                                        <a href="<?= BoardHelper::categoryUrl($category, $popularCountry) ?>"><?= $popularCountry->name ?></a>&nbsp;
+                                        <?= $widget->link($popularCountry) ?>
                                     <?php endforeach; ?>
-
-                                    <?php /*foreach ($country->getDescendants()->active()->popular()->all() as $popular): ?>
-                                        <a href="<?= BoardHelper::categoryUrl($category, $popular) ?>"><?= $popular->name ?></a>&nbsp;
-                                    <?php endforeach;*/ ?>
                                 </p>
                             </div>
                         </div>
@@ -52,10 +45,10 @@ $n = 1;
                                     <ul>
                                         <li>
                                             <input type="checkbox" id="item-<?= $num ?>" />
-                                            <label for="item-<?= $num ?>"><img src="/img/plus-icon.png"></label> <a href="<?= BoardHelper::categoryUrl($category, $region['region']) ?>"><?= $region['region']->name ?></a>
+                                            <label for="item-<?= $num ?>"><img src="/img/plus-icon.png"></label> <?= $widget->link($region['region']) ?>
                                             <ul>
                                                 <?php foreach ($region['cities'] as $city): ?>
-                                                    <li><a href="<?= BoardHelper::categoryUrl($category, $city) ?>"><?= $city->name ?></a></li>
+                                                    <li><?= $widget->link($city) ?></li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         </li>
@@ -66,26 +59,6 @@ $n = 1;
                             <?php $num++ ?>
                         <?php endforeach; ?>
 
-                        <?php /*foreach ($country->children as $child): ?>
-                            <?= !(($num % 2) == 0) ? '<div class="row">' : '' ?>
-                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                <div class="css-treeview">
-                                    <ul>
-                                        <li>
-                                            <input type="checkbox" id="item-<?= $num ?>" />
-                                            <label for="item-<?= $num ?>"><img src="/img/plus-icon.png"></label> <a href="<?= BoardHelper::categoryUrl($category, $child) ?>"><?= $child->name ?></a>
-                                            <ul>
-                                                <?php foreach ($child->children as $city): ?>
-                                                    <li><a href="<?= BoardHelper::categoryUrl($category, $city) ?>"><?= $city->name ?></a></li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <?= (($num % 2) == 0) ? '</div>' : '' ?>
-                            <?php $num++ ?>
-                        <?php endforeach;*/ ?>
                         <?= (($num % 2) == 0) ? '</div>' : '' ?>
                     </div>
                     <?php $n++ ?>

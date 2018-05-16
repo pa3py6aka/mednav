@@ -17,6 +17,8 @@ return [
         'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
 
+        'account' => 'user/account/index',
+        'account/<_a:[\w-]+>' => 'user/account/<_a>',
 
         'board/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'board/board/index',
         'board/<region:[\w-]+>/page<page:\d+>' => 'board/board/index',

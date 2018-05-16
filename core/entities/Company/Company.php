@@ -4,9 +4,13 @@ namespace core\entities\Company;
 
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
+use core\entities\StatusesInterface;
+use core\entities\StatusesTrait;
 use core\entities\User\User;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%companies}}".
@@ -37,14 +41,20 @@ use yii\db\ActiveQuery;
  * @property CompanyTag[] $tags
  * @property User[] $user
  */
-class Company extends \yii\db\ActiveRecord
+class Company extends ActiveRecord implements StatusesInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
+    use StatusesTrait;
+
+    public static function tableName(): string
     {
         return '{{%companies}}';
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**

@@ -5,6 +5,8 @@ namespace core\entities\User;
 use core\components\Settings;
 use core\entities\Company\Company;
 use core\entities\Geo;
+use core\entities\StatusesInterface;
+use core\entities\StatusesTrait;
 use core\entities\User\queries\UserQuery;
 use Yii;
 use yii\base\NotSupportedException;
@@ -32,7 +34,6 @@ use yii\web\IdentityInterface;
  * @property string $skype [varchar(255)]
  * @property string $organization [varchar(255)]
  * @property int $last_online
- * @property int $status
  *
  * @property string $auth_key
  * @property string $password_hash
@@ -41,18 +42,17 @@ use yii\web\IdentityInterface;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property string $statusName
+
  * @property string $typeName
  *
  * @property Company $company
  * @property Geo $geo
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 {
-    const STATUS_DELETED = 0;
+    use StatusesTrait;
+
     const STATUS_WAIT = 1;
-    const STATUS_ON_PREMODERATION = 5;
-    const STATUS_ACTIVE = 10;
 
     const TYPE_USER = 1;
     const TYPE_COMPANY = 2;
@@ -118,36 +118,29 @@ class User extends ActiveRecord implements IdentityInterface
         $this->email_confirm_token = null;
     }
 
-    public function isActive(): bool
-    {
-        return $this->status === self::STATUS_ACTIVE;
-    }
-
     public function isWait(): bool
     {
         return $this->status === self::STATUS_WAIT;
     }
 
-    public function isOnModeration(): bool
-    {
-        return $this->status === self::STATUS_ON_PREMODERATION;
-    }
-
-    public function isDeleted(): bool
-    {
-        return $this->status === self::STATUS_DELETED;
-    }
-
     public function isProfileEmpty(): bool
     {
-        return empty($this->name)
-            || empty($this->email)
-            || ($this->type == self::TYPE_USER && empty($this->geo_id));
+        if ($this->type == self::TYPE_USER) {
+            return empty($this->name) || empty($this->email) || empty($this->geo_id);
+        } elseif ($this->type == self::TYPE_COMPANY) {
+            return empty($this->name) || empty($this->email) || !$this->isCompanyActive();
+        }
+        return true;
     }
 
     public function isCompany(): bool
     {
         return $this->type === self::TYPE_COMPANY;
+    }
+
+    public function isCompanyActive(): bool
+    {
+        return $this->company_id && $this->company->name && $this->company->slug;
     }
 
     public function updateStatus($status): void
@@ -163,11 +156,6 @@ class User extends ActiveRecord implements IdentityInterface
             self::STATUS_ON_PREMODERATION => 'На премодерации',
             self::STATUS_ACTIVE => 'Активен',
         ];
-    }
-
-    public function getStatusName(): string
-    {
-        return ArrayHelper::getValue(self::getStatusesArray(), $this->status);
     }
 
     public static function getTypesArray(): array
@@ -228,9 +216,6 @@ class User extends ActiveRecord implements IdentityInterface
         parent::afterFind();
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function tableName(): string
     {
         return '{{%users}}';

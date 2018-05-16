@@ -4,7 +4,6 @@ namespace core\useCases\cabinet;
 
 
 use core\entities\User\User;
-use core\forms\User\UpdatePasswordForm;
 use core\forms\User\UserProfileForm;
 use core\repositories\UserRepository;
 

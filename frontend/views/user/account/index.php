@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             Добро пожаловать на сайт http://mednav.ru<br>
             Для начала работы, заполните форму <a href="<?= Url::to(['/user/account/profile']) ?>">вашего профиля</a>
-            и данные о компании
+            <?= $user->isCompany() ? 'и ' . \yii\helpers\Html::a('данные о компании', ['/user/account/company']) : '' ?>
 
         </div>
         <?php endif; ?>

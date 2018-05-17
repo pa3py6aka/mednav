@@ -20,6 +20,7 @@ return [
             'class' => \core\components\YiiUser::class,
             'identityClass' => \core\entities\User\User::class,
             'enableAutoLogin' => true,
+            'loginUrl' => ['/auth/auth/login'],
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [

@@ -25,7 +25,13 @@ $this->title = 'Настройки Доски Объявлений';
                     'dataProvider' => $provider,
                     'layout' => "{items}\n{pager}",
                     'columns' => [
-                        'name',
+                        [
+                            'attribute' => 'name',
+                            'value' => function (BoardParameter $parameter) {
+                                return Html::a($parameter->name, ['view', 'id' => $parameter->id]);
+                            },
+                            'format' => 'raw',
+                        ],
                         [
                             'attribute' => 'type',
                             'value' => function (BoardParameter $parameter) {
@@ -33,9 +39,7 @@ $this->title = 'Настройки Доски Объявлений';
                             }
                         ],
                         'active:boolean',
-                        [
-                            'class' => ActionColumn::class,
-                        ]
+                        ['class' => ActionColumn::class]
                     ]
                 ]) ?>
             </div>

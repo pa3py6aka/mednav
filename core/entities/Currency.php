@@ -22,4 +22,9 @@ class Currency extends ActiveRecord
     {
         return ['id', 'name', 'sign', 'default'];
     }
+
+    public static function getDefaultId(): int
+    {
+        return self::find()->where(['default' => 1])->one()->id;
+    }
 }

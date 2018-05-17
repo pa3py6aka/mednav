@@ -23,4 +23,9 @@ class BoardTerm extends ActiveRecord
     {
         return ['id', 'days', 'daysHuman', 'default', 'notification'];
     }
+
+    public static function getDefaultId(): int
+    {
+        return self::find()->where(['default' => 1])->one()->id;
+    }
 }

@@ -61,6 +61,9 @@ class AuthController extends Controller
         return [
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
+                'minLength' => 4,
+                'maxLength' => 4,
+                'fontFile' => '@webroot/fonts/RobotoCondensed-Regular.ttf'
             ],
         ];
     }

@@ -24,7 +24,7 @@ $this->title = "Сброс пароля";
             ]); ?>
 
             <div class="col-md-8 col-md-offset-2">
-                <h1>Сброс пароля</h1>
+                <h1>Восстановление доступа</h1>
 
                 <?= $form->field($model, 'email')->input('email', ['placeholder' => 'Введите E-mail']) ?>
 

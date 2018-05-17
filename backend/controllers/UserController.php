@@ -13,9 +13,11 @@ use Yii;
 use core\entities\User\User;
 use backend\forms\UserSearch;
 use yii\base\Module;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -40,6 +42,7 @@ class UserController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'get-user' => ['POST'],
                 ],
             ],
         ];
@@ -188,6 +191,16 @@ class UserController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetUser()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = (int) Yii::$app->request->post('id');
+        if (($user = User::findOne($id)) !== null) {
+            return ['result' => 'success', 'name' => $user->getVisibleName(), 'url' => Url::to(['/user/view', 'id' => $user->id])];
+        }
+        return ['result' => 'error', 'message' => 'Пользователь не найден'];
     }
 
     /**

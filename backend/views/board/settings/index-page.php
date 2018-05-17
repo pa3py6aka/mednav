@@ -18,4 +18,4 @@ use yii\bootstrap\Html;
     ->label('Описание сверху &nbsp; &nbsp;' . Html::activeCheckbox($model, SettingsManager::BOARD_DESCRIPTION_TOP_ON)) ?>
 <?= $form->field($model, SettingsManager::BOARD_DESCRIPTION_BOTTOM)
     ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']])
-    ->label('Описание сверху &nbsp; &nbsp;' . Html::activeCheckbox($model, SettingsManager::BOARD_DESCRIPTION_BOTTOM_ON)) ?>
+    ->label('Описание снизу &nbsp; &nbsp;' . Html::activeCheckbox($model, SettingsManager::BOARD_DESCRIPTION_BOTTOM_ON)) ?>

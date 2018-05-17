@@ -22,7 +22,8 @@ ImagesManagerAsset::register($this);
 <div class="board-form box box-primary">
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body table-responsive">
-        <?= $form->field($model, 'authorId')->input('number') ?>
+
+        <?= $form->field($model, 'authorId')->widget(\backend\widgets\UserIdFieldWidget::class) ?>
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

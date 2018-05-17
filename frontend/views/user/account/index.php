@@ -8,8 +8,6 @@ use yii\helpers\Url;
 
 
 $this->title = 'Личный кабинет';
-$this->params['breadcrumbs'][] = $this->title;
-
 
 ?>
 <div class="row">

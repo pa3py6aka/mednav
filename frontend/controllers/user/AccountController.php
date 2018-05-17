@@ -11,15 +11,18 @@ use Yii;
 use yii\base\Module;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 
 class AccountController extends Controller
 {
     private $profile;
+    private $_user;
 
     public function __construct(string $id, Module $module, ProfileService $profile, array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->profile = $profile;
+        $this->_user = Yii::$app->user->identity;
     }
 
     public function behaviors()
@@ -44,13 +47,12 @@ class AccountController extends Controller
 
     public function actionProfile($tab = 'main')
     {
-        $user = Yii::$app->user->identity;
-        $profileForm = new UserProfileForm($user);
-        $accessForm = new UpdatePasswordForm($user);
+        $profileForm = new UserProfileForm($this->_user);
+        $accessForm = new UpdatePasswordForm($this->_user);
 
         if ($profileForm->load(Yii::$app->request->post()) && $profileForm->validate()) {
             try {
-                $this->profile->editProfile($user, $profileForm);
+                $this->profile->editProfile($this->_user, $profileForm);
                 Yii::$app->session->setFlash('success', 'Данные сохранены');
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
@@ -59,7 +61,7 @@ class AccountController extends Controller
 
         if ($type = Yii::$app->request->post('userType')) {
             try {
-                $this->profile->editUserType($user, $type);
+                $this->profile->editUserType($this->_user, $type);
                 Yii::$app->session->setFlash('success', 'Тип профиля изменён');
                 return $this->redirect(['profile', 'tab' => 'type']);
             } catch (\DomainException $e) {
@@ -69,7 +71,7 @@ class AccountController extends Controller
 
         if ($accessForm->load(Yii::$app->request->post()) && $accessForm->validate()) {
             try {
-                $this->profile->updatePassword($user, $accessForm->password);
+                $this->profile->updatePassword($this->_user, $accessForm->password);
                 Yii::$app->session->setFlash('success', 'Новый пароль установлен');
                 return $this->redirect(['profile', 'tab' => 'access']);
             } catch (\DomainException $e) {
@@ -78,10 +80,21 @@ class AccountController extends Controller
         }
 
         return $this->render('profile', [
-            'user' => $user,
+            'user' => $this->_user,
             'profileModel' => $profileForm,
             'passwordModel' => $accessForm,
             'tab' => $tab,
+        ]);
+    }
+
+    public function actionCompany()
+    {
+        if (!$this->_user->isCompany()) {
+            throw new ForbiddenHttpException('Ваш профиль не является компанией.');
+        }
+
+        return $this->render('company', [
+            'user' => $this->_user,
         ]);
     }
 }

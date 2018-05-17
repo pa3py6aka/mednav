@@ -85,7 +85,7 @@ class BoardHelper
         if (!$category && !$geo) {
             $url = ['/board/board/index'];
         } else {
-            $url = ['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all-regions'];
+            $url = ['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all'];
         }
 
         return Url::to(array_merge($url, $params));

@@ -16,6 +16,9 @@ $link = Yii::$app->controller->action->id;
     <div class="panel-body">
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation"<?= $link == 'profile' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/profile']) ?>">Мои данные</a></li>
+            <?php if ($user->isCompany()): ?>
+                <li role="presentation"<?= $link == 'company' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/company']) ?>">Моя компания</a></li>
+            <?php endif; ?>
             <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Сообщения (0)</a></li>
             <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Объявления</a></li>
             <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Служба поддержки</a></li>

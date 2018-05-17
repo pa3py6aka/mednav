@@ -5,6 +5,8 @@ namespace core\forms\manage\Board;
 
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
+use core\entities\Board\BoardTerm;
+use core\entities\Currency;
 use core\helpers\BoardHelper;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
@@ -65,6 +67,8 @@ class BoardManageForm extends Model
             $this->_board = $board;
         } else {
             $this->categoryId[] = '';
+            $this->termId = BoardTerm::getDefaultId();
+            $this->currency = Currency::getDefaultId();
         }
         parent::__construct($config);
     }
@@ -116,13 +120,13 @@ class BoardManageForm extends Model
     {
         return [
             'authorId' => 'Id автора',
-            'name' => 'Название',
+            'name' => 'Заоловок',
             'slug' => 'Slug',
             'categoryId' => 'Раздел',
             'title' => 'Title',
             'description' => 'Description',
             'keywords' => 'Keywords',
-            'note' => 'Примечание',
+            'note' => 'Уточнение',
             'price' => 'Цена',
             'currency' => 'Ден. единица',
             'priceFrom' => 'Цена от',

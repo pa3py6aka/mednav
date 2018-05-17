@@ -8,12 +8,12 @@ use yii\base\Model;
 
 class SignupForm extends Model
 {
-    public $type;
+    public $type = User::TYPE_COMPANY;
     public $email;
     public $password;
     public $repeatPassword;
     public $captcha;
-    public $agreement;
+    public $agreement = true;
 
     public function rules()
     {

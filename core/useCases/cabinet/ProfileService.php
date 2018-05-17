@@ -23,7 +23,7 @@ class ProfileService
         $user->name = $form->name;
         $user->patronymic = $form->patronymic;
         $user->gender = $form->gender;
-        $user->birthday = date('Y-m-d', strtotime($form->birthday));
+        $user->birthday = $form->birthday ? date('Y-m-d', strtotime($form->birthday)) : null;
         $user->phone = $form->phone;
         $user->site = $form->site;
         $user->skype = $form->skype;

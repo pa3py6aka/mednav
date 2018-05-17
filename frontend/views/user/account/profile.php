@@ -52,12 +52,9 @@ $this->title = 'Личный кабинет | Данные профиля';
                 </div>
 
                 <div class="col-xs-8" style="padding-right:0">
-                    <?= $form->field($profileModel, 'birthday')->widget(\kartik\date\DatePicker::class, [
-                        'options' => ['placeholder' => 'Укажите дату рождения'],
-                        'pluginOptions' => [
-                            'format' => 'dd.mm.yyyy',
-                            'autoclose' => true,
-                        ]
+                    <?= $form->field($profileModel, 'birthday')->widget(\yii\widgets\MaskedInput::class, [
+                        'mask' => '99.99.9999',
+                        'clientOptions' => ['placeholder' => 'дд.мм.гггг']
                     ]) ?>
                 </div>
 

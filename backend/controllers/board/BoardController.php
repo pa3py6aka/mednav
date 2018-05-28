@@ -2,12 +2,11 @@
 
 namespace backend\controllers\board;
 
+use core\actions\BoardCategorySelectAction;
 use core\actions\UploadAction;
 use core\components\SettingsManager;
-use core\entities\Board\BoardCategory;
 use core\forms\manage\Board\BoardManageForm;
 use core\forms\manage\Board\BoardPhotosForm;
-use core\helpers\BoardHelper;
 use core\useCases\manage\Board\BoardManageService;
 use core\useCases\manage\Board\BoardPhotoService;
 use Yii;
@@ -59,6 +58,9 @@ class BoardController extends Controller
                     'big' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_BIG_SIZE)],
                     'max' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_MAX_SIZE)],
                 ]
+            ],
+            'select-category' => [
+                'class' => BoardCategorySelectAction::class,
             ],
         ];
     }
@@ -243,17 +245,6 @@ class BoardController extends Controller
         }
 
         return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
-    }
-
-    public function actionGetChildren()
-    {
-        $id = (int) Yii::$app->request->post('id');
-        $formName = Yii::$app->request->post('formName');
-        $category = BoardCategory::findOne($id);
-        return $this->asJson([
-            'items' => $category->getChildren()->active()->select(['id', 'name'])->asArray()->all(),
-            'params' => BoardHelper::generateParameterFields($category, $formName),
-        ]);
     }
 
     /**

@@ -20,10 +20,13 @@ class PaginationHelper
         ];
     }
 
-    public static function pageSizeSelector(Pagination $pagination): string
+    public static function pageSizeSelector(Pagination $pagination, $sizes = []): string
     {
+        if (!$sizes) {
+            $sizes = [15 => 15, 100 => 100, 500 => 500];
+        }
         $html = Html::beginForm($pagination->createUrl(0), 'get');
-        $html .= Html::dropDownList('per-page', $pagination->pageSize, [15 => 15, 100 => 100, 500 => 500], [
+        $html .= Html::dropDownList('per-page', $pagination->pageSize, $sizes, [
             'class' => 'form-control',
             'style' => 'width:60px;',
             'onchange' => new JsExpression("$(this).parent().find('input[type=hidden][name=per-page]').remove();$(this).parent().submit();"),

@@ -7,10 +7,12 @@ use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardTerm;
 use core\entities\Currency;
+use core\entities\Geo;
 use core\helpers\BoardHelper;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 class BoardManageForm extends Model
@@ -97,7 +99,7 @@ class BoardManageForm extends Model
             'authorId', 'name', 'slug', 'categoryId', 'title', 'description', 'keywords', 'note', 'price',
             'currency', 'priceFrom', 'fullText', 'tags', 'geoId', 'params'
         ];
-        $scenarios[self::SCENARIO_USER_EDIT] = array_diff($scenarios[self::SCENARIO_ADMIN_EDIT], ['authorId']);
+        $scenarios[self::SCENARIO_USER_EDIT] = array_diff($scenarios[self::SCENARIO_ADMIN_EDIT], ['authorId', 'slug', 'title', 'description', 'keywords']);
         $scenarios[self::SCENARIO_USER_CREATE] = array_merge($scenarios[self::SCENARIO_USER_EDIT], ['photos', 'termId']);
         return $scenarios;
     }
@@ -120,7 +122,7 @@ class BoardManageForm extends Model
     {
         return [
             'authorId' => 'Id автора',
-            'name' => 'Заоловок',
+            'name' => 'Заголовок',
             'slug' => 'Slug',
             'categoryId' => 'Раздел',
             'title' => 'Title',
@@ -144,20 +146,39 @@ class BoardManageForm extends Model
         $dropdowns = [];
         $n = 0;
         foreach ($this->categoryId as $n => $categoryId) {
-            $categories = $n == 0 ? BoardCategory::find()->roots()->asArray()->all() : BoardCategory::findOne($this->categoryId[$n - 1])->getChildren()->active()->all();
             if ($n == 0) {
-                $dropdowns[] = $form->field($this, 'categoryId[' . $n . ']')
-                    ->dropDownList(
-                        ArrayHelper::map($categories, 'id', 'name'),
-                        ['prompt' => 'Выберите раздел']
-                    );
-            } else {
-                $dropdown = Html::activeDropDownList($this, 'categoryId[' . $n . ']', ArrayHelper::map($categories, 'id', 'name'), ['class' => 'form-control', 'prompt' => '']);
-                $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
+                $categories = ArrayHelper::map(BoardCategory::find()->roots()->asArray()->all(), 'id', 'name');
+            } else if ($n == 2) {
+                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getDescendants()->active()->all(), 'id', function ($item) {
+                    return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
+                });
+                $this->categoryId[$n] = end($this->categoryId);
+            } else if ($n == 1) {
+                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getChildren()->active()->all(), 'id', 'name');
+            }
+
+            if ($n < 3) {
+                if ($n == 0) {
+                    $dropdowns[] = $form->field($this, 'categoryId[' . $n . ']')
+                        ->dropDownList($categories, ['prompt' => 'Выберите раздел']);
+                } else {
+                    $dropdown = Html::activeDropDownList($this, 'categoryId[' . $n . ']',$categories, ['class' => 'form-control', 'prompt' => '']);
+                    $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
+                }
             }
         }
-        if ($this->categoryId[$n] && $children = BoardCategory::findOne($this->categoryId[$n])->getChildren()->active()->all()) {
-            $dropdown = Html::activeDropDownList($this, 'categoryId[' . ($n + 1) . ']', ArrayHelper::map($children, 'id', 'name'), ['class' => 'form-control', 'prompt' => '']);
+
+        if ($n < 2 && $this->categoryId[$n]) {
+            $category = BoardCategory::findOne($this->categoryId[$n]);
+            if ($category->depth == 1) {
+                $children = ArrayHelper::map($category->getDescendants()->active()->all(), 'id', function ($item) {
+                    return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
+                });
+            } else {
+                $children = ArrayHelper::map($category->getChildren()->active()->all(), 'id', 'name');
+            }
+
+            $dropdown = Html::activeDropDownList($this, 'categoryId[' . ($n + 1) . ']', $children, ['class' => 'form-control', 'prompt' => '']);
             $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
         }
         return implode("\n", $dropdowns);
@@ -173,5 +194,66 @@ class BoardManageForm extends Model
             }
         }
         return '';
+    }
+
+    public function geoName(): string
+    {
+        return $this->_board && $this->_board->geo_id ? $this->_board->geo->name
+            : ($this->geoId ? Geo::find()->select('name')->where(['id' => $this->geoId])->scalar() : 'Выбрать регион');
+    }
+
+    public function getJs()
+    {
+        $url = Url::to(['select-category']);
+        return <<<JS
+var formName = '{$this->formName()}';
+$(document).on('change', 'select[name*=categoryId]', function () {
+    var select = $(this);
+    var box = $(select.parents('.box')[0]);
+    select.parent().nextAll('.form-group').remove();
+    var id = select.val();
+    var emptySelect = false;
+    if (!id) {
+        var prev = select.parent().prev('.form-group').find('select');
+        if (prev.length) {
+            id = prev.val();
+            emptySelect = true;
+        } else {
+            $('#parameters-block').html('');
+            return;
+        }
+    }
+    $.ajax({
+        url: '{$url}',
+        method: "post",
+        dataType: "json",
+        data: {id: id, formName: formName},
+        beforeSend: function () {
+            box.prepend('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+        },
+        success: function(data, textStatus, jqXHR) {
+            if (!emptySelect && data.items.length) {
+                var dropdownBlock = $('#templates').find('.category-dropdown').clone();
+                var dropdown = dropdownBlock.find('select');
+                var num = $('#category-block').find('.form-group').length;
+                dropdown.attr('name', formName + '[categoryId][' + num + ']');
+                $.each(data.items, function (k, item) {
+                    dropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+                select.parent().after(dropdownBlock);
+            }
+            refreshParameters(data.params);
+        },
+        complete: function () {
+            box.find('.overlay').remove();
+         }
+    });
+});
+
+function refreshParameters(params) {
+    var paramsBlock = $('#parameters-block');
+    paramsBlock.html(params);
+}
+JS;
     }
 }

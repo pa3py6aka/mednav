@@ -3,6 +3,7 @@
 namespace core\useCases\manage\Board;
 
 
+use core\components\SettingsManager;
 use core\entities\Board\Board;
 use core\entities\Board\BoardParameterAssignment;
 use core\entities\Board\BoardTag;
@@ -32,14 +33,17 @@ class BoardManageService
         $userId = in_array($form->scenario, [BoardManageForm::SCENARIO_USER_EDIT, BoardManageForm::SCENARIO_USER_CREATE])
             ? Yii::$app->user->id
             : ($form->authorId ?: Yii::$app->user->id);
+        $status = in_array($form->scenario, [BoardManageForm::SCENARIO_USER_EDIT, BoardManageForm::SCENARIO_USER_CREATE])
+            ? (Yii::$app->settings->get(SettingsManager::BOARD_MODERATION) ? Board::STATUS_ON_MODERATION : Board::STATUS_ACTIVE)
+            : Board::STATUS_ACTIVE;
 
         $board = Board::create(
             $userId,
             $form->name,
             $form->slug,
             $form->categoryId,
-            $form->title,
-            $form->description,
+            $form->title ?: '',
+            $form->description ?: '',
             $form->keywords ?: trim($form->tags),
             $form->note,
             $form->price ?: 0,
@@ -47,9 +51,15 @@ class BoardManageService
             $form->priceFrom,
             $form->fullText,
             $form->termId,
-            $form->geoId
+            $form->geoId,
+            $status
         );
-        $board->extend();
+
+        if ($status === Board::STATUS_ACTIVE) {
+            $board->extend();
+        } else {
+            $board->active_until = time();
+        }
 
         $this->transaction->wrap(function () use ($form, $board) {
             $this->repository->save($board);

@@ -28,7 +28,7 @@ class UserIdFieldWidget extends InputWidget
                 <div class="input-group input-group-sm">
                     <input id="<?= $this->_inputId ?>" type="number" class="form-control" name="<?= Html::getInputName($this->model, $this->attribute) ?>" value="<?= $this->value ?>">
                     <span class="input-group-btn">
-                    <button id="<?= $this->_inputId . '-go' ?>" type="button" class="btn btn-info btn-flat"><i class="fa fa-search"></i></button>
+                    <button id="<?= $this->_inputId . '-go' ?>" type="button" class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
                 </span>
                 </div>
             </div>

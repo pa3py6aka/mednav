@@ -1,19 +1,18 @@
 <?php
 
-namespace backend\assets;
+namespace core\components\ImageManager;
 
 use yii\web\AssetBundle;
 
 
-class ImagesManagerAsset extends AssetBundle
+class ImageManagerAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $sourcePath = '@core/components/ImageManager';
 
     public $css = [];
 
     public $js = [
-        'js/images-manager.js'
+        'image-manager.js'
     ];
 
     public $depends = [

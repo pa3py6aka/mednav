@@ -81,7 +81,8 @@ class Board extends ActiveRecord
         $priceFrom,
         $fullText,
         $termId,
-        $geoId
+        $geoId,
+        $status
     ): Board
     {
         $board = new static();
@@ -99,7 +100,7 @@ class Board extends ActiveRecord
         $board->full_text = $fullText;
         $board->term_id = $termId;
         $board->geo_id = $geoId;
-        $board->setStatus(self::STATUS_ACTIVE);
+        $board->setStatus($status);
         return $board;
     }
 

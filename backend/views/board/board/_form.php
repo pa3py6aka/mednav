@@ -1,6 +1,6 @@
 <?php
 
-use backend\assets\ImagesManagerAsset;
+use core\components\ImageManager\ImageManagerAsset;
 use core\entities\Board\BoardTerm;
 use core\entities\Currency;
 use core\forms\manage\Board\BoardManageForm;
@@ -8,6 +8,7 @@ use core\forms\manage\Geo\GeoForm;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -16,7 +17,9 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 $board = isset($board) ? $board : null;
-ImagesManagerAsset::register($this);
+$this->registerJsVar('_ImageUploadAction', Url::to(['/board/board/upload']));
+ImageManagerAsset::register($this);
+$this->registerJs($model->getJs());
 ?>
 
 <div class="board-form box box-primary">
@@ -56,7 +59,6 @@ ImagesManagerAsset::register($this);
             </div>
             <div class="col-xs-3" style="margin-top:30px;">
                 <?= Html::activeCheckbox($model, 'priceFrom') ?>
-                <?php //= $form->field($model, 'priceFrom')->checkbox() ?>
             </div>
         </div>
 
@@ -97,56 +99,3 @@ ImagesManagerAsset::register($this);
         </select>
     </div>
 </div>
-
-<script>
-    window.addEventListener('load', function () {
-        var formName = '<?= $model->formName() ?>';
-        $(document).on('change', 'select[name*=categoryId]', function () {
-            var $select = $(this);
-            var $box = $($select.parents('.box')[0]);
-            $select.parent().nextAll('.form-group').remove();
-            var id = $select.val();
-            var emptySelect = false;
-            if (!id) {
-                var $prev = $select.parent().prev('.form-group').find('select');
-                if ($prev.length) {
-                    id = $prev.val();
-                    emptySelect = true;
-                } else {
-                    $('#parameters-block').html('');
-                    return;
-                }
-            }
-            $.ajax({
-                url: '/board/board/get-children',
-                method: "post",
-                dataType: "json",
-                data: {id: id, formName: formName},
-                beforeSend: function () {
-                    $box.prepend('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
-                },
-                success: function(data, textStatus, jqXHR) {
-                    if (!emptySelect && data.items.length) {
-                        var $dropdownBlock = $('#templates').find('.category-dropdown').clone();
-                        var $dropdown = $dropdownBlock.find('select');
-                        var num = $('#category-block').find('.form-group').length;
-                        $dropdown.attr('name', formName + '[categoryId][' + num + ']');
-                        $.each(data.items, function (k, item) {
-                            $dropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
-                        });
-                        $select.parent().after($dropdownBlock);
-                    }
-                    refreshParameters(data.params);
-                },
-                complete: function () {
-                    $box.find('.overlay').remove();
-                }
-            });
-        });
-
-        function refreshParameters(params) {
-            var $paramsBlock = $('#parameters-block');
-            $paramsBlock.html(params);
-        }
-    });
-</script>

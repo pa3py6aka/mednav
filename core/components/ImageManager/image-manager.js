@@ -16,7 +16,7 @@
         var xhr = new XMLHttpRequest();
         xhr.upload.addEventListener('progress', uploadProgress, false);
         xhr.onreadystatechange = stateChange;
-        xhr.open('POST', '/board/board/upload');
+        xhr.open('POST', _ImageUploadAction);
         var formData = new FormData();
         //$.each(files, function(k, file) {
             formData.append("file", files[0]);

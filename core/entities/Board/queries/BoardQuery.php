@@ -24,7 +24,11 @@ class BoardQuery extends ActiveQuery
         return $this->andWhere([
             'or',
             [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ARCHIVE],
-            ['<=', ($alias ? $alias . '.' : '') . 'active_until', time()]
+            [
+                'and',
+                ['<=', ($alias ? $alias . '.' : '') . 'active_until', time()],
+                [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ACTIVE]
+            ]
         ]);
     }
 

@@ -42,7 +42,7 @@ class AccountController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index', ['user' => Yii::$app->user->identity]);
+        return $this->render('index', ['user' => $this->_user]);
     }
 
     public function actionProfile($tab = 'main')

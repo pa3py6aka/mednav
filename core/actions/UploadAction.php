@@ -56,7 +56,8 @@ class UploadAction extends Action
         return [
             'result' => 'success',
             'fileName' => $fileName,
-            'url' => $this->baseUrl . '/' . $fileName];
+            'url' => $this->baseUrl . '/' . $fileName
+        ];
     }
 
     private function saveFile(UploadedFile $file): string

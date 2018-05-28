@@ -24,6 +24,11 @@ class BoardTerm extends ActiveRecord
         return ['id', 'days', 'daysHuman', 'default', 'notification'];
     }
 
+    public function getNotificationInSeconds(): int
+    {
+        return $this->notification * 24 * 3600;
+    }
+
     public static function getDefaultId(): int
     {
         return self::find()->where(['default' => 1])->one()->id;

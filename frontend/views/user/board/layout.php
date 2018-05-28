@@ -3,6 +3,8 @@
 use core\helpers\PaginationHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use core\helpers\BoardHelper;
+use core\helpers\AdminLteHelper;
 
 /* @var $this yii\web\View */
 /* @var $tab string */
@@ -25,17 +27,22 @@ $this->beginContent('@frontend/views/layouts/main.php');
 
         <p>
             <a href="<?= Url::to(['create']) ?>" class="btn btn-primary">Добавить объявление</a>
-            <span class="pull-right">
-                <?php if ($pagination) {
-                    echo PaginationHelper::pageSizeSelector($pagination, [25 => 25, 100 => 100, 250 => 250]);
-                } ?>
-            </span>
+            <?php if ($tab == 'active') {
+                echo AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger');
+            } else if ($tab == 'archive') {
+                echo AdminLteHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'success');
+            } ?>
         </p>
 
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"<?= $tab == 'active' ? ' class="active"' : '' ?>><a href="<?= Url::to(['active']) ?>">Размещённые</a></li>
             <li role="presentation"<?= $tab == 'archive' ? ' class="active"' : '' ?>><a href="<?= Url::to(['archive']) ?>">Архив</a></li>
-            <li role="presentation"<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке</a></li>
+            <li role="presentation"<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке (<?= BoardHelper::getWaitingCountFor() ?>)</a></li>
+            <span class="pull-right">
+                <?php if ($pagination) {
+                    echo PaginationHelper::pageSizeSelector($pagination, PaginationHelper::SITE_SIZES);
+                } ?>
+            </span>
         </ul>
         <br>
         <div class="tab-content">

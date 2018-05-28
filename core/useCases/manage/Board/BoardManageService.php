@@ -16,6 +16,7 @@ use core\helpers\MarkHelper;
 use core\repositories\Board\BoardRepository;
 use core\services\TransactionManager;
 use Yii;
+use yii\base\InvalidArgumentException;
 
 class BoardManageService
 {

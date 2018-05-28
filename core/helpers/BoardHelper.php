@@ -181,4 +181,10 @@ class BoardHelper
 
         return Html::tag('span', $name, ['class' => 'badge bg-' . $color]);
     }
+
+    public static function getWaitingCountFor($userId = null): int
+    {
+        $userId = $userId ?: Yii::$app->user->id;
+        return Board::find()->where(['author_id' => $userId])->onModeration()->cache(60)->count();
+    }
 }

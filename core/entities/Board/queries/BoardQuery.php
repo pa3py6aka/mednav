@@ -42,6 +42,11 @@ class BoardQuery extends ActiveQuery
         return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_DELETED]);
     }
 
+    public function toExtend()
+    {
+        return $this->active()->andWhere(['<', 'notification_date', time()]);
+    }
+
     /**
      * @inheritdoc
      * @return \core\entities\Board\BoardCategory[]|array

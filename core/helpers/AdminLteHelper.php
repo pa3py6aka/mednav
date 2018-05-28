@@ -35,7 +35,7 @@ class AdminLteHelper
 
     public static function actionButtonForSelected($content, $action, $color)
     {
-        \Yii::$app->view->registerJsFile('/js/action-for-selected-rows.js', ['depends' => [JqueryAsset::class]], 'action-for-selected-rows');
+        \Yii::$app->view->registerJsFile(\Yii::$app->params['frontendHostInfo'] . '/js/action-for-selected-rows.js', ['depends' => [JqueryAsset::class]], 'action-for-selected-rows');
         return Html::button($content, ['class' => 'action-btn btn btn-flat btn-' . $color, 'data-action' => $action]);
     }
 }

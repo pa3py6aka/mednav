@@ -72,4 +72,6 @@ $(document).ready(function() {
             scrollTop: $el.offset().top + margin
         }, 700);
     }
+
+    $('[data-toggle="tooltip"]').tooltip();
 });

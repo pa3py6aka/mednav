@@ -36,6 +36,42 @@ class BoardReadRepository
         return $this->getProvider($query);
     }
 
+    public function getUserBoards($userId, $status = Board::STATUS_ACTIVE): DataProviderInterface
+    {
+        $query = Board::find()
+            ->alias('b')
+            ->where(['b.author_id' => $userId])
+            ->with('category', 'typeBoardParameter.option');
+
+        switch ($status) {
+            case Board::STATUS_ARCHIVE:
+                $query->archive('b');
+                break;
+            case Board::STATUS_ON_MODERATION:
+                $query->onModeration('b');
+                break;
+            default: $query->active('b');
+        }
+        return $this->getProvider($query);
+    }
+
+    public function toExtendCount($userId): int
+    {
+        return Board::find()
+            ->where(['author_id' => $userId])
+            ->toExtend()
+            ->count();
+    }
+
+    public function toExtendIds($userId): array
+    {
+        return Board::find()
+            ->where(['author_id' => $userId])
+            ->toExtend()
+            ->select('id')
+            ->column();
+    }
+
     private function getProvider(ActiveQuery $query): ActiveDataProvider
     {
         return new ActiveDataProvider([
@@ -60,8 +96,8 @@ class BoardReadRepository
                 ],
             ],
             'pagination' => [
-                'pageSizeLimit' => [2, 250],
-                'defaultPageSize' => 2,
+                'pageSizeLimit' => [25, 250],
+                'defaultPageSize' => 25,
                 'forcePageParam' => false,
             ]
         ]);

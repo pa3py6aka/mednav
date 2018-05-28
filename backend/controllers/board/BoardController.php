@@ -3,6 +3,8 @@
 namespace backend\controllers\board;
 
 use core\actions\BoardCategorySelectAction;
+use core\actions\DeletePhotoAction;
+use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
 use core\components\SettingsManager;
 use core\forms\manage\Board\BoardManageForm;
@@ -61,6 +63,14 @@ class BoardController extends Controller
             ],
             'select-category' => [
                 'class' => BoardCategorySelectAction::class,
+            ],
+            'move-photo' => [
+                'class' => MovePhotoAction::class,
+                'entityClass' => Board::class,
+            ],
+            'delete-photo' => [
+                'class' => DeletePhotoAction::class,
+                'entityClass' => Board::class,
             ],
         ];
     }
@@ -220,31 +230,6 @@ class BoardController extends Controller
         }
 
         return $this->redirect(['index']);
-    }
-
-    public function actionMovePhoto($board_id, $photo_id, $direction)
-    {
-        $board = $this->findModel($board_id);
-        try {
-            Yii::createObject(BoardPhotoService::class)->movePhoto($board, $photo_id, $direction);
-        } catch (\DomainException $e) {
-            Yii::$app->session->setFlash('error', $e->getMessage());
-        }
-
-        return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
-    }
-
-    public function actionDeletePhoto($id, $photo_id)
-    {
-        $board = $this->findModel($id);
-        try {
-            Yii::createObject(BoardPhotoService::class)->removePhoto($board, $photo_id);
-            Yii::$app->session->setFlash('info', 'Фотография удалена');
-        } catch (\DomainException $e) {
-            Yii::$app->session->setFlash('error', $e->getMessage());
-        }
-
-        return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
     }
 
     /**

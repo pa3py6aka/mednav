@@ -108,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php foreach ($model->photos as $photo): ?>
                     <div class="col-md-2 col-xs-3" style="text-align: center">
                         <div class="btn-group">
-                            <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>', ['move-photo', 'board_id' => $model->id, 'photo_id' => $photo->id, 'direction' => 'up'], [
+                            <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>', ['move-photo', 'entityId' => $model->id, 'photoId' => $photo->id, 'direction' => 'up'], [
                                 'class' => 'btn btn-default',
                                 'data-method' => 'post',
                             ]); ?>
@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-method' => 'post',
                                 'data-confirm' => 'Удалить фото?',
                             ]); ?>
-                            <?= Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', ['move-photo', 'board_id' => $model->id, 'photo_id' => $photo->id, 'direction' => 'down'], [
+                            <?= Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', ['move-photo', 'entityId' => $model->id, 'photoId' => $photo->id, 'direction' => 'down'], [
                                 'class' => 'btn btn-default',
                                 'data-method' => 'post',
                             ]); ?>

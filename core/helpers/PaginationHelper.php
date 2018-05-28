@@ -12,6 +12,9 @@ class PaginationHelper
     public const PAGINATION_NUMERIC = 1;
     public const PAGINATION_SCROLL = 2;
 
+    public const ADMIN_SIZES = [15 => 15, 100 => 100, 500 => 500];
+    public const SITE_SIZES = [25 => 25, 100 => 100, 250 => 250];
+
     public static function paginationTypes(): array
     {
         return [

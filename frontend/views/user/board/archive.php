@@ -2,19 +2,14 @@
 use core\entities\Board\Board;
 use yii\helpers\Html;
 use core\helpers\BoardHelper;
-use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $provider \yii\data\ActiveDataProvider */
-/* @var $toExtend int */
 
-$this->params['tab'] = 'active';
+$this->params['tab'] = 'archive';
 $this->params['pagination'] = $provider->pagination;
 
 ?>
-<?php if ($toExtend): ?>
-    <p>Объявлений на продление: <?= $toExtend ?>. <a href="<?= Url::to(['/user/board/extend', 'all' => 1]) ?>" data-method="post">Продлить все</a></p>
-<?php endif; ?>
 <?= \yii\grid\GridView::widget([
     'dataProvider' => $provider,
     'layout' => "{items}\n{summary}\n{pager}",
@@ -35,15 +30,7 @@ $this->params['pagination'] = $provider->pagination;
                 return $board->getDefaultType();
             },
         ],
-        [
-            'attribute' => 'active_until',
-            'label' => 'Размещено до',
-            'value' => function (Board $board) {
-                return Yii::$app->formatter->asDatetime($board->active_until) .
-                    ($board->hasExtendNotification() ? ' ' . Html::a('Продлить', ['extend', 'id' => $board->id]) : '');
-            },
-            'format' => 'raw',
-        ],
+        ['class' => \core\grid\ExtendColumn::class],
         'views',
         [
             'attribute' => 'category_id',

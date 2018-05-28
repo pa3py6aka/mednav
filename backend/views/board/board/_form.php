@@ -72,7 +72,8 @@ $this->registerJs($model->getJs());
                     ->dropDownList(ArrayHelper::map(BoardTerm::find()->asArray()->all(), 'id', 'daysHuman')) ?>
 
         <?= $form->field($model, 'geoId')
-                ->dropDownList(GeoForm::parentCategoriesList(false), ['prompt' => '']) ?>
+                ->hiddenInput(['id' => 'form-geo-id'])
+                ->hint('<span class="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
 
         <?php if (!$board): ?>
         <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">

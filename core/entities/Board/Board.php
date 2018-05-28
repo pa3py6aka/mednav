@@ -36,7 +36,9 @@ use Zelenin\yii\behaviors\Slug;
  * @property int $geo_id [int(11)]
  * @property int $main_photo_id [int(11)]
  * @property int $status
+ * @property int $views [int(11)]
  * @property int $active_until [int(11)]
+ * @property int $notification_date [int(11)]
  * @property int $created_at [int(11)]
  * @property int $updated_at [int(11)]
  *
@@ -147,6 +149,7 @@ class Board extends ActiveRecord
         $term = BoardTerm::findOne($termId ?: $this->term_id);
         $from = !$this->active_until || $this->active_until < time() ? time() : $this->active_until;
         $this->active_until = $from + ($term->days * 24 * 60 * 60);
+        $this->notification_date = $this->active_until - $term->getNotificationInSeconds();
         $this->term_id = $term->id;
         $this->setStatus(self::STATUS_ACTIVE);
     }
@@ -166,12 +169,23 @@ class Board extends ActiveRecord
 
     public function getUrl(): string
     {
-        return Url::to(['/board/board/view', 'slug' => $this->slug]);
+        return Url::to(['/board/board/view', 'slug' => $this->slug, 'id' => $this->id]);
     }
 
     public function isActive(): bool
     {
         return $this->status == self::STATUS_ACTIVE && time() < $this->active_until;
+    }
+
+    public function hasExtendNotification(): bool
+    {
+        $termTime = $this->term->getNotificationInSeconds();
+        return $this->isActive() && time() >= ($this->active_until - $termTime);
+    }
+
+    public function canExtend($userId): bool
+    {
+        return $this->author_id === $userId && $this->status > self::STATUS_ON_MODERATION;
     }
 
     public function beforeDelete()
@@ -276,6 +290,7 @@ class Board extends ActiveRecord
             'geo_id' => 'Регион',
             'status' => 'Статус',
             'statusName' => 'Статус',
+            'views' => 'Просмотров',
             'active_until' => 'Активно до',
             'created_at' => 'Дата добавления',
             'updated_at' => 'Дата обновления',

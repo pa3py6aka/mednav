@@ -20,6 +20,8 @@ return [
         'account' => 'user/account/index',
         'account/<_a:[\w-]+>' => 'user/account/<_a>',
 
+        'board/<id:\d+>-<slug:[\w-]+>' => 'board/board/view',
+
         'board/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'board/board/index',
         'board/<region:[\w-]+>/page<page:\d+>' => 'board/board/index',
         'board/page<page:\d+>' => 'board/board/index',
@@ -27,8 +29,6 @@ return [
         'board/<region:[\w-]+>/<category:[\w-]+>' => 'board/board/index',
         'board/<region:[\w-]+>' => 'board/board/index',
         'board' => 'board/board/index',
-
-        'boards/<slug:[\w-]+>' => 'board/board/view',
 
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',

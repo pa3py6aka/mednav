@@ -14,13 +14,50 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Breadcrumbs;
 
 class BoardHelper
 {
-    public static function generateIndexTitle()
+    public static function registerHeadMeta(View $view, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): void
     {
+        $title = null;
+        $description = null;
+        $keywords = null;
+        if ($categoryRegion) {
+            $title = $categoryRegion->meta_title;
+            $description = $categoryRegion->meta_description;
+            $keywords = $categoryRegion->meta_keywords;
+        }
+        if ($category) {
+            $title = $title ?: $category->meta_title;
+            $description = $description ?: $category->meta_description;
+            $keywords = $keywords ?: $category->meta_keywords;
+        }
+        $title = $title ?: 'Объявления';
 
+        $view->title = $title;
+        if ($description) {
+            $view->registerMetaTag(['name' => 'description', 'content' => $description]);
+        }
+        if ($keywords) {
+            $view->registerMetaTag(['name' => 'keywords', 'content' => $keywords]);
+        }
+    }
+
+    public static function getTitle(BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
+    {
+        $title = $categoryRegion ? $categoryRegion->title : '';
+        $title = $title ?: ($category ? $category->title : '');
+        $title = $title ?: ($category ? $category->name : '');
+        return $title;
+    }
+
+    public static function contextCategoryLink(Board $board): string
+    {
+        $category = ArrayHelper::getValue($board->category->parents, 0, $board->category);
+        $name = $board->category->context_name ?: $category->name;
+        return Html::a($name, self::categoryUrl($category, Yii::$app->session->get('geo', 'all')), ['class' => 'list-lnk']);
     }
 
     public static function categoryDescriptionBlock($position, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
@@ -49,7 +86,7 @@ class BoardHelper
 
     public static function breadCrumbs(BoardCategory $category = null, Geo $geo = null)
     {
-        $items[] = ['label' => Yii::$app->settings->get(SettingsManager::BOARD_NAME), 'url' => ['/board/board/index']];
+        $items[] = ['label' => Yii::$app->settings->get(SettingsManager::BOARD_NAME), 'url' => ['/board/board/index', 'region' => $geo ? $geo->slug : 'all']];
         if ($category) {
             foreach ($category->parents as $parent) {
                 $items[] = ['label' => $parent->name, 'url' => self::categoryUrl($parent, $geo)];
@@ -65,7 +102,7 @@ class BoardHelper
         return ArrayHelper::map(BoardParameterOption::findAll(['parameter_id' => 1]), 'id', 'name');
     }
 
-    public static function categoryUrl(BoardCategory $category = null, Geo $geo = null, $forFilter = false, $withParams = true)
+    public static function categoryUrl(BoardCategory $category = null, $geo = null, $forFilter = false, $withParams = true)
     {
         if ($withParams) {
             $queryParams = Yii::$app->request->getQueryParams();
@@ -85,7 +122,8 @@ class BoardHelper
         if (!$category && !$geo) {
             $url = ['/board/board/index'];
         } else {
-            $url = ['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geo ? $geo->slug : 'all'];
+            $geoSlug = $geo && $geo instanceof Geo ? $geo->slug : ($geo ?: 'all');
+            $url = ['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geoSlug];
         }
 
         return Url::to(array_merge($url, $params));

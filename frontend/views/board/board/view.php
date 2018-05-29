@@ -6,6 +6,8 @@ use yii\helpers\Html;
 /* @var $board \core\entities\Board\Board */
 
 $this->title = $board->getTitle();
+$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($board->description)]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->keywords)]);
 
 ?>
 <div class="row">

@@ -17,6 +17,7 @@ use core\repositories\Board\BoardRepository;
 use core\services\TransactionManager;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\helpers\StringHelper;
 
 class BoardManageService
 {
@@ -47,7 +48,7 @@ class BoardManageService
             $form->description ?: '',
             $form->keywords ?: trim($form->tags),
             $form->note,
-            $form->price ?: 0,
+            $form->price,
             $form->currency,
             $form->priceFrom,
             $form->fullText,
@@ -90,7 +91,7 @@ class BoardManageService
             $form->description,
             $form->keywords ?: trim($form->tags),
             $form->note,
-            $form->price ?: 0,
+            $form->price,
             $form->currency,
             $form->priceFrom,
             $form->fullText,
@@ -107,10 +108,10 @@ class BoardManageService
 
     private function saveTags(Board $board, string $tags): void
     {
-        $tags = explode(',', $tags);
+
+        $tags = StringHelper::explode($tags, ',', true, true);
         BoardTagAssignment::deleteAll(['board_id' => $board->id]);
         foreach ($tags as $tag) {
-            $tag = trim($tag);
             if (strlen($tag) > 2) {
                 if (!$tagEntity = BoardTag::find()->where(['name' => $tag])->limit(1)->one()) {
                     $tagEntity = BoardTag::create($tag);

@@ -94,7 +94,7 @@ class BoardReadRepository
                         'desc' => ['b.id' => SORT_DESC],
                     ],
                     'price' => [
-                        'asc' => ['b.price' => SORT_ASC],
+                        'asc' => ['-[[b.price]]' => SORT_DESC],
                         'desc' => ['b.price' => SORT_DESC],
                         'label' => 'Цена'
                     ],

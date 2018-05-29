@@ -83,7 +83,7 @@ AppAsset::register($this);
                             </div>
                             <div id="navMenu-collapse" class="collapse navbar-collapse">
                                 <ul class="navbar-nav navbar-left nav"><li><a href="/trade">Каталог товаров</a></li>
-                                    <li><a href="<?= Url::to(['/board/board/index']) ?>">Объявления</a></li>
+                                    <li><a href="<?= Url::to(['/board/board/index', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Объявления</a></li>
                                     <li><a href="/company">Компании</a></li>
                                     <li><a href="/expo">Выставки</a></li>
                                     <li><a href="/brand">Бренды</a></li>

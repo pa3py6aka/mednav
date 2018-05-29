@@ -15,8 +15,7 @@ use core\helpers\PaginationHelper;
 /* @var $type int */
 
 
-$this->title = 'Главная';
-
+BoardHelper::registerHeadMeta($this, $category, $categoryRegion);
 
 ?>
 <div class="row">
@@ -25,7 +24,7 @@ $this->title = 'Главная';
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= BoardHelper::breadCrumbs($category, $geo) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= $category ? $category->name : '' ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= BoardHelper::getTitle($category, $categoryRegion) ?></h1></div>
         </div>
 
         <?= BoardCategoriesListWidget::widget(['category' => $category, 'region' => $geo]) ?>

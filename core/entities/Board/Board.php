@@ -97,7 +97,7 @@ class Board extends ActiveRecord
         $board->description = $description;
         $board->keywords = $keywords;
         $board->note = $note;
-        $board->price = PriceHelper::optimize($price);
+        $board->price = $price ? PriceHelper::optimize($price) : null;
         $board->currency_id = $currencyId;
         $board->price_from = $priceFrom;
         $board->full_text = $fullText;
@@ -133,7 +133,7 @@ class Board extends ActiveRecord
         $this->description = $description;
         $this->keywords = $keywords;
         $this->note = $note;
-        $this->price = PriceHelper::optimize($price);
+        $this->price = $price ? PriceHelper::optimize($price) : null;
         $this->currency_id = $currencyId;
         $this->price_from = $priceFrom;
         $this->full_text = $fullText;

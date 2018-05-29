@@ -45,7 +45,7 @@ $n = 1;
                                     <ul>
                                         <li>
                                             <input type="checkbox" id="item-<?= $num ?>" />
-                                            <label for="item-<?= $num ?>"><img src="/img/plus-icon.png"></label> <?= $widget->link($region['region']) ?>
+                                            <label for="item-<?= $num ?>"><img src="<?= Yii::$app->params['frontendHostInfo'] ?>/img/plus-icon.png"></label> <?= $widget->link($region['region']) ?>
                                             <ul>
                                                 <?php foreach ($region['cities'] as $city): ?>
                                                     <li><?= $widget->link($city) ?></li>

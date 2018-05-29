@@ -4,7 +4,7 @@ use core\components\ImageManager\ImageManagerAsset;
 use core\entities\Board\BoardTerm;
 use core\entities\Currency;
 use core\forms\manage\Board\BoardManageForm;
-use core\forms\manage\Geo\GeoForm;
+use frontend\widgets\RegionsModalWidget;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -100,3 +100,6 @@ $this->registerJs($model->getJs());
         </select>
     </div>
 </div>
+
+
+<?= RegionsModalWidget::widget() ?>

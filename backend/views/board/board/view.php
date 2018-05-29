@@ -90,6 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'status',
                             'value' => function (Board $board) {
+                                $board->updateStatus();
                                 return BoardHelper::statusBadge($board->status, $board->statusName);
                             },
                             'format' => 'raw',

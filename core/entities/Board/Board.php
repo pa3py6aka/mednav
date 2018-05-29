@@ -160,6 +160,13 @@ class Board extends ActiveRecord
         $this->status = $status;
     }
 
+    public function updateStatus(): void
+    {
+        if (time() >= $this->active_until && $this->status == self::STATUS_ACTIVE) {
+            $this->status = self::STATUS_ARCHIVE;
+        }
+    }
+
     public function getPriceString(): string
     {
         if (!$this->price) {
@@ -176,6 +183,11 @@ class Board extends ActiveRecord
     public function isActive(): bool
     {
         return $this->status == self::STATUS_ACTIVE && time() < $this->active_until;
+    }
+
+    public function isActually(): bool
+    {
+        return time() < ($this->updated_at + (15 * 24 * 3600));
     }
 
     public function hasExtendNotification(): bool
@@ -199,11 +211,6 @@ class Board extends ActiveRecord
         return $this->main_photo_id ?
             $this->mainPhoto->getUrl($type, $absolute)
             : ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '/') . 'img/photo.png';
-    }
-
-    public function isActually(): bool
-    {
-        return time() < ($this->updated_at + (15 * 24 * 3600));
     }
 
     public function beforeDelete()

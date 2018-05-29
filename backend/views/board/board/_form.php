@@ -76,14 +76,15 @@ $this->registerJs($model->getJs());
                 ->hint('<span class="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
 
         <?php if (!$board): ?>
-        <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
-            <div class="add-image-item">
-                <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
-                <input type="file" class="hidden">
-                <span class="remove-btn fa fa-remove hidden"></span>
+            <label class="control-label" for="form-geo-id">Фото</label>
+            <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
+                <div class="add-image-item">
+                    <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
+                    <input type="file" class="hidden">
+                    <span class="remove-btn fa fa-remove hidden"></span>
+                </div>
+                <div class="help-block"></div>
             </div>
-            <div class="help-block"></div>
-        </div>
         <?php endif; ?>
 
     </div>

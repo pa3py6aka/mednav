@@ -56,6 +56,7 @@ $this->registerJs($model->getJs());
     ->hint('<span class="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
 
 <?php if ($model->scenario == BoardManageForm::SCENARIO_USER_CREATE): ?>
+    <label class="control-label" for="form-geo-id">Фото</label>
     <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
         <div class="add-image-item has-overlay">
             <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">

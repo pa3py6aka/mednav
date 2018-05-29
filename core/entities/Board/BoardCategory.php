@@ -7,6 +7,7 @@ use paulzi\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%board_categories}}".
@@ -132,6 +133,11 @@ class BoardCategory extends ActiveRecord
         $this->meta_description_item = $metaDescriptionItem;
         $this->pagination = $pagination;
         $this->active = $active;
+    }
+
+    public function getTitle()
+    {
+        return $this->title ?: $this->name;
     }
 
     /**

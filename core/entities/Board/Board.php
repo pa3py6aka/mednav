@@ -13,6 +13,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use Zelenin\yii\behaviors\Slug;
 
@@ -186,6 +187,23 @@ class Board extends ActiveRecord
     public function canExtend($userId): bool
     {
         return $this->author_id === $userId && $this->status > self::STATUS_ON_MODERATION;
+    }
+
+    public function getTitle()
+    {
+        return $this->title ?: Html::encode($this->name);
+    }
+
+    public function getMainPhotoUrl($type = 'big', $absolute = false)
+    {
+        return $this->main_photo_id ?
+            $this->mainPhoto->getUrl($type, $absolute)
+            : ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '/') . 'img/photo.png';
+    }
+
+    public function isActually(): bool
+    {
+        return time() < ($this->updated_at + (15 * 24 * 3600));
     }
 
     public function beforeDelete()

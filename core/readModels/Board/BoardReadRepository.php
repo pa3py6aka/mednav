@@ -3,6 +3,7 @@
 namespace core\readModels\Board;
 
 
+use core\access\Rbac;
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Geo;
@@ -10,9 +11,18 @@ use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 class BoardReadRepository
 {
+    public function getByIdAndSlug($id, $slug): Board
+    {
+        if (!$board = Board::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
+            throw new NotFoundHttpException("Объявление не найдено");
+        }
+        return $board;
+    }
+
     public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null): DataProviderInterface
     {
         $query = Board::find()->alias('b')->active('b')->with('mainPhoto', 'category', 'geo', 'typeBoardParameter.option');

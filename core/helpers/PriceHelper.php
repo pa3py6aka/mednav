@@ -14,6 +14,6 @@ class PriceHelper
     public static function normalize($price)
     {
         $price = number_format($price/100, 2, ', ', ' ');
-        return str_replace(', 00', '', $price) . PHP_EOL;
+        return str_replace(', 00', '', $price);
     }
 }

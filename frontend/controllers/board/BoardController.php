@@ -63,4 +63,14 @@ class BoardController extends Controller
             'type' => $type,
         ]);
     }
+
+    public function actionView($id, $slug)
+    {
+        $board = $this->readRepository->getByIdAndSlug($id, $slug);
+        $board->updateCounters(['views' => 1]);
+
+        return $this->render('view', [
+            'board' => $board
+        ]);
+    }
 }

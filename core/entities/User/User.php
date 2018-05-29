@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\IdentityInterface;
 
 /**
@@ -141,6 +142,11 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
     public function isCompanyActive(): bool
     {
         return $this->company_id && $this->company->name && $this->company->slug;
+    }
+
+    public function getUrl(): string
+    {
+        return Url::to(['/user/user/view', 'id' => $this->id]);
     }
 
     public function updateStatus($status): void

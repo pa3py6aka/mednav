@@ -177,7 +177,7 @@ class BoardManageService
         }
         foreach ($ids as $id) {
             $board = $this->repository->get($id);
-            $board->setStatus(Board::STATUS_ACTIVE);
+            $board->extend();
             $this->repository->save($board);
         }
     }

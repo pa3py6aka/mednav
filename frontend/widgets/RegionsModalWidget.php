@@ -63,7 +63,7 @@ class RegionsModalWidget extends Widget
                 }
             }
             return $countriesArray;
-        }, 60);
+        }, 1);
     }
 
     public function link(Geo $region): string

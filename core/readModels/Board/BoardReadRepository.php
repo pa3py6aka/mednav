@@ -106,8 +106,8 @@ class BoardReadRepository
                 ],
             ],
             'pagination' => [
-                'pageSizeLimit' => [25, 250],
-                'defaultPageSize' => 25,
+                'pageSizeLimit' => [5, 250], //Todo Выставить 25 на продакшине
+                'defaultPageSize' => 5,
                 'forcePageParam' => false,
             ]
         ]);

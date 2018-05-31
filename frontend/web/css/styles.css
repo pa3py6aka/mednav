@@ -928,6 +928,7 @@ a.footer-lnk-add, a.footer-lnk-green:hover {
 .no-padding {padding:0 !important;}
 .required label:after {content:" *";color:red;}
 .main-container > .alert {margin-bottom:6px;}
+.title-param {color:#248FC7;}
 
 a.sort.asc, a.sort.desc {font-weight:bold;}
 a.sort.desc:after {content:'\e156';font-family:'Glyphicons Halflings';margin-left:2px;}
@@ -946,6 +947,9 @@ a.sort.asc:after {content:'\e155';font-family:'Glyphicons Halflings';margin-left
 a.asc:after, a.desc:after {position:relative;top:1px;display:inline-block;font-family:'Glyphicons Halflings';font-style:normal;font-weight:normal;line-height:1;padding-left:5px;}
 a.asc:after {content:"\e155";}
 a.desc:after {content:"\e156";}
+
+.nav-tabs-tools {float:right;padding-top:19px;}
+.nav-tabs-tools > a {text-decoration:none !important;}
 
 /* Стили по загрузке фото в формах */
 .photos-block .help-block {color:darkred;}

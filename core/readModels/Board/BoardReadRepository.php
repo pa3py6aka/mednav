@@ -28,12 +28,12 @@ class BoardReadRepository
         $query = Board::find()->alias('b')->active('b')->with('mainPhoto', 'category', 'geo', 'typeBoardParameter.option');
 
         if ($category) {
-            $ids = ArrayHelper::merge([$category->id], $category->getLeaves()->select('id')->column());
+            $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
             $query->andWhere(['b.category_id' => $ids]);
         }
 
         if ($geo) {
-            $ids = ArrayHelper::merge([$geo->id], $geo->getLeaves()->select('id')->column());
+            $ids = ArrayHelper::merge([$geo->id], $geo->getDescendants()->select('id')->column());
             $query->andWhere(['b.geo_id' => $ids]);
         }
 
@@ -84,7 +84,7 @@ class BoardReadRepository
 
     private function getProvider(ActiveQuery $query): ActiveDataProvider
     {
-        return new ActiveDataProvider([
+        $provider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => ['date' => SORT_DESC],
@@ -111,5 +111,7 @@ class BoardReadRepository
                 'forcePageParam' => false,
             ]
         ]);
+        $provider->models; // Для обновления данных в пагинации
+        return $provider;
     }
 }

@@ -30,7 +30,7 @@ class BoardCategoriesListWidget extends Widget
     public function run()
     {
         $cacheKey = self::CACHE_KEY_PREFIX . ($this->category ? $this->category->id : 0) . '-' . ($this->region ? $this->region->id : 0);
-        //return \Yii::$app->cache->getOrSet($cacheKey, function () {
+        return \Yii::$app->cache->getOrSet($cacheKey, function () {
             if ($this->category) {
                 $categories = $this->category->getChildren()->active()->all();
             } else {
@@ -45,7 +45,7 @@ class BoardCategoriesListWidget extends Widget
                 'categories' => $categories,
                 'widget' => $this,
             ]);
-        //}, 60);
+        }, 60);
     }
 
     public function generateList(BoardCategory $category)

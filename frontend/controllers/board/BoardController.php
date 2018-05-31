@@ -34,6 +34,9 @@ class BoardController extends Controller
 
     public function actionIndex($category = null, $region = null)
     {
+        if (!$category && !$region) {
+            return $this->redirect(['index', 'region' => 'all']);
+        }
         if ($region) {
             Yii::$app->session->set("geo", $region); // Сохраняем выбранный регион в сессию
         }

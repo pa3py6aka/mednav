@@ -21,7 +21,7 @@ use core\helpers\BoardHelper;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $board->getUrl() ?>">
-                        <img src="<?= $board->getMainPhotoUrl('small') ?>" alt="<?= $board->title ?>" class="img-responsive">
+                        <img src="<?= $board->getMainPhotoUrl('small') ?>" alt="<?= $board->getTitle() ?>" class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-8 col-sm-8 col-xs-12">

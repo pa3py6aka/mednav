@@ -48,7 +48,7 @@ $this->title = "Регистрация";
                     'options' => ['placeholder' => 'Введите код с картинки', 'class' => 'form-control'],
                     'template' => '<label class="label col-md-3">{image}</label><div class="col-md-9 no-padding">{input}</div>',
 
-                ])->label('') ?>
+                ])->label('Проверочный код') ?>
 
             </div>
 

@@ -35,7 +35,7 @@ BoardHelper::registerHeadMeta($this, $category, $categoryRegion);
         </div>
         <!-- // content-block-->
 
-        <?= BoardHelper::categoryDescriptionBlock('top', $category, $categoryRegion) ?>
+        <?= BoardHelper::categoryDescriptionBlock('top', !$provider->pagination->page, $category, $categoryRegion) ?>
 
         <div class="row">
             <div class="col-md-12">
@@ -100,7 +100,7 @@ BoardHelper::registerHeadMeta($this, $category, $categoryRegion);
         </div>
         <!-- // content-blocks-->
 
-        <?= BoardHelper::categoryDescriptionBlock('bottom', $category, $categoryRegion) ?>
+        <?= BoardHelper::categoryDescriptionBlock('bottom', !$provider->pagination->page, $category, $categoryRegion) ?>
 
     </div>
 

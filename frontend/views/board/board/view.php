@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
+use core\helpers\BoardHelper;
 
 /* @var $this \yii\web\View */
 /* @var $board \core\entities\Board\Board */
@@ -22,19 +23,24 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 <ul class="breadcrumb">
                     <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
                     <?php foreach ($board->category->parents as $category) {
-                        ?><li><a href="<?= Url::to(['/board/board/index', 'category' => $category->slug]) ?>"><?= $category->getTitle() ?></a></li><?php
+                        ?><li><a href="<?= BoardHelper::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->getTitle() ?></a></li><?php
                     } ?>
-                    <li><a href="<?= Url::to(['/board/board/index', 'category' => $board->category->slug]) ?>"><?= $board->category->getTitle() ?></a></li>
+                    <li><a href="<?= BoardHelper::categoryUrl($board->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $board->category->getTitle() ?></a></li>
                 </ul>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= Html::encode($board->name) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h1>
+                    <span class="title-param"><?= $board->defaultType ?></span>
+                    <?= Html::encode($board->name) ?>
+                </h1>
+            </div>
         </div>
         <div><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> <?= Yii::$app->formatter->asDate($board->updated_at) ?></div>
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div>
                     <a class="fancybox" href="<?= $board->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                        <img src="<?= $board->getMainPhotoUrl() ?>" alt="<?= Html::encode($board->name) ?>" class="img-responsive">
+                        <img src="<?= $board->getMainPhotoUrl() ?>" alt="<?= $board->getTitle() ?>" class="img-responsive">
                     </a>
                 </div>
                 <div class="kt-item-thumb">
@@ -43,7 +49,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                             continue;
                         } ?>
                         <a class="fancybox" href="<?= $photo->getUrl('max') ?>" data-fancybox-group="gallery">
-                            <img src="<?= $photo->getUrl() ?>" alt="<?= Html::encode($board->name) ?>" class="img-responsive">
+                            <img src="<?= $photo->getUrl() ?>" alt="<?= $board->getTitle() ?>" class="img-responsive">
                         </a>
                     <?php endforeach; ?>
                 </div>

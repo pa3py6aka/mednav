@@ -55,19 +55,18 @@ class BoardHelper
 
     public static function contextCategoryLink(Board $board): string
     {
-        $category = ArrayHelper::getValue($board->category->parents, 0, $board->category);
-        $name = $board->category->context_name ?: $category->name;
-        return Html::a($name, self::categoryUrl($category, Yii::$app->session->get('geo', 'all')), ['class' => 'list-lnk']);
+        $name = $board->category->context_name ?: $board->category->name;
+        return Html::a($name, self::categoryUrl($board->category, Yii::$app->session->get('geo', 'all')), ['class' => 'list-lnk']);
     }
 
-    public static function categoryDescriptionBlock($position, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
+    public static function categoryDescriptionBlock($position, $isMainPage, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
     {
-        $constOn = $position == 'top' ? SettingsManager::BOARD_DESCRIPTION_TOP_ON : SettingsManager::BOARD_DESCRIPTION_BOTTOM_ON;
         $const = $position == 'top' ? SettingsManager::BOARD_DESCRIPTION_TOP : SettingsManager::BOARD_DESCRIPTION_BOTTOM;
         $text = '';
-        if ($categoryRegion && $categoryRegion->{'description_' . $position . '_on'}) {
+        //echo $categoryRegion->{'description_' . $position . '_on'};exit;
+        if ($categoryRegion && ($isMainPage || !$categoryRegion->{'description_' . $position . '_on'})) {
             $text = $categoryRegion->{'description_' . $position};
-        } else if ($category && $category->{'description_' . $position . '_on'}) {
+        } else if ($category && ($isMainPage || !$category->{'description_' . $position . '_on'})) {
             $text = $category->{'description_' . $position};
         } else if (Yii::$app->settings->get($const)) {
             $text = Yii::$app->settings->get($const);

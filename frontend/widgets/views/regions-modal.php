@@ -1,5 +1,7 @@
 <?php
 
+use core\helpers\BoardHelper;
+
 /* @var $widget \frontend\widgets\RegionsModalWidget */
 /* @var $countries array */
 
@@ -20,6 +22,11 @@ $n = 1;
                         <li<?= $n == 1 ? ' class="active"' : '' ?>><a data-toggle="tab" href="#panel<?= $n ?>"><b><?= $country['country']->name ?></b></a></li>
                         <?php $n++; ?>
                     <?php endforeach; ?>
+                    <?php if ($widget->type): ?>
+                        <div class="nav-tabs-tools">
+                            <a href="<?= BoardHelper::categoryUrl($widget->category) ?>">Сбросить фильтр</a>
+                        </div>
+                    <?php endif; ?>
                 </ul>
                 <div class="tab-content">
                     <?php $n = 1; ?>

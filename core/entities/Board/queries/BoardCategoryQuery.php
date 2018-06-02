@@ -20,6 +20,11 @@ class BoardCategoryQuery extends ActiveQuery
         return $this->andWhere(['active' => 1]);
     }
 
+    public function enabled()
+    {
+        return $this->andWhere(['enabled' => 1]);
+    }
+
     /**
      * @inheritdoc
      * @return \core\entities\Board\BoardCategory[]|array

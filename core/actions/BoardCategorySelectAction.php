@@ -21,22 +21,15 @@ class BoardCategorySelectAction extends Action
         $category = BoardCategory::findOne($id);
 
         if ($category->depth == 0) {
-            $items = $category->getChildren()->orderBy('tree, lft')->active()->select(['id', 'name'])->asArray()->all();
+            $items = $category->getChildren()->orderBy('tree, lft')->active()->enabled()->select(['id', 'name'])->asArray()->all();
         } else if ($category->depth == 1) {
-            $items = $category->getDescendants()->orderBy('tree, lft')->select(['id', 'name', 'depth'])->asArray()->active()->all();
+            $items = $category->getDescendants()->orderBy('tree, lft')->select(['id', 'name', 'depth'])->asArray()->active()->enabled()->all();
             array_walk($items, function (&$item, $key) {
                 $item = [
                     'id' => $item['id'],
                     'name' => ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name']
                 ];
             });
-
-            /*$items = ArrayHelper::map($category->getDescendants()->orderBy('tree, lft')->asArray()->active()->all(), 'id', function (array $category) {
-                return [
-                    'id' => $category['id'],
-                    'name' => ($category['depth'] > 2 ? str_repeat('-', $category['depth'] - 2) . ' ' : '') . $category['name']
-                ];
-            });*/
         } else {
             $items = [];
         }

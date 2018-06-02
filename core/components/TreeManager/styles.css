@@ -1,0 +1,13 @@
+table.fancytree-ext-table tbody tr.fancytree-active {
+    background-color: inherit;
+}
+table.fancytree-ext-table tbody tr.fancytree-focused {
+    background-color: inherit;
+}
+table.fancytree-ext-table td {
+    padding: 30px 30px;
+}
+table.fancytree-ext-table td > a > i {
+    font-size: 18px;
+    margin-right: 6px;
+}

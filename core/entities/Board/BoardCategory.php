@@ -2,12 +2,12 @@
 
 namespace core\entities\Board;
 
+
 use core\entities\Board\queries\BoardCategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%board_categories}}".

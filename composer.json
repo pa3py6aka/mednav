@@ -25,7 +25,8 @@
         "zelenin/yii2-slug-behavior": "~1.5.1",
         "kartik-v/yii2-widget-fileinput": "@dev",
         "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-tree-manager": "@dev"
+        "yiisoft/yii2-jui": "*",
+        "bower-asset/fancytree": ">=2.28"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

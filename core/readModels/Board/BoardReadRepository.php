@@ -3,7 +3,6 @@
 namespace core\readModels\Board;
 
 
-use core\access\Rbac;
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Geo;

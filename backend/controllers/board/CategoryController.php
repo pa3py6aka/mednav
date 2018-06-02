@@ -3,6 +3,7 @@
 namespace backend\controllers\board;
 
 
+use core\components\TreeManager\TreeManageActions;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardCategoryRegion;
 use core\forms\manage\Board\BoardCategoryForm;
@@ -36,6 +37,17 @@ class CategoryController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'tree-manage' => [
+                'class' => TreeManageActions::class,
+                'entityClass' => BoardCategory::class,
+                'url' => '/board/category',
             ],
         ];
     }

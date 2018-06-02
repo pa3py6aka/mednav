@@ -130,6 +130,14 @@ a.desc:after {
     margin-right: 2px;
 }
 
+* {
+    outline: 0 !important;
+}
+::-moz-focus-outer, ::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
 /* Стили по загрузке фото в формах */
 .photos-block .help-block {
     color: darkred;

@@ -58,7 +58,7 @@ class BoardCategoriesListWidget extends Widget
         }
 
         $children = $this->isMainPage
-            ? $category->getChildren()->andWhere(['not_show_on_main' => 0])->all()
+            ? $category->getChildren()->andWhere(['not_show_on_main' => 0])->active()->all()
             : $category->children;
         if ($children) {
             $html = '<ul class="list-section-listing">';

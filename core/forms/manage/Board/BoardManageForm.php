@@ -147,14 +147,14 @@ class BoardManageForm extends Model
         $n = 0;
         foreach ($this->categoryId as $n => $categoryId) {
             if ($n == 0) {
-                $categories = ArrayHelper::map(BoardCategory::find()->roots()->asArray()->all(), 'id', 'name');
+                $categories = ArrayHelper::map(BoardCategory::find()->enabled()->roots()->asArray()->all(), 'id', 'name');
             } else if ($n == 2) {
-                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getDescendants()->active()->all(), 'id', function ($item) {
+                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
                     return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
                 });
                 $this->categoryId[$n] = end($this->categoryId);
             } else if ($n == 1) {
-                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getChildren()->active()->all(), 'id', 'name');
+                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getChildren()->active()->enabled()->all(), 'id', 'name');
             }
 
             if ($n < 3) {
@@ -171,11 +171,11 @@ class BoardManageForm extends Model
         if ($n < 2 && $this->categoryId[$n]) {
             $category = BoardCategory::findOne($this->categoryId[$n]);
             if ($category->depth == 1) {
-                $children = ArrayHelper::map($category->getDescendants()->active()->all(), 'id', function ($item) {
+                $children = ArrayHelper::map($category->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
                     return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
                 });
             } else {
-                $children = ArrayHelper::map($category->getChildren()->active()->all(), 'id', 'name');
+                $children = ArrayHelper::map($category->getChildren()->active()->enabled()->all(), 'id', 'name');
             }
 
             $dropdown = Html::activeDropDownList($this, 'categoryId[' . ($n + 1) . ']', $children, ['class' => 'form-control', 'prompt' => '']);

@@ -8,7 +8,7 @@
         $settingsModal.modal();
         $settingsModal.find('.modal-title').text($(this).attr('data-geo-name'));
         $.ajax({
-            url: '/board/category/region-settings',
+            url: RAW_url,
             method: "post",
             dataType: "html",
             data: {regionId: regionId, entityId: entityId},

@@ -20,14 +20,14 @@ class BoardCategorySelectAction extends Action
         $formName = Yii::$app->request->post('formName');
         $category = BoardCategory::findOne($id);
 
-        if ($category->depth == 0) {
-            $items = $category->getChildren()->orderBy('tree, lft')->active()->enabled()->select(['id', 'name'])->asArray()->all();
-        } else if ($category->depth == 1) {
-            $items = $category->getDescendants()->orderBy('tree, lft')->select(['id', 'name', 'depth'])->asArray()->active()->enabled()->all();
+        if ($category->depth < 2) {
+            $items = $category->getChildren()->orderBy('lft')->active()->enabled()->select(['id', 'name'])->asArray()->all();
+        } else if ($category->depth == 2) {
+            $items = $category->getDescendants()->orderBy('lft')->select(['id', 'name', 'depth'])->asArray()->active()->enabled()->all();
             array_walk($items, function (&$item, $key) {
                 $item = [
                     'id' => $item['id'],
-                    'name' => ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name']
+                    'name' => ($item['depth'] > 3 ? str_repeat('-', $item['depth'] - 3) . ' ' : '') . $item['name']
                 ];
             });
         } else {

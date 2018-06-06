@@ -3,11 +3,12 @@
 use backend\assets\RegionsAttachAsset;
 use backend\widgets\RegionsAttachWidget;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $category \core\entities\Board\BoardCategory */
+/* @var $category \core\entities\Company\CompanyCategory */
 
-$this->registerJsVar('RAW_url', \yii\helpers\Url::to(['/board/category/region-settings']));
+$this->registerJsVar('RAW_url', Url::to(['/company/category/region-settings']));
 RegionsAttachAsset::register($this);
 
 ?>

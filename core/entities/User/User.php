@@ -23,7 +23,6 @@ use yii\web\IdentityInterface;
  * @property int $id
  * @property string $email
  * @property int $type
- * @property int $company_id [int(11)]
  * @property int $geo_id [int(11)]
  * @property string $last_name [varchar(255)]
  * @property string $name [varchar(255)]
@@ -141,7 +140,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function isCompanyActive(): bool
     {
-        return $this->company_id && $this->company->name && $this->company->slug;
+        return $this->company && $this->company->name && $this->company->slug;
     }
 
     public function getUrl(): string
@@ -193,7 +192,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function getVisibleName(): string
     {
-        if ($this->company_id) {
+        if ($this->isCompany() && $this->isCompanyActive()) {
             return $this->company->name;
         }
         return $this->email;
@@ -358,7 +357,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function getCompany(): ActiveQuery
     {
-        return $this->hasOne(Company::class, ['id' => 'company_id']);
+        return $this->hasOne(Company::class, ['user_id' => 'id']);
     }
 
     public function getGeo(): ActiveQuery

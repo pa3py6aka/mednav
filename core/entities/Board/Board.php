@@ -8,14 +8,13 @@ use core\entities\Geo;
 use core\entities\User\User;
 use core\helpers\PriceHelper;
 use Yii;
+use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
-use yii\helpers\FileHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use Zelenin\yii\behaviors\Slug;
 
 /**
  * This is the model class for table "{{%boards}}".
@@ -267,10 +266,11 @@ class Board extends ActiveRecord
         return [
             TimestampBehavior::class,
             'slug' => [
-                'class' => Slug::class,
+                'class' => SluggableBehavior::class,
                 'slugAttribute' => 'slug',
                 'attribute' => 'userSlug',
-                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
+                'ensureUnique' => true,
+                //'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ]
         ];
     }

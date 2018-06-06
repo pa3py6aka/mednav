@@ -16,6 +16,11 @@
                         ['label' => 'Объявления', 'icon' => 'newspaper-o', 'url' => ['/board/board/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/board/settings/main']],
                     ]],
+                    ['label' => 'Каталог Компаний', 'icon' => 'book', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/company/category/index']],
+                        ['label' => 'Компании', 'icon' => 'newspaper-o', 'url' => ['/company/board/active']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/company/settings/main']],
+                    ]],
                     [
                         'label' => 'Выйти',
                         'url' => ['site/logout'],

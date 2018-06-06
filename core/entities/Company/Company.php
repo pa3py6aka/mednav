@@ -11,11 +11,14 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "{{%companies}}".
  *
  * @property int $id
+ * @property int $category_id [int(11)]
+ * @property int $user_id [int(11)]
  * @property string $form
  * @property string $name
  * @property string $logo
@@ -40,10 +43,17 @@ use yii\db\ActiveRecord;
  * @property CompanyTagsAssignment[] $companyTagsAssignments
  * @property CompanyTag[] $tags
  * @property User[] $user
+ * @property CompanyCategoryAssignment[] $companyCategoryAssignments
+ * @property CompanyCategory[] $categories
  */
 class Company extends ActiveRecord implements StatusesInterface
 {
     use StatusesTrait;
+
+    public function getPhones()
+    {
+        return $this->phones ? Json::decode($this->phones) : [];
+    }
 
     public static function tableName(): string
     {
@@ -123,12 +133,24 @@ class Company extends ActiveRecord implements StatusesInterface
 
     public function getTags(): ActiveQuery
     {
-        return $this->hasMany(CompanyTag::class, ['id' => 'tag_id'])->viaTable('{{%company_tags_assignment}}', ['company_id' => 'id']);
+        return $this->hasMany(CompanyTag::class, ['id' => 'tag_id'])
+            ->viaTable('{{%company_tags_assignment}}', ['company_id' => 'id']);
     }
 
     public function getUser(): ActiveQuery
     {
-        return $this->hasOne(User::class, ['company_id' => 'id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getCompanyCategoriesAssignments(): ActiveQuery
+    {
+        return $this->hasMany(CompanyCategoryAssignment::class, ['company_id' => 'id']);
+    }
+
+    public function getCategories(): ActiveQuery
+    {
+        return $this->hasMany(CompanyCategory::class, ['id' => 'category_id'])
+            ->viaTable('{{%company_categories_assignment}}', ['company_id' => 'id']);
     }
 
     /**

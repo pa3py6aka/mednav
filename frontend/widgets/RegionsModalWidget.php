@@ -86,7 +86,7 @@ class RegionsModalWidget extends Widget
     $('#modalRegion').on('click', '[data-geo=link]', function() {
       var name = $(this).text(),
           id = $(this).attr('data-id');
-      $('.region-select-link').text(name);
+      $('#region-select-link').text(name);
       $('#form-geo-id').val(id).parent().removeClass('has-error').addClass('has-success').find('.help-block-error').text('');
       $('#modalRegion').modal('hide');
     });

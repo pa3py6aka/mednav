@@ -4,6 +4,7 @@ namespace frontend\controllers\user;
 
 
 use core\access\Rbac;
+use core\forms\Company\CompanyForm;
 use core\forms\User\UpdatePasswordForm;
 use core\forms\User\UserProfileForm;
 use core\useCases\cabinet\ProfileService;
@@ -93,8 +94,11 @@ class AccountController extends Controller
             throw new ForbiddenHttpException('Ваш профиль не является компанией.');
         }
 
+        $form = new CompanyForm($this->_user->company);
+
         return $this->render('company', [
             'user' => $this->_user,
+            'model' => $form,
         ]);
     }
 }

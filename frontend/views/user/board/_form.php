@@ -53,7 +53,7 @@ $this->registerJs($model->getJs());
 
 <?= $form->field($model, 'geoId')
     ->hiddenInput(['id' => 'form-geo-id'])
-    ->hint('<span class="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
+    ->hint('<span class="input-modal-link" id="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
 
 <?php if ($model->scenario == BoardManageForm::SCENARIO_USER_CREATE): ?>
     <label class="control-label" for="form-geo-id">Фото</label>

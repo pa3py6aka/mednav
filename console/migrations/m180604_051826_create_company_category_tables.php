@@ -5,11 +5,11 @@ use yii\db\Migration;
 /**
  * Class m180516_223626_create_company_category_tables
  */
-class m180516_223626_create_company_category_tables extends Migration
+class m180604_051826_create_company_category_tables extends Migration
 {
     public function up()
     {
-        /*$tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
 
         $this->createTable('{{%company_categories}}', [
             'id' => $this->primaryKey(),
@@ -40,11 +40,17 @@ class m180516_223626_create_company_category_tables extends Migration
 
         $this->createIndex('{{%idx-company_categories-slug}}', '{{%company_categories}}', 'slug', true);
         $this->createIndex('lft', '{{%company_categories}}', ['tree', 'lft', 'rgt']);
-        $this->createIndex('rgt', '{{%company_categories}}', ['tree', 'rgt']);*/
+        $this->createIndex('rgt', '{{%company_categories}}', ['tree', 'rgt']);
+
+        $this->addColumn('{{%companies}}', 'category_id', $this->integer()->notNull()->after('id'));
+        $this->createIndex('idx-companies-category_id', '{{%companies}}', 'category_id');
+        $this->addForeignKey('fk-companies-category_id', '{{%companies}}', 'category_id', '{{%company_categories}}', 'id', 'RESTRICT', 'CASCADE');
     }
 
     public function down()
     {
-        //$this->dropTable('{{%company_categories}}');
+        $this->dropForeignKey('fk-companies-category_id', '{{%companies}}');
+        $this->dropColumn('{{%companies}}', 'category_id');
+        $this->dropTable('{{%company_categories}}');
     }
 }

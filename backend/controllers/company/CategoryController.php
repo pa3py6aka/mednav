@@ -1,14 +1,14 @@
 <?php
 
-namespace backend\controllers\board;
+namespace backend\controllers\company;
 
 
 use core\components\TreeManager\TreeManageActions;
-use core\entities\Board\BoardCategory;
-use core\entities\Board\BoardCategoryRegion;
-use core\forms\manage\Board\BoardCategoryForm;
-use core\forms\manage\Board\BoardCategoryRegionForm;
-use core\useCases\manage\Board\BoardCategoryManageService;
+use core\entities\Company\CompanyCategory;
+use core\entities\Company\CompanyCategoryRegion;
+use core\forms\manage\Company\CompanyCategoryRegionForm;
+use core\forms\manage\Company\CompanyCategoryForm;
+use core\useCases\manage\Company\CompanyCategoryManageService;
 use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
@@ -20,7 +20,7 @@ class CategoryController extends Controller
 {
     private $service;
 
-    public function __construct($id, Module $module, BoardCategoryManageService $service, array $config = [])
+    public function __construct($id, Module $module, CompanyCategoryManageService $service, array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
@@ -46,8 +46,8 @@ class CategoryController extends Controller
         return [
             'tree-manage' => [
                 'class' => TreeManageActions::class,
-                'entityClass' => BoardCategory::class,
-                'url' => '/board/category',
+                'entityClass' => CompanyCategory::class,
+                'url' => '/company/category',
             ],
         ];
     }
@@ -55,7 +55,7 @@ class CategoryController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => BoardCategory::find()->roots(),
+            'query' => CompanyCategory::find()->roots(),
             'sort' => ['defaultOrder' => ['lft' => SORT_ASC]],
         ]);
 
@@ -66,7 +66,7 @@ class CategoryController extends Controller
 
     public function actionCreate()
     {
-        $form = new BoardCategoryForm();
+        $form = new CompanyCategoryForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
@@ -86,7 +86,7 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $category = $this->findModel($id);
-        $form = new BoardCategoryForm($category);
+        $form = new CompanyCategoryForm($category);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
@@ -120,8 +120,8 @@ class CategoryController extends Controller
         $categoryId = (int) Yii::$app->request->post('entityId');
         $regionId = (int) Yii::$app->request->post('regionId');
 
-        $categoryRegion = BoardCategoryRegion::find()->where(['category_id' => $categoryId, 'geo_id' => $regionId])->limit(1)->one();
-        $form = new BoardCategoryRegionForm($categoryRegion);
+        $categoryRegion = CompanyCategoryRegion::find()->where(['category_id' => $categoryId, 'geo_id' => $regionId])->limit(1)->one();
+        $form = new CompanyCategoryRegionForm($categoryRegion);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
@@ -154,7 +154,7 @@ class CategoryController extends Controller
 
     protected function findModel($id)
     {
-        if (($model = BoardCategory::findOne($id)) !== null) {
+        if (($model = CompanyCategory::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

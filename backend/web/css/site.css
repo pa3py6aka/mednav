@@ -182,7 +182,7 @@ a.desc:after {
 }
 /* //Конец стилей по загрузке фото в формах */
 
-.region-select-link {font-size:18px;border-bottom:1px dashed;color:#2d5d9c;cursor:pointer;}
+.input-modal-link {font-size:18px;border-bottom:1px dashed;color:#2d5d9c;cursor:pointer;}
 
 /* tree menu css */
 .css-treeview {

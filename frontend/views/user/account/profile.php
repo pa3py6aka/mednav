@@ -44,7 +44,7 @@ $this->title = 'Личный кабинет | Данные профиля';
                 <?php if (!$user->isCompany()) {
                     echo $form->field($profileModel, 'geoId')
                         ->hiddenInput(['id' => 'form-geo-id'])
-                        ->hint('<span class="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $profileModel->geoName() . '</span>');
+                        ->hint('<span class="input-modal-link" id="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $profileModel->geoName() . '</span>');
                 } ?>
 
                 <div class="col-xs-4 no-padding">

@@ -23,6 +23,9 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 <ul class="breadcrumb">
                     <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
                     <?php foreach ($board->category->parents as $category) {
+                        if ($category->isRoot()) {
+                            continue;
+                        }
                         ?><li><a href="<?= BoardHelper::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->getTitle() ?></a></li><?php
                     } ?>
                     <li><a href="<?= BoardHelper::categoryUrl($board->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $board->category->getTitle() ?></a></li>

@@ -48,7 +48,9 @@ class BoardManageForm extends Model
             $this->name = $board->name;
             $this->slug = $board->slug;
             foreach ($board->category->parents as $parent) {
-                $this->categoryId[] = $parent->id;
+                if (!$parent->isRoot()) {
+                    $this->categoryId[] = $parent->id;
+                }
             }
             $this->categoryId[] = $board->category_id;
             $this->title = $board->title;
@@ -170,9 +172,9 @@ class BoardManageForm extends Model
 
         if ($n < 2 && $this->categoryId[$n]) {
             $category = BoardCategory::findOne($this->categoryId[$n]);
-            if ($category->depth == 1) {
+            if ($category->depth == 2) {
                 $children = ArrayHelper::map($category->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
-                    return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
+                    return ($item['depth'] > 3 ? str_repeat('-', $item['depth'] - 3) . ' ' : '') . $item['name'];
                 });
             } else {
                 $children = ArrayHelper::map($category->getChildren()->active()->enabled()->all(), 'id', 'name');

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model \core\forms\manage\Board\BoardCategoryRegionForm */
+/* @var $model \yii\base\Model */
 /* @var $categoryId integer */
 /* @var $regionId integer */
 

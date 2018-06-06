@@ -1,30 +1,29 @@
 <?php
 
-namespace core\useCases\manage\Board;
+namespace core\useCases\manage\Company;
 
 
-use core\entities\Board\BoardCategory;
-use core\entities\Board\BoardCategoryParameter;
-use core\entities\Board\BoardCategoryRegion;
-use core\forms\manage\Board\BoardCategoryForm;
-use core\forms\manage\Board\BoardCategoryRegionForm;
-use core\repositories\Board\BoardCategoryRepository;
+use core\entities\Company\CompanyCategory;
+use core\entities\Company\CompanyCategoryRegion;
+use core\forms\manage\Company\CompanyCategoryRegionForm;
+use core\forms\manage\Company\CompanyCategoryForm;
+use core\repositories\Company\CompanyCategoryRepository;
 use core\services\TransactionManager;
 
-class BoardCategoryManageService
+class CompanyCategoryManageService
 {
     private $repository;
     private $transaction;
 
-    public function __construct(BoardCategoryRepository $repository, TransactionManager $transaction)
+    public function __construct(CompanyCategoryRepository $repository, TransactionManager $transaction)
     {
         $this->repository = $repository;
         $this->transaction = $transaction;
     }
 
-    public function create(BoardCategoryForm $form): BoardCategory
+    public function create(CompanyCategoryForm $form): CompanyCategory
     {
-        $category = BoardCategory::create
+        $category = CompanyCategory::create
         (
             $form->name,
             $form->contextName,
@@ -46,24 +45,21 @@ class BoardCategoryManageService
             $form->active
         );
 
-        $parent = $this->repository->get($form->parentId);
-        $category->appendTo($parent);
+        if ($form->parentId) {
+            $parent = $this->repository->get($form->parentId);
+            $category->appendTo($parent);
+        } else {
+            $category->makeRoot();
+        }
 
-        $this->transaction->wrap(function () use ($category, $form) {
-            $this->repository->save($category);
-            foreach ($form->parameters as $parameter) {
-                $categoryParameter = BoardCategoryParameter::create($category->id, $parameter);
-                $this->repository->saveParameter($categoryParameter);
-            }
-        });
+        $this->repository->save($category);
 
         return $category;
     }
 
-    public function edit($id, BoardCategoryForm $form): void
+    public function edit($id, CompanyCategoryForm $form): void
     {
         $category = $this->repository->get($id);
-        $this->assertIsNotRoot($category);
         $category->edit
         (
             $form->name,
@@ -91,17 +87,12 @@ class BoardCategoryManageService
             if ($form->parentId) {
                 $parent = $this->repository->get($form->parentId);
                 $category->appendTo($parent);
+            } else {
+                $category->makeRoot();
             }
         }
 
-        $this->transaction->wrap(function () use ($category, $form) {
-            $this->repository->save($category);
-            BoardCategoryParameter::deleteAll(['category_id' => $category->id]);
-            foreach ($form->parameters as $parameter) {
-                $categoryParameter = BoardCategoryParameter::create($category->id, $parameter);
-                $this->repository->saveParameter($categoryParameter);
-            }
-        });
+        $this->repository->save($category);
     }
 
     public function attachRegions($categoryId, array $regionIds): void
@@ -109,16 +100,16 @@ class BoardCategoryManageService
         $this->transaction->wrap(function () use ($categoryId, $regionIds) {
             $this->repository->clearAttachedRegions($categoryId);
             foreach ($regionIds as $id) {
-                $categoryRegion = BoardCategoryRegion::fastCreate($categoryId, $id);
+                $categoryRegion = CompanyCategoryRegion::fastCreate($categoryId, $id);
                 $this->repository->saveRegion($categoryRegion);
             }
         });
     }
 
-    public function saveRegion($categoryId, $regionId, BoardCategoryRegionForm $form): void
+    public function saveRegion($categoryId, $regionId, CompanyCategoryRegionForm $form): void
     {
         if (!$categoryRegion = $this->repository->getRegion($categoryId, $regionId)) {
-            $categoryRegion = BoardCategoryRegion::fastCreate($categoryId, $regionId);
+            $categoryRegion = CompanyCategoryRegion::fastCreate($categoryId, $regionId);
         }
 
         $categoryRegion->edit(
@@ -138,14 +129,6 @@ class BoardCategoryManageService
     public function remove($id): void
     {
         $category = $this->repository->get($id);
-        $this->assertIsNotRoot($category);
         $this->repository->remove($category);
-    }
-
-    private function assertIsNotRoot(BoardCategory $category): void
-    {
-        if ($category->isRoot()) {
-            throw new \DomainException('Нельзя редактировать/удалять системную категорию.');
-        }
     }
 }

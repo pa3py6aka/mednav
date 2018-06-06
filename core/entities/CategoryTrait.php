@@ -1,52 +1,11 @@
 <?php
 
-namespace core\entities\Board;
+namespace core\entities;
 
 
-use core\entities\Board\queries\BoardCategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
-use Yii;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 
-/**
- * This is the model class for table "{{%board_categories}}".
- *
- * @property int $id
- * @property string $name
- * @property string $context_name
- * @property int $enabled
- * @property int $not_show_on_main
- * @property int $children_only_parent
- * @property string $slug
- * @property string $meta_title
- * @property string $meta_description
- * @property string $meta_keywords
- * @property string $title
- * @property string $description_top
- * @property int $description_top_on
- * @property string $description_bottom
- * @property int $description_bottom_on
- * @property string $meta_title_item
- * @property string $meta_description_item
- * @property int $pagination
- * @property int $active
- *
- * @property int $lft
- * @property int $rgt
- * @property int $depth
- *
- * @property BoardCategoryRegion[] $regions
- * @property BoardCategoryParameter[] $parameters
- *
- * @property BoardCategory $parent
- * @property BoardCategory[] $parents
- * @property BoardCategory[] $children
- * @property BoardCategory $prev
- * @property BoardCategory $next
- * @mixin NestedSetsBehavior
- */
-class BoardCategory extends ActiveRecord
+trait CategoryTrait
 {
     public static function create
     (
@@ -68,7 +27,7 @@ class BoardCategory extends ActiveRecord
         $metaDescriptionItem,
         $pagination,
         $active
-    ): BoardCategory
+    ): self
     {
         $category = new static();
         $category->name = $name;
@@ -134,17 +93,9 @@ class BoardCategory extends ActiveRecord
         $this->active = $active;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title ?: $this->name;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%board_categories}}';
     }
 
     public function behaviors() {
@@ -155,31 +106,8 @@ class BoardCategory extends ActiveRecord
         ];
     }
 
-    public function transactions()
-    {
-        return [
-            self::SCENARIO_DEFAULT => self::OP_ALL,
-        ];
-    }
-
     /**
-     * @inheritdoc
-
-    public function rules()
-    {
-        return [
-            [['name', 'slug', 'meta_description', 'meta_keywords', 'description_top', 'description_bottom', 'meta_description_item', 'lft', 'rgt', 'depth'], 'required'],
-            [['meta_description', 'meta_keywords', 'description_top', 'description_bottom', 'meta_description_item'], 'string'],
-            [['tree', 'lft', 'rgt', 'depth'], 'integer'],
-            [['name', 'context_name', 'slug', 'meta_title', 'title', 'meta_title_item'], 'string', 'max' => 255],
-            [['enabled', 'not_show_on_main', 'children_only_parent', 'description_top_on', 'description_bottom_on', 'active'], 'string', 'max' => 1],
-            [['pagination'], 'string', 'max' => 3],
-            [['slug'], 'unique'],
-        ];
-    }*/
-
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -208,32 +136,5 @@ class BoardCategory extends ActiveRecord
             'rgt' => 'Rgt',
             'depth' => 'Depth',
         ];
-    }
-
-    public function getRegions(): ActiveQuery
-    {
-        return $this->hasMany(BoardCategoryRegion::class, ['category_id' => 'id']);
-    }
-
-    public function getParameters(): ActiveQuery
-    {
-        return $this->hasMany(BoardCategoryParameter::class, ['category_id' => 'id']);
-    }
-
-    /**
-     * @return BoardCategoryParameter[]|array
-     */
-    public function getParametersForForm()
-    {
-        return $this->getParameters()->with('parameter.boardParameterOptions')->all();
-    }
-
-    /**
-     * @inheritdoc
-     * @return BoardCategoryQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new BoardCategoryQuery(get_called_class());
     }
 }

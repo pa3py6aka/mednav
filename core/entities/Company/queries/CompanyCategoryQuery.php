@@ -1,17 +1,16 @@
 <?php
 
-namespace core\entities\Board\queries;
+namespace core\entities\Company\queries;
 
 
 use paulzi\nestedsets\NestedSetsQueryTrait;
-use yii\db\ActiveQuery;
 
 /**
- * This is the ActiveQuery class for [[\core\entities\Board\BoardCategory]].
+ * This is the ActiveQuery class for [[\core\entities\Company\CompanyCategory]].
  *
- * @see \core\entities\Board\BoardCategory
+ * @see \core\entities\Company\CompanyCategory
  */
-class BoardCategoryQuery extends ActiveQuery
+class CompanyCategoryQuery extends \yii\db\ActiveQuery
 {
     //use NestedSetsQueryTrait;
 
@@ -31,8 +30,8 @@ class BoardCategoryQuery extends ActiveQuery
     }
 
     /**
-     * @inheritdoc
-     * @return \core\entities\Board\BoardCategory[]|array
+     * {@inheritdoc}
+     * @return \core\entities\Company\CompanyCategory[]|array
      */
     public function all($db = null)
     {
@@ -40,8 +39,8 @@ class BoardCategoryQuery extends ActiveQuery
     }
 
     /**
-     * @inheritdoc
-     * @return \core\entities\Board\BoardCategory|array|null
+     * {@inheritdoc}
+     * @return \core\entities\Company\CompanyCategory|array|null
      */
     public function one($db = null)
     {

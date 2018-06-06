@@ -30,9 +30,14 @@ class BoardHelper
             $keywords = $categoryRegion->meta_keywords;
         }
         if ($category) {
-            $title = $title ?: $category->meta_title;
+            $title = $title ?: ($category->meta_title ?: ($category->title ?: $category->name));
             $description = $description ?: $category->meta_description;
             $keywords = $keywords ?: $category->meta_keywords;
+        }
+        if (!$category && !$categoryRegion) {
+            $title = Yii::$app->settings->get(SettingsManager::BOARD_META_TITLE);
+            $description = Yii::$app->settings->get(SettingsManager::BOARD_META_DESCRIPTION);
+            $keywords = Yii::$app->settings->get(SettingsManager::BOARD_META_KEYWORDS);
         }
         $title = $title ?: 'Объявления';
 
@@ -50,6 +55,7 @@ class BoardHelper
         $title = $categoryRegion ? $categoryRegion->title : '';
         $title = $title ?: ($category ? $category->title : '');
         $title = $title ?: ($category ? $category->name : '');
+        $title = !$category && !$categoryRegion ? Yii::$app->settings->get(SettingsManager::BOARD_TITLE) : $title;
         return $title;
     }
 
@@ -88,6 +94,9 @@ class BoardHelper
         $items[] = ['label' => Yii::$app->settings->get(SettingsManager::BOARD_NAME), 'url' => ['/board/board/index', 'region' => $geo ? $geo->slug : 'all']];
         if ($category) {
             foreach ($category->parents as $parent) {
+                if ($parent->isRoot()) {
+                    continue;
+                }
                 $items[] = ['label' => $parent->name, 'url' => self::categoryUrl($parent, $geo)];
             }
             $items[] = ['label' => $category->name, 'url' => self::categoryUrl($category, $geo)];
@@ -134,7 +143,6 @@ class BoardHelper
             ->alias('b')
             ->leftJoin(BoardCategory::tableName() . ' c', 'b.category_id=c.id')
             ->active('b')
-            ->andWhere(['c.tree' => $category->tree])
             ->andWhere(['>=', 'c.lft', $category->lft])
             ->andWhere(['<=', 'c.rgt', $category->rgt]);
 
@@ -189,6 +197,9 @@ class BoardHelper
     {
         $items = [];
         foreach ($boardCategory->parents as $parent) {
+            if ($parent->isRoot()) {
+                continue;
+            }
             $items[] = $parent->name;
         }
         $items[] = $boardCategory->name;

@@ -26,13 +26,11 @@ class m180605_133324_set_nested_sets_to_one_root_type extends Migration
             'meta_description_item' => '',
             'active' => 1,
         ]);
-        $category->makeRoot();
+        $category->makeRoot()->save();
 
         foreach ($old as $cat) {
             $cat->appendTo($category)->save();
         }
-
-        $category->save();
     }
 
     /**

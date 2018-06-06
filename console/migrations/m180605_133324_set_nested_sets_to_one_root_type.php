@@ -29,13 +29,10 @@ class m180605_133324_set_nested_sets_to_one_root_type extends Migration
         $category->makeRoot();
 
         foreach ($old as $cat) {
-            $cat->appendTo($category);
+            $cat->appendTo($category)->save();
         }
 
         $category->save();
-        foreach ($old as $cat) {
-            $cat->save();
-        }
     }
 
     /**

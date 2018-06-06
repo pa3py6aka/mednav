@@ -151,7 +151,6 @@ class BoardCategory extends ActiveRecord
         return [
             [
                 'class' => NestedSetsBehavior::class,
-                'treeAttribute' => 'tree',
             ],
         ];
     }

@@ -127,7 +127,9 @@ class CompanyForm extends Model
     public function categorySelectionString(): string
     {
         $counts = count($this->categories);
-        return $counts ? 'Выбрано ' . Pluralize::get($counts, 'раздел', 'раздела' , 'разделов') : 'Выбрать';
+        return $counts ?
+            Pluralize::get($counts, 'Выбран', 'Выбрано' , 'Выбрано', true) . ' ' . Pluralize::get($counts, 'раздел', 'раздела' , 'разделов')
+            : 'Выбрать';
     }
 
     public function geoName(): string

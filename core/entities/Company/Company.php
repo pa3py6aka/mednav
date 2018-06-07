@@ -8,6 +8,7 @@ use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
 use Yii;
+use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -17,7 +18,6 @@ use yii\helpers\Json;
  * This is the model class for table "{{%companies}}".
  *
  * @property int $id
- * @property int $category_id [int(11)]
  * @property int $user_id [int(11)]
  * @property string $form
  * @property string $name
@@ -50,9 +50,100 @@ class Company extends ActiveRecord implements StatusesInterface
 {
     use StatusesTrait;
 
-    public function getPhones()
+    public $userSlug;
+
+    public static function create(
+        $userId,
+        $form,
+        $name,
+        $site,
+        $geoId,
+        $address,
+        $phones,
+        $fax,
+        $email,
+        $info,
+        $title,
+        $shortDescription,
+        $description,
+        $status,
+        $slug
+    ): Company
+    {
+        $company = new self();
+        $company->user_id = $userId;
+        $company->form = $form;
+        $company->name = $name;
+        $company->site = $site;
+        $company->geo_id = $geoId;
+        $company->address = $address;
+        $company->setPhones($phones);
+        $company->fax = $fax;
+        $company->email = $email;
+        $company->info = $info;
+        $company->title = $title;
+        $company->short_description = $shortDescription;
+        $company->description = $description;
+        $company->setStatus($status);
+        $company->userSlug = $slug;
+        return $company;
+    }
+
+    public function edit(
+        $userId,
+        $form,
+        $name,
+        $site,
+        $geoId,
+        $address,
+        $phones,
+        $fax,
+        $email,
+        $info,
+        $title,
+        $shortDescription,
+        $description,
+        $slug
+    ): void
+    {
+        $this->user_id = $userId;
+        $this->form = $form;
+        $this->name = $name;
+        $this->site = $site;
+        $this->geo_id = $geoId;
+        $this->address = $address;
+        $this->setPhones($phones);
+        $this->fax = $fax;
+        $this->email = $email;
+        $this->info = $info;
+        $this->title = $title;
+        $this->short_description = $shortDescription;
+        $this->description = $description;
+        $this->userSlug = $slug;
+    }
+
+    public function getPhones(): array
     {
         return $this->phones ? Json::decode($this->phones) : [];
+    }
+
+    private function setPhones($phones): void
+    {
+        if (!is_array($phones)) {
+            $phones = (array) $phones;
+        }
+        $phones = array_diff($phones, ['']);
+        $this->phones = Json::encode($phones);
+    }
+
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
+    public function logoPath(): string
+    {
+        return Yii::getAlias('@frontend/web/i/company/lg');
     }
 
     public static function tableName(): string
@@ -64,6 +155,13 @@ class Company extends ActiveRecord implements StatusesInterface
     {
         return [
             TimestampBehavior::class,
+            'slug' => [
+                'class' => SluggableBehavior::class,
+                'slugAttribute' => 'slug',
+                'attribute' => 'userSlug',
+                'ensureUnique' => true,
+                //'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
+            ]
         ];
     }
 

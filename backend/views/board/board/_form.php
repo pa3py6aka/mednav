@@ -80,7 +80,7 @@ $this->registerJs($model->getJs());
             <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
                 <div class="add-image-item">
                     <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
-                    <input type="file" class="hidden">
+                    <input type="file" class="hidden" accept="image/*">
                     <span class="remove-btn fa fa-remove hidden"></span>
                 </div>
                 <div class="help-block"></div>

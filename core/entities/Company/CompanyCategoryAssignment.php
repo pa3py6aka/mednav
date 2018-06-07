@@ -3,6 +3,7 @@
 namespace core\entities\Company;
 
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "{{%company_categories_assignment}}".
@@ -10,11 +11,19 @@ use Yii;
  * @property int $company_id
  * @property int $category_id
  *
- * @property CompanyCategories $category
- * @property Companies $company
+ * @property CompanyCategory $category
+ * @property Company $company
  */
 class CompanyCategoryAssignment extends \yii\db\ActiveRecord
 {
+    public static function create($companyId, $categoryId): CompanyCategoryAssignment
+    {
+        $assignment = new static();
+        $assignment->company_id = $companyId;
+        $assignment->category_id = $categoryId;
+        return $assignment;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +34,7 @@ class CompanyCategoryAssignment extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -35,7 +44,7 @@ class CompanyCategoryAssignment extends \yii\db\ActiveRecord
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CompanyCategories::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Companies::className(), 'targetAttribute' => ['company_id' => 'id']],
         ];
-    }
+    }*/
 
     /**
      * {@inheritdoc}
@@ -48,19 +57,13 @@ class CompanyCategoryAssignment extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory()
+    public function getCategory(): ActiveQuery
     {
-        return $this->hasOne(CompanyCategories::className(), ['id' => 'category_id']);
+        return $this->hasOne(CompanyCategory::class, ['id' => 'category_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCompany()
+    public function getCompany(): ActiveQuery
     {
-        return $this->hasOne(Companies::className(), ['id' => 'company_id']);
+        return $this->hasOne(Company::class, ['id' => 'company_id']);
     }
 }

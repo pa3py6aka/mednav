@@ -5,11 +5,13 @@ namespace core\forms\Company;
 
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategory;
+use core\entities\Geo;
 use core\helpers\Pluralize;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\UploadedFile;
 
 class CompanyForm extends Model
 {
@@ -35,9 +37,10 @@ class CompanyForm extends Model
 
     public $categoriesHint;
 
+    private $_company;
+
     public const SCENARIO_ADMIN_EDIT = 'adminEdit';
-    public const SCENARIO_USER_CREATE = 'userCreate';
-    public const SCENARIO_USER_EDIT = 'userEdit';
+    public const SCENARIO_USER_MANAGE = 'userManage';
 
     public function __construct(Company $company = null, array $config = [])
     {
@@ -58,6 +61,8 @@ class CompanyForm extends Model
             $this->shortDescription = $company->short_description;
             $this->description = $company->description;
             $this->tags = implode(', ', $company->getTags()->select('name')->column());
+
+            $this->_company = $company;
         }
         parent::__construct($config);
     }
@@ -65,7 +70,8 @@ class CompanyForm extends Model
     public function rules()
     {
         return [
-            [['form', 'name', 'categories', 'categoriesHint', 'geoId', 'address', 'email', 'title'], 'required'],
+            [['form', 'name', 'geoId', 'address', 'email', 'title', 'description'], 'required'],
+            ['categoriesHint', 'required', 'message' => 'Выберите нужные разделы'],
             [['slug', 'name', 'site', 'address', 'email', 'title'], 'string', 'max' => 255],
             [['user_id', 'geoId'], 'integer'],
             ['logo', 'image', 'maxSize' => Yii::$app->params['maxFileSize'], 'extensions' => Yii::$app->params['imageExtensions']],
@@ -74,16 +80,23 @@ class CompanyForm extends Model
             ['fax', 'string', 'max' => 50],
             ['email', 'email'],
             [['info', 'shortDescription', 'description'], 'string'],
-            ['tags', 'each', 'rule' => ['string']],
-            ['photos', 'string'],
+            ['tags', 'string'],
+            ['photos', 'each', 'rule' => ['string']],
         ];
     }
 
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_USER_CREATE] = array_diff(array_keys($this->attributes), ['slug', 'user_id']);
+        $scenarios[self::SCENARIO_USER_MANAGE] = array_diff(array_keys($this->attributes), ['slug', 'user_id']);
         return $scenarios;
+    }
+
+    public function beforeValidate()
+    {
+        $this->logo = UploadedFile::getInstance($this, 'logo');
+        $this->slug = $this->slug ?: $this->name;
+        return parent::beforeValidate();
     }
 
     public function attributeLabels()
@@ -115,5 +128,11 @@ class CompanyForm extends Model
     {
         $counts = count($this->categories);
         return $counts ? 'Выбрано ' . Pluralize::get($counts, 'раздел', 'раздела' , 'разделов') : 'Выбрать';
+    }
+
+    public function geoName(): string
+    {
+        return $this->_company && $this->_company->geo_id ? $this->_company->geo->name
+            : ($this->geoId ? Geo::find()->select('name')->where(['id' => $this->geoId])->scalar() : 'Выбрать регион');
     }
 }

@@ -3,6 +3,7 @@
 namespace core\actions;
 
 
+use core\components\SettingsManager;
 use Imagine\Exception\RuntimeException;
 use Yii;
 use yii\base\Action;
@@ -16,27 +17,30 @@ use yii\web\UploadedFile;
 class UploadAction extends Action
 {
     public $path = '@frontend/web/tmp';
-    public $baseUrl = '/tmp';
-
+    public $baseUrl;
     public $maxSize;
     public $extensions;
-
-    public $sizes = [
-        'small' => ['width' => '100', 'height' => null],
-        'big' => ['width' => '250', 'height' => null],
-        'max' => ['width' => '500', 'height' => null],
-    ];
-
+    public $sizes;
     public $returnType = 'small';
 
     public function init()
     {
         $this->path = Yii::getAlias($this->path);
+        if (!$this->baseUrl) {
+            $this->baseUrl = Yii::$app->params['frontendHostInfo'] . '/tmp';
+        }
         if (!$this->maxSize) {
             $this->maxSize = Yii::$app->params['maxFileSize'];
         }
         if (!$this->extensions) {
             $this->extensions = Yii::$app->params['imageExtensions'];
+        }
+        if (!$this->sizes) {
+            $this->sizes = [
+                'small' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_SMALL_SIZE)],
+                'big' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_BIG_SIZE)],
+                'max' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_MAX_SIZE)],
+            ];
         }
         parent::init();
     }
@@ -93,6 +97,7 @@ class UploadAction extends Action
         $validator = new ImageValidator([
             'extensions' => $this->extensions,
             'maxSize' => $this->maxSize,
+            'maxFiles' => 10,
         ]);
         if (!$validator->validate($file, $error)) {
             throw new \DomainException($error);

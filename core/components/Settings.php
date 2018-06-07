@@ -28,6 +28,23 @@ class Settings
     public const BOARD_DESCRIPTION_BOTTOM = 'boardDescriptionBottom';
     public const BOARD_DESCRIPTION_BOTTOM_ON = 'boardDescriptionBottomOn';
 
+    public const COMPANY_NAME = 'companyName';
+    public const COMPANY_NAME_UP = 'companyNameUP';
+    public const COMPANY_PAGE_SIZE = 'companyPageSize';
+    public const COMPANY_SMALL_SIZE = 'companySmallSize';
+    public const COMPANY_BIG_SIZE = 'companyBigSize';
+    public const COMPANY_MAX_SIZE = 'companyMaxSize';
+    public const COMPANY_MODERATION = 'companyModeration';
+
+    public const COMPANY_META_TITLE = 'companyMetaTitle';
+    public const COMPANY_META_DESCRIPTION = 'companyMetaDescription';
+    public const COMPANY_META_KEYWORDS = 'companyMetaKeywords';
+    public const COMPANY_TITLE = 'companyTitle';
+    public const COMPANY_DESCRIPTION_TOP = 'companyDescriptionTop';
+    public const COMPANY_DESCRIPTION_TOP_ON = 'companyDescriptionTopOn';
+    public const COMPANY_DESCRIPTION_BOTTOM = 'companyDescriptionBottom';
+    public const COMPANY_DESCRIPTION_BOTTOM_ON = 'companyDescriptionBottomOn';
+
     protected $default = [
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
@@ -51,5 +68,22 @@ class Settings
         self::BOARD_DESCRIPTION_TOP_ON => 1,
         self::BOARD_DESCRIPTION_BOTTOM => '',
         self::BOARD_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::COMPANY_NAME => 'Каталог компаний',
+        self::COMPANY_NAME_UP => 'Моя компания',
+        self::COMPANY_PAGE_SIZE => 15,
+        self::COMPANY_SMALL_SIZE => 100,
+        self::COMPANY_BIG_SIZE => 250,
+        self::COMPANY_MAX_SIZE => 500,
+        self::COMPANY_MODERATION => 0,
+
+        self::COMPANY_META_TITLE => 'Каталог поставщиков и производителей медтехники и медицинского оборудования.',
+        self::COMPANY_META_DESCRIPTION => 'Все поставщики и производители медицинской техники, оборудования и расходных материалов.',
+        self::COMPANY_META_KEYWORDS => 'медтехника, медицинское оборудование, поставщики медтехники, производители мед. оборудования',
+        self::COMPANY_TITLE => 'Поставщики и производители медоборудования и материалов',
+        self::COMPANY_DESCRIPTION_TOP => '',
+        self::COMPANY_DESCRIPTION_TOP_ON => 1,
+        self::COMPANY_DESCRIPTION_BOTTOM => '',
+        self::COMPANY_DESCRIPTION_BOTTOM_ON => 1,
     ];
 }

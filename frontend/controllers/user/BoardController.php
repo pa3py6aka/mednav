@@ -68,12 +68,6 @@ class BoardController extends Controller
         return [
             'upload' => [
                 'class' => UploadAction::class,
-                'baseUrl' => Yii::$app->params['frontendHostInfo'] . '/tmp',
-                'sizes' => [
-                    'small' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_SMALL_SIZE)],
-                    'big' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_BIG_SIZE)],
-                    'max' => ['width' => Yii::$app->settings->get(SettingsManager::BOARD_MAX_SIZE)],
-                ]
             ],
             'select-category' => [
                 'class' => BoardCategorySelectAction::class,

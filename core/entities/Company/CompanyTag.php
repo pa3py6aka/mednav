@@ -4,6 +4,7 @@ namespace core\entities\Company;
 
 use Yii;
 use yii\db\ActiveQuery;
+use Zelenin\yii\behaviors\Slug;
 
 /**
  * This is the model class for table "{{%company_tags}}".
@@ -17,6 +18,25 @@ use yii\db\ActiveQuery;
  */
 class CompanyTag extends \yii\db\ActiveRecord
 {
+    public static function create($name): CompanyTag
+    {
+        $tag = new static();
+        $tag->name = $name;
+        return $tag;
+    }
+
+    public function behaviors()
+    {
+        return [
+            'slug' => [
+                'class' => Slug::class,
+                'slugAttribute' => 'slug',
+                'attribute' => 'name',
+                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
+            ]
+        ];
+    }
+
     public static function tableName(): string
     {
         return '{{%company_tags}}';

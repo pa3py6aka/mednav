@@ -108,7 +108,6 @@ class BoardManageService
 
     private function saveTags(Board $board, string $tags): void
     {
-
         $tags = StringHelper::explode($tags, ',', true, true);
         BoardTagAssignment::deleteAll(['board_id' => $board->id]);
         foreach ($tags as $tag) {

@@ -17,6 +17,14 @@ use yii\db\ActiveRecord;
  */
 class CompanyTagsAssignment extends ActiveRecord
 {
+    public static function create($companyId, $tagId): CompanyTagsAssignment
+    {
+        $assignment = new static();
+        $assignment->company_id = $companyId;
+        $assignment->tag_id = $tagId;
+        return $assignment;
+    }
+
     public static function tableName(): string
     {
         return '{{%company_tags_assignment}}';

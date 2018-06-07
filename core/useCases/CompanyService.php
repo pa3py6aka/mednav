@@ -77,8 +77,11 @@ class CompanyService
 
     }
 
-    private function saveLogo(Company $company, UploadedFile $file): void
+    private function saveLogo(Company $company, $file): void
     {
+        if (!$file instanceof UploadedFile) {
+            return;
+        }
         $name = $company->id . "-" . time() . "." . $file->extension;
         if (!$file->saveAs($company->logoPath() . '/' . $name)) {
             Yii::error("Ошибка сохранения логотипа компании.");

@@ -56,7 +56,7 @@ class BoardRepository
 
     public function safeRemove(Board $board): void
     {
-        $board->status = Board::STATUS_DELETED;
+        $board->setStatus(Board::STATUS_DELETED);
         if (!$board->save()) {
             throw new \RuntimeException('Ошибка при удалении из базы.');
         }

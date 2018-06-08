@@ -87,6 +87,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                         ],
                         [
+                            'label' => 'Тэги',
+                            'value' => function (Board $board) {
+                                $tags = $board->getTags()->select(['name'])->column();
+                                return implode(", ", $tags);
+                            },
+                        ],
+                        [
                             'attribute' => 'status',
                             'value' => function (Board $board) {
                                 $board->updateStatus();
@@ -104,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <!-- Фотографии -->
             <div class="tab-pane fade<?= $tab == 'photos' ? ' active in' : '' ?>" role="tabpanel" id="photos" aria-labelledby="photos-tab">
                 <br>
-                <?= PhotosManagerWidget::widget(['entityId' => $board->id, 'photos' => $board->photos]) ?>
+                <?= PhotosManagerWidget::widget(['entityId' => $model->id, 'photos' => $model->photos]) ?>
             </div>
         </div>
     </div>

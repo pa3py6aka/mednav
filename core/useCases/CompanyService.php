@@ -152,4 +152,31 @@ class CompanyService
             $this->repository->saveCategoryAssignment($assignment);
         }
     }
+
+    public function publish($ids): void
+    {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+        foreach ($ids as $id) {
+            $company = $this->repository->get($id);
+            $company->setStatus(Company::STATUS_ACTIVE);
+            $this->repository->save($company);
+        }
+    }
+
+    public function massRemove(array $ids, $hardRemove = false): int
+    {
+        return $this->repository->massRemove($ids, $hardRemove);
+    }
+
+    public function remove($id, $safe = true): void
+    {
+        $company = $this->repository->get($id);
+        if ($safe) {
+            $this->repository->safeRemove($company);
+        } else {
+            $this->repository->remove($company);
+        }
+    }
 }

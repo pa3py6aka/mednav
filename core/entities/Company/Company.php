@@ -43,7 +43,7 @@ use yii\helpers\Json;
  * @property CompanyPhoto[] $photos
  * @property CompanyTagsAssignment[] $companyTagsAssignments
  * @property CompanyTag[] $tags
- * @property User[] $user
+ * @property User $user
  * @property CompanyCategoryAssignment[] $companyCategoryAssignments
  * @property CompanyCategory[] $categories
  */
@@ -142,6 +142,13 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $this->status = $status;
     }
 
+    public function getLogoUrl($absolute = false): string
+    {
+        return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
+            . ($this->logo ? '/i/company/lg/' . $this->logo
+                : '/img/photo.png');
+    }
+
     public function logoPath(): string
     {
         return Yii::getAlias('@frontend/web/i/company/lg');
@@ -195,23 +202,23 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     {
         return [
             'id' => 'ID',
-            'form' => 'Form',
-            'name' => 'Name',
-            'logo' => 'Logo',
+            'form' => 'Форма',
+            'name' => 'Название',
+            'logo' => 'Логотип',
             'slug' => 'Slug',
-            'site' => 'Site',
-            'geo_id' => 'Geo ID',
-            'address' => 'Address',
-            'phones' => 'Phones',
-            'fax' => 'Fax',
+            'site' => 'Сайт',
+            'geo_id' => 'Регион',
+            'address' => 'Адрес',
+            'phones' => 'Телефоны',
+            'fax' => 'Факс',
             'email' => 'Email',
-            'info' => 'Info',
-            'title' => 'Title',
-            'short_description' => 'Short Description',
-            'description' => 'Description',
-            'main_photo_id' => 'Main Photo ID',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'info' => 'Информация',
+            'title' => 'Заголовок',
+            'short_description' => 'Краткое описание',
+            'description' => 'Описание',
+            'main_photo_id' => 'Главное фото',
+            'created_at' => 'Дата добавления',
+            'updated_at' => 'Дата обновления',
         ];
     }
 

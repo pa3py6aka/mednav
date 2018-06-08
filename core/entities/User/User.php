@@ -195,8 +195,17 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         if ($this->isCompany() && $this->isCompanyActive()) {
             return $this->company->name;
         }
+        return $this->getUserName();
+    }
+
+    public function getUserName(): string
+    {
+        if ($this->name || $this->patronymic || $this->last_name) {
+            return str_replace('  ', ' ', trim(implode(" ", [$this->name, $this->patronymic, $this->last_name])));
+        }
         return $this->email;
     }
+
 
     public function requestPasswordReset(): void
     {

@@ -105,7 +105,7 @@ class CompanyForm extends Model
     {
         return [
             'slug' => 'Slug',
-            'user_id' => 'User Id',
+            'user_id' => 'Администратор',
             'form' => 'Форма',
             'name' => 'Название компании',
             'logo' => 'Логотип',

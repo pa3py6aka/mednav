@@ -1,6 +1,7 @@
 <?php
 
 namespace core\entities\Company\queries;
+use core\entities\Company\Company;
 
 /**
  * This is the ActiveQuery class for [[\core\entities\Company\Company]].
@@ -9,10 +10,20 @@ namespace core\entities\Company\queries;
  */
 class CompanyQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    public function active($alias = null)
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Company::STATUS_ACTIVE]);
+    }
+
+    public function onModeration($alias = null)
+    {
+        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Company::STATUS_ON_PREMODERATION]);
+    }
+
+    public function deleted($alias = null)
+    {
+        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Company::STATUS_DELETED]);
+    }
 
     /**
      * {@inheritdoc}

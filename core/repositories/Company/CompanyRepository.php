@@ -46,7 +46,7 @@ class CompanyRepository
 
     public function safeRemove(Company $company): void
     {
-        $company->status = Company::STATUS_DELETED;
+        $company->setStatus(Company::STATUS_DELETED);
         if (!$company->save()) {
             throw new \RuntimeException('Ошибка при удалении из базы.');
         }
@@ -56,6 +56,15 @@ class CompanyRepository
     {
         if (!$company->delete()) {
             throw new \RuntimeException('Ошибка при удалении из базы.');
+        }
+    }
+
+    public function massRemove(array $ids, $hardRemove = false): int
+    {
+        if ($hardRemove) {
+            return Company::deleteAll(['id' => $ids]);
+        } else {
+            return Company::updateAll(['status' => Company::STATUS_DELETED], ['id' => $ids]);
         }
     }
 }

@@ -18,7 +18,7 @@
                     ]],
                     ['label' => 'Каталог Компаний', 'icon' => 'book', 'items' => [
                         ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/company/category/index']],
-                        ['label' => 'Компании', 'icon' => 'newspaper-o', 'url' => ['/company/board/active']],
+                        ['label' => 'Компании', 'icon' => 'newspaper-o', 'url' => ['/company/company/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/company/settings/main']],
                     ]],
                     [

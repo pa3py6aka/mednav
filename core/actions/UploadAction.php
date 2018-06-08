@@ -114,4 +114,19 @@ class UploadAction extends Action
             return $this->generateFileName($file, ++$n);
         }
     }
+
+    public static function htmlBlock($formName): string
+    {
+        return <<<HTML
+<label class="control-label" for="file">Фото</label>
+<div class="photos-block" data-form-name="$formName" data-attribute="photos">
+    <div class="add-image-item has-overlay">
+        <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
+        <input type="file" class="hidden" accept="image/*">
+        <span class="remove-btn fa fa-remove hidden"></span>
+    </div>
+    <div class="help-block"></div>
+</div>
+HTML;
+    }
 }

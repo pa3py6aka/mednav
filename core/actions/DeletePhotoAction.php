@@ -4,8 +4,8 @@ namespace core\actions;
 
 
 use core\access\Rbac;
-use core\entities\Board\Board;
-use core\useCases\manage\Board\BoardPhotoService;
+use core\entities\UserOwnerInterface;
+use core\useCases\BasePhotoService;
 use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
@@ -17,6 +17,9 @@ class DeletePhotoAction extends Action
     /* @var $entityClass ActiveRecord */
     public $entityClass;
 
+    /* @var $serviceClass BasePhotoService */
+    public $serviceClass;
+
     /**
      *  @var $redirectUrl array Для указания ID при редиректе, используйте метку {id}.
      *     Например ['update', 'id' => '{id}', 'tab' => 'photos']
@@ -27,18 +30,18 @@ class DeletePhotoAction extends Action
     {
         $entity = $this->findModel($id);
 
-        if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $entity->author_id])) {
+        if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $entity->getOwnerId()])) {
             throw new ForbiddenHttpException("У вас нет прав на это действие");
         }
 
         try {
-            Yii::createObject(BoardPhotoService::class)->removePhoto($entity, $photo_id);
+            Yii::createObject($this->serviceClass)->removePhoto($entity, $photo_id);
             Yii::$app->session->setFlash('info', 'Фотография удалена');
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
 
-        return $this->controller->redirect($this->getRedirectUrl($entity->id));
+        return $this->controller->redirect($this->getRedirectUrl($entity->getPrimaryKey()));
     }
 
     private function getRedirectUrl($id): array
@@ -56,7 +59,7 @@ class DeletePhotoAction extends Action
 
     /**
      * @param $entityId
-     * @return null|ActiveRecord|Board
+     * @return null|ActiveRecord|UserOwnerInterface
      */
     private function findModel($entityId)
     {

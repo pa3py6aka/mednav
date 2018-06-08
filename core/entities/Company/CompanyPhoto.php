@@ -30,6 +30,11 @@ class CompanyPhoto extends ActiveRecord implements PhotoInterface
         return $photo;
     }
 
+    public static function getRelationAttribute(): string
+    {
+        return 'company_id';
+    }
+
     /**
      * {@inheritdoc}
      */

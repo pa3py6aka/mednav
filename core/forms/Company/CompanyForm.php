@@ -37,7 +37,7 @@ class CompanyForm extends Model
 
     public $categoriesHint;
 
-    private $_company;
+    public $company;
 
     public const SCENARIO_ADMIN_EDIT = 'adminEdit';
     public const SCENARIO_USER_MANAGE = 'userManage';
@@ -49,7 +49,8 @@ class CompanyForm extends Model
             $this->user_id = $company->user_id;
             $this->form = $company->form;
             $this->name = $company->name;
-            $this->categories = $company->getCategories()->select('id')->column();
+            $this->categories = $company->getCategories()->select('id')->indexBy('id')->column();
+            $this->categoriesHint = $this->categories ? 1 : '';
             $this->site = $company->site;
             $this->geoId = $company->geo_id;
             $this->address = $company->address;
@@ -62,7 +63,7 @@ class CompanyForm extends Model
             $this->description = $company->description;
             $this->tags = implode(', ', $company->getTags()->select('name')->column());
 
-            $this->_company = $company;
+            $this->company = $company;
         }
         parent::__construct($config);
     }
@@ -96,6 +97,7 @@ class CompanyForm extends Model
     {
         $this->logo = UploadedFile::getInstance($this, 'logo');
         $this->slug = $this->slug ?: $this->name;
+        $this->categories = array_diff($this->categories, ['0', '']);
         return parent::beforeValidate();
     }
 
@@ -134,7 +136,7 @@ class CompanyForm extends Model
 
     public function geoName(): string
     {
-        return $this->_company && $this->_company->geo_id ? $this->_company->geo->name
+        return $this->company && $this->company->geo_id ? $this->company->geo->name
             : ($this->geoId ? Geo::find()->select('name')->where(['id' => $this->geoId])->scalar() : 'Выбрать регион');
     }
 }

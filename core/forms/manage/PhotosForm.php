@@ -1,12 +1,12 @@
 <?php
 
-namespace core\forms\manage\Board;
+namespace core\forms\manage;
 
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
-class BoardPhotosForm extends Model
+class PhotosForm extends Model
 {
     /**
      * @var UploadedFile[]

@@ -15,6 +15,8 @@ interface PhotoInterface
      */
     public static function create($boardId, $file, $sort);
 
+    public static function getRelationAttribute(): string;
+
     /**
      * @return ActiveQuery
      */

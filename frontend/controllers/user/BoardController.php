@@ -11,10 +11,11 @@ use core\actions\UploadAction;
 use core\components\SettingsManager;
 use core\entities\Board\Board;
 use core\forms\manage\Board\BoardManageForm;
-use core\forms\manage\Board\BoardPhotosForm;
+use core\forms\manage\PhotosForm;
 use core\readModels\Board\BoardReadRepository;
 use core\repositories\Board\BoardRepository;
 use core\useCases\manage\Board\BoardManageService;
+use core\useCases\manage\Board\BoardPhotoService;
 use Yii;
 use yii\base\Module;
 use yii\filters\AccessControl;
@@ -75,11 +76,13 @@ class BoardController extends Controller
             'move-photo' => [
                 'class' => MovePhotoAction::class,
                 'entityClass' => Board::class,
+                'serviceClass' => BoardPhotoService::class,
                 'redirectUrl' => ['update', 'id' => '{id}', 'tab' => 'photos'],
             ],
             'delete-photo' => [
                 'class' => DeletePhotoAction::class,
                 'entityClass' => Board::class,
+                'serviceClass' => BoardPhotoService::class,
                 'redirectUrl' => ['update', 'id' => '{id}', 'tab' => 'photos'],
             ],
         ];
@@ -170,7 +173,7 @@ class BoardController extends Controller
             return $this->redirect(['update', 'id' => $board->id]);
         }
 
-        $photosForm = new BoardPhotosForm();
+        $photosForm = new PhotosForm();
         if ($photosForm->load(Yii::$app->request->post()) && $photosForm->validate()) {
             try {
                 $this->service->addPhotos($board->id, $photosForm);

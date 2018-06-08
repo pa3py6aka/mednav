@@ -32,6 +32,11 @@ class BoardPhoto extends ActiveRecord implements PhotoInterface
         return $photo;
     }
 
+    public static function getRelationAttribute(): string
+    {
+        return 'board_id';
+    }
+
     /**
      * @inheritdoc
      */

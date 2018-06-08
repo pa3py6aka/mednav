@@ -6,6 +6,7 @@ use core\entities\Board\queries\BoardQuery;
 use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\User\User;
+use core\entities\UserOwnerInterface;
 use core\helpers\PriceHelper;
 use Yii;
 use yii\behaviors\SluggableBehavior;
@@ -58,7 +59,7 @@ use yii\helpers\Url;
  * @property BoardPhoto[] $photos
  * @property BoardPhoto $mainPhoto
  */
-class Board extends ActiveRecord
+class Board extends ActiveRecord implements UserOwnerInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ON_MODERATION = 1;
@@ -231,6 +232,11 @@ class Board extends ActiveRecord
     public static function tableName(): string
     {
         return '{{%boards}}';
+    }
+
+    public function getOwnerId(): int
+    {
+        return $this->author_id;
     }
 
     public static function statusesArray(): array

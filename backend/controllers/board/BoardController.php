@@ -8,7 +8,7 @@ use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
 use core\components\SettingsManager;
 use core\forms\manage\Board\BoardManageForm;
-use core\forms\manage\Board\BoardPhotosForm;
+use core\forms\manage\PhotosForm;
 use core\useCases\manage\Board\BoardManageService;
 use core\useCases\manage\Board\BoardPhotoService;
 use Yii;
@@ -61,10 +61,12 @@ class BoardController extends Controller
             'move-photo' => [
                 'class' => MovePhotoAction::class,
                 'entityClass' => Board::class,
+                'serviceClass' => BoardPhotoService::class,
             ],
             'delete-photo' => [
                 'class' => DeletePhotoAction::class,
                 'entityClass' => Board::class,
+                'serviceClass' => BoardPhotoService::class,
             ],
         ];
     }
@@ -147,7 +149,7 @@ class BoardController extends Controller
     {
         $board = $this->findModel($id);
 
-        $photosForm = new BoardPhotosForm();
+        $photosForm = new PhotosForm();
         if ($photosForm->load(Yii::$app->request->post()) && $photosForm->validate()) {
             try {
                 $this->service->addPhotos($board->id, $photosForm);

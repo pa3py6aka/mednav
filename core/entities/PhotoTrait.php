@@ -39,6 +39,11 @@ trait PhotoTrait
         return parent::afterDelete();
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     /**
      * @inheritdoc
      */

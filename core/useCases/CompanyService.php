@@ -5,13 +5,11 @@ namespace core\useCases;
 
 use core\components\SettingsManager;
 use core\entities\Company\Company;
-use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\Company\CompanyTag;
 use core\entities\Company\CompanyTagsAssignment;
 use core\forms\Company\CompanyForm;
-use core\helpers\MarkHelper;
-use core\repositories\Company\CompanyCategoryRepository;
+use core\forms\manage\PhotosForm;
 use core\repositories\Company\CompanyRepository;
 use core\services\TransactionManager;
 use core\useCases\manage\Company\CompanyPhotoService;
@@ -19,7 +17,6 @@ use Yii;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
 use yii\helpers\StringHelper;
-use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 class CompanyService
@@ -72,9 +69,45 @@ class CompanyService
         return $company;
     }
 
-    public function edit(CompanyForm $form): void
+    public function edit($id, CompanyForm $form): void
     {
+        $company = $this->repository->get($id);
+        $userId = $form->scenario == CompanyForm::SCENARIO_USER_MANAGE
+            ? $company->user_id
+            : ($form->user_id ?: $company->user_id);
 
+        $company->edit(
+            $userId,
+            trim($form->form),
+            trim($form->name),
+            trim($form->site),
+            $form->geoId,
+            trim($form->address),
+            $form->phones,
+            trim($form->fax),
+            $form->email,
+            trim($form->info),
+            trim($form->title),
+            trim($form->shortDescription),
+            trim($form->description),
+            $form->slug
+        );
+
+        $this->transaction->wrap(function () use ($company, $form) {
+            $this->saveCategories($company, $form->categories);
+            $this->saveTags($company, $form->tags);
+            $this->saveLogo($company, $form->logo);
+            $this->repository->save($company);
+        });
+    }
+
+    public function addPhotos($id, PhotosForm $form): void
+    {
+        $company = $this->repository->get($id);
+        foreach ($form->files as $file) {
+            Yii::createObject(CompanyPhotoService::class)->addPhoto($company, $file);
+        }
+        $this->repository->save($company);
     }
 
     private function saveLogo(Company $company, $file): void
@@ -105,10 +138,8 @@ class CompanyService
                         throw new \DomainException('Ошибка при сохранении тега');
                     }
                 }
-                //if (!$assignment = $this->repository->findTagAssignment($company->id, $tagEntity->id)) {
-                    $assignment = CompanyTagsAssignment::create($company->id, $tagEntity->id);
-                    $this->repository->saveTagAssignment($assignment);
-                //}
+                $assignment = CompanyTagsAssignment::create($company->id, $tagEntity->id);
+                $this->repository->saveTagAssignment($assignment);
             }
         }
     }

@@ -9,14 +9,11 @@ use core\entities\Board\BoardParameterAssignment;
 use core\entities\Board\BoardTag;
 use core\entities\Board\BoardTagAssignment;
 use core\forms\manage\Board\BoardManageForm;
-use core\forms\manage\Board\BoardParameterForm;
-use core\forms\manage\Board\BoardPhotosForm;
-use core\helpers\BoardHelper;
+use core\forms\manage\PhotosForm;
 use core\helpers\MarkHelper;
 use core\repositories\Board\BoardRepository;
 use core\services\TransactionManager;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\helpers\StringHelper;
 
 class BoardManageService
@@ -80,7 +77,7 @@ class BoardManageService
         $board = $this->repository->get($id);
         $userId = in_array($form->scenario, [BoardManageForm::SCENARIO_USER_EDIT, BoardManageForm::SCENARIO_USER_CREATE])
             ? $board->author_id
-            : ($form->authorId ?: Yii::$app->user->id);
+            : ($form->authorId ?: $board->author_id);
 
         $board->edit(
             $userId,
@@ -118,10 +115,8 @@ class BoardManageService
                         throw new \DomainException('Ошибка при сохранении тега');
                     }
                 }
-                if (!$assignment = $this->repository->findTagAssignment($board->id, $tagEntity->id)) {
-                    $assignment = BoardTagAssignment::create($board->id, $tagEntity->id);
-                    $this->repository->saveTagAssignment($assignment);
-                }
+                $assignment = BoardTagAssignment::create($board->id, $tagEntity->id);
+                $this->repository->saveTagAssignment($assignment);
             }
         }
     }
@@ -149,7 +144,7 @@ class BoardManageService
         }
     }
 
-    public function addPhotos($id, BoardPhotosForm $form): void
+    public function addPhotos($id, PhotosForm $form): void
     {
         $board = $this->repository->get($id);
         foreach ($form->files as $file) {

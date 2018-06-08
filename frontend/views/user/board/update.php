@@ -1,13 +1,12 @@
 <?php
 
 use core\forms\manage\Board\BoardManageForm;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use frontend\widgets\PhotosManagerWidget;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
 /* @var $board \core\entities\Board\Board */
-/* @var $photosForm \core\forms\manage\Board\BoardPhotosForm */
+/* @var $photosForm \core\forms\manage\PhotosForm */
 /* @var $tab string */
 
 $this->title = 'Личный кабинет | Редактирование объявления';
@@ -34,50 +33,7 @@ $this->title = 'Личный кабинет | Редактирование об�
             <!-- Фотографии -->
             <div class="tab-pane fade<?= $tab == 'photos' ? ' active in' : '' ?>" role="tabpanel" id="photos" aria-labelledby="photos-tab">
                 <br>
-                <div class="row">
-                    <?php foreach ($board->photos as $photo): ?>
-                        <div class="col-md-2 col-xs-3" style="text-align: center">
-                            <div class="btn-group">
-                                <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span>', ['move-photo', 'entityId' => $board->id, 'photoId' => $photo->id, 'direction' => 'up'], [
-                                    'class' => 'btn btn-default',
-                                    'data-method' => 'post',
-                                ]); ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['delete-photo', 'id' => $board->id, 'photo_id' => $photo->id], [
-                                    'class' => 'btn btn-default',
-                                    'data-method' => 'post',
-                                    'data-confirm' => 'Удалить фото?',
-                                ]); ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', ['move-photo', 'entityId' => $board->id, 'photoId' => $photo->id, 'direction' => 'down'], [
-                                    'class' => 'btn btn-default',
-                                    'data-method' => 'post',
-                                ]); ?>
-                            </div>
-                            <div>
-                                <?= Html::a(
-                                    Html::img($photo->getUrl('small', true)),
-                                    $photo->getUrl('max', true),
-                                    ['class' => 'thumbnail', 'target' => '_blank']
-                                ) ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <?php $form = ActiveForm::begin([
-                    'options' => ['enctype'=>'multipart/form-data'],
-                ]); ?>
-
-                <?= $form->field($photosForm, 'files[]')->label(false)->widget(\kartik\file\FileInput::class, [
-                    'options' => [
-                        'accept' => 'image/*',
-                        'multiple' => true,
-                    ]
-                ]) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Загрузить', ['class' => 'btn btn-success']) ?>
-                </div>
-
-                <?php ActiveForm::end(); ?>
+                <?= PhotosManagerWidget::widget(['entityId' => $board->id, 'photos' => $board->photos]) ?>
             </div>
         </div>
 

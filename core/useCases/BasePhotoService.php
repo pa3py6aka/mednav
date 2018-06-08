@@ -119,7 +119,7 @@ class BasePhotoService
         $photo = $this->repository->get($id);
         $swapPhoto = $this->photoEntityClass::find()
             ->where([$symbol, 'sort', $photo->sort])
-            ->andWhere(['board_id' => $entity->id])
+            ->andWhere([$this->photoEntityClass::getRelationAttribute() => $entity->id])
             ->orderBy(['sort' => $direction == 'up' ? SORT_DESC : SORT_ASC])
             ->one();
 

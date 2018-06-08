@@ -26,7 +26,7 @@ class CompanyCategoriesSelectWidget extends Widget
             $options = $category['depth'] > 1 ? ['style' => 'margin-left: ' . ($category['depth'] * 10) . 'px;'] : [];
             return [
                 'depth' => $category['depth'],
-                'checkbox' => Html::tag('div', Html::activeCheckbox($this->model, 'categories[' . $category['id'] . ']', ['label' => $category['name']]), $options),
+                'checkbox' => Html::tag('div', Html::activeCheckbox($this->model, 'categories[' . $category['id'] . ']', ['label' => $category['name'], 'value' => $category['id']]), $options),
             ];
         });
 

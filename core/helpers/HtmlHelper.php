@@ -6,7 +6,7 @@ namespace core\helpers;
 use yii\helpers\Html;
 use yii\web\JqueryAsset;
 
-class AdminLteHelper
+class HtmlHelper
 {
     public static function softDeleteButton($id): string
     {
@@ -37,5 +37,15 @@ class AdminLteHelper
     {
         \Yii::$app->view->registerJsFile(\Yii::$app->params['frontendHostInfo'] . '/js/action-for-selected-rows.js', ['depends' => [JqueryAsset::class]], 'action-for-selected-rows');
         return Html::button($content, ['class' => 'action-btn btn btn-flat btn-' . $color, 'data-action' => $action]);
+    }
+
+    public static function tabStatus($tab, $current)
+    {
+        return $current == $tab ? ' class="active"' : '';
+    }
+
+    public static function active($one, $two)
+    {
+        return $one == $two ? ' active' : '';
     }
 }

@@ -9,7 +9,7 @@ use core\helpers\PaginationHelper;
 use yii\grid\CheckboxColumn;
 use core\entities\User\User;
 use core\helpers\BoardHelper;
-use core\helpers\AdminLteHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\BoardSearch */
@@ -21,8 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="board-index box box-primary">
     <div class="box-header with-border">
         <?= Html::a('Добавить объявление', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
-        <?= AdminLteHelper::actionButtonForSelected('Опубликовать выбранные', 'publish', 'primary') ?>
-        <?= AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
+        <?= HtmlHelper::actionButtonForSelected('Опубликовать выбранные', 'publish', 'primary') ?>
+        <?= HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
 
         <div class="box-tools">
             <?= PaginationHelper::pageSizeSelector($dataProvider->pagination) ?>
@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
     <div class="box-footer">
-        <?= AdminLteHelper::actionButtonForSelected('Опубликовать выбранные', 'publish', 'primary') ?>
-        <?= AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
+        <?= HtmlHelper::actionButtonForSelected('Опубликовать выбранные', 'publish', 'primary') ?>
+        <?= HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
     </div>
 </div>

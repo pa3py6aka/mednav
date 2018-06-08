@@ -7,10 +7,13 @@ use yii\widgets\ActiveForm;
 use frontend\widgets\RegionsModalWidget;
 use frontend\widgets\CompanyCategoriesSelectWidget;
 use mihaildev\ckeditor\CKEditor;
+use core\helpers\HtmlHelper;
+use frontend\widgets\PhotosManagerWidget;
 
 /* @var $this yii\web\View */
 /* @var $user \core\entities\User\User int */
 /* @var $model \core\forms\Company\CompanyForm */
+/* @var $tab string */
 
 $this->registerJsVar('_ImageUploadAction', Url::to(['/user/account/company-photo-upload']));
 ImageManagerAsset::register($this);
@@ -27,6 +30,16 @@ $this->title = 'Личный кабинет | Моя компания';
         <?= \frontend\widgets\AccountBreadcrumbs::show(['Моя компания']) ?>
         <h1>Моя компания</h1>
 
+        <?php if ($model->company): ?>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation"<?= HtmlHelper::tabStatus('main', $tab) ?>><a href="#main" aria-controls="main" role="tab" data-toggle="tab">Данные компании</a></li>
+            <li role="presentation"<?= HtmlHelper::tabStatus('photos', $tab) ?>><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Фотографии</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane<?= HtmlHelper::active($tab, 'main') ?>" id="main">
+                <br>
+        <?php endif; ?>
+
         <?php $form = ActiveForm::begin(['id' => 'company-form']) ?>
 
         <div class="col-sm-3 no-padding">
@@ -36,7 +49,7 @@ $this->title = 'Личный кабинет | Моя компания';
             <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => 'Название компании'])->label(false) ?>
         </div>
 
-        <?= $form->field($model, 'categoriesHint[0]')->hiddenInput(['id' => 'compCategory0'])
+        <?= $form->field($model, 'categoriesHint')->hiddenInput(['id' => 'compCategory0'])
             ->hint('<span class="input-modal-link" data-toggle="modal" data-target="#caterigoriesSelectModal">' . $model->categorySelectionString() . '</span>'); ?>
 
         <?= $form->field($model, 'logo')->widget(FileInput::class, [
@@ -81,7 +94,7 @@ $this->title = 'Личный кабинет | Моя компания';
 
         <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
 
-        <?php if ($model->scenario == \core\forms\Company\CompanyForm::SCENARIO_USER_MANAGE): ?>
+        <?php if (!$user->company): ?>
             <label class="control-label" for="file">Фото</label>
             <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
                 <div class="add-image-item has-overlay">
@@ -98,6 +111,17 @@ $this->title = 'Личный кабинет | Моя компания';
         <?= CompanyCategoriesSelectWidget::widget(['model' => $model]) ?>
 
         <?php ActiveForm::end() ?>
+
+        <?php if ($model->company): ?>
+            </div>
+            <!-- Фотографии -->
+            <div role="tabpanel" class="tab-pane<?= HtmlHelper::active($tab, 'photos') ?>" id="photos">
+                <br>
+                <?= PhotosManagerWidget::widget(['entityId' => $model->company->id, 'photos' => $model->company->photos]) ?>
+            </div>
+        </div>
+
+        <?php endif; ?>
     </div>
 </div>
 

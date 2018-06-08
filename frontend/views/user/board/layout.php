@@ -4,7 +4,7 @@ use core\helpers\PaginationHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use core\helpers\BoardHelper;
-use core\helpers\AdminLteHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $this yii\web\View */
 /* @var $tab string */
@@ -28,9 +28,9 @@ $this->beginContent('@frontend/views/layouts/main.php');
         <p>
             <a href="<?= Url::to(['create']) ?>" class="btn btn-primary">Добавить объявление</a>
             <?php if ($tab == 'active') {
-                echo AdminLteHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger');
+                echo HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger');
             } else if ($tab == 'archive') {
-                echo AdminLteHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'success');
+                echo HtmlHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'success');
             } ?>
         </p>
 

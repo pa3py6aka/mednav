@@ -4,13 +4,18 @@ namespace frontend\controllers\user;
 
 
 use core\access\Rbac;
+use core\actions\DeletePhotoAction;
+use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
 use core\components\SettingsManager;
+use core\entities\Company\Company;
 use core\forms\Company\CompanyForm;
+use core\forms\manage\PhotosForm;
 use core\forms\User\UpdatePasswordForm;
 use core\forms\User\UserProfileForm;
 use core\useCases\cabinet\ProfileService;
 use core\useCases\CompanyService;
+use core\useCases\manage\Company\CompanyPhotoService;
 use Yii;
 use yii\base\Module;
 use yii\filters\AccessControl;
@@ -57,16 +62,18 @@ class AccountController extends Controller
                     'max' => ['width' => Yii::$app->settings->get(SettingsManager::COMPANY_MAX_SIZE)],
                 ],
             ],
-            /*'move-photo' => [
+            'move-photo' => [
                 'class' => MovePhotoAction::class,
-                'entityClass' => Board::class,
-                'redirectUrl' => ['update', 'id' => '{id}', 'tab' => 'photos'],
+                'entityClass' => Company::class,
+                'serviceClass' => CompanyPhotoService::class,
+                'redirectUrl' => ['company', 'tab' => 'photos'],
             ],
             'delete-photo' => [
                 'class' => DeletePhotoAction::class,
-                'entityClass' => Board::class,
-                'redirectUrl' => ['update', 'id' => '{id}', 'tab' => 'photos'],
-            ],*/
+                'entityClass' => Company::class,
+                'serviceClass' => CompanyPhotoService::class,
+                'redirectUrl' => ['company', 'tab' => 'photos'],
+            ],
         ];
     }
 
@@ -123,6 +130,8 @@ class AccountController extends Controller
             throw new ForbiddenHttpException('Ваш профиль не является компанией.');
         }
 
+        $tab =Yii::$app->request->get('tab', 'main');
+
         $form = new CompanyForm($this->_user->company);
         $form->scenario = CompanyForm::SCENARIO_USER_MANAGE;
 
@@ -130,7 +139,7 @@ class AccountController extends Controller
             try {
                 $dText = "";
                 if ($this->_user->company) {
-                    $this->companyService->edit($form);
+                    $this->companyService->edit($this->_user->company->id, $form);
                 } else {
                     $company = $this->companyService->create($form);
                     $dText = $company->isOnModeration() ? "<br>Ваша компания отправлена на проверку модераторам." : "";
@@ -142,9 +151,25 @@ class AccountController extends Controller
             }
         }
 
+        if ($this->_user->company) {
+            $photosForm = new PhotosForm();
+            if ($photosForm->load(Yii::$app->request->post()) && $photosForm->validate()) {
+                try {
+                    $this->companyService->addPhotos($this->_user->company->id, $photosForm);
+                    Yii::$app->session->setFlash('success', 'Фотографии загружены');
+                    return $this->redirect(['company', 'tab' => 'photos']);
+                } catch (\DomainException $e) {
+                    Yii::$app->errorHandler->logException($e);
+                    Yii::$app->session->setFlash('error', $e->getMessage());
+                    $tab = 'photos';
+                }
+            }
+        }
+
         return $this->render('company', [
             'user' => $this->_user,
             'model' => $form,
+            'tab' => $tab,
         ]);
     }
 }

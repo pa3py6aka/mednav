@@ -7,6 +7,7 @@ use core\entities\Geo;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
+use core\entities\UserOwnerInterface;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -46,7 +47,7 @@ use yii\helpers\Json;
  * @property CompanyCategoryAssignment[] $companyCategoryAssignments
  * @property CompanyCategory[] $categories
  */
-class Company extends ActiveRecord implements StatusesInterface
+class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface
 {
     use StatusesTrait;
 
@@ -165,6 +166,11 @@ class Company extends ActiveRecord implements StatusesInterface
         ];
     }
 
+    public function getOwnerId(): int
+    {
+        return $this->user_id;
+    }
+
     /**
      * {@inheritdoc}
 
@@ -221,7 +227,7 @@ class Company extends ActiveRecord implements StatusesInterface
 
     public function getPhotos(): ActiveQuery
     {
-        return $this->hasMany(CompanyPhoto::class, ['company_id' => 'id']);
+        return $this->hasMany(CompanyPhoto::class, ['company_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
     }
 
     public function getCompanyTagsAssignments(): ActiveQuery

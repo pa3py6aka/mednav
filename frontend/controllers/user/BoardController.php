@@ -8,6 +8,7 @@ use core\actions\BoardCategorySelectAction;
 use core\actions\DeletePhotoAction;
 use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
+use core\behaviors\ActiveUserBehavior;
 use core\components\SettingsManager;
 use core\entities\Board\Board;
 use core\forms\manage\Board\BoardManageForm;
@@ -18,8 +19,11 @@ use core\useCases\manage\Board\BoardManageService;
 use core\useCases\manage\Board\BoardPhotoService;
 use Yii;
 use yii\base\Module;
+use yii\base\UserException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
@@ -49,6 +53,9 @@ class BoardController extends Controller
                         'roles' => [Rbac::ROLE_USER],
                     ],
                 ],
+            ],
+            'activeUser' => [
+                'class' => ActiveUserBehavior::class,
             ],
             'verbs' => [
                 'class' => VerbFilter::class,

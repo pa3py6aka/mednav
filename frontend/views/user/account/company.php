@@ -28,6 +28,14 @@ $this->title = 'Личный кабинет | Моя компания';
 
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show(['Моя компания']) ?>
+
+        <?php if ($model->company && $model->company->isOnModeration()): ?>
+            <div class="alert alert-info" role="alert" style="margin-top: 10px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Закрыть"><span aria-hidden="true">&times;</span></button>
+                Ваша компания находится на проверке.
+            </div>
+        <?php endif; ?>
+
         <h1>Моя компания</h1>
 
         <?php if ($model->company): ?>

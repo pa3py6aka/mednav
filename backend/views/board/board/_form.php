@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use core\actions\UploadAction;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
@@ -76,15 +77,7 @@ $this->registerJs($model->getJs());
                 ->hint('<span class="input-modal-link" id="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
 
         <?php if (!$board): ?>
-            <label class="control-label" for="form-geo-id">Фото</label>
-            <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
-                <div class="add-image-item">
-                    <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
-                    <input type="file" class="hidden" accept="image/*">
-                    <span class="remove-btn fa fa-remove hidden"></span>
-                </div>
-                <div class="help-block"></div>
-            </div>
+            <?= UploadAction::htmlBlock($model->formName()) ?>
         <?php endif; ?>
 
     </div>
@@ -101,6 +94,5 @@ $this->registerJs($model->getJs());
         </select>
     </div>
 </div>
-
 
 <?= RegionsModalWidget::widget() ?>

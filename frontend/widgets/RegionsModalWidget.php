@@ -6,6 +6,7 @@ namespace frontend\widgets;
 use core\entities\Board\BoardCategory;
 use core\entities\Geo;
 use core\helpers\BoardHelper;
+use core\helpers\CompanyHelper;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Widget;
@@ -18,7 +19,8 @@ class RegionsModalWidget extends Widget
     /**
      * @var string|null Определяет где используется модальное окно:
      *       null   - выбор региона в формах,
-     *       board  - в листинге доске объявлений
+     *       board  - в листинге доски объявлений
+     *       company - в листинге компаний
      */
     public $type = null;
 
@@ -66,12 +68,15 @@ class RegionsModalWidget extends Widget
         }, 60);
     }
 
-    public function link(Geo $region): string
+    public function link(Geo $region = null): string
     {
+        $text = $region ? $region->name : "Сбросить фильтр";
         if ($this->type == 'board') {
-            return Html::a($region->name, BoardHelper::categoryUrl($this->category, $region));
+            return Html::a($text, BoardHelper::categoryUrl($this->category, $region));
+        } else if ($this->type == 'company') {
+            return Html::a($text, CompanyHelper::categoryUrl($this->category, $region));
         } else if ($this->type === null) {
-            return Html::a($region->name, 'javascript:void(0)', [
+            return Html::a($text, 'javascript:void(0)', [
                 'data-id' => $region->id,
                 'data-geo' => 'link',
             ]);

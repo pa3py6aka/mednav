@@ -3,6 +3,11 @@
 namespace core\helpers;
 
 
+use core\entities\Board\BoardCategory;
+use core\entities\Board\BoardCategoryRegion;
+use core\entities\Company\CompanyCategory;
+use core\entities\Company\CompanyCategoryRegion;
+use Yii;
 use yii\helpers\Html;
 use yii\web\JqueryAsset;
 
@@ -48,4 +53,42 @@ class HtmlHelper
     {
         return $one == $two ? ' active' : '';
     }
+
+    /**
+     * @param string $titleParam (например SettingsManager::BOARD_TITLE)
+     * @param BoardCategory|CompanyCategory|null $category
+     * @param BoardCategoryRegion|CompanyCategoryRegion|null $categoryRegion
+     * @return string
+     */
+    public static function getTitleForList($titleParam, $category = null, $categoryRegion = null): string
+    {
+        $title = $categoryRegion ? $categoryRegion->title : '';
+        $title = $title ?: ($category ? $category->title : '');
+        $title = $title ?: ($category ? $category->name : '');
+        $title = !$category && !$categoryRegion ? Yii::$app->settings->get($titleParam) : $title;
+        return $title;
+    }
+
+    public static function categoryDescriptionBlock($position, $settingsParam, $isMainPage, $category = null, $categoryRegion = null): string
+    {
+        $text = '';
+        if ($categoryRegion && ($isMainPage || !$categoryRegion->{'description_' . $position . '_on'})) {
+            $text = $categoryRegion->{'description_' . $position};
+        } else if ($category && ($isMainPage || !$category->{'description_' . $position . '_on'})) {
+            $text = $category->{'description_' . $position};
+        } else if (Yii::$app->settings->get($settingsParam)) {
+            $text = Yii::$app->settings->get($settingsParam);
+        }
+
+        if ($text) {
+            return '<div class="row">' .
+                '<div class="col-md-12 col-sm-12 hidden-xs"><div class="list-category-desc">' .
+                $text .
+                '</div></div>' .
+                '</div>';
+        }
+
+        return '';
+    }
+
 }

@@ -50,15 +50,6 @@ class BoardHelper
         }
     }
 
-    public static function getTitle(BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
-    {
-        $title = $categoryRegion ? $categoryRegion->title : '';
-        $title = $title ?: ($category ? $category->title : '');
-        $title = $title ?: ($category ? $category->name : '');
-        $title = !$category && !$categoryRegion ? Yii::$app->settings->get(SettingsManager::BOARD_TITLE) : $title;
-        return $title;
-    }
-
     public static function contextCategoryLink(Board $board): string
     {
         $name = $board->category->context_name ?: $board->category->name;
@@ -91,7 +82,7 @@ class BoardHelper
 
     public static function breadCrumbs(BoardCategory $category = null, Geo $geo = null)
     {
-        $items[] = ['label' => Yii::$app->settings->get(SettingsManager::BOARD_NAME), 'url' => ['/board/board/index', 'region' => $geo ? $geo->slug : 'all']];
+        $items[] = ['label' => Yii::$app->settings->get(SettingsManager::BOARD_NAME), 'url' => ['/board/board/list', 'region' => $geo ? $geo->slug : 'all']];
         if ($category) {
             foreach ($category->parents as $parent) {
                 if ($parent->isRoot()) {
@@ -128,10 +119,10 @@ class BoardHelper
         }
 
         if (!$category && !$geo) {
-            $url = ['/board/board/index'];
+            $url = ['/board/board/list'];
         } else {
             $geoSlug = $geo && $geo instanceof Geo ? $geo->slug : ($geo ?: 'all');
-            $url = ['/board/board/index', 'category' => $category ? $category->slug : null, 'region' => $geoSlug];
+            $url = ['/board/board/list', 'category' => $category ? $category->slug : null, 'region' => $geoSlug];
         }
 
         return Url::to(array_merge($url, $params));

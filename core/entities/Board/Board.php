@@ -210,7 +210,7 @@ class Board extends ActiveRecord implements UserOwnerInterface
     {
         return $this->main_photo_id ?
             $this->mainPhoto->getUrl($type, $absolute)
-            : ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '/') . 'img/photo.png';
+            : ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . '/img/photo.png';
     }
 
     public function beforeDelete()

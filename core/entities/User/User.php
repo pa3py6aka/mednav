@@ -193,7 +193,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
     public function getVisibleName(): string
     {
         if ($this->isCompany() && $this->isCompanyActive()) {
-            return $this->company->name;
+            return $this->company->getFullName();
         }
         return $this->getUserName();
     }

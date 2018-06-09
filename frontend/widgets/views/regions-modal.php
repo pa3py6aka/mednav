@@ -24,7 +24,7 @@ $n = 1;
                     <?php endforeach; ?>
                     <?php if ($widget->type): ?>
                         <div class="nav-tabs-tools">
-                            <a href="<?= BoardHelper::categoryUrl($widget->category) ?>">Сбросить фильтр</a>
+                            <?= $widget->link() ?>
                         </div>
                     <?php endif; ?>
                 </ul>

@@ -13,7 +13,9 @@ use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%companies}}".
@@ -142,6 +144,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $this->status = $status;
     }
 
+    public function getUrl($absolute = false): string
+    {
+        return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
+            . Url::to(['/company/company/view', 'slug' => $this->slug, 'id' => $this->id]);
+    }
+
     public function getLogoUrl($absolute = false): string
     {
         return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
@@ -152,6 +160,23 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function logoPath(): string
     {
         return Yii::getAlias('@frontend/web/i/company/lg');
+    }
+
+    public function getTitle()
+    {
+        return $this->title ?: Html::encode($this->name);
+    }
+
+    public function getMainPhotoUrl($type = 'small', $absolute = false)
+    {
+        return $this->main_photo_id ?
+            $this->mainPhoto->getUrl($type, $absolute)
+            : ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . '/img/photo.png';
+    }
+
+    public function getFullName(): string
+    {
+        return Html::encode(trim($this->form . ' ' . $this->name));
     }
 
     public static function tableName(): string

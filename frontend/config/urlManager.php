@@ -20,15 +20,27 @@ return [
         'account' => 'user/account/index',
         'account/<_a:[\w-]+>' => 'user/account/<_a>',
 
+        // Объявления
         'board/<id:\d+>-<slug:[\w-]+>' => 'board/board/view',
 
-        'board/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'board/board/index',
-        'board/<region:[\w-]+>/page<page:\d+>' => 'board/board/index',
-        'board/page<page:\d+>' => 'board/board/index',
+        'board/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'board/board/list',
+        'board/<region:[\w-]+>/page<page:\d+>' => 'board/board/list',
+        'board/page<page:\d+>' => 'board/board/list',
 
-        'board/<region:[\w-]+>/<category:[\w-]+>' => 'board/board/index',
-        'board/<region:[\w-]+>' => 'board/board/index',
-        'board' => 'board/board/index',
+        'board/<region:[\w-]+>/<category:[\w-]+>' => 'board/board/list',
+        'board/<region:[\w-]+>' => 'board/board/list',
+        'board' => 'board/board/list',
+
+        // Компании
+        'company/<id:\d+>-<slug:[\w-]+>' => 'company/company/view',
+
+        'company/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'company/company/list',
+        'company/<region:[\w-]+>/page<page:\d+>' => 'company/company/list',
+        'company/page<page:\d+>' => 'company/company/list',
+
+        'company/<region:[\w-]+>/<category:[\w-]+>' => 'company/company/list',
+        'company/<region:[\w-]+>' => 'company/company/list',
+        'company' => 'company/company/list',
 
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',

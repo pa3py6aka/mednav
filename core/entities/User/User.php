@@ -140,7 +140,14 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function isCompanyActive(): bool
     {
-        return $this->company && $this->company->name && $this->company->slug;
+        return $this->company
+            && $this->company->form
+            && $this->company->name
+            && $this->company->slug
+            && $this->company->geo_id
+            && $this->company->address
+            && $this->company->title
+            && $this->company->description;
     }
 
     public function getUrl(): string

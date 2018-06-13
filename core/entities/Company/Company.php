@@ -2,6 +2,7 @@
 
 namespace core\entities\Company;
 
+use core\entities\Board\Board;
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
 use core\entities\StatusesInterface;
@@ -37,6 +38,7 @@ use yii\helpers\Url;
  * @property string $short_description
  * @property string $description
  * @property int $main_photo_id
+ * @property int $views [int(11) unsigned]
  * @property int $created_at
  * @property int $updated_at
  *
@@ -48,6 +50,7 @@ use yii\helpers\Url;
  * @property User $user
  * @property CompanyCategoryAssignment[] $companyCategoryAssignments
  * @property CompanyCategory[] $categories
+ * @property Board[] $boards
  */
 class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface
 {
@@ -125,9 +128,14 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $this->userSlug = $slug;
     }
 
-    public function getPhones(): array
+    /**
+     * @param bool $asString
+     * @return array|string
+     */
+    public function getPhones($asString = false)
     {
-        return $this->phones ? Json::decode($this->phones) : [];
+        $phones = $this->phones ? Json::decode($this->phones) : [];
+        return $asString ? Html::encode(implode(', ', $phones)) : $phones;
     }
 
     private function setPhones($phones): void
@@ -144,10 +152,10 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $this->status = $status;
     }
 
-    public function getUrl($absolute = false): string
+    public function getUrl($page = null, $absolute = false): string
     {
         return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
-            . Url::to(['/company/company/view', 'slug' => $this->slug, 'id' => $this->id]);
+            . Url::to(['/company/company/' . ($page ?: 'view'), 'slug' => $this->slug, 'id' => $this->id]);
     }
 
     public function getLogoUrl($absolute = false): string
@@ -177,6 +185,20 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getFullName(): string
     {
         return Html::encode(trim($this->form . ' ' . $this->name));
+    }
+
+    public function getTagsString(): string
+    {
+        return implode(', ', $this->getTags()->select('name')->column());
+    }
+
+    public function getCountFor(string $module): int
+    {
+        switch ($module) {
+            case 'boards':
+                return $this->getBoards()->count();
+            default: return 0;
+        }
     }
 
     public static function tableName(): string
@@ -287,6 +309,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     {
         return $this->hasMany(CompanyCategory::class, ['id' => 'category_id'])
             ->viaTable('{{%company_categories_assignment}}', ['company_id' => 'id']);
+    }
+
+    public function getBoards($active = true): ActiveQuery
+    {
+        $query = $this->hasMany(Board::class, ['author_id' => 'user_id']);
+        return $active ? $query->active() : $query;
     }
 
     /**

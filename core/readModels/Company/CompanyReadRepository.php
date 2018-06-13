@@ -11,10 +11,19 @@ use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 class CompanyReadRepository
 {
-    public function getAllBy(CompanyCategory $category = null, Geo $geo = null): DataProviderInterface
+    public function getByIdAndSlug($id, $slug): Company
+    {
+        if (!$company = Company::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
+            throw new NotFoundHttpException("Объявление не найдено");
+        }
+        return $company;
+    }
+
+    public function getAllBy(CompanyCategory $category = null, Geo $geo = null, $userId = null): DataProviderInterface
     {
         $query = Company::find()->alias('c')->active('c')->with('mainPhoto', 'geo');
 
@@ -27,6 +36,10 @@ class CompanyReadRepository
         if ($geo) {
             $ids = ArrayHelper::merge([$geo->id], $geo->getDescendants()->select('id')->column());
             $query->andWhere(['c.geo_id' => $ids]);
+        }
+
+        if ($userId) {
+            $query->andWhere(['c.user_id' => $userId]);
         }
 
         $query->groupBy('c.id');

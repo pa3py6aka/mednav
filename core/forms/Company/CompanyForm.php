@@ -61,7 +61,7 @@ class CompanyForm extends Model
             $this->title = $company->title;
             $this->shortDescription = $company->short_description;
             $this->description = $company->description;
-            $this->tags = implode(', ', $company->getTags()->select('name')->column());
+            $this->tags = $company->getTagsString();
 
             $this->company = $company;
         }

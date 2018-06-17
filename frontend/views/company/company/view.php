@@ -23,11 +23,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
         <!-- // content-block-->
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <ul class="breadcrumb">
-                    <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
-                    <li><a href="<?= CompanyHelper::categoryUrl() ?>">Каталог компаний</a></li>
-                    <li><a href="<?= $company->getUrl() ?>"><?= $company->getFullName() ?></a></li>
-                </ul>
+                <?php CompanyHelper::companyBreadcrumbs($company, $page) ?>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= $company->getFullName() ?></h1></div>
         </div>
@@ -123,15 +119,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
             </div>
             <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="kk-menu">
-                    <ul>
-                        <li><a href="<?= $company->getUrl() ?>">О компании</a></li>
-                        <li><a href="<?= $company->getUrl('contacts') ?>">Контакты</a></li>
-                        <li><a href="#">Товары</a> <sup>1200</sup></li>
-                        <li><a href="<?= $company->getUrl('boards') ?>">Объявления</a> <sup><?= $company->getCountFor('boards') ?></sup></li>
-                        <li><a href="#">Новости компании</a> <sup>1200</sup></li>
-                        <li><a href="#">Статьи</a> <sup>1200</sup></li>
-                        <li><a href="#">Акции</a> <sup>1200</sup></li>
-                    </ul>
+                    <?= $this->render('_menu', ['company' => $company]) ?>
                 </div>
                 <div class="kk-content">
                     <?php if ($page == 'main'): ?>

@@ -3,7 +3,9 @@
 namespace frontend\controllers\company;
 
 
+use core\readModels\Board\BoardReadRepository;
 use core\readModels\Company\CompanyReadRepository;
+use core\repositories\Board\BoardCategoryRepository;
 use core\repositories\Company\CompanyCategoryRepository;
 use core\repositories\GeoRepository;
 use Yii;
@@ -88,11 +90,16 @@ class CompanyController extends Controller
     public function actionBoards($id, $slug)
     {
         $company = $this->repository->getByIdAndSlug($id, $slug);
-        $provider = $this->repository->getAllBy(Yii::$app->request->get('category'), null, $company->user_id);
+        if ($category = Yii::$app->request->get('category') ?: null) {
+            $category = (new BoardCategoryRepository())->get((int) $category);
+        }
+
+        $provider = (new BoardReadRepository())->getAllByFilter($category, null, null, $company->user_id);
 
         return $this->render('boards', [
             'company' => $company,
             'provider' => $provider,
+            'category' => $category,
         ]);
     }
 }

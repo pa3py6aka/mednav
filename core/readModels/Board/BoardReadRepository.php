@@ -22,7 +22,7 @@ class BoardReadRepository
         return $board;
     }
 
-    public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null): DataProviderInterface
+    public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null, $userId = null): DataProviderInterface
     {
         $query = Board::find()->alias('b')->active('b')->with('mainPhoto', 'category', 'geo', 'typeBoardParameter.option');
 
@@ -39,6 +39,10 @@ class BoardReadRepository
         if ($typeParameterOption) {
             $query->joinWith('typeBoardParameter tp', false);
             $query->andWhere(['tp.option_id' => $typeParameterOption]);
+        }
+
+        if ($userId) {
+            $query->andWhere(['b.author_id' => $userId]);
         }
 
         $query->groupBy('b.id');

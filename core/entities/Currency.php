@@ -32,7 +32,8 @@ class Currency extends ActiveRecord
         return ArrayHelper::getValue(self::modulesArray(), $module);
     }
 
-    public static function getDb() {
+    public static function getDb()
+    {
         return Yii::$app->get('sqlite');
     }
 

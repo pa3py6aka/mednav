@@ -4,7 +4,7 @@ use yii\bootstrap\Html;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $model \core\forms\manage\CurrenciesForm */
+/* @var $model \core\forms\manage\Trade\TradeUoMsForm */
 
 $count = 10;
 ?>

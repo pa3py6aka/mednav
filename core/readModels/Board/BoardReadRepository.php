@@ -24,7 +24,10 @@ class BoardReadRepository
 
     public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null, $userId = null): DataProviderInterface
     {
-        $query = Board::find()->alias('b')->active('b')->with('mainPhoto', 'category', 'geo', 'typeBoardParameter.option');
+        $query = Board::find()
+            ->alias('b')
+            ->active('b')
+            ->with('mainPhoto', 'category', 'geo', 'typeBoardParameter.option', 'currency');
 
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());

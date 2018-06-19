@@ -36,7 +36,7 @@ $this->registerJs($model->getJs());
     </div>
     <div class="col-xs-3" style="margin-top:24px;">
         <?= $form->field($model, 'currency')
-            ->dropDownList(ArrayHelper::map(Currency::find()->asArray()->all(), 'id', 'sign'))->label(false) ?>
+            ->dropDownList(ArrayHelper::map(Currency::getAllFor(Currency::MODULE_BOARD), 'id', 'sign'))->label(false) ?>
     </div>
     <div class="col-xs-3" style="margin-top:30px;">
         <?= Html::activeCheckbox($model, 'priceFrom') ?>

@@ -72,7 +72,7 @@ class BoardManageForm extends Model
         } else {
             $this->categoryId[] = '';
             $this->termId = BoardTerm::getDefaultId();
-            $this->currency = Currency::getDefaultId();
+            $this->currency = Currency::getDefaultIdFor(Currency::MODULE_BOARD);
         }
         parent::__construct($config);
     }

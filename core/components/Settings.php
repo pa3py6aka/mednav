@@ -45,6 +45,23 @@ class Settings
     public const COMPANY_DESCRIPTION_BOTTOM = 'companyDescriptionBottom';
     public const COMPANY_DESCRIPTION_BOTTOM_ON = 'companyDescriptionBottomOn';
 
+    public const TRADE_NAME = 'tradeName';
+    public const TRADE_NAME_UP = 'tradeNameUP';
+    public const TRADE_PAGE_SIZE = 'tradePageSize';
+    public const TRADE_SMALL_SIZE = 'tradeSmallSize';
+    public const TRADE_BIG_SIZE = 'tradeBigSize';
+    public const TRADE_MAX_SIZE = 'tradeMaxSize';
+    public const TRADE_MODERATION = 'tradeModeration';
+
+    public const TRADE_META_TITLE = 'tradeMetaTitle';
+    public const TRADE_META_DESCRIPTION = 'tradeMetaDescription';
+    public const TRADE_META_KEYWORDS = 'tradeMetaKeywords';
+    public const TRADE_TITLE = 'tradeTitle';
+    public const TRADE_DESCRIPTION_TOP = 'tradeDescriptionTop';
+    public const TRADE_DESCRIPTION_TOP_ON = 'tradeDescriptionTopOn';
+    public const TRADE_DESCRIPTION_BOTTOM = 'tradeDescriptionBottom';
+    public const TRADE_DESCRIPTION_BOTTOM_ON = 'tradeDescriptionBottomOn';
+
     protected $default = [
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
@@ -85,5 +102,22 @@ class Settings
         self::COMPANY_DESCRIPTION_TOP_ON => 1,
         self::COMPANY_DESCRIPTION_BOTTOM => '',
         self::COMPANY_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::TRADE_NAME => 'Каталог товаров',
+        self::TRADE_NAME_UP => 'Товары',
+        self::TRADE_PAGE_SIZE => 19,
+        self::TRADE_SMALL_SIZE => 100,
+        self::TRADE_BIG_SIZE => 250,
+        self::TRADE_MAX_SIZE => 500,
+        self::TRADE_MODERATION => 0,
+
+        self::TRADE_META_TITLE => 'Медицинское оборудование, мебель, инструменты и расходные материалы',
+        self::TRADE_META_DESCRIPTION => 'Производители и поставщики медицинского оборудования, мед. техники, инструментов, мебели для мед. учреждений. MedNav.ru',
+        self::TRADE_META_KEYWORDS => 'медицинская техника, мед. оборудование, инструменты, медициские расходные материалы',
+        self::TRADE_TITLE => 'Медицинское оборудование, инструменты и материалы',
+        self::TRADE_DESCRIPTION_TOP => '',
+        self::TRADE_DESCRIPTION_TOP_ON => 1,
+        self::TRADE_DESCRIPTION_BOTTOM => '',
+        self::TRADE_DESCRIPTION_BOTTOM_ON => 1,
     ];
 }

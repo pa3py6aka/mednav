@@ -71,6 +71,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
         <div class="row">
             <div class="col-md-12">
                 <?php if (!$board->isActually()): ?>
+                    <br>
                     <div class="alert alert-warning">
                         Владелец данного объявления его давно не обновлял, возможно, оно потеряло актуальность.
                     </div>

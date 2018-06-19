@@ -33,6 +33,10 @@ return [
             'datetimeFormat' => 'php: d.m.Y H:i',
             'timeFormat' => 'php: H:i',
             'booleanFormat' => ['<i class="fa fa-remove text-red"></i>', '<i class="fa fa-check text-green"></i>']
-        ]
+        ],
+        'sqlite' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'sqlite:'. realpath(__DIR__ . "/../../core/data") . "/data.db",
+        ],
     ],
 ];

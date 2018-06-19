@@ -16,10 +16,16 @@
                         ['label' => 'Объявления', 'icon' => 'newspaper-o', 'url' => ['/board/board/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/board/settings/main']],
                     ]],
-                    ['label' => 'Каталог Компаний', 'icon' => 'book', 'items' => [
+                    ['label' => 'Каталог компаний', 'icon' => 'book', 'items' => [
                         ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/company/category/index']],
                         ['label' => 'Компании', 'icon' => 'newspaper-o', 'url' => ['/company/company/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/company/settings/main']],
+                    ]],
+                    ['label' => 'Каталог товаров', 'icon' => 'cubes', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/trade/category/index']],
+                        ['label' => 'Товары', 'icon' => 'cubes', 'url' => ['/trade/trade/active']],
+                        ['label' => 'Заказы', 'icon' => 'sticky-note-o', 'url' => ['/trade/order/index']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/trade/settings/main']],
                     ]],
                     [
                         'label' => 'Выйти',

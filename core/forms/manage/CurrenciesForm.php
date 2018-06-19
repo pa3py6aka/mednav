@@ -14,10 +14,12 @@ class CurrenciesForm extends Model
     public $default;
 
     private $maxId;
+    private $module;
 
-    public function __construct(array $config = [])
+    public function __construct(int $module, array $config = [])
     {
-        $currencies = Currency::find()->all();
+        $currencies = Currency::find()->where(['module' => $module])->all();
+        $this->module = $module;
         foreach ($currencies as $currency) {
             $this->id[$currency->id] = $currency->id;
             $this->name[$currency->id] = $currency->name;
@@ -54,6 +56,7 @@ class CurrenciesForm extends Model
                 if (!$currency) {
                     $currency = new Currency();
                     $currency->id = $id;
+                    $currency->module = $this->module;
                 }
                 $currency->name = $this->name[$id];
                 $currency->sign = $this->sign[$id];

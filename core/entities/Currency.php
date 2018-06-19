@@ -3,28 +3,51 @@
 namespace core\entities;
 
 
-use yii2tech\filedb\ActiveRecord;
+use Yii;
+use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * @property int $id
  * @property int $name
  * @property string $sign
  * @property int $default
+ * @property int $module [smallint]
  */
 class Currency extends ActiveRecord
 {
-    public static function fileName()
+    public const MODULE_BOARD = 1;
+    public const MODULE_TRADE = 2;
+
+    public static function modulesArray()
+    {
+        return [
+            self::MODULE_BOARD => 'board',
+            self::MODULE_TRADE => 'trade',
+        ];
+    }
+
+    public static function getModuleName($module): ?string
+    {
+        return ArrayHelper::getValue(self::modulesArray(), $module);
+    }
+
+    public static function getDb() {
+        return Yii::$app->get('sqlite');
+    }
+
+    public static function tableName()
     {
         return 'currencies';
     }
 
-    public function attributes()
+    public static function getAllFor($module)
     {
-        return ['id', 'name', 'sign', 'default'];
+        return self::find()->where(['module' => $module])->all();
     }
 
-    public static function getDefaultId(): int
+    public static function getDefaultIdFor($module): int
     {
-        return self::find()->where(['default' => 1])->one()->id;
+        return self::find()->where(['default' => 1, 'module' => $module])->one()->id;
     }
 }

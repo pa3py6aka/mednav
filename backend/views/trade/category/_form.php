@@ -1,13 +1,13 @@
 <?php
 
 use core\helpers\PaginationHelper;
-use core\entities\Company\CompanyCategory;
+use core\entities\Trade\TradeCategory;
 use mihaildev\ckeditor\CKEditor;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model \core\forms\manage\Company\CompanyCategoryForm */
+/* @var $model \core\forms\manage\Trade\TradeCategoryForm */
 /* @var $form yii\widgets\ActiveForm */
 
 ?>
@@ -18,10 +18,10 @@ use yii\widgets\ActiveForm;
 
     <div class="box box-default">
         <div class="box-body">
-            <?= $form->field($model, 'parentId')->dropDownList($model->parentCategoriesList(CompanyCategory::class)) ?>
+            <?= $form->field($model, 'parentId')->dropDownList($model->parentCategoriesList(TradeCategory::class)) ?>
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'contextName')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'enabled')->checkbox(['label' => 'Доступен для добавления компаний']) ?>
+            <?= $form->field($model, 'enabled')->checkbox(['label' => 'Доступен для добавления товаров']) ?>
             <?= $form->field($model, 'notShowOnMain')->checkbox() ?>
             <?= $form->field($model, 'childrenOnlyParent')->checkbox() ?>
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>

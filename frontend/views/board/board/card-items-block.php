@@ -29,7 +29,7 @@ use core\helpers\BoardHelper;
                         <span class="do-item-bs"><?= $board->typeBoardParameter ? $board->typeBoardParameter->option->name : '' ?></span> <a href="<?= $board->getUrl() ?>"><?= Html::encode($board->name) ?></a>
                     </div>
                     <div class="desc-col"><?= Html::encode($board->note) ?></div>
-                    <div class="list-vendor-info"><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> <?= Yii::$app->formatter->asDate($board->updated_at) ?> / <a href="#">ООО Компания оптовых цен НВ-Лаб</a> / <?= $board->geo->name ?> / <?= BoardHelper::contextCategoryLink($board) ?></div>
+                    <div class="list-vendor-info"><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> <?= Yii::$app->formatter->asDate($board->updated_at) ?> / <a href="<?= $board->author->getUrl() ?>"><?= $board->author->getVisibleName() ?></a> / <?= $board->geo->name ?> / <?= BoardHelper::contextCategoryLink($board) ?></div>
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-12"><div class="price-col"><?= $board->getPriceString() ?></div></div>
             </div>

@@ -19,65 +19,10 @@ use yii\widgets\Breadcrumbs;
 
 class BoardHelper
 {
-    public static function registerHeadMeta(View $view, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): void
-    {
-        $title = null;
-        $description = null;
-        $keywords = null;
-        if ($categoryRegion) {
-            $title = $categoryRegion->meta_title;
-            $description = $categoryRegion->meta_description;
-            $keywords = $categoryRegion->meta_keywords;
-        }
-        if ($category) {
-            $title = $title ?: ($category->meta_title ?: ($category->title ?: $category->name));
-            $description = $description ?: $category->meta_description;
-            $keywords = $keywords ?: $category->meta_keywords;
-        }
-        if (!$category && !$categoryRegion) {
-            $title = Yii::$app->settings->get(SettingsManager::BOARD_META_TITLE);
-            $description = Yii::$app->settings->get(SettingsManager::BOARD_META_DESCRIPTION);
-            $keywords = Yii::$app->settings->get(SettingsManager::BOARD_META_KEYWORDS);
-        }
-        $title = $title ?: 'Объявления';
-
-        $view->title = $title;
-        if ($description) {
-            $view->registerMetaTag(['name' => 'description', 'content' => $description]);
-        }
-        if ($keywords) {
-            $view->registerMetaTag(['name' => 'keywords', 'content' => $keywords]);
-        }
-    }
-
     public static function contextCategoryLink(Board $board): string
     {
         $name = $board->category->context_name ?: $board->category->name;
         return Html::a($name, self::categoryUrl($board->category, Yii::$app->session->get('geo', 'all')), ['class' => 'list-lnk']);
-    }
-
-    public static function categoryDescriptionBlock($position, $isMainPage, BoardCategory $category = null, BoardCategoryRegion $categoryRegion = null): string
-    {
-        $const = $position == 'top' ? SettingsManager::BOARD_DESCRIPTION_TOP : SettingsManager::BOARD_DESCRIPTION_BOTTOM;
-        $text = '';
-        //echo $categoryRegion->{'description_' . $position . '_on'};exit;
-        if ($categoryRegion && ($isMainPage || !$categoryRegion->{'description_' . $position . '_on'})) {
-            $text = $categoryRegion->{'description_' . $position};
-        } else if ($category && ($isMainPage || !$category->{'description_' . $position . '_on'})) {
-            $text = $category->{'description_' . $position};
-        } else if (Yii::$app->settings->get($const)) {
-            $text = Yii::$app->settings->get($const);
-        }
-
-        if ($text) {
-            return '<div class="row">' .
-                       '<div class="col-md-12 col-sm-12 hidden-xs"><div class="list-category-desc">' .
-                           $text .
-                       '</div></div>' .
-                   '</div>';
-        }
-
-        return '';
     }
 
     public static function breadCrumbs(BoardCategory $category = null, Geo $geo = null)

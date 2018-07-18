@@ -82,7 +82,8 @@ AppAsset::register($this);
                                 </button>
                             </div>
                             <div id="navMenu-collapse" class="collapse navbar-collapse">
-                                <ul class="navbar-nav navbar-left nav"><li><a href="/trade">Каталог товаров</a></li>
+                                <ul class="navbar-nav navbar-left nav">
+                                    <li><a href="<?= Url::to(['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Каталог товаров</a></li>
                                     <li><a href="<?= Url::to(['/board/board/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Объявления</a></li>
                                     <li><a href="<?= Url::to(['/company/company/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Компании</a></li>
                                     <li><a href="/expo">Выставки</a></li>
@@ -126,9 +127,9 @@ AppAsset::register($this);
                 <div class="col-md-3 col-sm-4 hidden-xs">
                     <div id="footer-lnk-block">
                         <ul class="footer-merker-list">
-                            <li><a href="/trade" class="footer-lnk">Каталог медицинского оборудования</a></li>
-                            <li><a href="/board" class="footer-lnk">Объявления о продаже медтехники</a></li>
-                            <li><a href="/company" class="footer-lnk">Каталог поставщиков медтехники</a></li>
+                            <li><a href="<?= Url::to(['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>" class="footer-lnk">Каталог медицинского оборудования</a></li>
+                            <li><a href="<?= Url::to(['/board/board/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>" class="footer-lnk">Объявления о продаже медтехники</a></li>
+                            <li><a href="<?= Url::to(['/company/company/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>" class="footer-lnk">Каталог поставщиков медтехники</a></li>
                             <li><a href="/register?footer-add-goods" title="Добавить свой товар и компанию!" class="footer-lnk-add">Добавить товар/компанию</a></li>
                         </ul></div>
                 </div>

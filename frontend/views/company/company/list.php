@@ -1,5 +1,6 @@
 <?php
 
+use core\helpers\CategoryHelper;
 use core\helpers\CompanyHelper;
 use core\helpers\HtmlHelper;
 use core\entities\Company\CompanyCategory;
@@ -17,7 +18,7 @@ use core\components\SettingsManager;
 /* @var $provider \yii\data\ActiveDataProvider */
 
 
-CompanyHelper::registerHeadMeta($this, $category, $categoryRegion);
+CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category, $categoryRegion);
 
 ?>
 <div class="row">

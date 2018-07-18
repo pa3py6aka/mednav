@@ -29,12 +29,11 @@ class TradeReadRepository
         $query = Trade::find()
             ->alias('t')
             ->active('t')
-            ->with('mainPhoto', 'geo');
+            ->with('mainPhoto', 'geo', 'userCategory', 'category', 'user.company');
 
         if ($category) {
-            $userCategoryIds = TradeUserCategory::find()->select(['id'])->where(['category_id' => $category->id])->column();
-            $tradeIds = TradeUserCategoryAssignment::find()->select('trade_id')->where(['category_id' => $userCategoryIds])->column();
-            $query->andWhere(['t.id' => $tradeIds]);
+            $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
+            $query->andWhere(['t.category_id' => $ids]);
         }
 
         if ($geo) {
@@ -96,12 +95,12 @@ class TradeReadRepository
                     'id' => [
                         'asc' => ['t.id' => SORT_ASC],
                         'desc' => ['t.id' => SORT_DESC],
-                        'label' => 'Дата',
+                        'label' => 'Дате',
                     ],
                     'price' => [
                         'asc' => ['-[[t.price]]' => SORT_DESC],
                         'desc' => ['t.price' => SORT_DESC],
-                        'label' => 'Цена'
+                        'label' => 'Цене'
                     ],
                     'stock' => [
                         'asc' => ['t.stock' => SORT_ASC],

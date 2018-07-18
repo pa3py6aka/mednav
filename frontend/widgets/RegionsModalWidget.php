@@ -7,6 +7,7 @@ use core\entities\Board\BoardCategory;
 use core\entities\Geo;
 use core\helpers\BoardHelper;
 use core\helpers\CompanyHelper;
+use core\helpers\TradeHelper;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Widget;
@@ -75,6 +76,8 @@ class RegionsModalWidget extends Widget
             return Html::a($text, BoardHelper::categoryUrl($this->category, $region));
         } else if ($this->type == 'company') {
             return Html::a($text, CompanyHelper::categoryUrl($this->category, $region));
+        } else if ($this->type == 'trade') {
+            return Html::a($text, TradeHelper::categoryUrl($this->category, $region));
         } else if ($this->type === null) {
             return Html::a($text, 'javascript:void(0)', [
                 'data-id' => $region->id,

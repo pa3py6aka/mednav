@@ -13,6 +13,7 @@ use core\helpers\PriceHelper;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\bootstrap\Html;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
@@ -164,6 +165,18 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     public function getUrl(): string
     {
         return Url::to(['/trade/trade/view', 'slug' => $this->slug, 'id' => $this->id]);
+    }
+
+    public function getMainPhotoUrl($type = 'small', $absolute = false): string
+    {
+        return $this->main_photo_id ?
+            $this->mainPhoto->getUrl($type, $absolute)
+            : ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . '/img/no-photo-250.jpg';
+    }
+
+    public function getTitle(): string
+    {
+        return Html::encode($this->name);
     }
 
     public function beforeDelete()

@@ -1,36 +1,43 @@
 <?php
 
-use core\helpers\BoardHelper;
 use core\helpers\CategoryHelper;
+use core\helpers\TradeHelper;
 use core\helpers\HtmlHelper;
-use frontend\widgets\BoardCategoriesListWidget;
+use frontend\widgets\CategoriesListWidget;
 use frontend\widgets\RegionsModalWidget;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use core\helpers\PaginationHelper;
 use core\components\SettingsManager;
+use core\entities\Trade\TradeCategory;
 
 /* @var $this yii\web\View */
-/* @var $category \core\entities\Board\BoardCategory|null */
+/* @var $category \core\entities\Trade\TradeCategory|null */
 /* @var $geo \core\entities\Geo|null */
-/* @var $categoryRegion \core\entities\Board\BoardCategoryRegion|null */
+/* @var $categoryRegion \core\entities\Trade\TradeCategoryRegion|null */
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $type int */
 
 
-CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $category, $categoryRegion);
+CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров', $category, $categoryRegion);
 
 ?>
 <div class="row">
     <div class="col-md-9 col-sm-9 col-xs-12" style="border: 0px solid #000;">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <?= BoardHelper::breadCrumbs($category, $geo) ?>
+                <?= TradeHelper::breadCrumbs($category, $geo) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::BOARD_NAME, $category, $categoryRegion) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::TRADE_NAME, $category, $categoryRegion) ?></h1></div>
         </div>
 
-        <?= BoardCategoriesListWidget::widget(['category' => $category, 'region' => $geo]) ?>
+        <?= CategoriesListWidget::widget([
+            'category' => $category,
+            'region' => $geo,
+            'component' => 'company',
+            'categoryClass' => TradeCategory::class,
+            'helperClass' => TradeHelper::class,
+        ]) ?>
 
         <!-- content-block-->
         <div class="row">
@@ -38,22 +45,15 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
         </div>
         <!-- // content-block-->
 
-        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::BOARD_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::TRADE_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion) ?>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="list-panel-sort">
-                    <div style="float: left; margin-right: 15px;">
-                        <?= Html::beginForm(BoardHelper::categoryUrl($category, $geo, true), 'get', ['class' => 'form-inline filter-form-auto']) ?>
-                            Тип: <?= Html::dropDownList('type', $type, BoardHelper::typeParameterOptions(), ['class' => 'form-control input-sm', 'prompt' => 'Все']) ?>
-                        <?= Html::endForm() ?>
-                    </div>
-                    <div>
-                        Сортировать по: <?= $provider->sort->link('price', ['class' => 'sort']) ?> &nbsp; <?= $provider->sort->link('date', ['class' => 'sort']) ?>
-                        <span>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegion"><?= $geo ? $geo->name : 'Все регионы' ?></button>
-                        </span>
-                    </div>
+                    Сортировать по: <?= $provider->sort->link('price', ['class' => 'sort']) ?> <?= $provider->sort->link('id', ['class' => 'sort']) ?> <?= $provider->sort->link('stock', ['class' => 'sort']) ?>
+                    <span>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegion"><?= $geo ? $geo->name : 'Все регионы' ?></button>
+                    </span>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
         </div>
         <!-- // context-block-->
 
-        <div class="card-items-block">
+        <div class="trade-items-block">
             <?= $this->render('card-items-block', [
                 'provider' => $provider,
                 'geo' => $geo,
@@ -103,7 +103,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
         </div>
         <!-- // content-blocks-->
 
-        <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::BOARD_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category, $categoryRegion) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::TRADE_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category, $categoryRegion) ?>
 
     </div>
 
@@ -155,4 +155,4 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
     </div>
 </div>
 
-<?= RegionsModalWidget::widget(['category' => $category, 'type' => 'board']) ?>
+<?= RegionsModalWidget::widget(['category' => $category, 'type' => 'trade']) ?>

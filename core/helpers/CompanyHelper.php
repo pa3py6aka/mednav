@@ -20,37 +20,6 @@ use yii\widgets\Breadcrumbs;
 
 class CompanyHelper
 {
-    public static function registerHeadMeta(View $view, CompanyCategory $category = null, CompanyCategoryRegion $categoryRegion = null): void
-    {
-        $title = null;
-        $description = null;
-        $keywords = null;
-        if ($categoryRegion) {
-            $title = $categoryRegion->meta_title;
-            $description = $categoryRegion->meta_description;
-            $keywords = $categoryRegion->meta_keywords;
-        }
-        if ($category) {
-            $title = $title ?: ($category->meta_title ?: ($category->title ?: $category->name));
-            $description = $description ?: $category->meta_description;
-            $keywords = $keywords ?: $category->meta_keywords;
-        }
-        if (!$category && !$categoryRegion) {
-            $title = Yii::$app->settings->get(SettingsManager::COMPANY_META_TITLE);
-            $description = Yii::$app->settings->get(SettingsManager::COMPANY_META_DESCRIPTION);
-            $keywords = Yii::$app->settings->get(SettingsManager::COMPANY_META_KEYWORDS);
-        }
-        $title = $title ?: 'Компании';
-
-        $view->title = $title;
-        if ($description) {
-            $view->registerMetaTag(['name' => 'description', 'content' => $description]);
-        }
-        if ($keywords) {
-            $view->registerMetaTag(['name' => 'keywords', 'content' => $keywords]);
-        }
-    }
-
     public static function breadCrumbs(CompanyCategory $category = null, Geo $geo = null)
     {
         $items[] = ['label' => Yii::$app->settings->get(SettingsManager::COMPANY_NAME), 'url' => ['/company/company/list', 'region' => $geo ? $geo->slug : 'all']];
@@ -67,7 +36,7 @@ class CompanyHelper
         return Breadcrumbs::widget(['links' => $items]);
     }
 
-    public static function categoryUrl(CompanyCategory $category = null, $geo = null)
+    public static function categoryUrl(CompanyCategory $category = null, $geo = null): string
     {
         if (!$category && !$geo) {
             $url = ['/company/company/list'];

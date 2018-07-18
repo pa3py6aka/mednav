@@ -43,6 +43,17 @@ return [
         'company/<region:[\w-]+>' => 'company/company/list',
         'company' => 'company/company/list',
 
+        // Товары
+        'trade/<id:\d+>-<slug:[\w-]+>' => 'trade/trade/view',
+
+        'trade/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'trade/trade/list',
+        'trade/<region:[\w-]+>/page<page:\d+>' => 'trade/trade/list',
+        'trade/page<page:\d+>' => 'trade/trade/list',
+
+        'trade/<region:[\w-]+>/<category:[\w-]+>' => 'trade/trade/list',
+        'trade/<region:[\w-]+>' => 'trade/trade/list',
+        'trade' => 'trade/trade/list',
+
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
         '<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_c>/<_a>',

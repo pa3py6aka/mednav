@@ -3,7 +3,6 @@
 namespace frontend\controllers\board;
 
 
-use core\actions\CategorySelectAction;
 use core\readModels\Board\BoardReadRepository;
 use core\repositories\Board\BoardCategoryRepository;
 use core\repositories\GeoRepository;

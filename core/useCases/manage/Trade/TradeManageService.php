@@ -31,9 +31,7 @@ class TradeManageService
 
     public function create(TradeManageForm $form): Trade
     {
-        $userId = $form->scenario === TradeManageForm::SCENARIO_USER_CREATE
-            ? Yii::$app->user->id
-            : ($form->userId ?: Yii::$app->user->id);
+        $userId = $form->getUserId();
         $status = $form->scenario === TradeManageForm::SCENARIO_USER_CREATE
             ? (Yii::$app->settings->get(SettingsManager::TRADE_MODERATION) ? Trade::STATUS_ON_PREMODERATION : Trade::STATUS_ACTIVE)
             : Trade::STATUS_ACTIVE;
@@ -72,10 +70,7 @@ class TradeManageService
 
     public function edit(Trade $trade, TradeManageForm $form): void
     {
-        $userId = $form->scenario === TradeManageForm::SCENARIO_USER_EDIT
-            ? $trade->user_id
-            : ($form->userId ?: $trade->user_id);
-
+        $userId = $form->getUserId();
         $userCategory = TradeUserCategory::findOne($form->categoryId);
         $user = $userId === Yii::$app->user->id ? Yii::$app->user->identity : User::findOne($userId);
 
@@ -154,6 +149,18 @@ class TradeManageService
     {
         $userCategory->edit($form->name, $form->categoryId, $form->uomId, $form->currencyId, $form->wholeSale);
         $this->repository->saveUserCategory($userCategory);
+    }
+
+    public function publish($ids): void
+    {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+        foreach ($ids as $id) {
+            $trade = $this->repository->get($id);
+            $trade->setStatus(Trade::STATUS_ACTIVE);
+            $this->repository->save($trade);
+        }
     }
 
     public function massRemove(array $ids, $hardRemove = false): int

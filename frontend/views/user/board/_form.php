@@ -10,11 +10,10 @@ use mihaildev\ckeditor\CKEditor;
 use frontend\widgets\RegionsModalWidget;
 use frontend\widgets\SelectCategoryWidget;
 use core\entities\Board\BoardCategory;
+use core\actions\UploadAction;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
-
-//$this->registerJs($model->getJs());
 
 ?>
 <?php $form = ActiveForm::begin(); ?>
@@ -60,15 +59,7 @@ use core\entities\Board\BoardCategory;
     ->hint('<span class="input-modal-link" id="region-select-link" data-toggle="modal" data-target="#modalRegion">' . $model->geoName() . '</span>'); ?>
 
 <?php if ($model->scenario == BoardManageForm::SCENARIO_USER_CREATE): ?>
-    <label class="control-label" for="file">Фото</label>
-    <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
-        <div class="add-image-item has-overlay">
-            <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
-            <input type="file" class="hidden" accept="image/*">
-            <span class="remove-btn fa fa-remove hidden"></span>
-        </div>
-        <div class="help-block"></div>
-    </div>
+    <?= UploadAction::htmlBlock($model->formName()) ?>
 <?php endif; ?>
 
 <?= Html::submitButton(1 ? 'Сохранить' : 'Добавить', ['class' => 'btn btn-success btn-flat']) ?>

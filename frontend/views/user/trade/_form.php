@@ -7,10 +7,10 @@ use yii\bootstrap\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
 use core\entities\Trade\TradeUserCategory;
 use frontend\widgets\WholesalesFormWidget;
+use core\actions\UploadAction;
 
 /* @var $this yii\web\View */
 /* @var $model TradeManageForm */
-
 
 ?>
 <?php $form = ActiveForm::begin(); ?>
@@ -39,15 +39,7 @@ use frontend\widgets\WholesalesFormWidget;
 <?= $form->field($model, 'tags')->textInput() ?>
 
 <?php if ($model->scenario == TradeManageForm::SCENARIO_USER_CREATE): ?>
-    <label class="control-label" for="file">Фото</label>
-    <div class="photos-block" data-form-name="<?= $model->formName() ?>" data-attribute="photos">
-        <div class="add-image-item has-overlay">
-            <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
-            <input type="file" class="hidden" accept="image/*">
-            <span class="remove-btn fa fa-remove hidden"></span>
-        </div>
-        <div class="help-block"></div>
-    </div>
+    <?= UploadAction::htmlBlock($model->formName()) ?>
 <?php endif; ?>
 
 <?= Html::submitButton(1 ? 'Сохранить' : 'Добавить', ['class' => 'btn btn-success btn-flat']) ?>

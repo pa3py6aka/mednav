@@ -43,6 +43,8 @@ use yii\helpers\Url;
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property string $priceString
+ *
  * @property Geo $geo
  * @property TradeCategory $category
  * @property TradeUserCategory $userCategory
@@ -154,6 +156,11 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         return $this->stock ? "В наличии" : "Под заказ";
     }
 
+    public function getPriceString(): string
+    {
+        return PriceHelper::normalize($this->price) . ' ' . $this->userCategory->currency->sign;
+    }
+
     public function getUrl(): string
     {
         return Url::to(['/trade/trade/view', 'slug' => $this->slug, 'id' => $this->id]);
@@ -224,7 +231,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
             'user_id' => 'Пользователь',
             'category_id' => 'Раздел',
             'user_category_id' => 'Категория',
-            'name' => 'Название',
+            'name' => 'Наименование',
             'meta_title' => 'Meta Title',
             'meta_description' => 'Meta Description',
             'meta_keywords' => 'Meta Keywords',

@@ -1,19 +1,20 @@
 <?php
 
-use core\entities\Board\Board;
+use core\entities\Trade\Trade;
 use core\helpers\HtmlHelper;
 use core\helpers\BoardHelper;
+use core\helpers\StatusHelper;
 use frontend\widgets\PhotosManagerWidget;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model core\entities\Board\Board */
+/* @var $model Trade */
 /* @var $photosForm \core\forms\manage\PhotosForm */
 /* @var $tab string */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Доска объявлений', 'url' => ['active']];
+$this->params['breadcrumbs'][] = ['label' => 'Каталог товаров', 'url' => ['active']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="board-view box box-primary">
@@ -34,36 +35,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                         'id',
                         [
-                            'attribute' => 'author_id',
-                            'value' => function (Board $board) {
-                                return Html::a($board->author->getVisibleName(), ['/user/view', 'id' => $board->author_id]);
+                            'attribute' => 'user_id',
+                            'value' => function (Trade $trade) {
+                                return Html::a($trade->user->getVisibleName(), ['/user/view', 'id' => $trade->user_id]);
                             },
                             'format' => 'raw',
                         ],
-                        'name',
-                        'slug',
+                        'name:ntext',
                         [
                             'attribute' => 'category_id',
-                            'value' => function (Board $board) {
-                                return Html::a($board->category->name, ['/board/category/update', 'id' => $board->category_id]);
+                            'value' => function (Trade $trade) {
+                                return Html::a($trade->category->name, ['/trade/category/update', 'id' => $trade->category_id]);
                             },
                             'format' => 'raw',
                         ],
-                        'title',
-                        'description:ntext',
-                        'keywords:ntext',
-                        'note',
-                        'priceString',
-                        //'currency',
-                        //'price_from:boolean',
-                        'full_text:html',
                         [
-                            'label' => 'Параметры',
-                            'value' => function (Board $board) {
+                            'attribute' => 'user_category_id',
+                            'value' => function (Trade $trade) {
+                                return Html::encode($trade->userCategory->name);
+                            },
+                        ],
+                        [
+                            'attribute' => 'geo_id',
+                            'value' => function (Trade $trade) {
+                                return Html::a($trade->geo->name, ['/geo/update', 'id' => $trade->geo_id]);
+                            },
+                            'format' => 'raw',
+                        ],
+                        'code',
+                        'priceString',
+                        [
+                            'attribute' => 'wholesale_prices',
+                            'value' => function (Trade $trade) {
                                 $rows = [];
-                                /* @var  $assignment \core\entities\Board\BoardParameterAssignment */
-                                foreach ($board->getBoardParameters()->with('parameter', 'option')->all() as $assignment) {
-                                    $rows[] = '<tr><th>' . $assignment->parameter->name . '</th><td>' . $assignment->getValueByType() . '</td></tr>';
+                                foreach ($trade->getWholesales() as $wholesale) {
+                                    $rows[] = '<tr><td>От ' . $wholesale['from'] . '</td><td>' . $wholesale['price'] . ' ' . $trade->userCategory->currency->sign . '</td></tr>';
                                 }
                                 return Html::tag('table', implode("\n", $rows), [
                                     'class' => 'table table-bordered no-padding',
@@ -73,35 +79,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                             'contentOptions' => ['class' => 'no-padding'],
                         ],
-                        [
-                            'attribute' => 'term_id',
-                            'value' => function (Board $board) {
-                                return $board->term->daysHuman;
-                            },
-                        ],
-                        [
-                            'attribute' => 'geo_id',
-                            'value' => function (Board $board) {
-                                return Html::a($board->geo->name, ['/geo/update', 'id' => $board->geo_id]);
-                            },
-                            'format' => 'raw',
-                        ],
+                        'stock:boolean',
+                        'note:ntext',
+                        'description:html',
+
+                        'meta_title',
+                        'meta_description:ntext',
+                        'meta_keywords',
+                        'slug',
                         [
                             'label' => 'Тэги',
-                            'value' => function (Board $board) {
-                                $tags = $board->getTags()->select(['name'])->column();
+                            'value' => function (Trade $trade) {
+                                $tags = $trade->getTags()->select(['name'])->column();
                                 return implode(", ", $tags);
                             },
                         ],
                         [
                             'attribute' => 'status',
-                            'value' => function (Board $board) {
-                                $board->updateStatus();
-                                return BoardHelper::statusBadge($board->status, $board->statusName);
+                            'value' => function (Trade $trade) {
+                                return StatusHelper::statusBadge($trade->status, $trade->statusName);
                             },
                             'format' => 'raw',
                         ],
-                        'active_until:datetime',
                         'created_at:datetime',
                         'updated_at:datetime',
                     ],

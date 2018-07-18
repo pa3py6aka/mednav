@@ -4,7 +4,9 @@ namespace core\forms\manage\Trade;
 
 
 use core\entities\Trade\Trade;
+use core\entities\User\User;
 use core\helpers\PriceHelper;
+use Yii;
 use yii\base\Model;
 
 class TradeManageForm extends Model
@@ -118,6 +120,20 @@ class TradeManageForm extends Model
         }
 
         return parent::beforeValidate();
+    }
+
+    public function getUserId(): int
+    {
+        $userId = in_array($this->scenario, [self::SCENARIO_USER_CREATE, self::SCENARIO_USER_EDIT])
+            ? Yii::$app->user->id
+            : ($this->userId ?: Yii::$app->user->id);
+        if ($userId !== Yii::$app->user->id) {
+            $user = User::findOne($userId);
+            if (!$user->isCompany()) {
+                throw new \DomainException("Пользователь не является компанией.");
+            }
+        }
+        return $userId;
     }
 
     public function attributeLabels()

@@ -2,7 +2,7 @@
 
 namespace backend\controllers\board;
 
-use core\actions\BoardCategorySelectAction;
+use core\actions\CategorySelectAction;
 use core\actions\DeletePhotoAction;
 use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
@@ -56,7 +56,7 @@ class BoardController extends Controller
                 'class' => UploadAction::class,
             ],
             'select-category' => [
-                'class' => BoardCategorySelectAction::class,
+                'class' => CategorySelectAction::class,
             ],
             'move-photo' => [
                 'class' => MovePhotoAction::class,

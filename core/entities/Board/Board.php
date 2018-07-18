@@ -381,7 +381,7 @@ class Board extends ActiveRecord implements UserOwnerInterface
 
     public function getMainPhoto(): ActiveQuery
     {
-        return $this->hasOne(BoardPhoto::class, ['id' => 'main_photo_id']);
+        return $this->hasOne(BoardPhoto::class, ['id' => 'main_photo_id'])->orderBy(['sort' => SORT_ASC]);
     }
 
     /**

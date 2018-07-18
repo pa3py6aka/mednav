@@ -7,18 +7,21 @@ use core\entities\Board\BoardCategory;
 use core\helpers\BoardHelper;
 use Yii;
 use yii\base\Action;
-use yii\helpers\ArrayHelper;
+use yii\db\ActiveRecord;
 
 /**
  * Экшин для выбора категорий методом dependency dropdown
  */
-class BoardCategorySelectAction extends Action
+class CategorySelectAction extends Action
 {
+    /* @var $entity ActiveRecord|BoardCategory|\core\entities\Trade\TradeCategory */
+    public $entity;
+
     public function run()
     {
         $id = (int) Yii::$app->request->post('id');
         $formName = Yii::$app->request->post('formName');
-        $category = BoardCategory::findOne($id);
+        $category = $this->entity::findOne($id);
 
         if ($category->depth < 2) {
             $items = $category->getChildren()->orderBy('lft')->active()->enabled()->select(['id', 'name'])->asArray()->all();
@@ -36,7 +39,7 @@ class BoardCategorySelectAction extends Action
 
         return $this->controller->asJson([
             'items' => $items,
-            'params' => BoardHelper::generateParameterFields($category, $formName),
+            'params' => $this->entity instanceof BoardCategory ? BoardHelper::generateParameterFields($category, $formName) : '',
         ]);
     }
 }

@@ -964,5 +964,9 @@ a.desc:after {content:"\e156";}
 .add-image-item .remove-btn:focus, .add-image-item .remove-btn:hover {color:#ff2929;}
 /* //Конец стилей по загрузке фото в формах */
 
+.text-red {color:#dd4b39 !important;}
+.text-green {color:#00a65a !important;}
+.lh30 {line-height:33px;}
+
 
 

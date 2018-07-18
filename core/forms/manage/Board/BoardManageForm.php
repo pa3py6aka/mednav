@@ -9,11 +9,8 @@ use core\entities\Board\BoardTerm;
 use core\entities\Currency;
 use core\entities\Geo;
 use core\helpers\BoardHelper;
+use core\helpers\PriceHelper;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 class BoardManageForm extends Model
 {
@@ -90,7 +87,7 @@ class BoardManageForm extends Model
             ['categoryId', 'exist', 'targetClass' => BoardCategory::class, 'targetAttribute' => 'id'],
             [['params'], 'each', 'rule' => ['safe']],
             ['photos', 'each', 'rule' => ['string']],
-            ['price', 'match', 'pattern' => '/^[0-9]+((\.|,)[0-9]{2})?$/uis']
+            ['price', 'match', 'pattern' => PriceHelper::REGEXP]
         ];
     }
 
@@ -143,49 +140,6 @@ class BoardManageForm extends Model
         ];
     }
 
-    public function getCategoryDropdowns(ActiveForm $form): string
-    {
-        $dropdowns = [];
-        $n = 0;
-        foreach ($this->categoryId as $n => $categoryId) {
-            if ($n == 0) {
-                $categories = ArrayHelper::map(BoardCategory::find()->enabled()->roots()->asArray()->all(), 'id', 'name');
-            } else if ($n == 2) {
-                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
-                    return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
-                });
-                $this->categoryId[$n] = end($this->categoryId);
-            } else if ($n == 1) {
-                $categories = ArrayHelper::map(BoardCategory::findOne($this->categoryId[$n - 1])->getChildren()->active()->enabled()->all(), 'id', 'name');
-            }
-
-            if ($n < 3) {
-                if ($n == 0) {
-                    $dropdowns[] = $form->field($this, 'categoryId[' . $n . ']')
-                        ->dropDownList($categories, ['prompt' => 'Выберите раздел']);
-                } else {
-                    $dropdown = Html::activeDropDownList($this, 'categoryId[' . $n . ']',$categories, ['class' => 'form-control', 'prompt' => '']);
-                    $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
-                }
-            }
-        }
-
-        if ($n < 2 && $this->categoryId[$n]) {
-            $category = BoardCategory::findOne($this->categoryId[$n]);
-            if ($category->depth == 2) {
-                $children = ArrayHelper::map($category->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
-                    return ($item['depth'] > 3 ? str_repeat('-', $item['depth'] - 3) . ' ' : '') . $item['name'];
-                });
-            } else {
-                $children = ArrayHelper::map($category->getChildren()->active()->enabled()->all(), 'id', 'name');
-            }
-
-            $dropdown = Html::activeDropDownList($this, 'categoryId[' . ($n + 1) . ']', $children, ['class' => 'form-control', 'prompt' => '']);
-            $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
-        }
-        return implode("\n", $dropdowns);
-    }
-
     public function getParametersBlock(): string
     {
         $lastCategory = end($this->categoryId);
@@ -202,60 +156,5 @@ class BoardManageForm extends Model
     {
         return $this->_board && $this->_board->geo_id ? $this->_board->geo->name
             : ($this->geoId ? Geo::find()->select('name')->where(['id' => $this->geoId])->scalar() : 'Выбрать регион');
-    }
-
-    public function getJs()
-    {
-        $url = Url::to(['select-category']);
-        return <<<JS
-var formName = '{$this->formName()}';
-$(document).on('change', 'select[name*=categoryId]', function () {
-    var select = $(this);
-    var box = $(select.parents('.box')[0]);
-    select.parent().nextAll('.form-group').remove();
-    var id = select.val();
-    var emptySelect = false;
-    if (!id) {
-        var prev = select.parent().prev('.form-group').find('select');
-        if (prev.length) {
-            id = prev.val();
-            emptySelect = true;
-        } else {
-            $('#parameters-block').html('');
-            return;
-        }
-    }
-    $.ajax({
-        url: '{$url}',
-        method: "post",
-        dataType: "json",
-        data: {id: id, formName: formName},
-        beforeSend: function () {
-            box.prepend('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
-        },
-        success: function(data, textStatus, jqXHR) {
-            if (!emptySelect && data.items.length) {
-                var dropdownBlock = $('#templates').find('.category-dropdown').clone();
-                var dropdown = dropdownBlock.find('select');
-                var num = $('#category-block').find('.form-group').length;
-                dropdown.attr('name', formName + '[categoryId][' + num + ']');
-                $.each(data.items, function (k, item) {
-                    dropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
-                });
-                select.parent().after(dropdownBlock);
-            }
-            refreshParameters(data.params);
-        },
-        complete: function () {
-            box.find('.overlay').remove();
-         }
-    });
-});
-
-function refreshParameters(params) {
-    var paramsBlock = $('#parameters-block');
-    paramsBlock.html(params);
-}
-JS;
     }
 }

@@ -5,6 +5,7 @@ use yii\helpers\Url;
 /* @var $user \core\entities\User\User */
 /* @var $link string */
 
+$controller = Yii::$app->controller->id;
 $link = Yii::$app->controller->action->id;
 
 ?>
@@ -18,9 +19,10 @@ $link = Yii::$app->controller->action->id;
             <li role="presentation"<?= $link == 'profile' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/profile']) ?>">Мои данные</a></li>
             <?php if ($user->isCompany()): ?>
                 <li role="presentation"<?= $link == 'company' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/company']) ?>">Моя компания</a></li>
+                <li role="presentation"<?= $controller == 'user/trade' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/trade/active']) ?>">Товары</a></li>
             <?php endif; ?>
             <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Сообщения (0)</a></li>
-            <li role="presentation"><a href="<?= Url::to(['/user/board/active']) ?>">Объявления</a></li>
+            <li role="presentation"<?= $controller == 'user/board' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/board/active']) ?>">Объявления</a></li>
             <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Служба поддержки</a></li>
         </ul>
     </div>

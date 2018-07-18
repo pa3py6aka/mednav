@@ -5,6 +5,8 @@ namespace core\helpers;
 
 class PriceHelper
 {
+    public const REGEXP = '/^[0-9]+((\.|,)[0-9]{2})?$/uis';
+
     public static function optimize($price)
     {
         $price = (float) str_replace(',', '.', $price);

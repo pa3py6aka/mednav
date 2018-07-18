@@ -11,6 +11,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use core\actions\UploadAction;
+use frontend\widgets\SelectCategoryWidget;
+use core\entities\Board\BoardCategory;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
@@ -20,7 +22,7 @@ use core\actions\UploadAction;
 $board = isset($board) ? $board : null;
 $this->registerJsVar('_ImageUploadAction', Url::to(['/board/board/upload']));
 ImageManagerAsset::register($this);
-$this->registerJs($model->getJs());
+//$this->registerJs($model->getJs());
 ?>
 
 <div class="board-form box box-primary">
@@ -33,9 +35,11 @@ $this->registerJs($model->getJs());
 
         <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-        <div id="category-block">
-            <?= $model->getCategoryDropdowns($form) ?>
-        </div>
+        <?= SelectCategoryWidget::widget([
+            'entity' => BoardCategory::class,
+            'model' => $model,
+            'form' => $form,
+        ]) ?>
 
         <div id="parameters-block">
             <?= $model->getParametersBlock() ?>

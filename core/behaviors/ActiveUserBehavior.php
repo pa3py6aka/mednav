@@ -13,6 +13,7 @@ use yii\web\Controller;
 class ActiveUserBehavior extends Behavior
 {
     public $actions = [];
+    public $onlyForCompany = false;
 
     public function events()
     {
@@ -29,7 +30,9 @@ class ActiveUserBehavior extends Behavior
                 return Yii::$app->controller->redirect(Yii::$app->user->loginUrl);
             }
 
-            if ($user->isProfileEmpty()) {
+            if ($this->onlyForCompany && !$user->isCompany()) {
+                throw new UserException("Этот раздел доступен только для компаний.");
+            } else if ($user->isProfileEmpty()) {
                 throw new UserException("Для начала работы, заполните форму <a href=\"" . Url::to(['/user/account/profile']) . "\">вашего профиля</a>
             " . ($user->isCompany() ? " и " . Html::a('данные о компании', ['/user/account/company']) : "" ));
             }

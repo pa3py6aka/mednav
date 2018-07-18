@@ -76,14 +76,6 @@ class m180628_100132_create_trade_categories_table extends Migration
         $this->createIndex('idx-trade_category_regions-category_id', '{{%trade_category_regions}}', 'category_id');
         $this->addForeignKey('fk-trade_category_regions-category_id', '{{%trade_category_regions}}', 'category_id', '{{%trade_categories}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk-trade_category_regions-geo_id', '{{%trade_category_regions}}', 'geo_id', '{{%geo}}', 'id', 'CASCADE', 'CASCADE');
-
-        /*$this->createTable('{{%trade_category_assignments}}', [
-            'trade_id' => $this->integer()->notNull(),
-            'category_id' => $this->integer()->notNull(),
-        ], $tableOptions);
-
-        $this->addPrimaryKey('pk-trade_category_assignments', '{{%trade_category_assignments}}', ['trade_id', 'category_id']);
-        $this->addForeignKey('fk-trade_category_assignments-trade_id', '{{%trade_category_assignments}}', 'trade_id', '')*/
     }
 
     /**

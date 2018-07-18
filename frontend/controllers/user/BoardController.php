@@ -4,13 +4,14 @@ namespace frontend\controllers\user;
 
 
 use core\access\Rbac;
-use core\actions\BoardCategorySelectAction;
+use core\actions\CategorySelectAction;
 use core\actions\DeletePhotoAction;
 use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
 use core\behaviors\ActiveUserBehavior;
 use core\components\SettingsManager;
 use core\entities\Board\Board;
+use core\entities\Board\BoardCategory;
 use core\forms\manage\Board\BoardManageForm;
 use core\forms\manage\PhotosForm;
 use core\readModels\Board\BoardReadRepository;
@@ -78,7 +79,8 @@ class BoardController extends Controller
                 'class' => UploadAction::class,
             ],
             'select-category' => [
-                'class' => BoardCategorySelectAction::class,
+                'class' => CategorySelectAction::class,
+                'entity' => BoardCategory::class,
             ],
             'move-photo' => [
                 'class' => MovePhotoAction::class,
@@ -195,7 +197,6 @@ class BoardController extends Controller
         return $this->render('update', [
             'model' => $form,
             'board' => $board,
-            'photosForm' => $photosForm,
             'tab' => Yii::$app->request->get('tab', 'main'),
         ]);
     }
@@ -242,7 +243,7 @@ class BoardController extends Controller
             // Проверка на наличие прав на действие
             $boards = Board::findAll(['id' => $ids]);
             foreach ($boards as $board) {
-                if (!$board->canExtend($this->_user->id)) {
+                if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $board->author_id]) || ($action == 'extend' && !$board->canExtend($this->_user->id))) {
                     $key = array_search($board->id, $ids);
                     unset($ids[$key]);
                 }

@@ -274,14 +274,14 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return $this->hasOne(Geo::class, ['id' => 'geo_id']);
     }
 
-    public function getMainPhoto(): ActiveQuery
-    {
-        return $this->hasOne(CompanyPhoto::class, ['id' => 'main_photo_id']);
-    }
-
     public function getPhotos(): ActiveQuery
     {
         return $this->hasMany(CompanyPhoto::class, ['company_id' => 'id'])->orderBy(['sort' => SORT_ASC]);
+    }
+
+    public function getMainPhoto(): ActiveQuery
+    {
+        return $this->hasOne(CompanyPhoto::class, ['id' => 'main_photo_id'])->orderBy(['sort' => SORT_ASC]);
     }
 
     public function getCompanyTagsAssignments(): ActiveQuery

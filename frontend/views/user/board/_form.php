@@ -3,23 +3,27 @@
 use core\forms\manage\Board\BoardManageForm;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use core\entities\Currency;
 use core\entities\Board\BoardTerm;
 use mihaildev\ckeditor\CKEditor;
 use frontend\widgets\RegionsModalWidget;
+use frontend\widgets\SelectCategoryWidget;
+use core\entities\Board\BoardCategory;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
 
-$this->registerJs($model->getJs());
+//$this->registerJs($model->getJs());
 
 ?>
 <?php $form = ActiveForm::begin(); ?>
 
-<div id="category-block" class="box has-overlay">
-    <?= $model->getCategoryDropdowns($form) ?>
-</div>
+<?= SelectCategoryWidget::widget([
+    'entity' => BoardCategory::class,
+    'model' => $model,
+    'form' => $form,
+]) ?>
 
 <div id="parameters-block">
     <?= $model->getParametersBlock() ?>

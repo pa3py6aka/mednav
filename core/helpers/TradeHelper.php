@@ -30,6 +30,23 @@ class TradeHelper
         return Breadcrumbs::widget(['links' => $items]);
     }
 
+    public static function itemBreadcrumbs(Trade $trade)
+    {
+        ?>
+        <ul class="breadcrumb">
+            <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
+            <li><a href="<?= Url::to(['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Оборудование</a></li>
+            <?php foreach ($trade->category->parents as $category) {
+                if ($category->isRoot()) {
+                    continue;
+                }
+                ?><li><a href="<?= self::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->getTitle() ?></a></li><?php
+            } ?>
+            <li><a href="<?= self::categoryUrl($trade->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $trade->category->getTitle() ?></a></li>
+        </ul>
+        <?php
+    }
+
     public static function contextCategoryLink(Trade $trade): string
     {
         $name = $trade->category->context_name ?: $trade->category->name;

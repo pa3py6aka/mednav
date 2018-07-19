@@ -134,6 +134,11 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         $this->description = $description;
     }
 
+    public function canWholesales(): bool
+    {
+        return (bool) $this->userCategory->wholesale;
+    }
+
     /**
      * @return array Массив вида [['currency' => 100, 'from' => 10], ... ]
      */
@@ -159,7 +164,17 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
 
     public function getPriceString(): string
     {
-        return PriceHelper::normalize($this->price) . ' ' . $this->userCategory->currency->sign;
+        return PriceHelper::normalize($this->price) . ' ' . $this->getCurrencyString();
+    }
+
+    public function getUomString(): string
+    {
+        return Html::encode($this->userCategory->uom->sign);
+    }
+
+    public function getCurrencyString(): string
+    {
+        return Html::encode($this->userCategory->currency->sign);
     }
 
     public function getUrl(): string

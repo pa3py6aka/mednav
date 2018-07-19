@@ -71,11 +71,11 @@ class TradeController extends Controller
 
     public function actionView($id, $slug)
     {
-        $board = $this->readRepository->getByIdAndSlug($id, $slug);
-        $board->updateCounters(['views' => 1]);
+        $trade = $this->readRepository->getByIdAndSlug($id, $slug);
+        $trade->updateCounters(['views' => 1]);
 
         return $this->render('view', [
-            'board' => $board
+            'trade' => $trade
         ]);
     }
 }

@@ -36,12 +36,14 @@ class TradeController extends Controller
     public $layout = '@frontend/views/user/trade/layout';
 
     private $service;
+    private $readRepository;
     private $_user;
 
-    public function __construct(string $id, Module $module, TradeManageService $service, array $config = [])
+    public function __construct(string $id, Module $module, TradeManageService $service, TradeReadRepository $readRepository, array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
+        $this->readRepository = $readRepository;
         $this->_user = Yii::$app->user->identity;
         $this->view->params['user'] = $this->_user;
     }
@@ -99,8 +101,7 @@ class TradeController extends Controller
     public function actionActive()
     {
         $this->selectedActionHandle();
-        $repository = new TradeReadRepository();
-        $provider = $repository->getUserTrades($this->_user->id, Trade::STATUS_ACTIVE);
+        $provider = $this->readRepository->getUserTrades($this->_user->id, Trade::STATUS_ACTIVE);
         Yii::$app->user->setReturnUrl(['/user/trade/active']);
 
         return $this->render('active', [
@@ -111,8 +112,7 @@ class TradeController extends Controller
     public function actionWaiting()
     {
         $this->selectedActionHandle();
-        $repository = new TradeReadRepository();
-        $provider = $repository->getUserTrades($this->_user->id, Trade::STATUS_ON_PREMODERATION);
+        $provider = $this->readRepository->getUserTrades($this->_user->id, Trade::STATUS_ON_PREMODERATION);
         Yii::$app->user->setReturnUrl(['/user/trade/waiting']);
 
         return $this->render('waiting', [
@@ -147,7 +147,7 @@ class TradeController extends Controller
 
     public function actionCreate()
     {
-        if (!(new TradeReadRepository())->getUserCategoriesCount($this->_user->id)) {
+        if (!$this->readRepository->getUserCategoriesCount($this->_user->id)) {
             throw new UserException(
                 "Для добавления товаров необходимо добавить хотя бы одну пользовательскую категорию.<br><br>" .
                 "<a href=\"" .Url::to(['category-create']). "\" class='btn btn-primary'>Добавить категорию.</a>"
@@ -277,8 +277,10 @@ class TradeController extends Controller
 
     public function actionCategory($id)
     {
+        $this->selectedActionHandle();
         $this->layout = 'main';
         $userCategory = (new TradeRepository())->getUserCategory($id);
+        $tradesProvider = $this->readRepository->getUserTrades($this->_user->id, 'notDeleted', $userCategory->id);
 
         if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $userCategory->user_id])) {
             throw new ForbiddenHttpException("Вы не имеете прав на просмотр данной категории.");
@@ -286,12 +288,13 @@ class TradeController extends Controller
 
         return $this->render('category', [
             'category' => $userCategory,
+            'tradesProvider' => $tradesProvider,
         ]);
     }
 
     public function actionCategories()
     {
-        $provider = (new TradeReadRepository())->getUserCategories($this->_user->id);
+        $provider = $this->readRepository->getUserCategories($this->_user->id);
 
         return $this->render('categories', [
             'provider' => $provider,

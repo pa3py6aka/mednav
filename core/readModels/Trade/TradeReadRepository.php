@@ -60,20 +60,30 @@ class TradeReadRepository
         return $this->getProvider($query);
     }
 
-    public function getUserTrades($userId, $status = Trade::STATUS_ACTIVE): DataProviderInterface
+    public function getUserTrades($userId, $status, $userCategoryId = null): DataProviderInterface
     {
         $query = Trade::find()
             ->alias('t')
             ->where(['t.user_id' => $userId]);
 
+        if ($userCategoryId) {
+            $query->andWhere(['user_category_id' => $userCategoryId]);
+        }
+
         switch ($status) {
+            case 'notDeleted':
+                $query->andWhere(['<>', 't.status', Trade::STATUS_DELETED]);
+                break;
             case Trade::STATUS_ON_PREMODERATION:
                 $query->onModeration('t');
                 break;
-            case Trade::STATUS_DELETED:
-                $query->deleted('t');
+            case Trade::STATUS_ACTIVE:
+                $query->active('t');
                 break;
-            default: $query->active('t');
+            case Trade::STATUS_DELETED:
+                $query->deleted('t');echo $status;exit;
+                break;
+            default: null;
         }
         return $this->getProvider($query);
     }

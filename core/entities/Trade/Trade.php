@@ -2,6 +2,7 @@
 
 namespace core\entities\Trade;
 
+use core\entities\Company\Company;
 use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\StatusesInterface;
@@ -24,6 +25,7 @@ use yii\helpers\Url;
  *
  * @property int $id
  * @property int $user_id
+ * @property int $company_id [int(11)]
  * @property int $category_id [int(11)]
  * @property int $user_category_id [int(11)]
  * @property int $geo_id [int(11)]
@@ -54,6 +56,7 @@ use yii\helpers\Url;
  * @property TradeTagAssignment[] $tagsAssignments
  * @property TradeTag[] $tags
  * @property User $user
+ * @property Company $company
  */
 class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterface
 {
@@ -311,6 +314,11 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getCompany(): ActiveQuery
+    {
+        return $this->hasOne(Company::class, ['id' => 'company_id']);
     }
 
     public function getGeo(): ActiveQuery

@@ -97,8 +97,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         <?php endforeach; ?>
                     </ul>
                     <?php endif; ?>
-                    <?php if ($trade->user->company->site): ?>
-                        <a href="<?= Url::to(['/site/outsite', 'url' => $trade->user->company->site]) ?>">Товар на сайте продавца</a>
+                    <?php if ($trade->company->site): ?>
+                        <a href="<?= Url::to(['/site/outsite', 'url' => $trade->company->site]) ?>">Товар на сайте продавца</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -106,11 +106,11 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
             <div class="col-md-4 col-sm-4 col-xs-12 kt-item-vendor-block">
                 <div class="kt-item-vendor-text">
                     <ul>
-                        <li><a href="<?= $trade->user->company->getUrl() ?>"><?= $trade->user->company->getFullName() ?></a></li>
-                        <li><span class="kt-item-infoset">Телефон:</span> <?= $trade->user->company->getPhones(true) ?></li>
-                        <li><span class="kt-item-infoset">Факс:</span> <?= Html::encode($trade->user->company->fax) ?></li>
-                        <li><span class="kt-item-infoset">Адрес:</span> <?= Html::encode($trade->user->company->address) ?></li>
-                        <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $trade->user->company->site]) ?>"><?= Html::encode($trade->user->company->site) ?></a></li>
+                        <li><a href="<?= $trade->company->getUrl() ?>"><?= $trade->company->getFullName() ?></a></li>
+                        <li><span class="kt-item-infoset">Телефон:</span> <?= $trade->company->getPhones(true) ?></li>
+                        <li><span class="kt-item-infoset">Факс:</span> <?= Html::encode($trade->company->fax) ?></li>
+                        <li><span class="kt-item-infoset">Адрес:</span> <?= Html::encode($trade->company->address) ?></li>
+                        <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $trade->company->site]) ?>"><?= Html::encode($trade->company->site) ?></a></li>
                     </ul>
                     <div>
                         <a href="#ModalMsg" class="form-control btn kk-btn-contact" data-toggle="modal">
@@ -174,7 +174,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
 
                     <div class="kt-item-infoset">Доставка</div>
                     <div class="kt-item-delivery">
-                        <?php foreach ($trade->user->company->deliveries as $companyDelivery): ?>
+                        <?php foreach ($trade->company->deliveries as $companyDelivery): ?>
                         <input type="checkbox" id="hd-<?= $companyDelivery->id ?>" class="hide">
                         - <label for="hd-<?= $companyDelivery->id ?>"><?= $companyDelivery->delivery->name ?></label>
                         <div>
@@ -193,7 +193,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                 <h4>Описание товара</h4>
                 <?= TextHelper::out($trade->description) ?>
 
-                <div class="kt-item-vendgoods">Все товары продавца в <a href="<?= Url::to(['/trade/trade/list', 'category' => $trade->category->slug]) ?>"><?= $trade->category->name ?></a> (<?= $trade::find()->countInCategoryForUser($trade->category_id, $trade->user_id) ?>)</div>
+                <div class="kt-item-vendgoods">Все товары продавца в <a href="<?= Url::to(['/trade/trade/list', 'category' => $trade->category->slug]) ?>"><?= $trade->category->name ?></a> (<?= $trade::find()->countInCategoryForCompany($trade->category_id, $trade->company_id) ?>)</div>
                 <div class="kt-notice-price">
                     Указанная цена на Комплекс изделий для проведения вертикального подводного вытяжения отделов позвоночника КИВ ПВП - "ТММ", носит ознакомительный характер и не является публичной офертой, определяемой положениями Статьи 437 (2) ГК РФ. Для уточнения цены, отправте запрос продавцу.
                     <br><br>

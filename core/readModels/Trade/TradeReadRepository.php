@@ -3,11 +3,12 @@
 namespace core\readModels\Trade;
 
 
+use core\entities\Company\CompanyDelivery;
+use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
 use core\entities\Geo;
 use core\entities\Trade\TradeUserCategory;
-use core\entities\Trade\TradeUserCategoryAssignment;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
@@ -29,7 +30,7 @@ class TradeReadRepository
         $query = Trade::find()
             ->alias('t')
             ->active('t')
-            ->with('mainPhoto', 'geo', 'userCategory', 'category', 'user.company');
+            ->with('mainPhoto', 'geo', 'userCategory', 'category', 'company');
 
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
@@ -38,7 +39,17 @@ class TradeReadRepository
 
         if ($geo) {
             $ids = ArrayHelper::merge([$geo->id], $geo->getDescendants()->select('id')->column());
-            $query->andWhere(['t.geo_id' => $ids]);
+            $companyIds = CompanyDeliveryRegions::find()
+                ->alias('cdr')
+                ->leftJoin(CompanyDelivery::tableName() . ' cd', 'cdr.company_deliveries_id=cd.id')
+                ->select('cd.company_id')
+                ->where(['cdr.geo_id' => $ids])
+                ->column();
+            $query->andWhere([
+                'or',
+                ['t.geo_id' => $ids],
+                ['t.company_id' => $companyIds]
+            ]);
         }
 
         if ($userId) {

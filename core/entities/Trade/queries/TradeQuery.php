@@ -35,9 +35,9 @@ class TradeQuery extends \yii\db\ActiveQuery
         return $this->onModeration()->cache(60)->count();
     }
 
-    public function countInCategoryForUser($categoryId, $userId): int
+    public function countInCategoryForCompany($categoryId, $companyId): int
     {
-        return $this->where(['user_id' => $userId, 'category_id' => $categoryId])->active()->count();
+        return $this->where(['company_id' => $companyId, 'category_id' => $categoryId])->active()->count();
     }
 
     /**

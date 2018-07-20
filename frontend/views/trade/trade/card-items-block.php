@@ -5,6 +5,7 @@ use core\helpers\TradeHelper;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $geo \core\entities\Geo|null */
+/* @var $inCompany bool */
 
 /* @var $trade \core\entities\Trade\Trade */
 
@@ -30,7 +31,12 @@ use core\helpers\TradeHelper;
                     </div>
                     <div class="desc-col"><?= Html::encode($trade->note) ?></div>
                     <div class="list-vendor-info">
-                        <a href="<?= $trade->user->company->getUrl() ?>"><?= $trade->user->company->getFullName() ?></a> / <?= $trade->geo->name ?> / Доставка по России / <?= TradeHelper::contextCategoryLink($trade) ?>
+                        <?php if (!$inCompany): ?>
+                        <a href="<?= $trade->user->company->getUrl() ?>"><?= $trade->user->company->getFullName() ?></a> /
+                        <?php endif; ?>
+                        <?= $trade->geo->name ?> /
+                        Доставка по России /
+                        <?= TradeHelper::contextCategoryLink($trade) ?>
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-12">

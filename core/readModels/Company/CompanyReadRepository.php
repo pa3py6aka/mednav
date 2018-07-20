@@ -25,7 +25,7 @@ class CompanyReadRepository
 
     public function getAllBy(CompanyCategory $category = null, Geo $geo = null): DataProviderInterface
     {
-        $query = Company::find()->alias('c')->active('c')->with('mainPhoto', 'geo');
+        $query = Company::find()->alias('c')->active('c')->with('mainPhoto', 'geo', 'boards', 'trades');
 
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());

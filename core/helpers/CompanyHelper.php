@@ -11,6 +11,8 @@ use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\Company\CompanyCategoryRegion;
 use core\entities\Geo;
+use core\entities\Trade\Trade;
+use core\entities\Trade\TradeCategory;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -76,12 +78,14 @@ class CompanyHelper
                 <li><a href="<?= $company->getUrl('contacts') ?>">Контакты</a></li>
             <?php elseif ($page == 'boards'): ?>
                 <li><a href="<?= $company->getUrl('boards') ?>">Объявления</a></li>
+            <?php elseif ($page == 'trades'): ?>
+                <li><a href="<?= $company->getUrl('trades') ?>">Товары</a></li>
             <?php endif; ?>
         </ul>
         <?php
     }
 
-    public static function companyCategoriesItems(Company $company)
+    public static function companyBoardCategoriesItems(Company $company)
     {
         $query = (new Query())
             ->select('bc.*, COUNT(b.category_id) as b_count')
@@ -96,6 +100,25 @@ class CompanyHelper
 
         $categories = ArrayHelper::map($query, 'id', function (array $category) {
             return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ' (' . $category['b_count'] . ')';
+        });
+
+        return $categories;
+    }
+
+    public static function companyTradeCategoriesItems(Company $company)
+    {
+        $query = (new Query())
+            ->select('tc.*, COUNT(t.category_id) as t_count')
+            ->from(TradeCategory::tableName() . ' tc')
+            ->leftJoin(Trade::tableName() . ' t', 't.category_id=tc.id')
+            ->where(['t.company_id' => $company->id])
+            ->andWhere(['t.status' => Trade::STATUS_ACTIVE])
+            ->orderBy('tc.lft')
+            ->groupBy('tc.id')
+            ->all();
+
+        $categories = ArrayHelper::map($query, 'id', function (array $category) {
+            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ' (' . $category['t_count'] . ')';
         });
 
         return $categories;

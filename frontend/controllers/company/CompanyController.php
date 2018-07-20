@@ -3,13 +3,17 @@
 namespace frontend\controllers\company;
 
 
+use core\helpers\PaginationHelper;
 use core\readModels\Board\BoardReadRepository;
 use core\readModels\Company\CompanyReadRepository;
+use core\readModels\Trade\TradeReadRepository;
 use core\repositories\Board\BoardCategoryRepository;
 use core\repositories\Company\CompanyCategoryRepository;
 use core\repositories\GeoRepository;
+use core\repositories\Trade\TradeCategoryRepository;
 use Yii;
 use yii\base\Module;
+use yii\data\Pagination;
 use yii\web\Controller;
 
 class CompanyController extends Controller
@@ -96,7 +100,45 @@ class CompanyController extends Controller
 
         $provider = (new BoardReadRepository())->getAllByFilter($category, null, null, $company->user_id);
 
+        // Вывод объявлений по клику "показать ещё"
+        if (
+            ($showMore = PaginationHelper::getShowMore($this, $provider, '@frontend/views/board/board/card-items-block', [
+                    'provider' => $provider,
+                    'inCompany' => true,
+                ])) !== null
+        ) {
+            Yii::debug($showMore);
+            return $showMore;
+        }
+
         return $this->render('boards', [
+            'company' => $company,
+            'provider' => $provider,
+            'category' => $category,
+        ]);
+    }
+
+    public function actionTrades($id, $slug)
+    {
+        $company = $this->repository->getByIdAndSlug($id, $slug);
+        if ($category = Yii::$app->request->get('category') ?: null) {
+            $category = (new TradeCategoryRepository())->get((int) $category);
+        }
+
+        $provider = (new TradeReadRepository())->getAllByFilter($category, null, $company->id);
+
+        // Вывод товаров по клику "показать ещё"
+        if (
+            ($showMore = PaginationHelper::getShowMore($this, $provider, '@frontend/views/trade/trade/card-items-block', [
+                'provider' => $provider,
+                'inCompany' => true,
+            ])) !== null
+        ) {
+            Yii::debug($showMore);
+            return $showMore;
+        }
+
+        return $this->render('trades', [
             'company' => $company,
             'provider' => $provider,
             'category' => $category,

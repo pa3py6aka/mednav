@@ -7,6 +7,7 @@ use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
+use core\entities\Trade\Trade;
 use core\entities\User\User;
 use core\entities\UserOwnerInterface;
 use Yii;
@@ -52,6 +53,7 @@ use yii\helpers\Url;
  * @property CompanyCategory[] $categories
  * @property Board[] $boards
  * @property CompanyDelivery[] $deliveries
+ * @property Trade[] $trades
  */
 class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface
 {
@@ -199,6 +201,8 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         switch ($module) {
             case 'boards':
                 return $this->getBoards()->count();
+            case 'trades':
+                return $this->getTrades()->count();
             default: return 0;
         }
     }
@@ -322,6 +326,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getDeliveries(): ActiveQuery
     {
         return $this->hasMany(CompanyDelivery::class, ['company_id' => 'id']);
+    }
+
+    public function getTrades($active = true): ActiveQuery
+    {
+        $query = $this->hasMany(Trade::class, ['company_id' => 'id']);
+        return $active ? $query->active() : $query;
     }
 
     /**

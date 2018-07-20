@@ -42,9 +42,8 @@ class TradeController extends Controller
         $geo = $region && $region != 'all' ? $this->geoRepository->getBySlug($region) : null;
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
-        $type =  (int) Yii::$app->request->get('type');
 
-        $provider = $this->readRepository->getAllByFilter($category, $geo, $type);
+        $provider = $this->readRepository->getAllByFilter($category, $geo);
 
         // Вывод объявлений по клику "показать ещё"
         if (Yii::$app->request->get('showMore')) {
@@ -53,6 +52,7 @@ class TradeController extends Controller
                 'html' => $this->renderPartial('card-items-block', [
                     'provider' => $provider,
                     'geo' => $geo,
+                    'inCompany' => false,
                 ]),
                 'nextPageUrl' => $provider->getPagination()->pageCount > $provider->getPagination()->page + 1
                                     ? $provider->getPagination()->createUrl($provider->getPagination()->page + 1)
@@ -65,7 +65,6 @@ class TradeController extends Controller
             'geo' => $geo,
             'categoryRegion' => $categoryRegion,
             'provider' => $provider,
-            'type' => $type,
         ]);
     }
 

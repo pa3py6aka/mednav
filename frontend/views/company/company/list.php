@@ -1,5 +1,4 @@
 <?php
-
 use core\helpers\CategoryHelper;
 use core\helpers\CompanyHelper;
 use core\helpers\HtmlHelper;

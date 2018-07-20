@@ -1,14 +1,14 @@
 <?php
 use yii\helpers\Html;
 use core\helpers\CompanyHelper;
-use core\helpers\BoardHelper;
+use core\helpers\TradeHelper;
 
 /* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
 /* @var $provider \yii\data\ActiveDataProvider */
-/* @var $category null|\core\entities\Board\BoardCategory */
+/* @var $category null|\core\entities\Trade\TradeCategory */
 
-/* @var $board \core\entities\Board\Board */
+/* @var $trade \core\entities\Trade\Trade */
 
 $this->title = $company->getTitle();
 $this->registerMetaTag(['name' => 'description', 'content' => Html::encode($company->description)]);
@@ -25,10 +25,10 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
         <!-- // content-block-->
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <?php CompanyHelper::companyBreadcrumbs($company, 'boards') ?>
+                <?php CompanyHelper::companyBreadcrumbs($company, 'trades') ?>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <h1>Объявления <?= $company->getFullName() ?></h1>
+                <h1>Товары <?= $company->getFullName() ?></h1>
             </div>
             <div class="col-md-12 col-sm-12 hidden-xs">
                 <div class="kk-add-lnk hidden-xs">
@@ -45,17 +45,17 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                     <?= $this->render('_menu', ['company' => $company]) ?>
                 </div>
 
-                <?= Html::beginForm($company->getUrl('boards'), 'get', ['class' => 'form-inline filter-form-auto']) ?>
+                <?= Html::beginForm($company->getUrl('trades'), 'get', ['class' => 'form-inline filter-form-auto']) ?>
                     Раздел: <?= Html::dropDownList(
                                 'category',
                                 $category ? $category->id : null,
-                                CompanyHelper::companyBoardCategoriesItems($company),
+                                CompanyHelper::companyTradeCategoriesItems($company),
                                 ['class' => 'form-control input-md', 'title' => 'Раздел', 'prompt' => 'Все']
                             ) ?>
                 <?= Html::endForm() ?>
 
                 <div class="card-items-block">
-                    <?= $this->render('@frontend/views/board/board/card-items-block', [
+                    <?= $this->render('@frontend/views/trade/trade/card-items-block', [
                         'provider' => $provider,
                         'inCompany' => true,
                     ]) ?>

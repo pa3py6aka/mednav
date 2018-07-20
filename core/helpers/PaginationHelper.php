@@ -3,9 +3,14 @@
 namespace core\helpers;
 
 
+use Yii;
+use yii\data\ActiveDataProvider;
+use yii\data\DataProviderInterface;
 use yii\data\Pagination;
 use yii\helpers\Html;
+use yii\web\Controller;
 use yii\web\JsExpression;
+use yii\web\Response;
 
 class PaginationHelper
 {
@@ -37,5 +42,19 @@ class PaginationHelper
         $html .= Html::endForm();
 
         return $html;
+    }
+
+    public static function getShowMore(Controller $controller, DataProviderInterface $provider, $view, array $params): ?Response
+    {
+        if (Yii::$app->request->get('showMore')) {
+            return $controller->asJson([
+                'result' => 'success',
+                'html' => $controller->renderPartial($view, $params),
+                'nextPageUrl' => $provider->getPagination()->pageCount > $provider->getPagination()->page + 1
+                    ? $provider->getPagination()->createUrl($provider->getPagination()->page + 1)
+                    : false
+            ]);
+        }
+        return null;
     }
 }

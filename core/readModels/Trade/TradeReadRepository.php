@@ -25,7 +25,7 @@ class TradeReadRepository
         return $trade;
     }
 
-    public function getAllByFilter(TradeCategory $category = null, Geo $geo = null, $typeParameterOption = null, $userId = null): DataProviderInterface
+    public function getAllByFilter(TradeCategory $category = null, Geo $geo = null, $companyId = null): DataProviderInterface
     {
         $query = Trade::find()
             ->alias('t')
@@ -52,8 +52,8 @@ class TradeReadRepository
             ]);
         }
 
-        if ($userId) {
-            $query->andWhere(['t.user_id' => $userId]);
+        if ($companyId) {
+            $query->andWhere(['t.company_id' => $companyId]);
         }
 
         $query->groupBy('t.id');

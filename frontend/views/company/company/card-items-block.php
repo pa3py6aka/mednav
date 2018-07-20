@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 
@@ -30,7 +29,7 @@ use yii\helpers\StringHelper;
                     </div>
                     <div class="desc-col"><?= Html::encode(StringHelper::truncate($company->short_description, 100)) ?></div>
                     <div class="list-vendor-info">
-                        <a href="#">Товары</a> <sup>100</sup>
+                        <a href="<?= $company->getUrl('trades') ?>">Товары</a> <sup><?= count($company->trades) ?></sup>
                         <a href="<?= $company->getUrl('boards') ?>">Объявления</a> <sup><?= count($company->boards) ?></sup>
                         <a href="#">Новости</a> <sup>120</sup>
                         <a href="#">Статьи</a> <sup>2</sup>

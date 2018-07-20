@@ -16,7 +16,6 @@ use core\entities\Trade\TradeCategory;
 /* @var $geo \core\entities\Geo|null */
 /* @var $categoryRegion \core\entities\Trade\TradeCategoryRegion|null */
 /* @var $provider \yii\data\ActiveDataProvider */
-/* @var $type int */
 
 
 CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров', $category, $categoryRegion);
@@ -68,6 +67,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             <?= $this->render('card-items-block', [
                 'provider' => $provider,
                 'geo' => $geo,
+                'inCompany' => false,
             ]) ?>
         </div>
 

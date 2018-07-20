@@ -66,6 +66,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
 
     public static function create(
         $userId,
+        $companyId,
         $categoryId,
         $userCategoryId,
         $geoId,
@@ -84,6 +85,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     {
         $trade = new self();
         $trade->user_id = $userId;
+        $trade->company_id = $companyId;
         $trade->category_id = $categoryId;
         $trade->user_category_id = $userCategoryId;
         $trade->geo_id = $geoId;
@@ -105,6 +107,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
 
     public function edit(
         $userId,
+        $companyId,
         $categoryId,
         $userCategoryId,
         $geoId,
@@ -121,6 +124,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     ): void
     {
         $this->user_id = $userId;
+        $this->company_id = $companyId;
         $this->category_id = $categoryId;
         $this->user_category_id = $userCategoryId;
         $this->geo_id = $geoId;

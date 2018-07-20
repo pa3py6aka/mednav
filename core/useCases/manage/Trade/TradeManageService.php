@@ -45,6 +45,7 @@ class TradeManageService
 
         $trade = Trade::create(
             $userId,
+            $user->company->id,
             $userCategory->category_id,
             $userCategory->id,
             $user->company->geo_id,
@@ -80,6 +81,7 @@ class TradeManageService
 
         $trade->edit(
             $userId,
+            $user->company->id,
             $userCategory->category_id,
             $userCategory->id,
             $user->company->geo_id,

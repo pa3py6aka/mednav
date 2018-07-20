@@ -19,14 +19,22 @@ class RegionsModalWidget extends Widget
 
     /**
      * @var string|null Определяет где используется модальное окно:
-     *       null   - выбор региона в формах,
-     *       board  - в листинге доски объявлений
-     *       company - в листинге компаний
+     *       null     - выбор региона в формах,
+     *       delivery - выбор нескольких регионов в настройках доставки товаров в ППУ
+     *       board    - в листинге доски объявлений
+     *       company  - в листинге компаний
+     *       trade    - в листинге товаров
      */
     public $type = null;
 
     /* @var BoardCategory|null */
     public $category;
+
+    /* @var array|null Массив с айдишниками отмеченных регионов для type => delivery */
+    public $selectedIds;
+
+    /* @var int|null ID типа доставки для type => delivery */
+    public $deliveryId;
 
     public function init()
     {
@@ -82,6 +90,12 @@ class RegionsModalWidget extends Widget
             return Html::a($text, 'javascript:void(0)', [
                 'data-id' => $region->id,
                 'data-geo' => 'link',
+            ]);
+        } else if ($this->type === 'delivery') {
+            return Html::checkbox('regions[' . $this->deliveryId . '][]', in_array($region->id, $this->selectedIds), [
+                'label' => $text,
+                'class' => 'v-checkbox',
+                'value' => $region->id,
             ]);
         } else {
             throw new InvalidArgumentException("Wrong type parameter");

@@ -9,4 +9,5 @@ return [
     'backendHostInfo' => 'http://cp.mednav.ru',
     'maxFileSize' => 1024 * 1024 * 10,
     'imageExtensions' => ['jpg', 'jpeg', 'png', 'gif'],
+    'geoRussiaId' => 2,
 ];

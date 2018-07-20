@@ -22,9 +22,16 @@ $this->params['pagination'] = $provider->pagination;
             'format' => 'raw',
         ],
         [
-            'attribute' => 'category_id',
+            'attribute' => 'count',
+            'label' => 'Товаров',
             'value' => function (TradeUserCategory $category) {
-                return $category->category->name;
+                return count($category->trades);
+            },
+        ],
+        [
+            'attribute' => 'currency_id',
+            'value' => function (TradeUserCategory $category) {
+                return $category->currency->name;
             },
         ],
         [
@@ -34,18 +41,17 @@ $this->params['pagination'] = $provider->pagination;
             },
         ],
         [
-            'attribute' => 'currency_id',
+            'attribute' => 'category_id',
             'value' => function (TradeUserCategory $category) {
-                return $category->currency->name;
+                return $category->category->name;
             },
         ],
-        'wholesale:boolean',
-        ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} / {delete}', 'buttons' => [
+        ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} {delete}', 'buttons' => [
             'update' => function ($url, TradeUserCategory $category, $key) {
-                return Html::a('Редактировать', ['category-update', 'id' => $category->id]);
+                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['category-update', 'id' => $category->id]);
             },
             'delete' => function ($url, TradeUserCategory $category, $key) {
-                return Html::a('Удалить', ['category-remove', 'id' => $category->id], ['data-method' => 'post', 'data-confirm' => 'Удалить данную категорию вместе со всеми привязанными к ней товарами?']);
+                return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['category-remove', 'id' => $category->id], ['data-method' => 'post', 'data-confirm' => 'Удалить данную категорию вместе со всеми привязанными к ней товарами?']);
             }
         ]],
     ],

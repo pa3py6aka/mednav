@@ -18,7 +18,7 @@ class TradeReadRepository
 {
     public function getByIdAndSlug($id, $slug): Trade
     {
-        if (!$trade = Trade::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
+        if (!$trade = Trade::find()->where(['id' => $id, 'slug' => $slug])->with('user.company.deliveries.delivery')->limit(1)->one()) {
             throw new NotFoundHttpException("Товар не найден");
         }
         return $trade;
@@ -69,7 +69,7 @@ class TradeReadRepository
 
     public function getUserCategories($userId): ActiveDataProvider
     {
-        $query = TradeUserCategory::find()->where(['user_id' => $userId]);
+        $query = TradeUserCategory::find()->with('trades', 'category')->where(['user_id' => $userId]);
         return new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

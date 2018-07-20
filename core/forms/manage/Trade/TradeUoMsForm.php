@@ -52,8 +52,8 @@ class TradeUoMsForm extends Model
             if ($this->name[$id] && $this->sign[$id]) {
                 $uom = TradeUoM::find()->where(['id' => $id])->one();
                 if (!$uom) {
-                    $currency = new TradeUoM();
-                    $currency->id = $id;
+                    $uom = new TradeUoM();
+                    $uom->id = $id;
                 }
                 $uom->name = $this->name[$id];
                 $uom->sign = $this->sign[$id];

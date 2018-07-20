@@ -174,17 +174,14 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
 
                     <div class="kt-item-infoset">Доставка</div>
                     <div class="kt-item-delivery">
-                        <input type="checkbox" id="hd-1" class="hide"/>
-                        - <label for="hd-1" >Самовывоз</label>
+                        <?php foreach ($trade->user->company->deliveries as $companyDelivery): ?>
+                        <input type="checkbox" id="hd-<?= $companyDelivery->id ?>" class="hide">
+                        - <label for="hd-<?= $companyDelivery->id ?>"><?= $companyDelivery->delivery->name ?></label>
                         <div>
-                            Каждый веб-разработчик знает, что такое текст-«рыба». Текст этот, несмотря на название, не имеет никакого отношения к обитателям водоемов. Используется он веб-дизайнерами для вставки на интернет-страницы и демонстрации внешнего
+                            <?= nl2br(Html::encode($companyDelivery->terms)) ?>
                         </div>
                         <br />
-                        <input type="checkbox" id="hd-2" class="hide"/>
-                        - <label for="hd-2" >Транспортными компаниями</label>
-                        <div>
-                            Каждый веб-разработчик знает, что такое текст-«рыба». Текст этот, несмотря на название, не имеет никакого отношения к обитателям водоемов. Используется он веб-дизайнерами для вставки на интернет-страницы и демонстрации внешнего
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                     <br>
                 </div>

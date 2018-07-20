@@ -9,8 +9,11 @@ use core\actions\DeletePhotoAction;
 use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
 use core\behaviors\ActiveUserBehavior;
+use core\entities\Company\CompanyDelivery;
+use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
+use core\entities\Trade\TradeDelivery;
 use core\forms\manage\PhotosForm;
 use core\forms\manage\Trade\TradeManageForm;
 use core\forms\manage\Trade\TradeUserCategoryForm;
@@ -18,6 +21,7 @@ use core\readModels\Trade\TradeReadRepository;
 use core\repositories\Trade\TradeRepository;
 use core\useCases\manage\Trade\TradeManageService;
 use core\useCases\manage\Trade\TradePhotoService;
+use frontend\widgets\RegionsModalWidget;
 use Yii;
 use yii\base\Module;
 use yii\base\UserException;
@@ -113,6 +117,31 @@ class TradeController extends Controller
 
         return $this->render('waiting', [
             'provider' => $provider,
+        ]);
+    }
+
+    public function actionSettings()
+    {
+        if (Yii::$app->request->post('save-user-deliveries')) {
+            try {
+                $this->service->saveCompanyDeliveries(
+                    $this->_user->company->id,
+                    Yii::$app->request->post('delivery'),
+                    Yii::$app->request->post('description'),
+                    Yii::$app->request->post('regions')
+                );
+                Yii::$app->session->setFlash("success", "Данные сохранены.");
+            } catch (\DomainException $e) {
+                Yii::$app->session->setFlash("error", $e->getMessage());
+            }
+        }
+
+        $allDeliveries = TradeDelivery::find()->all();
+        $userDeliveries = Yii::$app->user->identity->company->getDeliveries()->with('geos')->indexBy('delivery_id')->all();
+
+        return $this->render('settings', [
+            'allDeliveries' => $allDeliveries,
+            'userDeliveries' => $userDeliveries,
         ]);
     }
 
@@ -266,6 +295,31 @@ class TradeController extends Controller
 
         return $this->render('categories', [
             'provider' => $provider,
+        ]);
+    }
+
+    public function actionGetDeliveryRegions()
+    {
+        $deliveryId = (int) Yii::$app->request->post('deliveryId');
+        $regionIds = Yii::$app->request->post('regionIds', []);
+        $companyDelivery = CompanyDelivery::find()
+            ->where(['company_id' => Yii::$app->user->identity->company->id, 'delivery_id' => $deliveryId])
+            ->limit(1)
+            ->one();
+        if (count($regionIds)) {
+            $selectedIds = $regionIds;
+        } else {
+            $selectedIds = $companyDelivery ? CompanyDeliveryRegions::find()
+                ->select('geo_id')
+                ->where(['company_deliveries_id' => $companyDelivery->id])
+                ->column() : [];
+        }
+
+        //return $this->asJson($selectedIds);
+        return RegionsModalWidget::widget([
+            'type' => 'delivery',
+            'deliveryId' => $deliveryId,
+            'selectedIds' => $selectedIds,
         ]);
     }
 

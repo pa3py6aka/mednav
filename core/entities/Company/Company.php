@@ -51,6 +51,7 @@ use yii\helpers\Url;
  * @property CompanyCategoryAssignment[] $companyCategoryAssignments
  * @property CompanyCategory[] $categories
  * @property Board[] $boards
+ * @property CompanyDelivery[] $deliveries
  */
 class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface
 {
@@ -92,6 +93,7 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $company->description = $description;
         $company->setStatus($status);
         $company->userSlug = $slug;
+        $company->delivery = '[]';
         return $company;
     }
 
@@ -315,6 +317,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     {
         $query = $this->hasMany(Board::class, ['author_id' => 'user_id']);
         return $active ? $query->active() : $query;
+    }
+
+    public function getDeliveries(): ActiveQuery
+    {
+        return $this->hasMany(CompanyDelivery::class, ['company_id' => 'id']);
     }
 
     /**

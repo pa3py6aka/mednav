@@ -8,8 +8,7 @@ use core\helpers\BoardHelper;
 $n = 1;
 
 ?>
-<!--modal region-->
-<div id="modalRegion" class="modal fade">
+<div id="modalRegion" class="modal fade"<?= $widget->type === 'delivery' ? ' data-delivery-id="' .$widget->deliveryId . '"' : '' ?>>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,7 +21,7 @@ $n = 1;
                         <li<?= $n == 1 ? ' class="active"' : '' ?>><a data-toggle="tab" href="#panel<?= $n ?>"><b><?= $country['country']->name ?></b></a></li>
                         <?php $n++; ?>
                     <?php endforeach; ?>
-                    <?php if ($widget->type): ?>
+                    <?php if ($widget->type && $widget->type !== 'delivery'): ?>
                         <div class="nav-tabs-tools">
                             <?= $widget->link() ?>
                         </div>
@@ -72,7 +71,11 @@ $n = 1;
                     <?php endforeach; ?>
                 </div>
             </div>
+            <?php if ($widget->type === 'delivery'): ?>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Ок</button>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-<!-- // modal region-->

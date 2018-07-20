@@ -4,6 +4,8 @@ namespace core\useCases\manage\Trade;
 
 
 use core\components\SettingsManager;
+use core\entities\Company\CompanyDelivery;
+use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeTag;
 use core\entities\Trade\TradeTagAssignment;
@@ -13,9 +15,11 @@ use core\forms\manage\PhotosForm;
 use core\forms\manage\Trade\TradeManageForm;
 use core\forms\manage\Trade\TradeUserCategoryForm;
 use core\helpers\PriceHelper;
+use core\repositories\Company\CompanyDeliveryRepository;
 use core\repositories\Trade\TradeRepository;
 use core\services\TransactionManager;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 
 class TradeManageService
@@ -161,6 +165,27 @@ class TradeManageService
             $trade->setStatus(Trade::STATUS_ACTIVE);
             $this->repository->save($trade);
         }
+    }
+
+    public function saveCompanyDeliveries($companyId, array $deliveries, array $terms, array $regions)
+    {
+        $this->transaction->wrap(function () use ($companyId, $deliveries, $terms, $regions) {
+            $CDRepository = new CompanyDeliveryRepository();
+            $CDRepository->clearByCompany($companyId);
+            foreach ($deliveries as $deliveryId => $nothing) {
+                $companyDelivery = CompanyDelivery::create($companyId, $deliveryId, ArrayHelper::getValue($terms, $deliveryId, ''));
+                $CDRepository->save($companyDelivery);
+
+                $dRegions = ArrayHelper::getValue($regions, $deliveryId, []);
+                $dRegions = in_array(Yii::$app->params['geoRussiaId'], $dRegions) ? [Yii::$app->params['geoRussiaId']] : $dRegions;
+                foreach ($dRegions as $geoId) {
+                    $CDRegion = CompanyDeliveryRegions::create($companyDelivery->id, $geoId);
+                    if (!$CDRegion->save()) {
+                        throw new \RuntimeException("Ошибка записи в базу.");
+                    }
+                }
+            }
+        });
     }
 
     public function massRemove(array $ids, $hardRemove = false): int

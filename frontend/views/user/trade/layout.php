@@ -34,11 +34,11 @@ $this->beginContent('@frontend/views/layouts/main.php');
             } ?>
         </p>
 
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"<?= $tab == 'active' ? ' class="active"' : '' ?>><a href="<?= Url::to(['active']) ?>">Размещённые</a></li>
-            <li role="presentation"<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке (<?= \core\entities\Trade\Trade::find()->onModerationCount() ?>)</a></li>
-            <li role="presentation"<?= $tab == 'categories' ? ' class="active"' : '' ?>><a href="<?= Url::to(['categories']) ?>">Категории</a></li>
-            <li role="presentation"<?= $tab == 'settings' ? ' class="active"' : '' ?>><a href="<?= Url::to(['settings']) ?>">Настройки</a></li>
+        <ul class="nav nav-tabs">
+            <li<?= $tab == 'active' ? ' class="active"' : '' ?>><a href="<?= Url::to(['active']) ?>">Размещённые</a></li>
+            <li<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке (<?= \core\entities\Trade\Trade::find()->onModerationCount() ?>)</a></li>
+            <li<?= $tab == 'categories' ? ' class="active"' : '' ?>><a href="<?= Url::to(['categories']) ?>">Категории</a></li>
+            <li<?= $tab == 'settings' ? ' class="active"' : '' ?>><a href="<?= Url::to(['settings']) ?>">Настройки</a></li>
             <span class="pull-right">
                 <?php if ($pagination) {
                     echo PaginationHelper::pageSizeSelector($pagination, PaginationHelper::SITE_SIZES);
@@ -47,7 +47,7 @@ $this->beginContent('@frontend/views/layouts/main.php');
         </ul>
         <br>
         <div class="tab-content">
-            <div class="tab-pane fade active in" role="tabpanel">
+            <div class="tab-pane fade active in">
                 <?= $content ?>
             </div>
         </div>

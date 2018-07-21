@@ -9,6 +9,8 @@ use core\entities\User\User;
 use core\helpers\PriceHelper;
 use core\services\TransactionManager;
 use Yii;
+use yii\base\InvalidArgumentException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 class Cart
@@ -30,6 +32,36 @@ class Cart
             return $this->saveToDatabase($productId, $amount);
         } else {
             return $this->saveToCookies($productId, $amount);
+        }
+    }
+
+    public function removeItem($productId): ?int
+    {
+        $items = $this->getItems();
+        if (isset($items[$productId])) {
+            if ($this->user) {
+                $items[$productId]->delete();
+                $this->_items = null;
+                return $this->getItemsCount();
+            } else {
+                unset($items[$productId]);
+                $cookies = Yii::$app->response->cookies;
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'cartItems',
+                    'value' => Json::encode($items),
+                ]));
+                return count($items);
+            }
+        }
+        return null;
+    }
+
+    public function clear(): void
+    {
+        if ($this->user) {
+            CartItem::deleteAll(['user_id' => $this->user->id]);
+        } else {
+            Yii::$app->response->cookies->remove('cartItems');
         }
     }
 

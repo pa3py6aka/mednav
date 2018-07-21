@@ -15,7 +15,6 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "dmstr/yii2-adminlte-asset": "^2.1",
-        "fishvision/yii2-migrate": "*",
         "pa3py6aka/yii2-modal-alert-widget": "^1.2",
         "yiisoft/yii2-redis": "~2.0.0",
         "paulzi/yii2-nested-sets": "^1.0",
@@ -26,7 +25,8 @@
         "kartik-v/yii2-widget-fileinput": "@dev",
         "kartik-v/yii2-widget-datepicker": "@dev",
         "yiisoft/yii2-jui": "*",
-        "bower-asset/fancytree": ">=2.28"
+        "bower-asset/fancytree": ">=2.28",
+        "yiisoft/yii2-queue": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

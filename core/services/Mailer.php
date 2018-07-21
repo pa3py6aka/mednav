@@ -7,7 +7,7 @@ class Mailer
 {
     public static function send($to, $subject, $view, $params = [], $from = null, $files = []): void
     {
-        $from = $from ?: [\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'];
+        $from = $from ?: [\Yii::$app->params['robotEmail'] => \Yii::$app->name . ' robot'];
         if (
             !\Yii::$app->mailer->compose($view, $params)
             ->setTo($to)

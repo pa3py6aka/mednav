@@ -14,11 +14,16 @@ if (!YII_ENV_TEST) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
+        //'allowedIPs' => ['1.1.1.1'],
+        'panels' => [
+            'queue' => \yii\queue\debug\Panel::class,
+        ],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        //'allowedIPs' => ['1.1.1.1'],
     ];
 }
 

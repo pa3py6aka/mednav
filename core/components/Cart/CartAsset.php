@@ -13,7 +13,7 @@ class CartAsset extends AssetBundle
     //public $baseUrl = '@web';
 
     public $js = [
-        'main.js',
+        'js/main.js',
     ];
 
     public $depends = [

@@ -5,6 +5,7 @@ namespace core\entities\Order;
 use core\entities\Trade\Trade;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "order_items".
@@ -16,8 +17,17 @@ use yii\db\ActiveQuery;
  * @property Order $order
  * @property Trade $trade
  */
-class OrderItem extends \yii\db\ActiveRecord
+class OrderItem extends ActiveRecord
 {
+    public static function create($orderId, $tradeId, $amount): OrderItem
+    {
+        $item = new self();
+        $item->order_id = $orderId;
+        $item->trade_id = $tradeId;
+        $item->amount = $amount;
+        return $item;
+    }
+
     /**
      * {@inheritdoc}
      */

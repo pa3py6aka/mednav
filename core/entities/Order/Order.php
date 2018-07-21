@@ -2,10 +2,12 @@
 
 namespace core\entities\Order;
 
+use core\entities\Company\Company;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeDelivery;
 use core\entities\User\User;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -13,6 +15,7 @@ use yii\db\ActiveRecord;
  * This is the model class for table "orders".
  *
  * @property int $id
+ * @property int $for_company_id [int(11)]
  * @property int $user_id
  * @property int $delivery_id
  * @property string $comment
@@ -24,6 +27,7 @@ use yii\db\ActiveRecord;
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property Company $forCompany
  * @property OrderItem[] $orderItems
  * @property Trade[] $trades
  * @property TradeDelivery $delivery
@@ -31,6 +35,31 @@ use yii\db\ActiveRecord;
  */
 class Order extends ActiveRecord
 {
+    const STATUS_NEW = 0;
+    const STATUS_SENT = 5;
+
+    public static function create($forCompanyId, $userId, $deliveryId, $comment, $name, $phone, $email, $address): Order
+    {
+        $order = new Order();
+        $order->for_company_id = $forCompanyId;
+        $order->user_id = $userId;
+        $order->delivery_id = $deliveryId;
+        $order->comment = $comment;
+        $order->user_name = $name;
+        $order->user_phone = $phone;
+        $order->user_email = $email;
+        $order->address = $address;
+        $order->status = self::STATUS_NEW;
+        return $order;
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -59,6 +88,7 @@ class Order extends ActiveRecord
     {
         return [
             'id' => 'ID',
+            'for_company_id' => 'Компания',
             'user_id' => 'Заказчик',
             'delivery_id' => 'Тип доставки',
             'comment' => 'Комментарий',
@@ -70,6 +100,11 @@ class Order extends ActiveRecord
             'created_at' => 'Дата заказа',
             'updated_at' => 'Дата обновления',
         ];
+    }
+
+    public function getForCompany(): ActiveQuery
+    {
+        return $this->hasOne(Company::class, ['id' => 'for_company_id']);
     }
 
     public function getOrderItems(): ActiveQuery

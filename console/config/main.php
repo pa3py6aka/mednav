@@ -24,10 +24,12 @@ return [
             'namespace' => 'common\fixtures',
         ],
         'migrate' => [
-            'class' => 'fishvision\migrate\controllers\MigrateController',
-            'autoDiscover' => true,
-            'migrationPaths' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationPath' => [
                 '@vendor/yiisoft/yii2/rbac/migrations',
+            ],
+            'migrationNamespaces' => [
+                'yii\queue\db\migrations',
             ],
         ],
     ],
@@ -40,6 +42,8 @@ return [
                 ],
             ],
         ],
+        'backendUrlManager' => require __DIR__ . '/../../backend/config/urlManager.php',
+        'frontendUrlManager' => require __DIR__ . '/../../frontend/config/urlManager.php',
     ],
     'params' => $params,
 ];

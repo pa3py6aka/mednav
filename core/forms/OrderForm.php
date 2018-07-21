@@ -36,7 +36,8 @@ class OrderForm extends Model
             [['name', 'phone', 'address'], 'string'],
             ['email', 'email'],
             ['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
-            [['amounts', 'deliveries'], 'each', 'rule' => ['integer']],
+            ['amounts', 'each', 'rule' => ['each', 'rule' => ['integer']]],
+            ['deliveries', 'each', 'rule' => ['integer']],
             ['comments', 'each', 'rule' => ['string']],
             ['agreement', 'compare', 'compareValue' => 1, 'message' => "Необходимо принять пользовательское соглашение."],
         ];

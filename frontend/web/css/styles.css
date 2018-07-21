@@ -969,6 +969,13 @@ a.desc:after {content:"\e156";}
 .lh30 {line-height:33px;}
 
 .css-treeview .v-checkbox {opacity:1;position:relative;margin-left:-16px;}
+.field-orderform-captcha label:after {
+	content: " ";
+	color: #fffbf9;
+}
+.field-orderform-captcha .help-block {
+	float: right;
+}
 
 
 

@@ -6,6 +6,7 @@
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use yii\helpers\Url;
+use core\components\Cart\widgets\CartWidget;
 
 AppAsset::register($this);
 ?>
@@ -58,13 +59,9 @@ AppAsset::register($this);
                 </div>
                 <!-- // search form-->
             </div>
-            <!--cart block-->
-            <div class="col-md-2 col-sm-3 col-xs-12">
-                <div class="cart-block-box">
-                    <a href="#" class="cart-block"><span class="glyphicon glyphicon-shopping-cart btn-xs"></span> Корзина <span class="badge">42</span></a>
-                </div>
-            </div>
-            <!-- // cart block-->
+
+            <?= CartWidget::widget() ?>
+
         </div>
 
         <!--menu-->

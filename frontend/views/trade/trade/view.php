@@ -4,6 +4,7 @@ use core\helpers\TradeHelper;
 use core\helpers\TextHelper;
 use core\helpers\PriceHelper;
 use yii\helpers\Url;
+use core\components\Cart\widgets\OrderButtonWidget;
 
 /* @var $this \yii\web\View */
 /* @var $trade \core\entities\Trade\Trade */
@@ -55,39 +56,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         <li><div class="kt-item-info">Цена: <span class="kt-item-price"><?= $trade->getPriceString() ?>/<?= $trade->getUomString() ?></span></div></li>
                     </ul>
 
-                    <form id="kt-form-add-cart" class="form-inline" action="#" method="get">
-                        <div class="input-group spinner">
-                            <input type="text" class="form-control" value="1" min="0" max="9999999">
-                            <div class="input-group-btn-vertical">
-                                <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-                                <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
-                            </div>
-                        </div>
-                        <script>
-                            $(function(){
-                                $('.spinner .btn:first-of-type').on('click', function() {
-                                    var btn = $(this);
-                                    var input = btn.closest('.spinner').find('input');
-                                    if (input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max'))) {
-                                        input.val(parseInt(input.val(), 10) + 1);
-                                    } else {
-                                        btn.next("disabled", true);
-                                    }
-                                });
-                                $('.spinner .btn:last-of-type').on('click', function() {
-                                    var btn = $(this);
-                                    var input = btn.closest('.spinner').find('input');
-                                    if (input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min'))) {
-                                        input.val(parseInt(input.val(), 10) - 1);
-                                    } else {
-                                        btn.prev("disabled", true);
-                                    }
-                                });
-                            });
-                        </script>
-                        <!-- <input class="form-control" placeholder="1" value="" size="4" type="text" id="search-input"> -->
-                        <button class="form-control btn kt-btn-cart" type="submit">Заказать</button>
-                    </form>
+                    <?= OrderButtonWidget::widget(['productId' => $trade->id]) ?>
 
                     <?php if ($trade->canWholesales() && $wholeSales = $trade->getWholesales()): ?>
                     <div class="kt-item-infoset">Опт:</div>

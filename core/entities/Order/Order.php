@@ -36,6 +36,7 @@ use yii\db\ActiveRecord;
 class Order extends ActiveRecord
 {
     const STATUS_NEW = 0;
+    const STATUS_NEW_VIEWED = 1;
     const STATUS_SENT = 5;
 
     public static function create($forCompanyId, $userId, $deliveryId, $comment, $name, $phone, $email, $address): Order

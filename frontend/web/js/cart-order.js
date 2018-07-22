@@ -57,8 +57,10 @@ $(function(){
             .find('select.order-delivery-selector').remove().end()
             .find('textarea.order-comment-textarea').remove();
         $("input.item-amount-input").clone().appendTo($form).hide();
-        $("select.order-delivery-selector").clone().appendTo($form).hide();
         $("textarea.order-comment-textarea").clone().appendTo($form).hide();
+        $("select.order-delivery-selector").each(function (k, selector) {
+            var clone = $(selector).clone().val($(selector).val()).appendTo($form).hide();
+        });
         $form.submit();
     });
 

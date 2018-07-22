@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
 
@@ -218,7 +219,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
     public function getUserName(): string
     {
         if ($this->name || $this->patronymic || $this->last_name) {
-            return str_replace('  ', ' ', trim(implode(" ", [$this->name, $this->patronymic, $this->last_name])));
+            return Html::encode(str_replace('  ', ' ', trim(implode(" ", [$this->name, $this->patronymic, $this->last_name]))));
         }
         return $this->email;
     }

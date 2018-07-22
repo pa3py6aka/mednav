@@ -1,5 +1,4 @@
 <?php
-
 use core\helpers\PaginationHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;

@@ -45,12 +45,11 @@ class UserProfileForm extends Model
     {
         return [
             [['email', 'name', 'geoId'], 'required'],
-            /*['geoId', 'required', 'when' => function ($model) {
+            ['geoId', 'required', 'when' => function ($model) {
                 return !$this->_user->isCompany();
             }, 'whenClient' => "function (attribute, value) {
                 return " . ($this->_user->isCompany() ? "null" : "1") . ";
-            }"],*/
-
+            }"],
             ['geoId', 'integer'],
             ['email', 'email'],
             ['email', 'unique', 'targetClass' => User::class, 'filter' => ['<>', 'id', $this->_user->id]],

@@ -44,7 +44,7 @@ class UserProfileForm extends Model
     public function rules()
     {
         return [
-            [['email', 'name', 'geoId'], 'required'],
+            [['email', 'name'], 'required'],
             ['geoId', 'required', 'when' => function ($model) {
                 return !$this->_user->isCompany();
             }, 'whenClient' => "function (attribute, value) {

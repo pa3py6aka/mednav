@@ -32,3 +32,11 @@ use frontend\widgets\SelectCategoryWidget;
 
 <?= Html::submitButton(!$model->isNew() ? 'Сохранить' : 'Добавить', ['class' => 'btn btn-success btn-flat']) ?>
 <?php ActiveForm::end(); ?>
+
+<div class="hidden" id="templates">
+    <div class="form-group category-dropdown">
+        <select class="form-control" name="" aria-invalid="true" title="Раздел">
+            <option></option>
+        </select>
+    </div>
+</div>

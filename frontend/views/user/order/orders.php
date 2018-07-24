@@ -37,7 +37,7 @@ $pagination = ArrayHelper::getValue($this->params, 'pagination');
             'id' => 'grid',
             'columns' => [
                 [
-                    'label' => 'Заказан',
+                    'label' => 'Создан',
                     'attribute' => 'created_at',
                     'value' => function (Order $order) {
                         return Yii::$app->formatter->asDatetime($order->created_at) . OrderHelper::newLabel($order);

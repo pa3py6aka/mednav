@@ -80,7 +80,7 @@ class OrderController extends Controller
             try {
                 $this->service->create($form);
                 Yii::$app->session->setFlash("success", "Заказ(ы) успешно оформлены.");
-                return $this->redirect([Yii::$app->user->isGuest ? '/trade/list' : 'orders']);
+                return $this->redirect(Yii::$app->user->isGuest ? ['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')] : ['orders']);
             } catch (\DomainException $e) {
                 throw new UserException($e->getMessage());
             }

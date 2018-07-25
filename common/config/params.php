@@ -3,7 +3,7 @@ return [
     'siteName' => 'Mednav.ru',
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
-    'robotEmail' => 'robot@mednav.ru',
+    'robotEmail' => 'robot@mednav.ru', // ToDO: Заменить на "От кого" с настроек сайта в админке
     'user.passwordResetTokenExpire' => 3600,
     'user.rememberMeDuration' => 3600 * 24 * 30,
     'frontendHostInfo' => 'http://mednav.ru',

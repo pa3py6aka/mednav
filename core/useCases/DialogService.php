@@ -5,6 +5,7 @@ namespace core\useCases;
 
 use core\entities\Dialog\Dialog;
 use core\entities\Dialog\Message;
+use core\jobs\SendMailJob;
 use core\repositories\DialogRepository;
 use core\services\TransactionManager;
 use frontend\widgets\message\NewMessageForm;
@@ -36,6 +37,7 @@ class DialogService
                 $message = Message::create($dialog->id, null, $form->text);
             }
             $this->repository->saveMessage($message);
+            $this->sendNotificationToEmail($message);
         });
     }
 
@@ -43,7 +45,24 @@ class DialogService
     {
         $message = Message::create($dialogId, $userId, $text);
         $this->repository->saveMessage($message);
+        if (!$message->dialog->getInterlocutor($message->user_id)->isOnline()) {
+            $this->sendNotificationToEmail($message, true);
+        }
         return $message;
+    }
+
+    public function sendNotificationToEmail(Message $message, $isFromChat = false)
+    {
+        $toUser = $message->dialog->getInterlocutor($message->user_id);
+        $params = ['message' => $message];
+        !$isFromChat ? $params['page'] = Yii::$app->request->getReferrer() : null;
+
+        Yii::$app->queue->push(new SendMailJob([
+            'view' => $isFromChat ? 'message-from-chat' : 'message',
+            'params' => $params,
+            'to' => [$toUser->getEmail() => $toUser->getVisibleName()],
+            'subject' => '[' . Yii::$app->params['robotEmail'] . '] Сообщение - ' . $message->dialog->subject
+        ]));
     }
 
     public function markAsRead($dialogId, $userId)

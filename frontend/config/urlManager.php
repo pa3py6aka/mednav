@@ -55,6 +55,8 @@ return [
         'trade/<region:[\w-]+>' => 'trade/trade/list',
         'trade' => 'trade/trade/list',
 
+        'user/dialogs' => 'user/message/dialogs',
+
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
         '<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => '<_c>/<_a>',

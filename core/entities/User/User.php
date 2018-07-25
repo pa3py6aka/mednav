@@ -151,9 +151,14 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
             && $this->company->description;
     }
 
-    public function getUrl(): string
+    public function isOnline(): bool
     {
-        return $this->isCompany() ? $this->company->getUrl() : 'javascript:void(0);';
+        return (time() - 60 * 3) < Yii::$app->redis->get('online-' . $this->id);
+    }
+
+    public function getUrl($absolute = false): string
+    {
+        return $this->isCompany() ? $this->company->getUrl(null, $absolute) : 'javascript:void(0);';
     }
 
     public function updateStatus($status): void

@@ -165,7 +165,7 @@ class Cart
     {
         $cookieItems = Json::decode(Yii::$app->request->cookies->getValue('cartItems', '[]'));
         $items = [];
-        foreach ($items as $productId => $item) {
+        foreach ($cookieItems as $productId => $item) {
             $items[$productId] = CartItem::create($this->user ? $this->user->id : null, $productId, $item['amount']);
         }
         return $items;

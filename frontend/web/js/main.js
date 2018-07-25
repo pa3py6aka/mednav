@@ -61,6 +61,9 @@ Mednav = (function () {
                 }
             }
             return sEnding;
+        },
+        scrollTo: function ($el, margin) {
+            scrollTo($el, margin);
         }
     };
 
@@ -102,10 +105,17 @@ Mednav = (function () {
 
     return {
         init: init,
-        public: Public
+        public: Public,
+        overlay: overlay
     };
 })();
 
 $(document).ready(function() {
     Mednav.init();
 });
+
+window.alert = function (message, title) {
+    var $modal = $('#alert-modal');
+    if (!title) { $modal.find('.modal-header').hide(); } else { $modal.find('.modal-header').show(); }
+    $modal.find('.modal-body p').html(message).end().find('.modal-title').text(title).end().modal();
+};

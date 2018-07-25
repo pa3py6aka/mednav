@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use core\helpers\BoardHelper;
+use frontend\widgets\message\MessageWidget;
 
 /* @var $this \yii\web\View */
 /* @var $board \core\entities\Board\Board */
@@ -84,63 +85,15 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                             <li><span class="kt-item-infoset">Адрес:</span> Москва, ул. Пушкина д. 11 офис 421</li>
                             <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $board->author->site]) ?>"><?= $board->author->site ?></a></li>
                         </ul>
-                        <form class="form-inline">
-                            <a href="#ModalMsg" class="form-control btn kt-btn-cart" data-toggle="modal"><span class="glyphicon glyphicon-envelope btn-xs"></span> Написать сообщение</a>
-                        </form>
-
-                        <!--modal message-->
-                        <div id="ModalMsg" class="modal fade">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h4>Cообщение для ООО "Название компании" / Имя Фамилия пользователя</h4>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-
-                                                <b>Тема:</b> "Дубль заголовка объявления"
-                                            </div>
-                                            <div class="form-group">
-
-                                                <textarea rows="3" class="form-control" placeholder="Текст сообщения*"></textarea>
-                                            </div>
-                                            <div class="form-inline">
-                                                <div class="form-group">
-                                                    <label class="sr-only" for="inputName">Имя</label>
-                                                    <input type="name" class="form-control" id="inputName" placeholder="Имя*">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="sr-only" for="inputEmail">Email</label>
-                                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email*">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="sr-only" for="inputPhone">Телефон:</label>
-                                                    <input type="phone" class="form-control" id="inputPhone" placeholder="Телефон">
-                                                </div>
-
-                                            </div>
-                                            <br />
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3"><img src="/img/captcha.png" alt="" title="Обновить картинку" style="cursor:pointer"></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" placeholder="Введите код с картинки*">
-                                                </div>
-                                            </div>
-                                            <br />
-
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary">Отправить сообщение</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div>
+                            <?= MessageWidget::widget([
+                                'toUser' => $board->author,
+                                'subject' => $board->name,
+                                'btnClass' => 'kt-btn-cart',
+                                'btnWidth' => 'auto'
+                            ]) ?>
+                            <!--<a href="#ModalMsg" class="form-control btn kt-btn-cart" data-toggle="modal"><span class="glyphicon glyphicon-envelope btn-xs"></span> Написать сообщение</a>-->
                         </div>
-                        <!-- // modal message-->
                     </div>
                 </div>
                 <div class="id-page">id: <?= $board->id ?>, просмотров: <?= $board->views ?></div>

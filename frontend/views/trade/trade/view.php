@@ -1,10 +1,12 @@
 <?php
+
 use yii\helpers\Html;
 use core\helpers\TradeHelper;
 use core\helpers\TextHelper;
 use core\helpers\PriceHelper;
 use yii\helpers\Url;
 use core\components\Cart\widgets\OrderButtonWidget;
+use frontend\widgets\message\MessageWidget;
 
 /* @var $this \yii\web\View */
 /* @var $trade \core\entities\Trade\Trade */
@@ -82,64 +84,11 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $trade->company->site]) ?>"><?= Html::encode($trade->company->site) ?></a></li>
                     </ul>
                     <div>
-                        <a href="#ModalMsg" class="form-control btn kk-btn-contact" data-toggle="modal">
-                            <span class="glyphicon glyphicon-envelope btn-xs"></span> Написать сообщение
-                        </a>
+                        <?= MessageWidget::widget([
+                            'toUser' => $trade->user,
+                            'subject' => $trade->name,
+                        ]) ?>
                     </div>
-
-                    <!--modal message-->
-                    <div id="ModalMsg" class="modal fade">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4>Cообщение для ООО "Новая объединенная компания 2017"</h4>
-                                </div>
-
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-
-                                            <b>Тема:</b> "Дубль заголовка товара"
-                                        </div>
-                                        <div class="form-group">
-
-                                            <textarea rows="3" class="form-control" placeholder="Текст сообщения*"></textarea>
-                                        </div>
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <label class="sr-only" for="inputName">Имя</label>
-                                                <input type="name" class="form-control" id="inputName" placeholder="Имя*">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="inputEmail">Email</label>
-                                                <input type="email" class="form-control" id="inputEmail" placeholder="Email*">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="inputPhone">Телефон:</label>
-                                                <input type="phone" class="form-control" id="inputPhone" placeholder="Телефон">
-                                            </div>
-
-                                        </div>
-                                        <br />
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3"><img src="/img/captcha.png" alt="" title="Обновить картинку" style="cursor:pointer"></label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="Введите код с картинки*">
-                                            </div>
-                                        </div>
-                                        <br />
-
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary">Отправить сообщение</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- // modal message-->
 
                     <div class="kt-item-infoset">Доставка</div>
                     <div class="kt-item-delivery">

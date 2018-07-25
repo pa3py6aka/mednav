@@ -31,11 +31,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                 <h1>Товары <?= $company->getFullName() ?></h1>
             </div>
             <div class="col-md-12 col-sm-12 hidden-xs">
-                <div class="kk-add-lnk hidden-xs">
-                    <span class="glyphicon glyphicon-envelope btn-xs icon-blue"></span>
-                    <a href="#">Написать сообщение</a> <span class="glyphicon glyphicon-user btn-xs icon-blue"></span>
-                    <a href="#">Добавить в контакты</a>
-                </div>
+                <?= $this->render('_actions-top', ['company' => $company]) ?>
             </div>
         </div>
 

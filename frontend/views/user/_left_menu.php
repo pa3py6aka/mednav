@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use core\helpers\OrderHelper;
+use core\helpers\DialogHelper;
 
 /* @var $user \core\entities\User\User */
 /* @var $link string */
@@ -22,7 +23,7 @@ $link = Yii::$app->controller->action->id;
                 <li role="presentation"<?= $controller == 'user/trade' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/trade/active']) ?>">Товары</a></li>
             <?php endif; ?>
             <li role="presentation"><a href="<?= Url::to(['/user/order/orders']) ?>">Заказы<?= OrderHelper::getNewOrdersCount($user) ?></a></li>
-            <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Сообщения (0)</a></li>
+            <li role="presentation"><a href="<?= Url::to(['/user/message/dialogs']) ?>">Сообщения<?= DialogHelper::getNewMessagesCount($user) ?></a></li>
             <li role="presentation"<?= $controller == 'user/board' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/board/active']) ?>">Объявления</a></li>
             <li role="presentation"><a href="<?= Url::to(['/user/account/profile']) ?>">Служба поддержки</a></li>
         </ul>

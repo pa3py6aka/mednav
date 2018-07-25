@@ -3,10 +3,8 @@
 namespace core\repositories;
 
 
-use core\entities\Company\CompanyDelivery;
 use core\entities\Order\Order;
 use core\entities\Order\OrderItem;
-use core\repositories\NotFoundException;
 
 class OrderRepository
 {

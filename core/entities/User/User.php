@@ -153,7 +153,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function getUrl(): string
     {
-        return $this->isCompany() ? $this->company->getUrl() : Url::to(['/user/user/view', 'id' => $this->id]);
+        return $this->isCompany() ? $this->company->getUrl() : 'javascript:void(0);';
     }
 
     public function updateStatus($status): void

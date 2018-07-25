@@ -26,8 +26,8 @@ return [
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
             'migrationPath' => [
-                '@vendor/yiisoft/yii2/rbac/migrations',
                 '@console/migrations',
+                '@vendor/yiisoft/yii2/rbac/migrations',
             ],
             'migrationNamespaces' => [
                 'yii\queue\db\migrations',

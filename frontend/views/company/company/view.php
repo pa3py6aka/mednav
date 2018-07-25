@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use core\helpers\CompanyHelper;
 use core\helpers\TextHelper;
-
+use frontend\widgets\message\MessageWidget;
 
 /* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
@@ -37,64 +37,14 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                     </a>
                 </div>
                 <div class="kk-btn">
-                    <a href="#ModalMsg" class="form-control btn kt-btn-cart" data-toggle="modal">
-                        <span class="glyphicon glyphicon-envelope btn-xs"></span> Написать сообщение
-                    </a>
+                    <?= MessageWidget::widget([
+                        'toUser' => $company->user,
+                        'subjectType' => MessageWidget::SUBJECT_TYPE_INPUT,
+                        'btnClass' => 'kt-btn-cart',
+                    ]) ?>
                     <a href="#ModalContact" class="form-control btn kk-btn-contact" data-toggle="modal">
                         <span class="glyphicon glyphicon-user btn-xs"></span> Добавить в контакты
                     </a>
-
-                    <!--modal message-->
-                    <div id="ModalMsg" class="modal fade">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4>Cообщение для <?= $company->getFullName() ?></h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-
-                                            <input type="email" class="form-control" id="inputTheme" placeholder="Тема*">
-                                        </div>
-                                        <div class="form-group">
-
-                                            <textarea rows="3" class="form-control" placeholder="Текст сообщения*"></textarea>
-                                        </div>
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <label class="sr-only" for="inputName">Имя</label>
-                                                <input type="name" class="form-control" id="inputName" placeholder="Имя*">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="inputEmail">Email</label>
-                                                <input type="email" class="form-control" id="inputEmail" placeholder="Email*">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="inputPhone">Телефон:</label>
-                                                <input type="phone" class="form-control" id="inputPhone" placeholder="Телефон">
-                                            </div>
-
-                                        </div>
-                                        <br />
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3"><img src="/img/captcha.png" title="Обновить картинку" style="cursor:pointer"></label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="Введите код с картинки*">
-                                            </div>
-                                        </div>
-                                        <br />
-
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary">Отправить сообщение</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- // modal message-->
 
                     <!-- modal add contact-->
                     <div id="ModalContact" class="modal fade">

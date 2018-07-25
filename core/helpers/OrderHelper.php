@@ -26,10 +26,10 @@ class OrderHelper
     }
 
 
-    public static function newLabel(Order $order): bool
+    public static function newLabel(Order $order): string
     {
         $user = \Yii::$app->user->identity;
-        if ($order->status == Order::STATUS_NEW && ($order->user_id !== $user->id || $order->user_id == null)) {
+        if ($order->status == Order::STATUS_NEW && $order->user_id !== $user->id) {
             return ' <span class="label label-danger label-as-badge">Новый</span>';
         }
         return '';

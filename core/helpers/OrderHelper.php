@@ -12,7 +12,11 @@ class OrderHelper
     {
         if ($user->isCompanyActive()) {
             $count = Order::find()->where(['for_company_id' => $user->company->id, 'status' => Order::STATUS_NEW])
-                ->andWhere(['<>', 'user_id', $user->id])
+                ->andWhere([
+                    'or',
+                    ['<>', 'user_id', $user->id],
+                    ['user_id' => null]
+                ])
                 ->count();
             if ($count) {
                 return ' <span class="label label-danger label-as-badge">' . $count . '</span>';

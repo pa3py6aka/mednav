@@ -110,12 +110,6 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
                                     },
                                 ],
                                 [
-                                    'attribute' => 'currency_id',
-                                    'value' => function (Trade $trade) {
-                                        return $trade->userCategory->currency->sign;
-                                    },
-                                ],
-                                [
                                     'class' => \core\grid\EditColumn::class,
                                     'attribute' => 'price',
                                     'value' => function (Trade $trade) {

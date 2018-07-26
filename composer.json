@@ -26,7 +26,8 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "yiisoft/yii2-jui": "*",
         "bower-asset/fancytree": ">=2.28",
-        "yiisoft/yii2-queue": "^2.1"
+        "yiisoft/yii2-queue": "^2.1",
+        "spatie/image-optimizer": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

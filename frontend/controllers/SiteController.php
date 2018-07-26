@@ -1,6 +1,9 @@
 <?php
 namespace frontend\controllers;
 
+use core\access\Rbac;
+use core\entities\Trade\Trade;
+use core\helpers\PriceHelper;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -12,6 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -25,7 +29,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
@@ -41,9 +45,10 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
+                    'edit-column' => ['post'],
                 ],
             ],
         ];
@@ -73,6 +78,25 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionOutsite($url)
+    {
+        return $this->redirect($url);
+    }
+
+    public function actionEditColumn()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = (int) Yii::$app->request->post('id');
+        $value = Yii::$app->request->post('value');
+        $entity = Trade::findOne($id);
+        if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $entity->getOwnerId()])) {
+            return ['result' => 'error', 'message' => 'Нет прав на редактирование данного элемента'];
+        }
+        $price = PriceHelper::optimize($value);
+        $entity->updateAttributes(['price' => $price]);
+        return ['result' => 'success', 'value' => $entity->getPriceString(), 'original' => $entity->price / 100];
     }
 
     /**

@@ -9,7 +9,7 @@ use core\entities\Board\BoardCategory;
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryAssignment;
-use core\entities\Company\CompanyCategoryRegion;
+use core\components\Settings;
 use core\entities\Geo;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
@@ -17,7 +17,6 @@ use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\web\View;
 use yii\widgets\Breadcrumbs;
 
 class CompanyHelper
@@ -72,7 +71,7 @@ class CompanyHelper
         ?>
         <ul class="breadcrumb">
             <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
-            <li><a href="<?= self::categoryUrl() ?>">Каталог компаний</a></li>
+            <li><a href="<?= self::categoryUrl() ?>"><?= Yii::$app->settings->get(Settings::COMPANY_NAME) ?></a></li>
             <li><a href="<?= $company->getUrl() ?>"><?= $company->getFullName() ?></a></li>
             <?php if ($page == 'contacts'): ?>
                 <li><a href="<?= $company->getUrl('contacts') ?>">Контакты</a></li>
@@ -90,16 +89,14 @@ class CompanyHelper
         $query = (new Query())
             ->select('bc.*, COUNT(b.category_id) as b_count')
             ->from(BoardCategory::tableName() . ' bc')
-            ->leftJoin(Board::tableName() . ' b', 'b.category_id=bc.id')
-            ->where(['b.author_id' => $company->user_id])
-            ->andWhere(['b.status' => Board::STATUS_ACTIVE])
-            ->andWhere(['>', 'b.active_until', time()])
+            ->leftJoin(Board::tableName() . ' b', 'b.category_id=bc.id AND b.author_id=' . $company->user_id . ' AND b.status=' . Board::STATUS_ACTIVE . ' AND b.active_until>' . time())
+            ->where(['>', 'bc.depth', 0])
             ->orderBy('bc.lft')
             ->groupBy('bc.id')
             ->all();
 
         $categories = ArrayHelper::map($query, 'id', function (array $category) {
-            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ' (' . $category['b_count'] . ')';
+            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
         });
 
         return $categories;
@@ -110,15 +107,14 @@ class CompanyHelper
         $query = (new Query())
             ->select('tc.*, COUNT(t.category_id) as t_count')
             ->from(TradeCategory::tableName() . ' tc')
-            ->leftJoin(Trade::tableName() . ' t', 't.category_id=tc.id')
-            ->where(['t.company_id' => $company->id])
-            ->andWhere(['t.status' => Trade::STATUS_ACTIVE])
+            ->leftJoin(Trade::tableName() . ' t', 't.category_id=tc.id AND t.company_id=' . $company->id . ' AND t.status=' . Trade::STATUS_ACTIVE)
+            ->where(['>', 'tc.depth', 0])
             ->orderBy('tc.lft')
             ->groupBy('tc.id')
             ->all();
 
         $categories = ArrayHelper::map($query, 'id', function (array $category) {
-            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ' (' . $category['t_count'] . ')';
+            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
         });
 
         return $categories;

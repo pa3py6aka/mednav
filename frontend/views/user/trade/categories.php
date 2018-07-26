@@ -2,6 +2,8 @@
 
 use core\entities\Trade\TradeUserCategory;
 use yii\helpers\Html;
+use core\helpers\TradeHelper;
+use core\helpers\CategoryHelper;
 
 /* @var $this yii\web\View */
 /* @var $provider \yii\data\ActiveDataProvider */
@@ -43,8 +45,12 @@ $this->params['pagination'] = $provider->pagination;
         [
             'attribute' => 'category_id',
             'value' => function (TradeUserCategory $category) {
-                return $category->category->name;
+                return Html::a($category->category->name, TradeHelper::categoryUrl($category->category, Yii::$app->session->get('geo', 'all')), [
+                    'data-toggle' => 'tooltip',
+                    'title' => CategoryHelper::categoryParentsString($category->category),
+                ]);
             },
+            'format' => 'raw',
         ],
         ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} {delete}', 'buttons' => [
             'update' => function ($url, TradeUserCategory $category, $key) {

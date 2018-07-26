@@ -18,6 +18,8 @@ use yii\base\Exception;
 use yii\helpers\FileHelper;
 use yii\helpers\StringHelper;
 use yii\web\UploadedFile;
+use yii\imagine\Image;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class CompanyService
 {
@@ -120,9 +122,17 @@ class CompanyService
             Yii::error("Ошибка сохранения логотипа компании.");
             throw new Exception("Ошибка сохранения логотипа компании.");
         }
+
+        Image::resize($company->logoPath() . '/' . $name, 500, null)
+            ->save($company->logoPath() . '/' . $name);
+        $optimizerChain = OptimizerChainFactory::create();
+        $optimizerChain->optimize($company->logoPath() . '/' . $name);
+
+        // Удаляем старый файл
         if ($company->logo && is_file($company->logoPath() . '/' . $company->logo) && $company->logo != $name) {
             FileHelper::unlink($company->logoPath() . '/' . $company->logo);
         }
+
         $company->logo = $name;
     }
 

@@ -4,6 +4,7 @@ namespace core\forms\manage\Trade;
 
 
 use core\entities\Trade\Trade;
+use core\entities\Trade\TradeUserCategory;
 use core\entities\User\User;
 use core\helpers\PriceHelper;
 use Yii;
@@ -109,7 +110,7 @@ class TradeManageForm extends Model
         $scenarios[self::SCENARIO_USER_CREATE] = array_diff($scenarios[self::SCENARIO_ADMIN_CREATE], [
             'userId', 'metaTitle', 'metaKeywords', 'metaDescription', 'slug'
         ]);
-        $scenarios[self::SCENARIO_ADMIN_EDIT] = array_diff($scenarios[self::SCENARIO_USER_CREATE], ['photos']);
+        $scenarios[self::SCENARIO_USER_EDIT] = array_diff($scenarios[self::SCENARIO_USER_CREATE], ['photos']);
         return $scenarios;
     }
 
@@ -134,6 +135,13 @@ class TradeManageForm extends Model
             }
         }
         return $userId;
+    }
+
+    public function showWholesales(): bool
+    {
+        return $this->categoryId ?
+            TradeUserCategory::find()->select('wholesale')->where(['id' => $this->categoryId])->scalar()
+            : false;
     }
 
     public function attributeLabels()

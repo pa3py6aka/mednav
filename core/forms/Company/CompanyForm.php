@@ -62,8 +62,10 @@ class CompanyForm extends Model
             $this->shortDescription = $company->short_description;
             $this->description = $company->description;
             $this->tags = $company->getTagsString();
-
+            $this->logo = $company->getLogoUrl(true);
             $this->company = $company;
+        } else {
+            $this->geoId = Yii::$app->user->identity->getGeoId();
         }
         parent::__construct($config);
     }

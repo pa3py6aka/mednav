@@ -24,6 +24,7 @@ use yii\db\ActiveRecord;
  * @property Currency $currency
  * @property TradeUoM $uom
  * @property Trade[] $trades
+ * @property Trade[] $activeTrades
  */
 class TradeUserCategory extends ActiveRecord
 {
@@ -108,5 +109,11 @@ class TradeUserCategory extends ActiveRecord
     public function getTrades(): ActiveQuery
     {
         return $this->hasMany(Trade::class, ['user_category_id' => 'id']);
+    }
+
+    public function getActiveTrades(): ActiveQuery
+    {
+        return $this->hasMany(Trade::class, ['user_category_id' => 'id'])
+            ->andWhere(['status' => Trade::STATUS_ACTIVE]);
     }
 }

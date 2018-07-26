@@ -29,7 +29,7 @@ class BoardManageForm extends Model
     public $tags;
     public $termId;
     public $geoId;
-    public $params;
+    public $params = [];
     public $photos;
 
     private $_board;
@@ -67,9 +67,11 @@ class BoardManageForm extends Model
 
             $this->_board = $board;
         } else {
+            $user = \Yii::$app->user->identity;
             $this->categoryId[] = '';
             $this->termId = BoardTerm::getDefaultId();
             $this->currency = Currency::getDefaultIdFor(Currency::MODULE_BOARD);
+            $this->geoId = $user->getGeoId();
         }
         parent::__construct($config);
     }
@@ -145,7 +147,7 @@ class BoardManageForm extends Model
         $lastCategory = end($this->categoryId);
         if ($lastCategory) {
             $lastCategory = BoardCategory::findOne($lastCategory);
-            if (is_array($this->params) && $lastCategory) {
+            if (/*is_array($this->params) &&*/ $lastCategory) {
                 return BoardHelper::generateParameterFields($lastCategory, $this->formName(), $this->params);
             }
         }

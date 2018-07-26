@@ -17,7 +17,7 @@ class BoardCategoryQuery extends ActiveQuery
 
     public function roots()
     {
-        return $this->andWhere(['depth' => 1]);
+        return $this->andWhere(['depth' => 1])->orderBy(['lft' => SORT_ASC]);
     }
 
     public function active()

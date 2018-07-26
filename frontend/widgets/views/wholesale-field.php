@@ -5,7 +5,7 @@ use yii\bootstrap\Html;
 
 ?>
 <div class="container-fluid no-padding" style="box-shadow:none;">
-    <div id="wholesales-block" class="hidden col-xs-12 col-sm-10 col-md-9 col-lg-7 no-padding">
+    <div id="wholesales-block" class="col-xs-12 col-sm-10 col-md-9 col-lg-7 no-padding<?= !$model->showWholesales() ? ' hidden' : '' ?>">
         <label class="control-label" for="trademanageform-price">Оптовые цены</label>
         <?php for ($i = 0;$i < 3;$i++): ?>
             <div class="container-fluid no-padding" style="box-shadow:none;">

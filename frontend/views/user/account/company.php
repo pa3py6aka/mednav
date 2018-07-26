@@ -63,7 +63,9 @@ $this->title = 'Личный кабинет | Моя компания';
 
         <?= $form->field($model, 'logo')->widget(FileInput::class, [
             'pluginOptions' => [
-                'showPreview' => false,
+                'initialPreview' => $model->logo ? [$model->logo] : false,
+                'initialPreviewAsData'=>true,
+                'showPreview' => (bool) $model->logo,
                 'showCaption' => true,
                 'showRemove' => true,
                 'showUpload' => false

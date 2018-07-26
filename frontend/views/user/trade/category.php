@@ -1,6 +1,7 @@
 <?php
 
 use core\entities\Trade\TradeUserCategory;
+use core\helpers\PaginationHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use core\helpers\HtmlHelper;
@@ -25,11 +26,8 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
         ]) ?>
 
         <h1><?= Html::encode($category->name) ?></h1>
-        <a href="<?= Url::to(['category-update', 'id' => $category->id]) ?>" class="btn btn-success">Редактировать</a>
-        <a href="<?= Url::to(['category-remove', 'id' => $category->id]) ?>" class="btn btn-danger" data-method="post" data-confirm="Удалить данную категорию со всеми привязанными к ней товарами?">Удалить</a>
-        <br><br>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <!-- Данные по категории -->
+            <?php /*<!-- Данные по категории -->
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="category-details-header">
                     <h4 class="panel-title">
@@ -74,18 +72,22 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
                         ]) ?>
                     </div>
                 </div>
-            </div>
+            </div> */ ?>
             <!-- Товары категории -->
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="category-trades-header">
                     <h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#category-trades-view" aria-expanded="true" aria-controls="category-trades-view">
+                        <!--<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#category-trades-view" aria-expanded="true" aria-controls="category-trades-view">-->
                             Товары
-                        </a>
+                        <!--</a>-->
                     </h4>
                 </div>
                 <div id="category-trades-view" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="category-trades-header">
                     <div class="panel-body">
+                        <span class="pull-right">
+                            <?= PaginationHelper::pageSizeSelector($tradesProvider->pagination, PaginationHelper::SITE_SIZES) ?>
+                        </span>
+                        <a href="<?= Url::to(['create', 'category' => $category->id]) ?>" class="btn btn-success">Добавить товар</a>
                         <?= HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?><br><br>
                         <?= \yii\grid\GridView::widget([
                             'dataProvider' => $tradesProvider,
@@ -113,7 +115,14 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
                                         return $trade->userCategory->currency->sign;
                                     },
                                 ],
-                                'views',
+                                [
+                                    'class' => \core\grid\EditColumn::class,
+                                    'attribute' => 'price',
+                                    'value' => function (Trade $trade) {
+                                        return $trade->getPriceString();
+                                    },
+                                    'format' => 'raw',
+                                ],
                                 [
                                     'attribute' => 'category_id',
                                     'value' => function (Trade $trade) {

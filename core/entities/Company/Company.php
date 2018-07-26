@@ -10,6 +10,7 @@ use core\entities\StatusesTrait;
 use core\entities\Trade\Trade;
 use core\entities\User\User;
 use core\entities\UserOwnerInterface;
+use core\helpers\FileHelper;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -166,7 +167,7 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     {
         return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
             . ($this->logo ? '/i/company/lg/' . $this->logo
-                : '/img/photo.png');
+                : '/img/no-photo-250.jpg');
     }
 
     public function logoPath(): string
@@ -205,6 +206,14 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
                 return $this->getTrades()->count();
             default: return 0;
         }
+    }
+
+    public function afterDelete()
+    {
+        if ($this->logo && is_file($this->logoPath() . '/' . $this->logo)) {
+            FileHelper::unlink($this->logoPath() . '/' . $this->logo);
+        }
+        parent::afterDelete();
     }
 
     public static function tableName(): string

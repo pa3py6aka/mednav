@@ -229,6 +229,10 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         return $this->email;
     }
 
+    public function getGeoId(): ?int
+    {
+        return $this->isCompany() && $this->isCompanyActive() ? $this->company->geo_id : $this->geo_id;
+    }
 
     public function requestPasswordReset(): void
     {

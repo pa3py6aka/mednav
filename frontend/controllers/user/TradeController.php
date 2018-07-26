@@ -100,8 +100,9 @@ class TradeController extends Controller
 
     public function actionActive()
     {
-        $this->selectedActionHandle();
-        $provider = $this->readRepository->getUserTrades($this->_user->id, Trade::STATUS_ACTIVE);
+        //$this->selectedActionHandle();
+        //$provider = $this->readRepository->getUserTrades($this->_user->id, Trade::STATUS_ACTIVE);
+        $provider = $this->readRepository->getUserCategories($this->_user->id);
         Yii::$app->user->setReturnUrl(['/user/trade/active']);
 
         return $this->render('active', [
@@ -157,6 +158,9 @@ class TradeController extends Controller
         $this->layout = 'main';
         $form = new TradeManageForm();
         $form->scenario = TradeManageForm::SCENARIO_USER_CREATE;
+        if ($catId = Yii::$app->request->get('category')) {
+            $form->categoryId = $catId;
+        }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
@@ -278,9 +282,10 @@ class TradeController extends Controller
     public function actionCategory($id)
     {
         $this->selectedActionHandle();
+        $status = Yii::$app->request->get('status', 'notDeleted');
         $this->layout = 'main';
         $userCategory = (new TradeRepository())->getUserCategory($id);
-        $tradesProvider = $this->readRepository->getUserTrades($this->_user->id, 'notDeleted', $userCategory->id);
+        $tradesProvider = $this->readRepository->getUserTrades($this->_user->id, $status, $userCategory->id);
 
         if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $userCategory->user_id])) {
             throw new ForbiddenHttpException("Вы не имеете прав на просмотр данной категории.");
@@ -294,7 +299,7 @@ class TradeController extends Controller
 
     public function actionCategories()
     {
-        $provider = $this->readRepository->getUserCategories($this->_user->id);
+        $provider = $this->readRepository->getUserCategories($this->_user->id, false);
 
         return $this->render('categories', [
             'provider' => $provider,

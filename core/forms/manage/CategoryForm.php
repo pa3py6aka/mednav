@@ -13,7 +13,7 @@ class CategoryForm extends Model
 {
     public $name;
     public $contextName;
-    public $enabled;
+    public $enabled = 1;
     public $notShowOnMain;
     public $childrenOnlyParent;
     public $slug;

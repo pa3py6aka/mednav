@@ -27,7 +27,7 @@ class CategoriesListWidget extends Widget
     /* @var Geo|null */
     public $region;
 
-    private $isMainPage;
+    private $isMainPage = null;
     private $cacheKeyPrefix;
 
     public function init()

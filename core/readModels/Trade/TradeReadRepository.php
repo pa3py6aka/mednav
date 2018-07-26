@@ -88,9 +88,12 @@ class TradeReadRepository
         return $this->getProvider($query);
     }
 
-    public function getUserCategories($userId): ActiveDataProvider
+    public function getUserCategories($userId, $active = true): ActiveDataProvider
     {
-        $query = TradeUserCategory::find()->with('trades', 'category')->where(['user_id' => $userId]);
+        $query = TradeUserCategory::find()
+            ->with($active ? 'activeTrades' : 'trades', 'category')
+            ->where(['user_id' => $userId]);
+
         return new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

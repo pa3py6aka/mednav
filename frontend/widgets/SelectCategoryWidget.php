@@ -43,7 +43,7 @@ class SelectCategoryWidget extends Widget
         $this->view->registerJs($this->getJs());
         return Html::tag('div', $this->getCategoryDropdowns(), [
             'id' => 'category-block',
-            'class' => 'box has-overlay',
+            'class' => 'has-overlay',
         ]);
     }
 

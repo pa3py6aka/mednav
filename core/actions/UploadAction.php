@@ -13,6 +13,7 @@ use yii\imagine\Image;
 use yii\validators\ImageValidator;
 use yii\web\Response;
 use yii\web\UploadedFile;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class UploadAction extends Action
 {
@@ -72,6 +73,7 @@ class UploadAction extends Action
             throw new \DomainException("Ошибка сохранения файла");
         }
 
+        $optimizerChain = OptimizerChainFactory::create();
         try {
             foreach ($this->sizes as $type => $item) {
                 $width = isset($item['width']) && (int) $item['width'] ? (int) $item['width'] : null;
@@ -79,6 +81,7 @@ class UploadAction extends Action
 
                 Image::resize($original, $width, $height)
                     ->save($this->path . '/' . $type . '_' . $fileName);
+                $optimizerChain->optimize($this->path . '/' . $type . '_' . $fileName);
             }
         } catch (RuntimeException $e) {
             Yii::$app->errorHandler->logException($e);

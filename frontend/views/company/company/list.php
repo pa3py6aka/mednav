@@ -56,7 +56,7 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
             </div>
         </div>
 
-        <?= ContextBlock::getBlock(1) ?>
+        <?= ContextBlock::getBlock(1, null, $category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC) ?>
 
         <div class="card-items-block">
             <?= $this->render('card-items-block', [

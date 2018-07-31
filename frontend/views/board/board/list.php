@@ -59,7 +59,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             </div>
         </div>
 
-        <?= ContextBlock::getBlock(1) ?>
+        <?= ContextBlock::getBlock(1, null, $category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC) ?>
 
         <div class="card-items-block">
             <?= $this->render('card-items-block', [

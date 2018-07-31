@@ -49,6 +49,6 @@ $inCompany = isset($inCompany) ?: false;
                 </div>
             </div>
         </div>
-        <?php ContextBlock::afterRow() ?>
+        <?php ContextBlock::afterRow($provider->pagination->page, $provider->pagination->pageSize) ?>
     <?php endforeach; ?>
 <?php endif; ?>

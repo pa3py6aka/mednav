@@ -62,6 +62,23 @@ class Settings
     public const TRADE_DESCRIPTION_BOTTOM = 'tradeDescriptionBottom';
     public const TRADE_DESCRIPTION_BOTTOM_ON = 'tradeDescriptionBottomOn';
 
+    public const ARTICLE_NAME = 'articleName';
+    public const ARTICLE_NAME_UP = 'articleNameUP';
+    public const ARTICLE_PAGE_SIZE = 'articlePageSize';
+    public const ARTICLE_SMALL_SIZE = 'articleSmallSize';
+    public const ARTICLE_BIG_SIZE = 'articleBigSize';
+    public const ARTICLE_MAX_SIZE = 'articleMaxSize';
+    public const ARTICLE_MODERATION = 'articleModeration';
+
+    public const ARTICLE_META_TITLE = 'articleMetaTitle';
+    public const ARTICLE_META_DESCRIPTION = 'articleMetaDescription';
+    public const ARTICLE_META_KEYWORDS = 'articleMetaKeywords';
+    public const ARTICLE_TITLE = 'articleTitle';
+    public const ARTICLE_DESCRIPTION_TOP = 'articleDescriptionTop';
+    public const ARTICLE_DESCRIPTION_TOP_ON = 'articleDescriptionTopOn';
+    public const ARTICLE_DESCRIPTION_BOTTOM = 'articleDescriptionBottom';
+    public const ARTICLE_DESCRIPTION_BOTTOM_ON = 'articleDescriptionBottomOn';
+
     protected $default = [
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
@@ -119,5 +136,22 @@ class Settings
         self::TRADE_DESCRIPTION_TOP_ON => 1,
         self::TRADE_DESCRIPTION_BOTTOM => '',
         self::TRADE_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::ARTICLE_NAME => 'Статьи',
+        self::ARTICLE_NAME_UP => 'Мои статьи',
+        self::ARTICLE_PAGE_SIZE => 10,
+        self::ARTICLE_SMALL_SIZE => 100,
+        self::ARTICLE_BIG_SIZE => 250,
+        self::ARTICLE_MAX_SIZE => 1000,
+        self::ARTICLE_MODERATION => 1,
+
+        self::ARTICLE_META_TITLE => 'Справочные материалы и публикации по медицинскому оборудованию',
+        self::ARTICLE_META_DESCRIPTION => 'Материалы по медицинской техники, расходным материалам',
+        self::ARTICLE_META_KEYWORDS => '',
+        self::ARTICLE_TITLE => '',
+        self::ARTICLE_DESCRIPTION_TOP => '',
+        self::ARTICLE_DESCRIPTION_TOP_ON => 1,
+        self::ARTICLE_DESCRIPTION_BOTTOM => '',
+        self::ARTICLE_DESCRIPTION_BOTTOM_ON => 1,
     ];
 }

@@ -9,6 +9,7 @@ use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use core\helpers\PaginationHelper;
 use core\components\SettingsManager;
+use core\components\ContextBlock;
 
 /* @var $this yii\web\View */
 /* @var $category \core\entities\Board\BoardCategory|null */
@@ -58,11 +59,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             </div>
         </div>
 
-        <!-- context-block-->
-        <div class="row">
-            <div class="col-md-12"><div class="list-context-block">Контекстный блок 1</div></div>
-        </div>
-        <!-- // context-block-->
+        <?= ContextBlock::getBlock(1) ?>
 
         <div class="card-items-block">
             <?= $this->render('card-items-block', [
@@ -71,11 +68,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             ]) ?>
         </div>
 
-        <!-- context-block-->
-        <div class="row">
-            <div class="col-md-12"><div class="list-context-block">Контекстный блок 2</div></div>
-        </div>
-        <!-- // context-block-->
+        <?= ContextBlock::getBlock(5) ?>
 
         <div class="list-pagination has-overlay">
             <?php if ($category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>

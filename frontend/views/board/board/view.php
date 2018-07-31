@@ -44,7 +44,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div>
                     <a class="fancybox" href="<?= $board->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                        <img src="<?= $board->getMainPhotoUrl() ?>" alt="<?= $board->getTitle() ?>" class="img-responsive">
+                        <img src="<?= $board->getMainPhotoUrl() ?>" alt="<?= Html::encode($board->name) ?>" class="img-responsive">
                     </a>
                 </div>
                 <div class="kt-item-thumb">
@@ -53,7 +53,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                             continue;
                         } ?>
                         <a class="fancybox" href="<?= $photo->getUrl('max') ?>" data-fancybox-group="gallery">
-                            <img src="<?= $photo->getUrl() ?>" alt="<?= $board->getTitle() ?>" class="img-responsive">
+                            <img src="<?= $photo->getUrl() ?>" alt="<?= Html::encode($board->name) ?>" class="img-responsive">
                         </a>
                     <?php endforeach; ?>
                 </div>

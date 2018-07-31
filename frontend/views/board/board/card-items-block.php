@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\BoardHelper;
+use core\components\ContextBlock;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $geo \core\entities\Geo|null */
@@ -24,7 +25,7 @@ $inCompany = isset($inCompany) ?: false;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $board->getUrl() ?>">
-                        <img src="<?= $board->getMainPhotoUrl('small') ?>" alt="<?= Html::encode($board->title) ?>" class="img-responsive">
+                        <img src="<?= $board->getMainPhotoUrl('small') ?>" alt="<?= Html::encode($board->name) ?>" class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-8 col-sm-8 col-xs-12">
@@ -48,5 +49,6 @@ $inCompany = isset($inCompany) ?: false;
                 </div>
             </div>
         </div>
+        <?php ContextBlock::afterRow() ?>
     <?php endforeach; ?>
 <?php endif; ?>

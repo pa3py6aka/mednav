@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\TradeHelper;
+use core\components\ContextBlock;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $geo \core\entities\Geo|null */
@@ -46,5 +47,6 @@ use core\helpers\TradeHelper;
                 </div>
             </div>
         </div>
+        <?php ContextBlock::afterRow() ?>
     <?php endforeach; ?>
 <?php endif; ?>

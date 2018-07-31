@@ -80,7 +80,7 @@ class UploadAction extends Action
                 $height = isset($item['height']) && (int) $item['height'] ? (int) $item['height'] : null;
 
                 Image::resize($original, $width, $height)
-                    ->save($this->path . '/' . $type . '_' . $fileName);
+                    ->save($this->path . '/' . $type . '_' . $fileName, ['jpeg_quality' => 85, 'png_compression_level' => 6]);
                 $optimizerChain->optimize($this->path . '/' . $type . '_' . $fileName);
             }
         } catch (RuntimeException $e) {

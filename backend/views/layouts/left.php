@@ -27,6 +27,15 @@
                         ['label' => 'Заказы', 'icon' => 'sticky-note-o', 'url' => ['/trade/order/index']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/trade/settings/main']],
                     ]],
+                    ['label' => 'Статьи', 'icon' => 'list-alt', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/article/category/index']],
+                        ['label' => 'Статьи', 'icon' => 'list-alt', 'url' => ['/article/article/active']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/article/settings/main']],
+                    ]],
+                    ['label' => 'Блоки', 'icon' => 'object-ungroup', 'items' => [
+                        ['label' => 'Контентные блоки', 'url' => ['/blocks/contents/index']],
+                        ['label' => 'Контекстные блоки', 'url' => ['/blocks/context/index']],
+                    ]],
                     [
                         'label' => 'Выйти',
                         'url' => ['site/logout'],

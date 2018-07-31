@@ -1,6 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
+use core\components\ContextBlock;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $geo \core\entities\Geo|null */
@@ -38,5 +40,6 @@ use yii\helpers\StringHelper;
                 </div>
             </div>
         </div>
+        <?php ContextBlock::afterRow() ?>
     <?php endforeach; ?>
 <?php endif; ?>

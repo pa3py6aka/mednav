@@ -22,6 +22,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_VIEW,
             'count' => 1,
+            'entity' => $board,
         ]) ?>
 
         <div class="row">
@@ -111,6 +112,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_VIEW,
             'start' => 2,
+            'entity' => $board,
         ]) ?>
 
     </div>
@@ -123,6 +125,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 'module' => ContentBlock::MODULE_BOARD,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_VIEW,
+                'entity' => $board,
             ]) ?>
         </div><!-- // right col -->
     </div>

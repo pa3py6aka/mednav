@@ -53,7 +53,6 @@ class ShowContentBlock extends Widget
                 'items' => $this->getItems($block),
             ]);
         }
-        //print_r($result);
 
         return implode("\n", $result);
     }
@@ -69,7 +68,17 @@ class ShowContentBlock extends Widget
         } else if ($block->type == ContentBlock::TYPE_POPULAR) {
             $query->orderBy(['views' => SORT_ASC]);
         } else if ($block->type == ContentBlock::TYPE_SIMILAR) {
-            $query->orderBy(['id' => SORT_DESC]);
+            $entity = $this->entity;
+            /* @var $entity Board|Trade|Company */
+            $tags = $entity->getTags()->select('name')->column();
+            $query->alias('ent')->joinWith('tags t');
+            $likes = [];
+            foreach ($tags as $tag) {
+                $likes[] = ['like', 't.name', $tag];
+            }
+            $query->andWhere(array_merge(['or'], $likes))
+                ->andWhere(['<>', 'ent.id', $entity->id]);
+            $query->orderBy(['ent.id' => SORT_DESC]);
         } else {
             return $block->html;
         }

@@ -25,7 +25,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
             'module' => ContentBlock::MODULE_TRADE,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_VIEW,
-            'count' => 1
+            'count' => 1,
+            'entity' => $trade,
         ]) ?>
 
         <div class="row">
@@ -128,7 +129,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
             'module' => ContentBlock::MODULE_TRADE,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_VIEW,
-            'start' => 2
+            'start' => 2,
+            'entity' => $trade,
         ]) ?>
     </div>
 
@@ -141,6 +143,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                 'module' => ContentBlock::MODULE_TRADE,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_VIEW,
+                'entity' => $trade,
             ]) ?>
         </div><!-- // right col -->
     </div>

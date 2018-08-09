@@ -5,6 +5,7 @@ namespace core\forms\manage;
 
 use core\entities\Board\BoardCategory;
 use core\entities\Company\CompanyCategory;
+use core\entities\Trade\TradeCategory;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
@@ -91,15 +92,18 @@ class CategoryForm extends Model
     }
 
     /**
-     * @param string|BoardCategory|CompanyCategory $class
+     * @param string|BoardCategory|CompanyCategory|TradeCategory $class
      * @param bool $onlyEnabled
      * @return array
      */
-    public static function parentCategoriesList($class, $onlyEnabled = false): array
+    public static function parentCategoriesList($class, $onlyEnabled = false, $withRoot = true): array
     {
         $query = $class::find()->orderBy('lft');
         if ($onlyEnabled) {
             $query->active()->enabled();
+        }
+        if (!$withRoot) {
+            $query->andWhere(['>', 'depth', 0]);
         }
         $categories = ArrayHelper::map($query->asArray()->all(), 'id', function (array $category) {
             return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'];

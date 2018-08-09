@@ -2,6 +2,7 @@
 
 namespace core\entities\Trade;
 
+use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Company\Company;
 use core\entities\Currency;
 use core\entities\Geo;
@@ -58,7 +59,7 @@ use yii\helpers\Url;
  * @property User $user
  * @property Company $company
  */
-class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterface
+class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface
 {
     use StatusesTrait;
 
@@ -174,6 +175,11 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         return PriceHelper::normalize($this->price) . ' ' . $this->getCurrencyString();
     }
 
+    public function getFullPriceString(): string
+    {
+        return $this->getPriceString() . '/' . $this->getUomString();
+    }
+
     public function getUomString(): string
     {
         return Html::encode($this->userCategory->uom->sign);
@@ -199,6 +205,16 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     public function getTitle(): string
     {
         return Html::encode($this->name);
+    }
+
+    public function getContentDescription() : string
+    {
+        return Html::encode($this->note);
+    }
+
+    public function getOwner()
+    {
+        return $this->user;
     }
 
     public function beforeDelete()

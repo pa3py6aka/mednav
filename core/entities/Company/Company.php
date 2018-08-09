@@ -2,6 +2,7 @@
 
 namespace core\entities\Company;
 
+use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Board\Board;
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
@@ -56,7 +57,7 @@ use yii\helpers\Url;
  * @property CompanyDelivery[] $deliveries
  * @property Trade[] $trades
  */
-class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface
+class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface
 {
     use StatusesTrait;
 
@@ -238,6 +239,21 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getOwnerId(): int
     {
         return $this->user_id;
+    }
+
+    public function getVendInfo()
+    {
+        return '';
+    }
+
+    public function getFullPriceString(): string
+    {
+        return '';
+    }
+
+    public function getContentDescription() : string
+    {
+        return Html::encode($this->short_description);
     }
 
     /**

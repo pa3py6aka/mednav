@@ -70,7 +70,7 @@ Mednav = (function () {
     function init() {
         $('[data-toggle="tooltip"]').tooltip();
         $('.fancybox').fancybox();
-        $(".owl-carousel-2").owlCarousel({
+        $(".owl-carousel").owlCarousel({
             loop: true,
             nav: true,
             dots: false,

@@ -2,6 +2,7 @@
 
 namespace core\entities\Board;
 
+use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Board\queries\BoardQuery;
 use core\entities\Currency;
 use core\entities\Geo;
@@ -59,7 +60,7 @@ use yii\helpers\Url;
  * @property BoardPhoto[] $photos
  * @property BoardPhoto $mainPhoto
  */
-class Board extends ActiveRecord implements UserOwnerInterface
+class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ON_MODERATION = 1;
@@ -175,6 +176,11 @@ class Board extends ActiveRecord implements UserOwnerInterface
         return ($this->price_from ? 'от ' : '') . PriceHelper::normalize($this->price) . ' ' . $this->currency->sign;
     }
 
+    public function getFullPriceString(): string
+    {
+        return $this->getPriceString();
+    }
+
     public function getUrl(): string
     {
         return Url::to(['/board/board/view', 'slug' => $this->slug, 'id' => $this->id]);
@@ -206,7 +212,7 @@ class Board extends ActiveRecord implements UserOwnerInterface
         return $this->title ?: Html::encode($this->name);
     }
 
-    public function getMainPhotoUrl($type = 'big', $absolute = false)
+    public function getMainPhotoUrl($type = 'small', $absolute = false)
     {
         return $this->main_photo_id ?
             $this->mainPhoto->getUrl($type, $absolute)
@@ -239,6 +245,11 @@ class Board extends ActiveRecord implements UserOwnerInterface
         return $this->author_id;
     }
 
+    public function getOwnerName()
+    {
+        return $this->author->getVisibleName();
+    }
+
     public static function statusesArray(): array
     {
         return [
@@ -265,6 +276,11 @@ class Board extends ActiveRecord implements UserOwnerInterface
             return $type->option->name;
         }
         return null;
+    }
+
+    public function getContentDescription() : string
+    {
+        return Html::encode($this->note);
     }
 
     public function behaviors(): array

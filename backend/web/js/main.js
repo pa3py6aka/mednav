@@ -35,7 +35,8 @@ Mednav = (function () {
                 }
             }
             return sEnding;
-        }
+        },
+        overlay: '<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>'
     };
 
     return {
@@ -45,4 +46,5 @@ Mednav = (function () {
 
 $(function () {
     ControlPanelHead.init();
+    Mednav.public;
 });

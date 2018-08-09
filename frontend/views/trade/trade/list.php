@@ -62,7 +62,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
 
         <?= ContextBlock::getBlock(1, null, $category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC) ?>
 
-        <div class="trade-items-block">
+        <div class="card-items-block">
             <?= $this->render('card-items-block', [
                 'provider' => $provider,
                 'geo' => $geo,

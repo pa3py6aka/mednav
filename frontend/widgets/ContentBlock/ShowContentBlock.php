@@ -64,23 +64,26 @@ class ShowContentBlock extends Widget
         $query = $this->getQuery($module);
 
         if ($block->type == ContentBlock::TYPE_NEW) {
-            $query->orderBy(['id' => SORT_DESC]);
+            $query->orderBy(['ent.id' => SORT_DESC]);
         } else if ($block->type == ContentBlock::TYPE_POPULAR) {
-            $query->orderBy(['views' => SORT_ASC]);
+            $query->orderBy(['ent.views' => SORT_ASC]);
         } else if ($block->type == ContentBlock::TYPE_SIMILAR) {
             $entity = $this->entity;
             /* @var $entity Board|Trade|Company */
             $tags = $entity->getTags()->select('name')->column();
-            $query->alias('ent')->joinWith('tags t');
+            $query->joinWith('tags t');
             $likes = [];
             foreach ($tags as $tag) {
                 $likes[] = ['like', 't.name', $tag];
             }
-            $query->andWhere(array_merge(['or'], $likes))
-                ->andWhere(['<>', 'ent.id', $entity->id]);
+            $query->andWhere(array_merge(['or'], $likes));
             $query->orderBy(['ent.id' => SORT_DESC]);
         } else {
             return $block->html;
+        }
+
+        if ($this->entity) {
+            $query->andWhere(['<>', 'ent.id', $this->entity->id]);
         }
 
         return $query->limit($block->items)->all();
@@ -89,13 +92,15 @@ class ShowContentBlock extends Widget
     private function getQuery($module)
     {
         if ($module == ContentBlock::MODULE_BOARD) {
-            return Board::find()->active()->with('mainPhoto', 'author.geo', 'author.company.geo');
+            $query = Board::find()->with('mainPhoto', 'author.geo', 'author.company.geo');
         } else if ($module == ContentBlock::MODULE_TRADE) {
-            return Trade::find()->active()->with('mainPhoto', 'company.geo');
+            $query = Trade::find()->with('mainPhoto', 'company.geo');
         } else if ($module == ContentBlock::MODULE_COMPANY) {
-            return Company::find()->active()->with('mainPhoto');
+            $query = Company::find()->with('mainPhoto');
+        } else {
+            throw new InvalidArgumentException("Неверный модуль контентного блока.");
         }
-        throw new InvalidArgumentException("Неверный модуль контентного блока.");
+        return $query->active()->alias('ent');
     }
 
     public static function getVendInfo(ContentBlock $block, $item)

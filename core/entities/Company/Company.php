@@ -97,7 +97,7 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $company->description = $description;
         $company->setStatus($status);
         $company->userSlug = $slug;
-        $company->delivery = '[]';
+        //$company->delivery = '[]';
         return $company;
     }
 

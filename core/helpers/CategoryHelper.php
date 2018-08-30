@@ -62,6 +62,11 @@ class CategoryHelper
                     $settingsDescription = SettingsManager::TRADE_META_DESCRIPTION;
                     $settingsKeywords = SettingsManager::TRADE_META_KEYWORDS;
                     break;
+                case 'article':
+                    $settingsTitle = SettingsManager::ARTICLE_META_TITLE;
+                    $settingsDescription = SettingsManager::ARTICLE_META_DESCRIPTION;
+                    $settingsKeywords = SettingsManager::ARTICLE_META_KEYWORDS;
+                    break;
                 default:
                     $settingsTitle = SettingsManager::BOARD_META_TITLE;
                     $settingsDescription = SettingsManager::BOARD_META_DESCRIPTION;

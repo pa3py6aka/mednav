@@ -10,6 +10,7 @@ use core\entities\Company\CompanyCategoryRegion;
 use Yii;
 use yii\helpers\Html;
 use yii\web\JqueryAsset;
+use yii\widgets\Breadcrumbs;
 
 class HtmlHelper
 {
@@ -91,4 +92,19 @@ class HtmlHelper
         return '';
     }
 
+    public static function breadCrumbs($settingsNameParam, $category = null)
+    {
+        $items[] = ['label' => Yii::$app->settings->get($settingsNameParam), 'url' => ['list']];
+        if ($category) {
+            foreach ($category->parents as $parent) {
+                if ($parent->isRoot()) {
+                    continue;
+                }
+                $items[] = ['label' => $parent->name, 'url' => ['list', 'category' => $parent->slug]];
+            }
+            $items[] = ['label' => $category->name, 'url' => ['list', 'category' => $category->slug]];
+        }
+
+        return Breadcrumbs::widget(['links' => $items]);
+    }
 }

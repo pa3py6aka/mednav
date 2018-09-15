@@ -12,6 +12,8 @@ use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%articles}}".
@@ -104,6 +106,23 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    public function getUrl()
+    {
+        return Url::to(['/article/article/view', 'id' => $this->id, 'slug' => $this->slug]);
+    }
+
+    public function getMainPhotoUrl($type = 'small', $absolute = false): string
+    {
+        return $this->main_photo_id ?
+            $this->mainPhoto->getUrl($type, $absolute)
+            : ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . '/img/no-photo-250.jpg';
+    }
+
+    public function getTitle(): string
+    {
+        return Html::encode($this->name);
     }
 
     public function getTagsString(): string

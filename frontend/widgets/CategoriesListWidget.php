@@ -3,9 +3,11 @@
 namespace frontend\widgets;
 
 
+use core\entities\Article\ArticleCategory;
 use core\entities\Board\BoardCategory;
 use core\entities\Company\CompanyCategory;
 use core\entities\Geo;
+use core\helpers\ArticleHelper;
 use core\helpers\BoardHelper;
 use core\helpers\CompanyHelper;
 use yii\base\Widget;
@@ -15,13 +17,13 @@ class CategoriesListWidget extends Widget
 {
     public $component;
 
-    /* @var BoardCategory|CompanyCategory Сюда передаём класс, например BoardCategory::class */
+    /* @var BoardCategory|CompanyCategory|ArticleCategory Сюда передаём класс, например BoardCategory::class */
     public $categoryClass;
 
-    /* @var BoardHelper|CompanyHelper Сюда передаём класс, например BoardHelper::class */
+    /* @var BoardHelper|CompanyHelper|ArticleHelper Сюда передаём класс, например BoardHelper::class */
     public $helperClass;
 
-    /* @var BoardCategory|CompanyCategory|null */
+    /* @var BoardCategory|CompanyCategory|ArticleCategory|null */
     public $category;
 
     /* @var Geo|null */

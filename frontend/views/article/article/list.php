@@ -1,7 +1,7 @@
 <?php
 
 use core\helpers\CategoryHelper;
-use core\helpers\TradeHelper;
+use core\helpers\ArticleHelper;
 use core\helpers\HtmlHelper;
 use frontend\widgets\CategoriesListWidget;
 use frontend\widgets\RegionsModalWidget;
@@ -9,7 +9,7 @@ use core\components\ContextBlock;
 use yii\widgets\LinkPager;
 use core\helpers\PaginationHelper;
 use core\components\SettingsManager;
-use core\entities\Trade\TradeCategory;
+use core\entities\Article\ArticleCategory;
 use frontend\widgets\ContentBlock\ShowContentBlock;
 use core\entities\ContentBlock;
 
@@ -32,33 +32,14 @@ CategoryHelper::registerHeadMeta('article', $this, 'Справочная инф�
             'category' => $category,
             'component' => 'article',
             'categoryClass' => ArticleCategory::class,
-            'helperClass' => TradeHelper::class,
+            'helperClass' => ArticleHelper::class,
         ]) ?>
 
-        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::TRADE_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion) ?>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="list-panel-sort">
-                    Сортировать по: <?= $provider->sort->link('price', ['class' => 'sort']) ?> <?= $provider->sort->link('id', ['class' => 'sort']) ?> <?= $provider->sort->link('stock', ['class' => 'sort']) ?>
-                    <span>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegion"><?= $geo ? $geo->name : 'Все регионы' ?></button>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <?= ContextBlock::getBlock(1, null, $category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::ARTICLE_DESCRIPTION_TOP, !$provider->pagination->page, $category) ?>
 
         <div class="card-items-block">
-            <?= $this->render('card-items-block', [
-                'provider' => $provider,
-                'geo' => $geo,
-                'inCompany' => false,
-            ]) ?>
+            <?= $this->render('card-items-block', ['provider' => $provider]) ?>
         </div>
-
-        <?= ContextBlock::getBlock(5) ?>
 
         <div class="list-pagination has-overlay">
             <?php if ($category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>
@@ -71,14 +52,7 @@ CategoryHelper::registerHeadMeta('article', $this, 'Справочная инф�
             <?php endif; ?>
         </div>
 
-        <?= ShowContentBlock::widget([
-            'module' => ContentBlock::MODULE_TRADE,
-            'place' => ContentBlock::PLACE_MAIN,
-            'page' => ContentBlock::PAGE_LISTING,
-            'start' => 2
-        ]) ?>
-
-        <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::TRADE_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category, $categoryRegion) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::ARTICLE_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category) ?>
 
     </div>
 
@@ -95,5 +69,3 @@ CategoryHelper::registerHeadMeta('article', $this, 'Справочная инф�
         </div><!-- // right col -->
     </div>
 </div>
-
-<?= RegionsModalWidget::widget(['category' => $category, 'type' => 'trade']) ?>

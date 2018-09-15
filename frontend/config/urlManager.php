@@ -55,6 +55,12 @@ return [
         'trade/<region:[\w-]+>' => 'trade/trade/list',
         'trade' => 'trade/trade/list',
 
+        // Статьи
+        'articles/<id:\d+>-<slug:[\w-]+>' => 'article/article/view',
+        'articles/<category:[\w-]+>/page<page:\d+>' => 'article/article/list',
+        'articles/page<page:\d+>' => 'article/article/list',
+        'articles' => 'article/article/list',
+
         'user/dialogs' => 'user/message/dialogs',
 
         '<_c:[\w\-]+>' => '<_c>/index',

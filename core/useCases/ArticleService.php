@@ -7,6 +7,7 @@ use core\components\SettingsManager;
 use core\entities\Article\Article;
 use core\entities\Article\ArticleTag;
 use core\entities\Article\ArticleTagsAssignment;
+use core\entities\Company\Company;
 use core\forms\Article\ArticleForm;
 use core\forms\manage\PhotosForm;
 use core\repositories\Article\ArticleRepository;
@@ -34,9 +35,11 @@ class ArticleService
         $status = $form->scenario == ArticleForm::SCENARIO_USER_MANAGE
             ? (Yii::$app->settings->get(SettingsManager::ARTICLE_MODERATION) ? Article::STATUS_ON_PREMODERATION : Article::STATUS_ACTIVE)
             : Article::STATUS_ACTIVE;
+        $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
         $article = Article::create(
             $userId,
+            $companyId,
             $form->categoryId,
             trim($form->title),
             trim($form->metaDescription),
@@ -45,7 +48,7 @@ class ArticleService
             $form->slug,
             trim($form->intro),
             trim($form->fullText),
-            $form->indirectLinks,
+            $form->indirectLinks === null ? 1 : $form->indirectLinks,
             $status
         );
 
@@ -65,9 +68,11 @@ class ArticleService
         $userId = $form->scenario == ArticleForm::SCENARIO_USER_MANAGE
             ? $article->user_id
             : ($form->user_id ?: $article->user_id);
+        $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
         $article->edit(
             $userId,
+            $companyId,
             $form->categoryId,
             trim($form->title),
             trim($form->metaDescription),

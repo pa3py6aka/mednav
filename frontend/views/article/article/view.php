@@ -60,7 +60,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($article
                     <?= TextHelper::out($article->full_text) ?>
 
                     <div>
-                        Опубликовано: <?php /*<a href="#">ООО Комплексная Гарантированная Безопасность</a> / >*/ ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $article->created_at) ?>
+                        Опубликовано: <?= $article->company_id ? '<a href="'. $article->company->getUrl() .'">' . $article->company->getFullName() . '</a> / ' : '' ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $article->created_at) ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="id-page"><span class="glyphicon glyphicon-eye-open btn-xs"></span><?= $article->views ?></div>

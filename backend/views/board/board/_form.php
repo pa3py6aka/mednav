@@ -68,7 +68,7 @@ ImageManagerAsset::register($this);
         </div>
 
         <?= $form->field($model, 'fullText')
-                ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']]) ?>
+                ->widget(CKEditor::class, ['editorOptions' => ['preset' => 'full']]) ?>
 
         <?= $form->field($model, 'tags')->textInput() ?>
 

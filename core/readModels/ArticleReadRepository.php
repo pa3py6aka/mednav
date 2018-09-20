@@ -34,6 +34,18 @@ class ArticleReadRepository
         return $this->getProvider($query);
     }
 
+    public function getCompanyActiveArticles($companyId)
+    {
+        $query = Article::find()->where(['company_id' => $companyId])->alias('a')->active('a')->with('mainPhoto');
+        return $this->getProvider($query);
+    }
+
+    public function getCompanyOnModerationArticles($companyId)
+    {
+        $query = Article::find()->where(['company_id' => $companyId])->alias('a')->onModeration('a')->with('mainPhoto');
+        return $this->getProvider($query);
+    }
+
     private function getProvider(ActiveQuery $query): ActiveDataProvider
     {
         $provider = new ActiveDataProvider([

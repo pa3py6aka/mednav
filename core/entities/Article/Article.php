@@ -3,6 +3,7 @@
 namespace core\entities\Article;
 
 use core\entities\Article\queries\ArticlesQuery;
+use core\entities\Company\Company;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
@@ -20,6 +21,7 @@ use yii\helpers\Url;
  *
  * @property int $id
  * @property int $user_id
+ * @property int $company_id [int(11)]
  * @property int $category_id
  * @property string $title
  * @property string $meta_description
@@ -41,6 +43,7 @@ use yii\helpers\Url;
  * @property ArticleCategory $category
  * @property ArticlePhoto $mainPhoto
  * @property User $user
+ * @property Company $company
  */
 class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterface
 {
@@ -50,6 +53,7 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
 
     public static function create(
         $userId,
+        $companyId,
         $categoryId,
         $title,
         $metaDescription,
@@ -64,6 +68,7 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     {
         $article = new Article();
         $article->user_id = $userId;
+        $article->company_id = $companyId;
         $article->category_id = $categoryId;
         $article->title = $title;
         $article->meta_description = $metaDescription;
@@ -80,6 +85,7 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
 
     public function edit(
         $userId,
+        $companyId,
         $categoryId,
         $title,
         $metaDescription,
@@ -92,6 +98,7 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     ): void
     {
         $this->user_id = $userId;
+        $this->company_id = $companyId;
         $this->category_id = $categoryId;
         $this->title = $title;
         $this->meta_description = $metaDescription;
@@ -186,15 +193,15 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
             'title' => 'Title',
             'meta_description' => 'Meta Description',
             'meta_keywords' => 'Meta Keywords',
-            'name' => 'Name',
+            'name' => 'Название',
             'slug' => 'Slug',
-            'intro' => 'Intro',
-            'full_text' => 'Full Text',
+            'intro' => 'Интро',
+            'full_text' => 'Полный текст',
             'indirect_links' => 'Indirect Links',
             'main_photo_id' => 'Main Photo ID',
             'status' => 'Status',
-            'views' => 'Views',
-            'created_at' => 'Created At',
+            'views' => 'Просмотров',
+            'created_at' => 'Дата добавления',
             'updated_at' => 'Updated At',
         ];
     }
@@ -227,6 +234,11 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getCompany(): ActiveQuery
+    {
+        return $this->hasOne(Company::class, ['id' => 'company_id']);
     }
 
     /**

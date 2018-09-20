@@ -11,7 +11,7 @@ use core\helpers\HtmlHelper;
 
 /* @var $content string */
 
-$this->title = 'Личный кабинет | Мои товары';
+$this->title = 'Личный кабинет | Мои статьи';
 $tab =  ArrayHelper::getValue($this->params, 'tab', 'active');
 $pagination = ArrayHelper::getValue($this->params, 'pagination');
 
@@ -23,22 +23,19 @@ $this->beginContent('@frontend/views/layouts/main.php');
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Мои товары']) ?>
-        <h1>Мои товары</h1>
+        <?= \frontend\widgets\AccountBreadcrumbs::show(['Мои статьи']) ?>
+        <h1>Мои статьи</h1>
 
         <p>
-            <a href="<?= Url::to(['create']) ?>" class="btn btn-success">Добавить товар</a>
-            <a href="<?= Url::to(['category-create']) ?>" class="btn btn-primary">Добавить категорию</a>
-            <?php if ($tab == 'active') {
+            <a href="<?= Url::to(['create']) ?>" class="btn btn-success">Добавить статью</a>
+            <?php if ($tab == 'active' || $tab == 'waiting') {
                 echo HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger');
             } ?>
         </p>
 
         <ul class="nav nav-tabs">
             <li<?= $tab == 'active' ? ' class="active"' : '' ?>><a href="<?= Url::to(['active']) ?>">Размещённые</a></li>
-            <li<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке (<?= \core\entities\Trade\Trade::find()->onModerationCount($this->params['user']['id']) ?>)</a></li>
-            <li<?= $tab == 'categories' ? ' class="active"' : '' ?>><a href="<?= Url::to(['categories']) ?>">Категории</a></li>
-            <li<?= $tab == 'settings' ? ' class="active"' : '' ?>><a href="<?= Url::to(['settings']) ?>">Настройки</a></li>
+            <li<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке (<?= \core\entities\Article\Article::find()->onModerationCount($this->params['user']['id']) ?>)</a></li>
             <span class="pull-right">
                 <?php if ($pagination) {
                     echo PaginationHelper::pageSizeSelector($pagination, PaginationHelper::SITE_SIZES);

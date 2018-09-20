@@ -22,6 +22,14 @@ class ArticlesQuery extends \yii\db\ActiveQuery
         return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Article::STATUS_ON_PREMODERATION]);
     }
 
+    public function onModerationCount($userId = null): int
+    {
+        if ($userId) {
+            $this->where(['user_id' => $userId]);
+        }
+        return $this->onModeration()->cache(60)->count();
+    }
+
     public function deleted($alias = null)
     {
         return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Article::STATUS_DELETED]);

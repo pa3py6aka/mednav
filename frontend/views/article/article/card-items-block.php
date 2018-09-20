@@ -30,7 +30,7 @@ use core\helpers\ArticleHelper;
                     <div class="desc-col"><?= Html::encode(\yii\helpers\StringHelper::truncate($article->intro, 100)) ?></div>
                     <div class="list-vendor-info">
                         <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey" aria-hidden="true"></i><?= date('d-m-Y', $article->created_at) ?>
-                        <!--/ <a href="#">ООО Новая объединенная компания 2017</a>-->
+                        <?= $article->company_id ? '/ <a href="'. $article->company->getUrl() .'">' . $article->company->getFullName() . '</a>' : '' ?>
                         / <?= ArticleHelper::contextCategoryLink($article) ?>
                         / <i class="glyphicon glyphicon-eye-open btn-xs city-icon-grey" aria-hidden="true"></i><?= $article->views ?>
                     </div>

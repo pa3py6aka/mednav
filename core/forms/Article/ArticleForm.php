@@ -13,7 +13,7 @@ class ArticleForm extends Model
     public $title;
     public $metaKeywords;
     public $metaDescription;
-    public $indirectLinks;
+    public $indirectLinks = 1;
 
     public $categoryId = [];
     public $name;

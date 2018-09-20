@@ -4,9 +4,11 @@ namespace frontend\controllers\company;
 
 
 use core\helpers\PaginationHelper;
+use core\readModels\ArticleReadRepository;
 use core\readModels\Board\BoardReadRepository;
 use core\readModels\Company\CompanyReadRepository;
 use core\readModels\Trade\TradeReadRepository;
+use core\repositories\Article\ArticleCategoryRepository;
 use core\repositories\Board\BoardCategoryRepository;
 use core\repositories\Company\CompanyCategoryRepository;
 use core\repositories\GeoRepository;
@@ -139,6 +141,32 @@ class CompanyController extends Controller
         }
 
         return $this->render('trades', [
+            'company' => $company,
+            'provider' => $provider,
+            'category' => $category,
+        ]);
+    }
+
+    public function actionArticles($id, $slug)
+    {
+        $company = $this->repository->getByIdAndSlug($id, $slug);
+        if ($category = Yii::$app->request->get('category') ?: null) {
+            $category = (new ArticleCategoryRepository())->get((int) $category);
+        }
+
+        $provider = (new ArticleReadRepository())->getAllBy($category, $company->id);
+
+        // Вывод статей по клику "показать ещё"
+        if (
+            ($showMore = PaginationHelper::getShowMore($this, $provider, '@frontend/views/article/article/card-items-block', [
+                'provider' => $provider,
+                'inCompany' => true,
+            ])) !== null
+        ) {
+            return $showMore;
+        }
+
+        return $this->render('articles', [
             'company' => $company,
             'provider' => $provider,
             'category' => $category,

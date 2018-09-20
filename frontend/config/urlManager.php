@@ -33,7 +33,7 @@ return [
         'board' => 'board/board/list',
 
         // Компании
-        'company/<id:\d+>-<slug:[\w-]+>/<_a:contacts|boards|trades>' => 'company/company/<_a>',
+        'company/<id:\d+>-<slug:[\w-]+>/<_a:contacts|boards|trades|articles>' => 'company/company/<_a>',
         'company/<id:\d+>-<slug:[\w-]+>' => 'company/company/view',
 
         'company/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'company/company/list',

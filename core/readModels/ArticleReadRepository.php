@@ -21,13 +21,17 @@ class ArticleReadRepository
         return $article;
     }
 
-    public function getAllBy(ArticleCategory $category = null): DataProviderInterface
+    public function getAllBy(ArticleCategory $category = null, $companyId = null): DataProviderInterface
     {
         $query = Article::find()->alias('a')->active('a')->with('mainPhoto');
 
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
             $query->andWhere(['a.category_id' => $ids]);
+        }
+
+        if ($companyId) {
+            $query->andWhere(['company_id' => $companyId]);
         }
 
         $query->groupBy('a.id');

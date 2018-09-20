@@ -3,6 +3,7 @@
 namespace core\entities\Company;
 
 use core\components\ContentBlocks\ContentBlockInterface;
+use core\entities\Article\Article;
 use core\entities\Board\Board;
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
@@ -56,6 +57,7 @@ use yii\helpers\Url;
  * @property Board[] $boards
  * @property CompanyDelivery[] $deliveries
  * @property Trade[] $trades
+ * @property Article[] $articles
  */
 class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface
 {
@@ -205,6 +207,8 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
                 return $this->getBoards()->count();
             case 'trades':
                 return $this->getTrades()->count();
+            case 'articles':
+                return $this->getArticles()->count();
             default: return 0;
         }
     }
@@ -356,6 +360,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getTrades($active = true): ActiveQuery
     {
         $query = $this->hasMany(Trade::class, ['company_id' => 'id']);
+        return $active ? $query->active() : $query;
+    }
+
+    public function getArticles($active = true): ActiveQuery
+    {
+        $query = $this->hasMany(Article::class, ['company_id' => 'id']);
         return $active ? $query->active() : $query;
     }
 

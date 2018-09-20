@@ -34,7 +34,7 @@ use core\components\ContextBlock;
                         <a href="<?= $company->getUrl('trades') ?>">Товары</a> <sup><?= count($company->trades) ?></sup>
                         <a href="<?= $company->getUrl('boards') ?>">Объявления</a> <sup><?= count($company->boards) ?></sup>
                         <a href="#">Новости</a> <sup>120</sup>
-                        <a href="#">Статьи</a> <sup>2</sup>
+                        <a href="<?= $company->getUrl('articles') ?>">Статьи</a> <sup><?= count($company->articles) ?></sup>
                         <span class="glyphicon glyphicon-map-marker btn-xs city-icon-grey"></span><?= $company->geo->name ?>
                     </div>
                 </div>

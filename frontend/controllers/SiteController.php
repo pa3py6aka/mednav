@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use core\access\Rbac;
 use core\entities\Trade\Trade;
 use core\helpers\PriceHelper;
+use core\services\Mailer;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -14,7 +15,7 @@ use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use core\forms\ContactForm;
 use yii\web\Response;
 
 /**
@@ -143,18 +144,19 @@ class SiteController extends Controller
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+            try {
+                Mailer::send(Yii::$app->params['supportEmail'], 'Сообщение с формы обратной связи Mednav.ru', 'contact', ['contactForm' => $model]);
+                Yii::$app->session->setFlash('success', 'Сообщение отправлено.');
+            } catch (\DomainException $e) {
+                Yii::$app->session->setFlash('error', 'Ошибка отправки.');
             }
 
             return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('contact', [
+            'model' => $model,
+        ]);
     }
 
     /**

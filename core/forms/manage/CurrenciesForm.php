@@ -4,7 +4,9 @@ namespace core\forms\manage;
 
 
 use core\entities\Currency;
+use core\services\TransactionManager;
 use yii\base\Model;
+use yii\base\UserException;
 
 class CurrenciesForm extends Model
 {
@@ -34,7 +36,7 @@ class CurrenciesForm extends Model
     public function rules(): array
     {
         return [
-            [['id', 'name', 'sign', 'default'], 'required'],
+            [['name', 'sign', 'default'], 'required'],
             [['id'], 'each', 'rule' => ['integer']],
             [['name', 'sign'], 'each', 'rule' => ['string']],
             ['default', 'each', 'rule' => ['boolean']],
@@ -50,23 +52,42 @@ class CurrenciesForm extends Model
 
     public function save()
     {
-        foreach ($this->name as $id => $name) {
-            if ($this->name[$id] && $this->sign[$id]) {
-                $currency = Currency::find()->where(['id' => $id])->one();
-                if (!$currency) {
-                    $currency = new Currency();
-                    $currency->id = $id;
-                    $currency->module = $this->module;
-                }
-                $currency->name = $this->name[$id];
-                $currency->sign = $this->sign[$id];
-                $currency->default = $this->default[$id];
-                $currency->save();
-            } else {
-                if ($currency = Currency::find()->where(['id' => $id])->one()) {
-                    $currency->delete();
+        (new TransactionManager())->wrap(function () {
+            foreach ($this->name as $id => $name) {
+                if ($this->name[$id] && $this->sign[$id]) {
+                    $currency = Currency::find()->where(['id' => $id, 'module' => $this->module])->one();
+                    if (!$currency) {
+                        $currency = new Currency();
+                        $currency->id = $id;
+                        $currency->module = $this->module;
+                    }
+                    $currency->name = $this->name[$id];
+                    $currency->sign = $this->sign[$id];
+                    $currency->default = $this->default[$id];
+                    $currency->save();
+                } else {
+                    if ($currency = Currency::find()->where(['id' => $id, 'module' => $this->module])->one()) {
+                        $this->checkUsing($currency);
+                        $currency->delete();
+                        if ($currency->default) {
+                            Currency::find()
+                                ->where(['module' => $this->module])
+                                ->orderBy(['id' => SORT_ASC])
+                                ->limit(1)
+                                ->one()
+                                ->updateAttributes(['default' => 1]);
+                        }
+                    }
                 }
             }
+        });
+    }
+
+    private function checkUsing(Currency $currency)
+    {
+        $class = $currency->getModuleClass();
+        if ($class::find()->where(['currency_id' => $currency->id])->exists()) {
+            throw new \DomainException("Денежная единица {$currency->name} используется и не может быть удалена.");
         }
     }
 

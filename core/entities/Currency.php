@@ -3,7 +3,10 @@
 namespace core\entities;
 
 
+use core\entities\Board\Board;
+use core\entities\Trade\TradeUserCategory;
 use Yii;
+use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
@@ -32,14 +35,9 @@ class Currency extends ActiveRecord
         return ArrayHelper::getValue(self::modulesArray(), $module);
     }
 
-    public static function getDb()
-    {
-        return Yii::$app->get('sqlite');
-    }
-
     public static function tableName()
     {
-        return 'currencies';
+        return '{{%currencies}}';
     }
 
     public static function getAllFor($module)
@@ -50,5 +48,19 @@ class Currency extends ActiveRecord
     public static function getDefaultIdFor($module): int
     {
         return self::find()->where(['default' => 1, 'module' => $module])->one()->id;
+    }
+
+    /**
+     * @return string|Board|TradeUserCategory
+     */
+    public function getModuleClass()
+    {
+        switch ($this->module) {
+            case self::MODULE_BOARD:
+                return Board::class;
+            case self::MODULE_TRADE:
+                return TradeUserCategory::class;
+        }
+        throw new Exception("Неверное значение модуля для денежной единицы.");
     }
 }

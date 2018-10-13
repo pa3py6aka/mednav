@@ -24,11 +24,7 @@ ImageManagerAsset::register($this);
 
         <?= $form->field($model, 'user_id')->widget(UserIdFieldWidget::class) ?>
 
-        <?= SelectCategoryWidget::widget([
-            'entity' => ArticleCategory::class,
-            'model' => $model,
-            'form' => $form,
-        ]) ?>
+        <?= $form->field($model, 'categoryId')->dropDownList(\core\forms\manage\CategoryForm::parentCategoriesList(ArticleCategory::class)) ?>
 
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

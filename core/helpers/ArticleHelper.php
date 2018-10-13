@@ -18,15 +18,23 @@ class ArticleHelper
     {
         ?>
         <ul class="breadcrumb">
-            <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
-            <li><a href="<?= Url::to(['/article/article/list']) ?>">Статьи</a></li>
+            <li>
+                <a href="<?= Yii::$app->homeUrl ?>">Главная</a>
+            </li>
+            <li>
+                <a href="<?= Url::to(['/article/article/list']) ?>">
+                    <?= Yii::$app->settings->get(SettingsManager::ARTICLE_NAME) ?>
+                </a>
+            </li>
             <?php foreach ($article->category->parents as $category) {
                 if ($category->isRoot()) {
                     continue;
                 }
                 ?><li><a href="<?= self::categoryUrl($category) ?>"><?= $category->getTitle() ?></a></li><?php
             } ?>
-            <li><a href="<?= self::categoryUrl($article->category) ?>"><?= $article->category->getTitle() ?></a></li>
+            <li>
+                <a href="<?= self::categoryUrl($article->category) ?>"><?= $article->category->getTitle() ?></a>
+            </li>
         </ul>
         <?php
     }

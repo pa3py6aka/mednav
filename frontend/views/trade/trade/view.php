@@ -115,7 +115,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
         <div class="row">
             <div class="col-md-12">
                 <h4>Описание товара</h4>
-                <?= TextHelper::out($trade->description) ?>
+                <?= TextHelper::out($trade->description, 'trade') ?>
 
                 <div class="kt-item-vendgoods">Все товары продавца в <a href="<?= Url::to(['/trade/trade/list', 'category' => $trade->category->slug]) ?>"><?= $trade->category->name ?></a> (<?= $trade::find()->countInCategoryForCompany($trade->category_id, $trade->company_id) ?>)</div>
                 <div class="kt-notice-price">

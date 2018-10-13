@@ -70,7 +70,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                         Цена: <span class="kt-item-price"><?= $board->getPriceString() ?></span>
                     </div>
 
-                    <?= \core\helpers\TextHelper::out($board->full_text) ?>
+                    <?= \core\helpers\TextHelper::out($board->full_text, 'board') ?>
                 </div>
             </div>
         </div>

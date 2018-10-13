@@ -12,6 +12,6 @@ use core\helpers\DialogHelper;
         <span class="message-date"><?= Yii::$app->formatter->asDatetime($message->created_at) ?></span>
     </div>
     <div class="message-text">
-        <?= TextHelper::out($message->text) ?>
+        <?= TextHelper::out($message->text, 'site') ?>
     </div>
 </div>

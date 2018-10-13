@@ -142,6 +142,13 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return $this->user_id;
     }
 
+    public function getMetaDescription(): string
+    {
+        return $this->meta_description ?
+            Html::encode($this->meta_description)
+            : $this->intro . ', ' . ($this->company_id ? $this->company->getFullName() : $this->user->getUserName());
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -193,9 +200,9 @@ class Article extends ActiveRecord implements StatusesInterface, UserOwnerInterf
             'title' => 'Title',
             'meta_description' => 'Meta Description',
             'meta_keywords' => 'Meta Keywords',
-            'name' => 'Название',
+            'name' => 'Заголовок',
             'slug' => 'Slug',
-            'intro' => 'Интро',
+            'intro' => 'Анонс',
             'full_text' => 'Полный текст',
             'indirect_links' => 'Indirect Links',
             'main_photo_id' => 'Main Photo ID',

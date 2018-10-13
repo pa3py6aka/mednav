@@ -3,6 +3,7 @@
 namespace core\readModels;
 
 
+use core\components\SettingsManager;
 use core\entities\Article\Article;
 use core\entities\Article\ArticleCategory;
 use yii\data\ActiveDataProvider;
@@ -41,22 +42,26 @@ class ArticleReadRepository
     public function getCompanyActiveArticles($companyId)
     {
         $query = Article::find()->where(['company_id' => $companyId])->alias('a')->active('a')->with('mainPhoto');
-        return $this->getProvider($query);
+        return $this->getProvider($query, 25);
     }
 
     public function getCompanyOnModerationArticles($companyId)
     {
         $query = Article::find()->where(['company_id' => $companyId])->alias('a')->onModeration('a')->with('mainPhoto');
-        return $this->getProvider($query);
+        return $this->getProvider($query, 25);
     }
 
-    private function getProvider(ActiveQuery $query): ActiveDataProvider
+    private function getProvider(ActiveQuery $query, $default = null): ActiveDataProvider
     {
         $provider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['name' => SORT_ASC],
+                'defaultOrder' => ['id' => SORT_DESC],
                 'attributes' => [
+                    'id' => [
+                        'asc' => ['a.id' => SORT_ASC],
+                        'desc' => ['a.id' => SORT_DESC],
+                    ],
                     'name' => [
                         'asc' => ['a.name' => SORT_ASC],
                         'desc' => ['a.name' => SORT_DESC],
@@ -64,8 +69,8 @@ class ArticleReadRepository
                 ],
             ],
             'pagination' => [
-                'pageSizeLimit' => [5, 250], //Todo Выставить 25 на продакшине
-                'defaultPageSize' => 5,
+                'pageSizeLimit' => [1, 250],
+                'defaultPageSize' => !$default ? \Yii::$app->settings->get(SettingsManager::ARTICLE_PAGE_SIZE) : $default,
                 'forcePageParam' => false,
             ]
         ]);

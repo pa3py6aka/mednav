@@ -9,11 +9,11 @@ use yii\helpers\Url;
 
 class TextHelper
 {
-    public static function out($content, $noFollow = false): string
+    public static function out($content, $module, $noFollow = false): string
     {
         Yii::$app->view->registerJs("$('.pury-content').find('a').attr('target', '_blank')" . ($noFollow ? ".attr('rel', 'nofollow')" : "") . ";",  Yii::$app->view::POS_READY, 'addTargetBlank');
         $out = HtmlPurifier::process($content, [
-            'URI.Munge' => Url::to(['/site/outsite']) . '?url=%s'
+            'URI.Munge' => Url::to(['/site/outsite', 'module' => $module]) . '?id=%s'
         ]);
 
         return '<div class="pury-content">' . $out . '</div>';

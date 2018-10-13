@@ -15,7 +15,7 @@ class ArticleForm extends Model
     public $metaDescription;
     public $indirectLinks = 1;
 
-    public $categoryId = [];
+    public $categoryId;
     public $name;
     public $intro;
     public $fullText;
@@ -35,21 +35,13 @@ class ArticleForm extends Model
             $this->metaKeywords = $article->meta_keywords;
             $this->metaDescription = $article->meta_description;
             $this->indirectLinks = $article->indirect_links;
-
-            foreach ($article->category->parents as $parent) {
-                if (!$parent->isRoot()) {
-                    $this->categoryId[] = $parent->id;
-                }
-            }
-            $this->categoryId[] = $article->category_id;
+            $this->categoryId = $article->category_id;
             $this->name = $article->name;
             $this->intro = $article->intro;
             $this->fullText = $article->full_text;
             $this->tags = $article->getTagsString();
 
             $this->article = $article;
-        } else {
-            $this->categoryId[] = '';
         }
         parent::__construct($config);
     }
@@ -98,8 +90,8 @@ class ArticleForm extends Model
             'indirectLinks' => 'Непрямые ссылки',
 
             'categoryId' => 'Категория',
-            'name' => 'Название',
-            'intro' => 'Интро-текст',
+            'name' => 'Заголовок',
+            'intro' => 'Анонс',
             'fullText' => 'Полный текст',
             'tags' => 'Теги',
             'photos' => 'Фотографии',

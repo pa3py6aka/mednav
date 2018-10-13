@@ -15,11 +15,7 @@ use core\actions\UploadAction;
 ?>
 <?php $form = ActiveForm::begin(); ?>
 
-<?= SelectCategoryWidget::widget([
-    'entity' => ArticleCategory::class,
-    'model' => $model,
-    'form' => $form,
-]) ?>
+<?= $form->field($model, 'categoryId')->dropDownList(\core\forms\manage\CategoryForm::parentCategoriesList(ArticleCategory::class)) ?>
 
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

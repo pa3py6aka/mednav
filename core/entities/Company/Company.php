@@ -200,15 +200,22 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return implode(', ', $this->getTags()->select('name')->column());
     }
 
+    private $boardsCount = null;
+    private $tradesCount = null;
+    private $articlesCount = null;
+
     public function getCountFor(string $module): int
     {
         switch ($module) {
             case 'boards':
-                return $this->getBoards()->count();
+                $this->boardsCount = $this->boardsCount === null ? $this->getBoards()->count() : $this->boardsCount;
+                return $this->boardsCount;
             case 'trades':
-                return $this->getTrades()->count();
+                $this->tradesCount = $this->tradesCount === null ? $this->getTrades()->count() : $this->tradesCount;
+                return $this->tradesCount;
             case 'articles':
-                return $this->getArticles()->count();
+                $this->articlesCount = $this->articlesCount === null ? $this->getArticles()->count() : $this->articlesCount;
+                return $this->articlesCount;
             default: return 0;
         }
     }

@@ -3,17 +3,14 @@
 use yii\helpers\Html;
 use core\helpers\ArticleHelper;
 use core\helpers\TextHelper;
-use yii\helpers\Url;
-use frontend\widgets\message\MessageWidget;
-use frontend\widgets\ContentBlock\ShowContentBlock;
-use core\entities\ContentBlock;
+use frontend\widgets\CompanyMenuWidget;
 
 /* @var $this \yii\web\View */
 /* @var $article \core\entities\Article\Article */
 
 $this->title = Html::encode($article->title ?: $article->getTitle());
-$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($article->meta_description)]);
-$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($article->meta_keywords)]);
+$this->registerMetaTag(['name' => 'description', 'content' => $article->getMetaDescription()]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => $article->getTagsString() ?: Html::encode($article->meta_keywords)]);
 
 ?>
 <div class="row">
@@ -57,13 +54,14 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($article
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="kk-content">
-                    <?= TextHelper::out($article->full_text) ?>
-
+                    <?= TextHelper::out($article->full_text, 'articles') ?>
                     <div>
                         Опубликовано: <?= $article->company_id ? '<a href="'. $article->company->getUrl() .'">' . $article->company->getFullName() . '</a> / ' : '' ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $article->created_at) ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="id-page"><span class="glyphicon glyphicon-eye-open btn-xs"></span><?= $article->views ?></div>
+
+                    <?= $article->company_id ? CompanyMenuWidget::widget(['company' => $article->company]) : '' ?>
                 </div>
             </div>
         </div>
@@ -72,9 +70,9 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($article
     <!-- right col -->
     <div class="col-md-3 col-sm-3 hidden-xs">
         <div id="rightCol">
-            <div style="margin: 10px 0;"><img src="/img/234.png" class="img-responsive" alt=""></div>
-
-
+            <div style="margin: 10px 0;">
+                <img src="/img/234.png" class="img-responsive" alt="">
+            </div>
         </div><!-- // right col -->
     </div>
 </div>

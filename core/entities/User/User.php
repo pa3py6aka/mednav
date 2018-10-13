@@ -221,8 +221,12 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         return $this->isCompany() && $this->isCompanyActive() ? $this->company->email : $this->email;
     }
 
-    public function getUserName(): string
+    public function getUserName($short = false): string
     {
+        if ($short) {
+            return $this->last_name ? $this->last_name . ' ' . substr($this->name, 0, 1) . "." : "";
+        }
+
         if ($this->name || $this->patronymic || $this->last_name) {
             return Html::encode(str_replace('  ', ' ', trim(implode(" ", [$this->name, $this->patronymic, $this->last_name]))));
         }

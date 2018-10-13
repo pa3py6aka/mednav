@@ -79,7 +79,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                 </div>
                 <div class="kk-content">
                     <?php if ($page == 'main'): ?>
-                        <?= TextHelper::out($company->description, true) ?>
+                        <?= TextHelper::out($company->description, 'company', true) ?>
 
                         <div class="kk-gallery">
                             <?php foreach ($company->photos as $photo): ?>

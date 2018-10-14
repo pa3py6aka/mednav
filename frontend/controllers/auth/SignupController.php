@@ -8,6 +8,7 @@ use core\forms\auth\SignupForm;
 use core\useCases\auth\SignupService;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 class SignupController extends Controller
@@ -51,7 +52,7 @@ class SignupController extends Controller
                 } else if ($user->status == User::STATUS_ON_PREMODERATION) {
                     Yii::$app->session->setFlash('success', [['Форма отправлена', 'Вы успешно зарегистрировались, в ближайшее время администратор проверит вашу заявку и активирует профиль.<br>Вам будет направлено уведомление после активации']]);
                 } else {
-                    Yii::$app->session->setFlash('success', [['Поздравляем!', 'Вы успешно зарегистрировались!']]);
+                    Yii::$app->session->setFlash('success', [['Поздравляем!', 'Вы успешно зарегистрировались!<br><a href="' . Url::to(['/user/account/index']) . '">Перейти в личный кабинет.</a>']]);
                     Yii::$app->user->login($user);
                 }
                 return $this->goHome();

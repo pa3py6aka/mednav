@@ -32,6 +32,21 @@
                         ['label' => 'Статьи', 'icon' => 'list-alt', 'url' => ['/article/article/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/article/settings/main']],
                     ]],
+                    ['label' => 'Новости', 'icon' => 'list-alt', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/news/category/index']],
+                        ['label' => 'Новости', 'icon' => 'list-alt', 'url' => ['/news/news/active']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/news/settings/main']],
+                    ]],
+                    ['label' => 'Новости компаний', 'icon' => 'list-alt', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/cnews/category/index']],
+                        ['label' => 'Новости компаний', 'icon' => 'list-alt', 'url' => ['/cnews/cnews/active']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/cnews/settings/main']],
+                    ]],
+                    ['label' => 'Бренды', 'icon' => 'list-alt', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/brand/category/index']],
+                        ['label' => 'Бренды', 'icon' => 'list-alt', 'url' => ['/brand/brand/active']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/brand/settings/main']],
+                    ]],
                     ['label' => 'Блоки', 'icon' => 'object-ungroup', 'items' => [
                         ['label' => 'Контентные блоки', 'url' => ['/blocks/contents/index']],
                         ['label' => 'Контекстные блоки', 'url' => ['/blocks/context/index']],

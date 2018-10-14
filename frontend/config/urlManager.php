@@ -36,7 +36,7 @@ return [
         'board' => 'board/board/list',
 
         // Компании
-        'company/<id:\d+>-<slug:[\w-]+>/<_a:contacts|boards|trades|articles>' => 'company/company/<_a>',
+        'company/<id:\d+>-<slug:[\w-]+>/<_a:contacts|boards|trades|articles|cnews>' => 'company/company/<_a>',
         'company/<id:\d+>-<slug:[\w-]+>' => 'company/company/view',
 
         'company/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'company/company/list',
@@ -64,6 +64,30 @@ return [
         'articles/<category:[\w-]+>' => 'article/article/list',
         'articles/<category:[\w-]+>/page<page:\d+>' => 'article/article/list',
         'articles' => 'article/article/list',
+        // Новости
+        'news/<id:\d+>-<slug:[\w-]+>' => 'news/news/view',
+        'news/page<page:\d+>' => 'news/news/list',
+        'news/<category:[\w-]+>' => 'news/news/list',
+        'news/<category:[\w-]+>/page<page:\d+>' => 'news/news/list',
+        'news' => 'news/news/list',
+        // Новости компаний
+        'cnews/<id:\d+>-<slug:[\w-]+>' => 'cnews/cnews/view',
+        'cnews/page<page:\d+>' => 'cnews/cnews/list',
+        'cnews/<category:[\w-]+>' => 'cnews/cnews/list',
+        'cnews/<category:[\w-]+>/page<page:\d+>' => 'cnews/cnews/list',
+        'cnews' => 'cnews/cnews/list',
+        // Бренды
+        'brand/<id:\d+>-<slug:[\w-]+>' => 'brand/brand/view',
+        'brand/page<page:\d+>' => 'brand/brand/list',
+        'brand/<category:[\w-]+>' => 'brand/brand/list',
+        'brand/<category:[\w-]+>/page<page:\d+>' => 'brand/brand/list',
+        'brand' => 'brand/brand/list',
+        // Выставки
+        'expo/<id:\d+>-<slug:[\w-]+>' => 'expo/expo/view',
+        'expo/page<page:\d+>' => 'expo/expo/list',
+        'expo/<category:[\w-]+>' => 'expo/expo/list',
+        'expo/<category:[\w-]+>/page<page:\d+>' => 'expo/expo/list',
+        'expo' => 'expo/expo/list',
 
         'user/dialogs' => 'user/message/dialogs',
 

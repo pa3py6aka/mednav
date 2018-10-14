@@ -2,7 +2,6 @@
 use core\helpers\PaginationHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use core\helpers\BoardHelper;
 use core\helpers\HtmlHelper;
 
 /* @var $this yii\web\View */

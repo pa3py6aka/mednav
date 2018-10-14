@@ -67,6 +67,21 @@ class CategoryHelper
                     $settingsDescription = SettingsManager::ARTICLE_META_DESCRIPTION;
                     $settingsKeywords = SettingsManager::ARTICLE_META_KEYWORDS;
                     break;
+                case 'news':
+                    $settingsTitle = SettingsManager::NEWS_META_TITLE;
+                    $settingsDescription = SettingsManager::NEWS_META_DESCRIPTION;
+                    $settingsKeywords = SettingsManager::NEWS_META_KEYWORDS;
+                    break;
+                case 'cnews':
+                    $settingsTitle = SettingsManager::CNEWS_META_TITLE;
+                    $settingsDescription = SettingsManager::CNEWS_META_DESCRIPTION;
+                    $settingsKeywords = SettingsManager::CNEWS_META_KEYWORDS;
+                    break;
+                case 'brand':
+                    $settingsTitle = SettingsManager::BRANDS_META_TITLE;
+                    $settingsDescription = SettingsManager::BRANDS_META_DESCRIPTION;
+                    $settingsKeywords = SettingsManager::BRANDS_META_KEYWORDS;
+                    break;
                 default:
                     $settingsTitle = SettingsManager::BOARD_META_TITLE;
                     $settingsDescription = SettingsManager::BOARD_META_DESCRIPTION;

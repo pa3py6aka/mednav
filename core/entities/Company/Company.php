@@ -5,8 +5,10 @@ namespace core\entities\Company;
 use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Article\Article;
 use core\entities\Board\Board;
+use core\entities\CNews\CNews;
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
+use core\entities\News\News;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\Trade\Trade;
@@ -55,6 +57,7 @@ use yii\helpers\Url;
  * @property CompanyCategoryAssignment[] $companyCategoryAssignments
  * @property CompanyCategory[] $categories
  * @property Board[] $boards
+ * @property CNews[] $cNews
  * @property CompanyDelivery[] $deliveries
  * @property Trade[] $trades
  * @property Article[] $articles
@@ -203,7 +206,7 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     private $boardsCount = null;
     private $tradesCount = null;
     private $articlesCount = null;
-
+    private $cNewsCount = null;
     public function getCountFor(string $module): int
     {
         switch ($module) {
@@ -216,6 +219,9 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
             case 'articles':
                 $this->articlesCount = $this->articlesCount === null ? $this->getArticles()->count() : $this->articlesCount;
                 return $this->articlesCount;
+            case 'cnews':
+                $this->cNewsCount = $this->cNewsCount === null ? $this->getCNews()->count() : $this->cNewsCount;
+                return $this->cNewsCount;
             default: return 0;
         }
     }
@@ -373,6 +379,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getArticles($active = true): ActiveQuery
     {
         $query = $this->hasMany(Article::class, ['company_id' => 'id']);
+        return $active ? $query->active() : $query;
+    }
+
+    public function getCNews($active = true): ActiveQuery
+    {
+        $query = $this->hasMany(CNews::class, ['company_id' => 'id']);
         return $active ? $query->active() : $query;
     }
 

@@ -79,6 +79,57 @@ class Settings
     public const ARTICLE_DESCRIPTION_BOTTOM = 'articleDescriptionBottom';
     public const ARTICLE_DESCRIPTION_BOTTOM_ON = 'articleDescriptionBottomOn';
 
+    public const NEWS_NAME = 'newsName';
+    public const NEWS_NAME_UP = 'newsNameUP';
+    public const NEWS_PAGE_SIZE = 'newsPageSize';
+    public const NEWS_SMALL_SIZE = 'newsSmallSize';
+    public const NEWS_BIG_SIZE = 'newsBigSize';
+    public const NEWS_MAX_SIZE = 'newsMaxSize';
+    public const NEWS_MODERATION = 'newsModeration';
+
+    public const NEWS_META_TITLE = 'newsMetaTitle';
+    public const NEWS_META_DESCRIPTION = 'newsMetaDescription';
+    public const NEWS_META_KEYWORDS = 'newsMetaKeywords';
+    public const NEWS_TITLE = 'newsTitle';
+    public const NEWS_DESCRIPTION_TOP = 'newsDescriptionTop';
+    public const NEWS_DESCRIPTION_TOP_ON = 'newsDescriptionTopOn';
+    public const NEWS_DESCRIPTION_BOTTOM = 'newsDescriptionBottom';
+    public const NEWS_DESCRIPTION_BOTTOM_ON = 'newsDescriptionBottomOn';
+
+    public const CNEWS_NAME = 'cnewsName';
+    public const CNEWS_NAME_UP = 'cnewsNameUP';
+    public const CNEWS_PAGE_SIZE = 'cnewsPageSize';
+    public const CNEWS_SMALL_SIZE = 'cnewsSmallSize';
+    public const CNEWS_BIG_SIZE = 'cnewsBigSize';
+    public const CNEWS_MAX_SIZE = 'cnewsMaxSize';
+    public const CNEWS_MODERATION = 'cnewsModeration';
+
+    public const CNEWS_META_TITLE = 'cnewsMetaTitle';
+    public const CNEWS_META_DESCRIPTION = 'cnewsMetaDescription';
+    public const CNEWS_META_KEYWORDS = 'cnewsMetaKeywords';
+    public const CNEWS_TITLE = 'cnewsTitle';
+    public const CNEWS_DESCRIPTION_TOP = 'cnewsDescriptionTop';
+    public const CNEWS_DESCRIPTION_TOP_ON = 'cnewsDescriptionTopOn';
+    public const CNEWS_DESCRIPTION_BOTTOM = 'cnewsDescriptionBottom';
+    public const CNEWS_DESCRIPTION_BOTTOM_ON = 'cnewsDescriptionBottomOn';
+
+    public const BRANDS_NAME = 'brandsName';
+    public const BRANDS_NAME_UP = 'brandsNameUP';
+    public const BRANDS_PAGE_SIZE = 'brandsPageSize';
+    public const BRANDS_SMALL_SIZE = 'brandsSmallSize';
+    public const BRANDS_BIG_SIZE = 'brandsBigSize';
+    public const BRANDS_MAX_SIZE = 'brandsMaxSize';
+    public const BRANDS_MODERATION = 'brandsModeration';
+
+    public const BRANDS_META_TITLE = 'brandsMetaTitle';
+    public const BRANDS_META_DESCRIPTION = 'brandsMetaDescription';
+    public const BRANDS_META_KEYWORDS = 'brandsMetaKeywords';
+    public const BRANDS_TITLE = 'brandsTitle';
+    public const BRANDS_DESCRIPTION_TOP = 'brandsDescriptionTop';
+    public const BRANDS_DESCRIPTION_TOP_ON = 'brandsDescriptionTopOn';
+    public const BRANDS_DESCRIPTION_BOTTOM = 'brandsDescriptionBottom';
+    public const BRANDS_DESCRIPTION_BOTTOM_ON = 'brandsDescriptionBottomOn';
+
     protected $default = [
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
@@ -153,5 +204,56 @@ class Settings
         self::ARTICLE_DESCRIPTION_TOP_ON => 1,
         self::ARTICLE_DESCRIPTION_BOTTOM => '',
         self::ARTICLE_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::NEWS_NAME => 'Новости',
+        self::NEWS_NAME_UP => 'Мои новости',
+        self::NEWS_PAGE_SIZE => 10,
+        self::NEWS_SMALL_SIZE => 100,
+        self::NEWS_BIG_SIZE => 250,
+        self::NEWS_MAX_SIZE => 1000,
+        self::NEWS_MODERATION => 1,
+
+        self::NEWS_META_TITLE => 'Новости',
+        self::NEWS_META_DESCRIPTION => 'Новости по медицинской технике, расходным материалам',
+        self::NEWS_META_KEYWORDS => '',
+        self::NEWS_TITLE => '',
+        self::NEWS_DESCRIPTION_TOP => '',
+        self::NEWS_DESCRIPTION_TOP_ON => 1,
+        self::NEWS_DESCRIPTION_BOTTOM => '',
+        self::NEWS_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::CNEWS_NAME => 'Новости компаний',
+        self::CNEWS_NAME_UP => 'Мои новости',
+        self::CNEWS_PAGE_SIZE => 10,
+        self::CNEWS_SMALL_SIZE => 100,
+        self::CNEWS_BIG_SIZE => 250,
+        self::CNEWS_MAX_SIZE => 1000,
+        self::CNEWS_MODERATION => 1,
+
+        self::CNEWS_META_TITLE => 'Новости компаний',
+        self::CNEWS_META_DESCRIPTION => 'Новости компаний по медицинской технике, расходным материалам',
+        self::CNEWS_META_KEYWORDS => '',
+        self::CNEWS_TITLE => '',
+        self::CNEWS_DESCRIPTION_TOP => '',
+        self::CNEWS_DESCRIPTION_TOP_ON => 1,
+        self::CNEWS_DESCRIPTION_BOTTOM => '',
+        self::CNEWS_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::BRANDS_NAME => 'Бренды',
+        self::BRANDS_NAME_UP => 'Мои бренды',
+        self::BRANDS_PAGE_SIZE => 10,
+        self::BRANDS_SMALL_SIZE => 100,
+        self::BRANDS_BIG_SIZE => 250,
+        self::BRANDS_MAX_SIZE => 1000,
+        self::BRANDS_MODERATION => 1,
+
+        self::BRANDS_META_TITLE => 'Бренды',
+        self::BRANDS_META_DESCRIPTION => 'Бренды медицинских компаний',
+        self::BRANDS_META_KEYWORDS => '',
+        self::BRANDS_TITLE => '',
+        self::BRANDS_DESCRIPTION_TOP => '',
+        self::BRANDS_DESCRIPTION_TOP_ON => 1,
+        self::BRANDS_DESCRIPTION_BOTTOM => '',
+        self::BRANDS_DESCRIPTION_BOTTOM_ON => 1,
     ];
 }

@@ -19,7 +19,7 @@ class ArticleRepository
 
     public function findTagAssignment($articleId, $tagId): ?ArticleTagsAssignment
     {
-        return ArticleTagsAssignment::find()->where(['company_id' => $articleId, 'tag_id' => $tagId])->limit(1)->one();
+        return ArticleTagsAssignment::find()->where(['article_id' => $articleId, 'tag_id' => $tagId])->limit(1)->one();
     }
 
     public function saveTagAssignment(ArticleTagsAssignment $assignment): void

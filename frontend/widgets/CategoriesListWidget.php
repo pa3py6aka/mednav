@@ -5,11 +5,15 @@ namespace frontend\widgets;
 
 use core\entities\Article\ArticleCategory;
 use core\entities\Board\BoardCategory;
+use core\entities\Brand\BrandCategory;
 use core\entities\Company\CompanyCategory;
 use core\entities\Geo;
+use core\entities\News\NewsCategory;
 use core\helpers\ArticleHelper;
 use core\helpers\BoardHelper;
+use core\helpers\BrandHelper;
 use core\helpers\CompanyHelper;
+use core\helpers\NewsHelper;
 use yii\base\Widget;
 use yii\bootstrap\Html;
 
@@ -17,13 +21,13 @@ class CategoriesListWidget extends Widget
 {
     public $component;
 
-    /* @var BoardCategory|CompanyCategory|ArticleCategory Сюда передаём класс, например BoardCategory::class */
+    /* @var BoardCategory|CompanyCategory|ArticleCategory|NewsCategory|BrandCategory Сюда передаём класс, например BoardCategory::class */
     public $categoryClass;
 
-    /* @var BoardHelper|CompanyHelper|ArticleHelper Сюда передаём класс, например BoardHelper::class */
+    /* @var BoardHelper|CompanyHelper|ArticleHelper|NewsHelper|BrandHelper Сюда передаём класс, например BoardHelper::class */
     public $helperClass;
 
-    /* @var BoardCategory|CompanyCategory|ArticleCategory|null */
+    /* @var BoardCategory|CompanyCategory|ArticleCategory|NewsCategory|BrandCategory|null */
     public $category;
 
     /* @var Geo|null */
@@ -66,7 +70,7 @@ class CategoriesListWidget extends Widget
     }
 
     /**
-     * @param BoardCategory|CompanyCategory $category
+     * @param BoardCategory|CompanyCategory|ArticleCategory|NewsCategory|BrandCategory $category
      * @return string
      */
     public function generateList($category)

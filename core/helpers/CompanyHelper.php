@@ -81,6 +81,8 @@ class CompanyHelper
                 <li><a href="<?= $company->getUrl('trades') ?>">Товары</a></li>
             <?php elseif ($page == 'articles'): ?>
                 <li><a href="<?= $company->getUrl('articles') ?>">Статьи</a></li>
+            <?php elseif ($page == 'cnews'): ?>
+                <li><a href="<?= $company->getUrl('cnews') ?>">Новости</a></li>
             <?php endif; ?>
         </ul>
         <?php

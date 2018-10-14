@@ -1,12 +1,9 @@
 <?php
 
-use frontend\widgets\SelectCategoryWidget;
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 use yii\bootstrap\ActiveForm;
 use mihaildev\ckeditor\CKEditor;
 use core\entities\Article\ArticleCategory;
-use frontend\widgets\WholesalesFormWidget;
 use core\actions\UploadAction;
 
 /* @var $this yii\web\View */
@@ -29,6 +26,6 @@ use core\actions\UploadAction;
     <?= UploadAction::htmlBlock($model->formName()) ?>
 <?php endif; ?>
 
-<?= Html::submitButton(1 ? 'Сохранить' : 'Добавить', ['class' => 'btn btn-success btn-flat']) ?>
+<?= Html::submitButton($model->article ? 'Сохранить' : 'Добавить', ['class' => 'btn btn-success btn-flat']) ?>
 
 <?php ActiveForm::end(); ?>

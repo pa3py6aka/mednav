@@ -3,7 +3,7 @@
 namespace core\entities\Article\queries;
 
 
-use core\entities\Article\Article;
+use core\entities\StatusesInterface;
 
 /**
  * This is the ActiveQuery class for [[\core\entities\Article\Article]].
@@ -14,12 +14,12 @@ class ArticlesQuery extends \yii\db\ActiveQuery
 {
     public function active($alias = null)
     {
-        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Article::STATUS_ACTIVE]);
+        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => StatusesInterface::STATUS_ACTIVE]);
     }
 
     public function onModeration($alias = null)
     {
-        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Article::STATUS_ON_PREMODERATION]);
+        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => StatusesInterface::STATUS_ON_PREMODERATION]);
     }
 
     public function onModerationCount($userId = null): int
@@ -32,7 +32,7 @@ class ArticlesQuery extends \yii\db\ActiveQuery
 
     public function deleted($alias = null)
     {
-        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => Article::STATUS_DELETED]);
+        return $this->andWhere([($alias ? $alias  . '.' : '') . 'status' => StatusesInterface::STATUS_DELETED]);
     }
 
     /**

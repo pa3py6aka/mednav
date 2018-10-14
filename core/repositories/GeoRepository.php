@@ -4,13 +4,14 @@ namespace core\repositories;
 
 
 use core\entities\Geo;
+use yii\web\NotFoundHttpException;
 
 class GeoRepository
 {
     public function get($id): Geo
     {
         if (!$geo = Geo::findOne($id)) {
-            throw new NotFoundException('Регион не найден.');
+            throw new NotFoundHttpException('Регион не найден.');
         }
         return $geo;
     }
@@ -18,7 +19,7 @@ class GeoRepository
     public function getBySlug($slug): Geo
     {
         if (!$geo = Geo::find()->where(['slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundException('Регион не найден.');
+            throw new NotFoundHttpException('Регион не найден.');
         }
         return $geo;
     }

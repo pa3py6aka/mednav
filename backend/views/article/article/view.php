@@ -51,7 +51,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'title',
                         'meta_description',
-                        'meta_description',
                         'intro:html',
                         'full_text:html',
                         'slug',

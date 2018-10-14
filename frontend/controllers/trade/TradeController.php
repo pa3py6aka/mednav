@@ -36,10 +36,12 @@ class TradeController extends Controller
         if (!$category && !$region) {
             return $this->redirect(['list', 'region' => 'all']);
         }
+
+        $geo = $region && $region != 'all' ? $this->geoRepository->getBySlug($region) : null;
         if ($region) {
             Yii::$app->session->set("geo", $region); // Сохраняем выбранный регион в сессию
         }
-        $geo = $region && $region != 'all' ? $this->geoRepository->getBySlug($region) : null;
+
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
 

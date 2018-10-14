@@ -84,8 +84,8 @@ AppAsset::register($this);
                                     <li><a href="<?= Url::to(['/board/board/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Объявления</a></li>
                                     <li><a href="<?= Url::to(['/company/company/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Компании</a></li>
                                     <li><a href="/expo">Выставки</a></li>
-                                    <li><a href="/brand">Бренды</a></li>
-                                    <li><a href="/articles">Справочные материалы</a></li>
+                                    <li><a href="<?= Url::to(['/brand/brand/list']) ?>">Бренды</a></li>
+                                    <li><a href="<?= Url::to(['/article/article/list']) ?>">Справочные материалы</a></li>
 
                                     <?php if (Yii::$app->user->isGuest): ?>
                                         <li><a href="<?= Url::to(['/auth/signup/request']) ?>">Регистрация</a></li>
@@ -133,9 +133,9 @@ AppAsset::register($this);
                 <div class="col-md-3 hidden-sm hidden-xs">
                     <div id="footer-lnk-block">
                         <ul class="footer-merker-list">
-                            <li><a href="/cnews" class="footer-lnk">Новости и пресс-релизы компаний</a></li>
-                            <li><a href="/expo" class="footer-lnk">Отраслевые выставки</a></li>
-                            <li><a href="/news" class="footer-lnk">Новости мед. отрасли</a></li>
+                            <li><a href="<?= Url::to(['/cnews/cnews/list']) ?>" class="footer-lnk">Новости и пресс-релизы компаний</a></li>
+                            <li><a href="<?= Url::to(['/expo/expo/list']) ?>" class="footer-lnk">Отраслевые выставки</a></li>
+                            <li><a href="<?= Url::to(['/news/news/list']) ?>" class="footer-lnk">Новости мед. отрасли</a></li>
                             <li><a href="/register?footer-add-content" title="Добавить новость, спецпредложение или пресс-релиз компании!" class="footer-lnk-add">Добавить пресс-релиз</a></li>
                         </ul>
                     </div>

@@ -18,6 +18,8 @@ class TreeManagerWidget extends Widget
     /* @var $url string Начало Url с контроллером без экшина в котором используется виджет(например '/board/category') */
     public $url;
 
+    public $regionsEnabled = true; //Выводить иконку глобуса для настроек регионов раздела
+
     private $source;
 
     public function init()

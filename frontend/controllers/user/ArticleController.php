@@ -11,30 +11,16 @@ use core\actions\UploadAction;
 use core\behaviors\ActiveUserBehavior;
 use core\entities\Article\Article;
 use core\entities\Article\ArticleCategory;
-use core\entities\Company\CompanyDelivery;
-use core\entities\Company\CompanyDeliveryRegions;
-use core\entities\Trade\Trade;
-use core\entities\Trade\TradeCategory;
-use core\entities\Trade\TradeDelivery;
 use core\forms\Article\ArticleForm;
 use core\forms\manage\PhotosForm;
-use core\forms\manage\Trade\TradeManageForm;
-use core\forms\manage\Trade\TradeUserCategoryForm;
 use core\readModels\ArticleReadRepository;
-use core\readModels\Trade\TradeReadRepository;
 use core\repositories\Article\ArticleRepository;
-use core\repositories\Trade\TradeRepository;
 use core\useCases\ArticleService;
 use core\useCases\manage\Article\ArticlePhotoService;
-use core\useCases\manage\Trade\TradeManageService;
-use core\useCases\manage\Trade\TradePhotoService;
-use frontend\widgets\RegionsModalWidget;
 use Yii;
 use yii\base\Module;
-use yii\base\UserException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
@@ -107,8 +93,7 @@ class ArticleController extends Controller
 
     public function actionActive()
     {
-        //$this->selectedActionHandle();
-        //$provider = $this->readRepository->getUserTrades($this->_user->id, Trade::STATUS_ACTIVE);
+        $this->selectedActionHandle();
         $provider = $this->readRepository->getCompanyActiveArticles($this->_user->company->id);
         Yii::$app->user->setReturnUrl(['/user/article/active']);
 

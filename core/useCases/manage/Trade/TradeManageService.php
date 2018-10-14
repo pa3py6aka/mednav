@@ -97,6 +97,9 @@ class TradeManageService
             $form->description
         );
         $trade->setWholesales($this->getWholesales($userCategory, $form));
+        if ($form->scenario == TradeManageForm::SCENARIO_USER_EDIT && Yii::$app->settings->get(SettingsManager::TRADE_MODERATION)) {
+            $trade->setStatus(Trade::STATUS_ON_PREMODERATION);
+        }
 
         $this->transaction->wrap(function () use ($form, $trade) {
             $this->repository->save($trade);

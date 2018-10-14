@@ -8,6 +8,7 @@ use core\entities\Company\Company;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\Company\CompanyTag;
 use core\entities\Company\CompanyTagsAssignment;
+use core\entities\StatusesInterface;
 use core\forms\Company\CompanyForm;
 use core\forms\manage\PhotosForm;
 use core\repositories\Company\CompanyRepository;
@@ -94,6 +95,9 @@ class CompanyService
             trim($form->description),
             $form->slug
         );
+        if ($form->scenario == CompanyForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::COMPANY_MODERATION)) {
+            $company->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
+        }
 
         $this->transaction->wrap(function () use ($company, $form) {
             $this->saveCategories($company, $form->categories);

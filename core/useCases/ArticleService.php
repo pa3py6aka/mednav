@@ -8,6 +8,7 @@ use core\entities\Article\Article;
 use core\entities\Article\ArticleTag;
 use core\entities\Article\ArticleTagsAssignment;
 use core\entities\Company\Company;
+use core\entities\StatusesInterface;
 use core\forms\Article\ArticleForm;
 use core\forms\manage\PhotosForm;
 use core\repositories\Article\ArticleRepository;
@@ -83,6 +84,9 @@ class ArticleService
             trim($form->fullText),
             $form->indirectLinks
         );
+        if ($form->scenario == ArticleForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::ARTICLE_MODERATION)) {
+            $article->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
+        }
 
         $this->transaction->wrap(function () use ($article, $form) {
             $this->saveTags($article, $form->tags);

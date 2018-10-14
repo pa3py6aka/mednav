@@ -1,10 +1,10 @@
 <?php
 
-use core\forms\manage\Board\BoardManageForm;
+use core\forms\Article\ArticleForm;
 use frontend\widgets\PhotosManagerWidget;
 
 /* @var $this yii\web\View */
-/* @var $model BoardManageForm */
+/* @var $model ArticleForm */
 /* @var $article \core\entities\Article\Article */
 /* @var $photosForm \core\forms\manage\PhotosForm */
 /* @var $tab string */

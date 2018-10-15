@@ -12,13 +12,15 @@ class m181012_091830_create_currencies_table_mysql extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
         $this->createTable('{{%currencies}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'sign' => $this->string()->notNull(),
             'default' => $this->boolean()->notNull()->defaultValue(false),
             'module' => $this->smallInteger()->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->batchInsert('{{%currencies}}', ['id', 'name', 'sign', 'default', 'module'], [
             [1, 'Российский рубль', 'руб.', 1, 1],

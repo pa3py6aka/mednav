@@ -210,6 +210,12 @@ class BoardCategory extends ActiveRecord
         ];
     }
 
+    public function getElementsCount(): int
+    {
+        $ids = array_merge($this->getDescendants()->select('id')->column(), [$this->id]);
+        return Board::find()->where(['category_id' => $ids])->count();
+    }
+
     public function getRegions(): ActiveQuery
     {
         return $this->hasMany(BoardCategoryRegion::class, ['category_id' => 'id']);

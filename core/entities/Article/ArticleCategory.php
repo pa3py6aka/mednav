@@ -49,6 +49,12 @@ class ArticleCategory extends \yii\db\ActiveRecord
 {
     use CategoryTrait;
 
+    public function getElementsCount(): int
+    {
+        $ids = array_merge($this->getDescendants()->select('id')->column(), [$this->id]);
+        return Article::find()->where(['category_id' => $ids])->count();
+    }
+
     /**
      * {@inheritdoc}
      */

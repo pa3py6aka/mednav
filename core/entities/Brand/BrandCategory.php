@@ -47,6 +47,12 @@ class BrandCategory extends \yii\db\ActiveRecord
 {
     use CategoryTrait;
 
+    public function getElementsCount(): int
+    {
+        $ids = array_merge($this->getDescendants()->select('id')->column(), [$this->id]);
+        return Brand::find()->where(['category_id' => $ids])->count();
+    }
+
     /**
      * {@inheritdoc}
      */

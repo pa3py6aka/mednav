@@ -49,6 +49,16 @@ class CompanyCategory extends \yii\db\ActiveRecord
 {
     use CategoryTrait;
 
+    public function getElementsCount(): int
+    {
+        $ids = array_merge($this->getDescendants()->select('id')->column(), [$this->id]);
+        return Company::find()
+            ->alias('c')
+            ->leftJoin(CompanyCategoryAssignment::tableName() . " cca", "c.id=cca.company_id")
+            ->where(['cca.category_id' => $ids])
+            ->count();
+    }
+
     /**
      * {@inheritdoc}
      */

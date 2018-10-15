@@ -3,7 +3,11 @@
 namespace core\components\TreeManager;
 
 
+use core\entities\Article\Article;
+use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
+use core\entities\Company\Company;
+use core\entities\Trade\Trade;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
@@ -59,9 +63,10 @@ class TreeManagerWidget extends Widget
         array_walk($items, function ($item, $key) use (&$source, $url) {
             /* @var $item BoardCategory */
             $hasChildren = $item->getChildren()->count() ? true : false;
+            $elementsCount = $item->getElementsCount();
             $source[] = [
                 'key' => $item->id,
-                'title' => $item->name,
+                'title' => $item->name . " (" . $elementsCount . ")",
                 'folder' => $hasChildren,
                 'lazy' => $hasChildren,
                 'data' => [

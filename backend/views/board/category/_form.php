@@ -59,6 +59,12 @@ MarkHelper::js($this);
             <?= $form->field($model, 'metaDescriptionItem')
                 ->textarea(['rows' => 4, 'id' => 'metaDescriptionItem'])
                 ->hint(MarkHelper::links(MarkHelper::MARKS_BOARD, 'metaDescriptionItem')) ?>
+
+            <?= $form->field($model, 'metaTitleOther')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'metaDescriptionOther')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'metaKeywordsOther')->textInput() ?>
+            <?= $form->field($model, 'titleOther')->textInput(['maxlength' => true]) ?>
+
             <?= $form->field($model, 'pagination')->dropDownList(PaginationHelper::paginationTypes()) ?>
             <?= $form->field($model, 'active')->checkbox() ?>
         </div>

@@ -30,6 +30,10 @@ use yii\db\ActiveQuery;
  * @property int $description_bottom_on
  * @property string $meta_title_item
  * @property string $meta_description_item
+ * @property string $meta_title_other [varchar(255)]
+ * @property string $meta_description_other
+ * @property string $meta_keywords_other
+ * @property string $title_other [varchar(255)]
  * @property int $pagination
  * @property int $active
  *

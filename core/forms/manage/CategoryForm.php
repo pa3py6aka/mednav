@@ -28,6 +28,10 @@ class CategoryForm extends Model
     public $descriptionBottomOn;
     public $metaTitleItem;
     public $metaDescriptionItem;
+    public $metaTitleOther;
+    public $metaDescriptionOther;
+    public $metaKeywordsOther;
+    public $titleOther;
     public $pagination;
     public $active;
 
@@ -61,6 +65,10 @@ class CategoryForm extends Model
             $this->descriptionBottomOn = $category->description_bottom_on;
             $this->metaTitleItem = $category->meta_title_item;
             $this->metaDescriptionItem = $category->meta_description_item;
+            $this->metaTitleOther = $category->meta_title_other;
+            $this->metaDescriptionOther = $category->meta_description_other;
+            $this->metaKeywordsOther = $category->meta_keywords_other;
+            $this->titleOther = $category->title_other;
             $this->pagination = $category->pagination;
             $this->active = $category->active;
 
@@ -80,7 +88,7 @@ class CategoryForm extends Model
             [['name', 'contextName', 'slug', 'metaTitle', 'title', 'metaTitleItem'], 'string', 'max' => 255],
             [['enabled', 'active', 'notShowOnMain', 'childrenOnlyParent', 'descriptionTopOn', 'descriptionBottomOn'], 'boolean'],
             ['pagination', 'integer'],
-            [['metaDescription', 'metaKeywords', 'descriptionTop', 'descriptionBottom', 'metaDescriptionItem'], 'string'],
+            [['metaDescription', 'metaKeywords', 'descriptionTop', 'descriptionBottom', 'metaDescriptionItem', 'metaTitleOther', 'metaDescriptionOther', 'metaKeywordsOther', 'titleOther'], 'string'],
             [['slug'], 'unique', 'targetClass' => $this->_entityClass, 'filter' => $this->_category ? ['<>', 'id', $this->_category->id] : null],
         ];
     }
@@ -127,6 +135,7 @@ class CategoryForm extends Model
             'descriptionBottom' => 'Описание внизу',
             'descriptionTopOn' => 'Только на гл. стр.',
             'descriptionBottomOn' => 'Только на гл. стр.',
+            'titleOther' => 'Заголовок для остальных стр.',
             'pagination' => 'Пагинация',
             'active' => 'Показывать',
             'parentId' => 'Родитель',

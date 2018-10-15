@@ -41,6 +41,10 @@ class TradeCategoryManageService
             $form->descriptionBottomOn,
             $form->metaTitleItem,
             $form->metaDescriptionItem,
+            $form->metaTitleOther,
+            $form->metaDescriptionOther,
+            $form->metaKeywordsOther,
+            $form->titleOther,
             $form->pagination,
             $form->active
         );
@@ -78,6 +82,10 @@ class TradeCategoryManageService
             $form->descriptionBottomOn,
             $form->metaTitleItem,
             $form->metaDescriptionItem,
+            $form->metaTitleOther,
+            $form->metaDescriptionOther,
+            $form->metaKeywordsOther,
+            $form->titleOther,
             $form->pagination,
             $form->active
         );

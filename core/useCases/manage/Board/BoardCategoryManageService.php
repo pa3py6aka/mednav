@@ -42,6 +42,10 @@ class BoardCategoryManageService
             $form->descriptionBottomOn,
             $form->metaTitleItem,
             $form->metaDescriptionItem,
+            $form->metaTitleOther,
+            $form->metaDescriptionOther,
+            $form->metaKeywordsOther,
+            $form->titleOther,
             $form->pagination,
             $form->active
         );
@@ -82,6 +86,10 @@ class BoardCategoryManageService
             $form->descriptionBottomOn,
             $form->metaTitleItem,
             $form->metaDescriptionItem,
+            $form->metaTitleOther,
+            $form->metaDescriptionOther,
+            $form->metaKeywordsOther,
+            $form->titleOther,
             $form->pagination,
             $form->active
         );

@@ -39,6 +39,12 @@ use yii\widgets\ActiveForm;
                 ->textInput(['maxlength' => true, 'id' => 'metaTitleItem']) ?>
             <?= $form->field($model, 'metaDescriptionItem')
                 ->textarea(['rows' => 4, 'id' => 'metaDescriptionItem']) ?>
+
+            <?= $form->field($model, 'metaTitleOther')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'metaDescriptionOther')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'metaKeywordsOther')->textInput() ?>
+            <?= $form->field($model, 'titleOther')->textInput(['maxlength' => true]) ?>
+
             <?= $form->field($model, 'pagination')->dropDownList(PaginationHelper::paginationTypes()) ?>
             <?= $form->field($model, 'active')->checkbox() ?>
         </div>

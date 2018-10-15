@@ -29,6 +29,10 @@ use yii\db\ActiveRecord;
  * @property int $description_bottom_on
  * @property string $meta_title_item
  * @property string $meta_description_item
+ * @property string $meta_title_other [varchar(255)]
+ * @property string $meta_description_other
+ * @property string $meta_keywords_other
+ * @property string $title_other [varchar(255)]
  * @property int $pagination
  * @property int $active
  *
@@ -66,6 +70,10 @@ class BoardCategory extends ActiveRecord
         $descriptionBottomOn,
         $metaTitleItem,
         $metaDescriptionItem,
+        $metaTitleOther,
+        $metaDescriptionOther,
+        $metaKeywordsOther,
+        $titleOther,
         $pagination,
         $active
     ): BoardCategory
@@ -87,6 +95,10 @@ class BoardCategory extends ActiveRecord
         $category->description_bottom_on = $descriptionBottomOn;
         $category->meta_title_item = $metaTitleItem;
         $category->meta_description_item = $metaDescriptionItem;
+        $category->meta_title_other = $metaTitleOther;
+        $category->meta_description_other = $metaDescriptionOther;
+        $category->meta_keywords_other = $metaKeywordsOther;
+        $category->title_other = $titleOther;
         $category->pagination = $pagination;
         $category->active = $active;
         return $category;
@@ -110,6 +122,10 @@ class BoardCategory extends ActiveRecord
         $descriptionBottomOn,
         $metaTitleItem,
         $metaDescriptionItem,
+        $metaTitleOther,
+        $metaDescriptionOther,
+        $metaKeywordsOther,
+        $titleOther,
         $pagination,
         $active
     ): void
@@ -130,6 +146,10 @@ class BoardCategory extends ActiveRecord
         $this->description_bottom_on = $descriptionBottomOn;
         $this->meta_title_item = $metaTitleItem;
         $this->meta_description_item = $metaDescriptionItem;
+        $this->meta_title_other = $metaTitleOther;
+        $this->meta_description_other = $metaDescriptionOther;
+        $this->meta_keywords_other = $metaKeywordsOther;
+        $this->title_other = $titleOther;
         $this->pagination = $pagination;
         $this->active = $active;
     }

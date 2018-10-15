@@ -25,6 +25,10 @@ trait CategoryTrait
         $descriptionBottomOn,
         $metaTitleItem,
         $metaDescriptionItem,
+        $metaTitleOther,
+        $metaDescriptionOther,
+        $metaKeywordsOther,
+        $titleOther,
         $pagination,
         $active
     ): self
@@ -46,6 +50,10 @@ trait CategoryTrait
         $category->description_bottom_on = $descriptionBottomOn;
         $category->meta_title_item = $metaTitleItem;
         $category->meta_description_item = $metaDescriptionItem;
+        $category->meta_title_other = $metaTitleOther;
+        $category->meta_description_other = $metaDescriptionOther;
+        $category->meta_keywords_other = $metaKeywordsOther;
+        $category->title_other = $titleOther;
         $category->pagination = $pagination;
         $category->active = $active;
         return $category;
@@ -69,6 +77,10 @@ trait CategoryTrait
         $descriptionBottomOn,
         $metaTitleItem,
         $metaDescriptionItem,
+        $metaTitleOther,
+        $metaDescriptionOther,
+        $metaKeywordsOther,
+        $titleOther,
         $pagination,
         $active
     ): void
@@ -89,6 +101,10 @@ trait CategoryTrait
         $this->description_bottom_on = $descriptionBottomOn;
         $this->meta_title_item = $metaTitleItem;
         $this->meta_description_item = $metaDescriptionItem;
+        $this->meta_title_other = $metaTitleOther;
+        $this->meta_description_other = $metaDescriptionOther;
+        $this->meta_keywords_other = $metaKeywordsOther;
+        $this->title_other = $titleOther;
         $this->pagination = $pagination;
         $this->active = $active;
     }
@@ -136,6 +152,7 @@ trait CategoryTrait
             'description_bottom_on' => 'Описание внизу только на гл. стр.',
             'meta_title_item' => 'Meta Title Item',
             'meta_description_item' => 'Meta Description Item',
+            'title_other' => 'Заголовок для остальных стр.',
             'pagination' => 'Пагинация',
             'active' => 'Показывать',
             'tree' => 'Tree',

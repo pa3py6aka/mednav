@@ -17,7 +17,7 @@ return [
         'signup' => 'auth/signup/request',
         'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
-        '<module:(board|trade|company|brand|articles|site)>/outsite' => 'site/outsite',
+        '<module:(board|trade|company|brand|cnews|news|articles|expo|site)>/outsite' => 'site/outsite',
 
         'account' => 'user/account/index',
         'account/<_a:[\w-]+>' => 'user/account/<_a>',

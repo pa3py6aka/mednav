@@ -26,7 +26,7 @@ use yii\web\ForbiddenHttpException;
 
 class ArticleController extends Controller
 {
-    public $layout = '@frontend/views/user/article/layout';
+    /*public $layout = '@frontend/views/user/article/layout';
 
     private $service;
     private $readRepository;
@@ -191,5 +191,5 @@ class ArticleController extends Controller
                 Yii::$app->session->setFlash('info', 'Удалено статей: ' . $count);
             }
         }
-    }
+    }*/
 }

@@ -60,26 +60,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'format' => 'raw',
                 ],
+                ['class' => \core\grid\UserProfileColumn::class],
+                ['class' => \core\grid\CategoryColumn::class],
                 [
-                    'attribute' => 'userType',
-                    'label' => 'Профиль',
-                    'value' => function (Board $board) {
-                        return $board->author->typeName;
-                    },
-                    'filter' => User::getTypesArray(),
+                    'attribute' => 'created_at',
+                    'label' => 'Размещено',
+                    'format' => 'datetime',
+                    'filter' => false,
                 ],
                 [
-                    'attribute' => 'category_id',
-                    'value' => function (Board $board) {
-                        return Html::a($board->category->name, ['/board/category/update', 'id' => $board->category_id], [
-                            'data-toggle' => 'tooltip',
-                            'title' => BoardHelper::categoryParentsString($board->category),
-                        ]);
-                    },
-                    'format' => 'raw',
+                    'attribute' => 'active_until',
+                    //'label' => 'Размещено',
+                    'format' => 'datetime',
+                    'filter' => false,
                 ],
-                'created_at:datetime:Размещено',
-                'active_until:datetime',
                 ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} {delete}'],
             ],
         ]); ?>

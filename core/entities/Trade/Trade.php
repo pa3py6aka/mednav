@@ -212,11 +212,6 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         return Html::encode($this->note);
     }
 
-    public function getOwner()
-    {
-        return $this->user;
-    }
-
     public function beforeDelete()
     {
         if (!parent::beforeDelete()) {
@@ -358,5 +353,10 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     public function getOwnerId(): int
     {
         return $this->user_id;
+    }
+
+    public function getOwnerUser(): User
+    {
+        return $this->user;
     }
 }

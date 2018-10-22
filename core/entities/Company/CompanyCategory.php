@@ -2,6 +2,7 @@
 
 namespace core\entities\Company;
 
+use core\entities\CategoryInterface;
 use core\entities\CategoryTrait;
 use core\entities\Company\queries\CompanyCategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
@@ -49,7 +50,7 @@ use yii\db\ActiveQuery;
  * @property CompanyCategory $next
  * @mixin NestedSetsBehavior
  */
-class CompanyCategory extends \yii\db\ActiveRecord
+class CompanyCategory extends \yii\db\ActiveRecord implements CategoryInterface
 {
     use CategoryTrait;
 

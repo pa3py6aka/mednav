@@ -5,6 +5,7 @@ namespace core\helpers;
 
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardCategoryRegion;
+use core\entities\CategoryInterface;
 use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryRegion;
 use Yii;
@@ -77,7 +78,7 @@ class HtmlHelper
             $text = $categoryRegion->{'description_' . $position};
         } else if ($category && ($isMainPage || !$category->{'description_' . $position . '_on'})) {
             $text = $category->{'description_' . $position};
-        } else if (Yii::$app->settings->get($settingsParam)) {
+        } else if (Yii::$app->settings->get($settingsParam) && !$category) {
             $text = Yii::$app->settings->get($settingsParam);
         }
 
@@ -92,7 +93,7 @@ class HtmlHelper
         return '';
     }
 
-    public static function breadCrumbs($settingsNameParam, $category = null)
+    public static function breadCrumbs($settingsNameParam, CategoryInterface $category = null)
     {
         $items[] = ['label' => Yii::$app->settings->get($settingsNameParam), 'url' => ['list']];
         if ($category) {

@@ -4,6 +4,7 @@ namespace core\entities\Board;
 
 
 use core\entities\Board\queries\BoardCategoryQuery;
+use core\entities\CategoryInterface;
 use paulzi\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\db\ActiveQuery;
@@ -49,8 +50,9 @@ use yii\db\ActiveRecord;
  * @property BoardCategory $prev
  * @property BoardCategory $next
  * @mixin NestedSetsBehavior
+ * @method bool isRoot
  */
-class BoardCategory extends ActiveRecord
+class BoardCategory extends ActiveRecord implements CategoryInterface
 {
     public static function create
     (

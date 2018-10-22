@@ -15,6 +15,7 @@ class BoardSearch extends Board
     public $author;
     public $typeParameter;
     public $userType;
+    public $category;
 
     /**
      * @inheritdoc
@@ -22,9 +23,9 @@ class BoardSearch extends Board
     public function rules()
     {
         return [
-            [['id', 'author_id', 'category_id', 'price', 'currency', 'term_id', 'geo_id', 'status', 'active_until', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'author_id', 'price', 'currency', 'term_id', 'geo_id', 'status', 'active_until', 'created_at', 'updated_at'], 'integer'],
             [['name', 'slug', 'title', 'description', 'keywords', 'note', 'price_from', 'full_text'], 'safe'],
-            [['author', 'typeParameter', 'userType'], 'safe'],
+            [['author', 'typeParameter', 'userType', 'category'], 'safe'],
         ];
     }
 
@@ -88,6 +89,10 @@ class BoardSearch extends Board
 
         $this->load($params);
 
+        if ($this->category) {
+            $query->joinWith('category cat');
+        }
+
         /*if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -96,29 +101,44 @@ class BoardSearch extends Board
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'author_id' => $this->author_id,
-            'category_id' => $this->category_id,
-            'price' => $this->price,
-            'currency' => $this->currency,
-            'term_id' => $this->term_id,
-            'geo_id' => $this->geo_id,
-            'status' => $this->status,
-            'active_until' => $this->active_until,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'b.id' => $this->id,
+            'b.author_id' => $this->author_id,
+            //'b.category_id' => $this->category_id,
+            'b.price' => $this->price,
+            'b.currency' => $this->currency,
+            'b.term_id' => $this->term_id,
+            'b.geo_id' => $this->geo_id,
+            'b.status' => $this->status,
+            'b.active_until' => $this->active_until,
+            'b.created_at' => $this->created_at,
+            'b.updated_at' => $this->updated_at,
             'param.option_id' => $this->typeParameter,
             'u.type' => $this->userType,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'keywords', $this->keywords])
-            ->andFilterWhere(['like', 'note', $this->note])
-            ->andFilterWhere(['like', 'price_from', $this->price_from])
-            ->andFilterWhere(['like', 'full_text', $this->full_text]);
+        $query->andFilterWhere(['like', 'b.name', $this->name])
+            ->andFilterWhere(['like', 'b.slug', $this->slug])
+            ->andFilterWhere(['like', 'b.title', $this->title])
+            ->andFilterWhere(['like', 'b.description', $this->description])
+            ->andFilterWhere(['like', 'b.keywords', $this->keywords])
+            ->andFilterWhere(['like', 'b.note', $this->note])
+            ->andFilterWhere(['like', 'b.price_from', $this->price_from])
+            ->andFilterWhere(['like', 'b.full_text', $this->full_text])
+            ->andFilterWhere([
+                'or',
+                [
+                    'or',
+                    ['like', 'u.last_name', $this->author],
+                    ['like', 'u.name', $this->author],
+                    ['like', 'u.patronymic', $this->author]
+                ],
+                ['b.author_id' => $this->author]
+            ])
+            ->andFilterWhere([
+                'or',
+                ['like', 'cat.name', $this->category],
+                ['b.category_id' => $this->category]
+            ]);;
 
         return $dataProvider;
     }

@@ -3,6 +3,7 @@
 namespace core\entities\Brand;
 
 use core\entities\Article\common\ArticleCategoryQueryCommon;
+use core\entities\CategoryInterface;
 use core\entities\CategoryTrait;
 use paulzi\nestedsets\NestedSetsBehavior;
 use yii\db\ActiveQuery;
@@ -11,32 +12,6 @@ use yii\db\ActiveQuery;
  * This is the model class for table "{{%brand_categories}}".
  *
  * @property int $id
- * @property string $name
- * @property string $context_name
- * @property int $enabled
- * @property int $not_show_on_main
- * @property int $children_only_parent
- * @property string $slug
- * @property string $meta_title
- * @property string $meta_description
- * @property string $meta_keywords
- * @property string $title
- * @property string $description_top
- * @property int $description_top_on
- * @property string $description_bottom
- * @property int $description_bottom_on
- * @property string $meta_title_item
- * @property string $meta_description_item
- * @property string $meta_title_other [varchar(255)]
- * @property string $meta_description_other
- * @property string $meta_keywords_other
- * @property string $title_other [varchar(255)]
- * @property int $pagination
- * @property int $active
- *
- * @property int $lft
- * @property int $rgt
- * @property int $depth
  *
  * @property Brand[] $brands
  *
@@ -46,8 +21,9 @@ use yii\db\ActiveQuery;
  * @property BrandCategory $prev
  * @property BrandCategory $next
  * @mixin NestedSetsBehavior
+ * @method bool isRoot
  */
-class BrandCategory extends \yii\db\ActiveRecord
+class BrandCategory extends \yii\db\ActiveRecord implements CategoryInterface
 {
     use CategoryTrait;
 

@@ -3,6 +3,7 @@
 namespace core\entities\Article;
 
 use core\entities\Article\queries\ArticleCategoryQuery;
+use core\entities\CategoryInterface;
 use core\entities\CategoryTrait;
 use core\entities\Trade\queries\TradeCategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
@@ -50,7 +51,7 @@ use yii\db\ActiveQuery;
  *
  * @mixin NestedSetsBehavior
  */
-class ArticleCategory extends \yii\db\ActiveRecord
+class ArticleCategory extends \yii\db\ActiveRecord implements CategoryInterface
 {
     use CategoryTrait;
 

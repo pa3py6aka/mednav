@@ -61,24 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'format' => 'raw',
                 ],
-                [
-                    'attribute' => 'userType',
-                    'label' => 'Профиль',
-                    'value' => function (Board $board) {
-                        return $board->author->typeName;
-                    },
-                    'filter' => User::getTypesArray(),
-                ],
-                [
-                    'attribute' => 'category_id',
-                    'value' => function (Board $board) {
-                        return Html::a($board->category->name, ['/board/category/update', 'id' => $board->category_id], [
-                            'data-toggle' => 'tooltip',
-                            'title' => BoardHelper::categoryParentsString($board->category),
-                        ]);
-                    },
-                    'format' => 'raw',
-                ],
+                ['class' => \core\grid\UserProfileColumn::class],
+                ['class' => \core\grid\CategoryColumn::class],
                 'created_at:datetime:Создано',
                 'term.daysHuman:text:Срок',
                 ['class' => \core\grid\ModeratorActionColumn::class],

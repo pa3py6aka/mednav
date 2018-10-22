@@ -258,6 +258,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return $this->user_id;
     }
 
+    public function getOwnerUser(): User
+    {
+        return $this->user;
+    }
+
     public function getVendInfo()
     {
         return '';

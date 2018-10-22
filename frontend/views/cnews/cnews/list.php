@@ -21,7 +21,7 @@ CategoryHelper::registerHeadMeta('cnews', $this, 'Новости компани�
     <div class="col-md-9 col-sm-9 col-xs-12" style="border: 0px solid #000;">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <?= HtmlHelper::breadCrumbs(SettingsManager::CNEWS_NAME) ?>
+                <?= HtmlHelper::breadCrumbs(SettingsManager::CNEWS_NAME, $category) ?>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::CNEWS_NAME, $category) ?></h1></div>
         </div>

@@ -12,6 +12,8 @@ use core\entities\Company\Company;
  */
 class CompanySearch extends Company
 {
+    public $userType;
+
     /**
      * @inheritdoc
      */
@@ -19,7 +21,7 @@ class CompanySearch extends Company
     {
         return [
             [['id', 'user_id', 'geo_id', 'main_photo_id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['form', 'name', 'logo', 'slug', 'site', 'address', 'phones', 'fax', 'email', 'info', 'title', 'short_description', 'description'], 'safe'],
+            [['form', 'name', 'logo', 'slug', 'site', 'address', 'phones', 'fax', 'email', 'info', 'title', 'short_description', 'description', 'userType'], 'safe'],
         ];
     }
 

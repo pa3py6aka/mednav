@@ -4,6 +4,7 @@ namespace core\entities\Board;
 
 use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Board\queries\BoardQuery;
+use core\entities\CategoryAssignmentInterface;
 use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\User\User;
@@ -60,7 +61,7 @@ use yii\helpers\Url;
  * @property BoardPhoto[] $photos
  * @property BoardPhoto $mainPhoto
  */
-class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface
+class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface, CategoryAssignmentInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ON_MODERATION = 1;
@@ -243,6 +244,11 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
     public function getOwnerId(): int
     {
         return $this->author_id;
+    }
+
+    public function getOwnerUser(): User
+    {
+        return $this->author;
     }
 
     public function getOwnerName()

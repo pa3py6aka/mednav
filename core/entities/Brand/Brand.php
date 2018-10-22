@@ -4,6 +4,7 @@ namespace core\entities\Brand;
 
 
 use core\entities\Article\common\ArticleCommon;
+use core\entities\CategoryAssignmentInterface;
 use core\entities\StatusesTrait;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
@@ -17,7 +18,7 @@ use yii\helpers\Url;
  * @property BrandCategory $category
  * @property BrandPhoto $mainPhoto
  */
-class Brand extends ArticleCommon
+class Brand extends ArticleCommon implements CategoryAssignmentInterface
 {
     use StatusesTrait;
 

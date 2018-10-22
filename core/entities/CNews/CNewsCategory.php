@@ -3,6 +3,7 @@
 namespace core\entities\CNews;
 
 use core\entities\Article\common\ArticleCategoryQueryCommon;
+use core\entities\CategoryInterface;
 use core\entities\CategoryTrait;
 use paulzi\nestedsets\NestedSetsBehavior;
 use yii\db\ActiveQuery;
@@ -47,7 +48,7 @@ use yii\db\ActiveQuery;
  * @property CNewsCategory $next
  * @mixin NestedSetsBehavior
  */
-class CNewsCategory extends \yii\db\ActiveRecord
+class CNewsCategory extends \yii\db\ActiveRecord implements CategoryInterface
 {
     use CategoryTrait;
 

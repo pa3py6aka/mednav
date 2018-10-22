@@ -4,6 +4,7 @@ namespace core\entities\News;
 
 use core\entities\Article\common\ArticleCategoryQueryCommon;
 use core\entities\Article\queries\ArticleCategoryQuery;
+use core\entities\CategoryInterface;
 use core\entities\CategoryTrait;
 use core\entities\Trade\queries\TradeCategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
@@ -50,7 +51,7 @@ use yii\db\ActiveQuery;
  * @property NewsCategory $next
  * @mixin NestedSetsBehavior
  */
-class NewsCategory extends \yii\db\ActiveRecord
+class NewsCategory extends \yii\db\ActiveRecord implements CategoryInterface
 {
     use CategoryTrait;
 

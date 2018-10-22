@@ -4,6 +4,7 @@ namespace core\entities\Article;
 
 use core\entities\Article\queries\ArticlesQuery;
 use core\entities\Article\common\ArticleCommon;
+use core\entities\CategoryAssignmentInterface;
 use core\entities\Company\Company;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
@@ -19,7 +20,7 @@ use yii\helpers\Url;
  * @property ArticleCategory $category
  * @property ArticlePhoto $mainPhoto
  */
-class Article extends ArticleCommon
+class Article extends ArticleCommon implements CategoryAssignmentInterface
 {
     use StatusesTrait;
 

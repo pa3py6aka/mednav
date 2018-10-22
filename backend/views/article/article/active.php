@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= GridView::widget([
             'id' => 'grid',
             'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
+            'filterModel' => $searchModel,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
                 ['class' => CheckboxColumn::class],
@@ -51,24 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'format' => 'raw',
                 ],
-                [
-                    'attribute' => 'userType',
-                    'label' => 'Профиль',
-                    'value' => function(Article $article) {
-                        return $article->user->typeName;
-                    },
-                    'filter' => User::getTypesArray(),
-                ],
-                [
-                    'attribute' => 'category_id',
-                    'value' => function (Article $article) {
-                        return Html::a($article->category->name, ['/article/category/update', 'id' => $article->category_id], [
-                            'data-toggle' => 'tooltip',
-                            'title' => CategoryHelper::categoryParentsString($article->category),
-                        ]);
-                    },
-                    'format' => 'raw',
-                ],
+                ['class' => \core\grid\UserProfileColumn::class],
+                ['class' => \core\grid\CategoryColumn::class],
                 'created_at:datetime:Добавлена',
                 ['class' => ActionColumn::class, 'template' => '{update} {delete}'],
             ],

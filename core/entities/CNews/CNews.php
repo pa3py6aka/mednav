@@ -4,6 +4,7 @@ namespace core\entities\CNews;
 
 use core\entities\Article\queries\ArticlesQuery;
 use core\entities\Article\common\ArticleCommon;
+use core\entities\CategoryAssignmentInterface;
 use core\entities\Company\Company;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
@@ -19,7 +20,7 @@ use yii\helpers\Url;
  * @property CNewsCategory $category
  * @property CNewsPhoto $mainPhoto
  */
-class CNews extends ArticleCommon
+class CNews extends ArticleCommon implements CategoryAssignmentInterface
 {
     use StatusesTrait;
 

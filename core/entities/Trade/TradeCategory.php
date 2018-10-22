@@ -2,6 +2,7 @@
 
 namespace core\entities\Trade;
 
+use core\entities\CategoryInterface;
 use core\entities\CategoryTrait;
 use core\entities\Trade\queries\TradeCategoryQuery;
 use paulzi\nestedsets\NestedSetsBehavior;
@@ -49,7 +50,7 @@ use yii\db\ActiveQuery;
  * @property TradeCategory $next
  * @mixin NestedSetsBehavior
  */
-class TradeCategory extends \yii\db\ActiveRecord
+class TradeCategory extends \yii\db\ActiveRecord implements CategoryInterface
 {
     use CategoryTrait;
 

@@ -3,6 +3,7 @@
 namespace core\entities\Article\common;
 
 
+use core\entities\CategoryAssignmentInterface;
 use core\entities\Company\Company;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
@@ -68,6 +69,11 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
     public function getOwnerId(): int
     {
         return $this->user_id;
+    }
+
+    public function getOwnerUser(): User
+    {
+        return $this->user;
     }
 
     public function getMetaDescription(): string

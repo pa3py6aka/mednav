@@ -6,6 +6,7 @@ namespace core\helpers;
 use core\components\SettingsManager;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardCategoryRegion;
+use core\entities\CategoryInterface;
 use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryRegion;
 use core\entities\Trade\TradeCategory;
@@ -15,7 +16,7 @@ use yii\web\View;
 
 class CategoryHelper
 {
-    public static function categoryParentsString($category): string
+    public static function categoryParentsString(CategoryInterface $category): string
     {
         $items = [];
         foreach ($category->parents as $parent) {

@@ -4,6 +4,8 @@ namespace core\forms\manage\Trade;
 
 
 use core\entities\Trade\TradeUoM;
+use core\entities\Trade\TradeUserCategory;
+use core\services\TransactionManager;
 use yii\base\Model;
 
 class TradeUoMsForm extends Model
@@ -32,7 +34,7 @@ class TradeUoMsForm extends Model
     public function rules(): array
     {
         return [
-            [['id', 'name', 'sign', 'default'], 'required'],
+            [['name', 'sign', 'default'], 'required'],
             [['id'], 'each', 'rule' => ['integer']],
             [['name', 'sign'], 'each', 'rule' => ['string']],
             ['default', 'each', 'rule' => ['boolean']],
@@ -48,22 +50,39 @@ class TradeUoMsForm extends Model
 
     public function save()
     {
-        foreach ($this->name as $id => $name) {
-            if ($this->name[$id] && $this->sign[$id]) {
-                $uom = TradeUoM::find()->where(['id' => $id])->one();
-                if (!$uom) {
-                    $uom = new TradeUoM();
-                    $uom->id = $id;
-                }
-                $uom->name = $this->name[$id];
-                $uom->sign = $this->sign[$id];
-                $uom->default = $this->default[$id];
-                $uom->save();
-            } else {
-                if ($uom = TradeUoM::find()->where(['id' => $id])->one()) {
-                    $uom->delete();
+        (new TransactionManager())->wrap(function () {
+            foreach ($this->name as $id => $name) {
+                if ($this->name[$id] && $this->sign[$id]) {
+                    $uom = TradeUoM::find()->where(['id' => $id])->one();
+                    if (!$uom) {
+                        $uom = new TradeUoM();
+                        $uom->id = $id;
+                    }
+                    $uom->name = $this->name[$id];
+                    $uom->sign = $this->sign[$id];
+                    $uom->default = $this->default[$id];
+                    $uom->save();
+                } else {
+                    if ($uom = TradeUoM::find()->where(['id' => $id])->one()) {
+                        $this->checkUsing($uom);
+                        $uom->delete();
+                        if ($uom->default) {
+                            TradeUoM::find()
+                                ->orderBy(['id' => SORT_ASC])
+                                ->limit(1)
+                                ->one()
+                                ->updateAttributes(['default' => 1]);
+                        }
+                    }
                 }
             }
+        });
+    }
+
+    private function checkUsing(TradeUoM $uom)
+    {
+        if (TradeUserCategory::find()->where(['uom_id' => $uom->id])->exists()) {
+            throw new \DomainException("Единица измерения {$uom->name} используется и не может быть удалена.");
         }
     }
 

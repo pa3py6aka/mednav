@@ -145,7 +145,7 @@ class ArticleController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $this->service->edit($article, $form);
+                $this->service->edit($id, $form);
                 Yii::$app->session->setFlash('success', "Статья сохранена.");
                 return $this->redirect([$article->isActive() ? 'active' : 'waiting']);
             } catch (\DomainException $e) {

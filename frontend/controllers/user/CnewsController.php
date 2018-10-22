@@ -145,7 +145,7 @@ class CnewsController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $this->service->edit($news, $form);
+                $this->service->edit($id, $form);
                 Yii::$app->session->setFlash('success', "Новость сохранена.");
                 return $this->redirect([$news->isActive() ? 'active' : 'waiting']);
             } catch (\DomainException $e) {

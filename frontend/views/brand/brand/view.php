@@ -50,7 +50,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $brand->getTagsString
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="kk-content">
-                    <?= TextHelper::out($brand->full_text, 'brand') ?>
+                    <?= TextHelper::out($brand->full_text, 'brand', false, (bool) $brand->indirect_links) ?>
                     <div>
                         Опубликовано: <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $brand->created_at) ?>
                     </div>

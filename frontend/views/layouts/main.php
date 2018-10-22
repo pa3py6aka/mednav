@@ -86,6 +86,7 @@ AppAsset::register($this);
                                     <li><a href="/expo">Выставки</a></li>
                                     <li><a href="<?= Url::to(['/brand/brand/list']) ?>">Бренды</a></li>
                                     <li><a href="<?= Url::to(['/article/article/list']) ?>">Справочные материалы</a></li>
+                                    <li><a href="<?= Url::to(['/cnews/cnews/list']) ?>">Новости компаний</a></li>
 
                                     <?php if (Yii::$app->user->isGuest): ?>
                                         <li><a href="<?= Url::to(['/auth/signup/request']) ?>">Регистрация</a></li>

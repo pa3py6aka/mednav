@@ -42,6 +42,7 @@ return [
             'format' => 'json',
         ],
         'formatter' => [
+            'defaultTimeZone' => 'Europe/Moscow',
             'dateFormat' => 'php: d.m.Y',
             'datetimeFormat' => 'php: d.m.Y H:i',
             'timeFormat' => 'php: H:i',

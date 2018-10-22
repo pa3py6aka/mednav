@@ -83,6 +83,11 @@ class CategoryHelper
                     $settingsDescription = SettingsManager::BRANDS_META_DESCRIPTION;
                     $settingsKeywords = SettingsManager::BRANDS_META_KEYWORDS;
                     break;
+                case 'expo':
+                    $settingsTitle = SettingsManager::EXPO_META_TITLE;
+                    $settingsDescription = SettingsManager::EXPO_META_DESCRIPTION;
+                    $settingsKeywords = SettingsManager::EXPO_META_KEYWORDS;
+                    break;
                 default:
                     $settingsTitle = SettingsManager::BOARD_META_TITLE;
                     $settingsDescription = SettingsManager::BOARD_META_DESCRIPTION;

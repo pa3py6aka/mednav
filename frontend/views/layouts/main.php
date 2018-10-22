@@ -83,7 +83,7 @@ AppAsset::register($this);
                                     <li><a href="<?= Url::to(['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Каталог товаров</a></li>
                                     <li><a href="<?= Url::to(['/board/board/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Объявления</a></li>
                                     <li><a href="<?= Url::to(['/company/company/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Компании</a></li>
-                                    <li><a href="/expo">Выставки</a></li>
+                                    <li><a href="<?= Url::to(['/expo/expo/list']) ?>">Выставки</a></li>
                                     <li><a href="<?= Url::to(['/brand/brand/list']) ?>">Бренды</a></li>
                                     <li><a href="<?= Url::to(['/article/article/list']) ?>">Справочные материалы</a></li>
                                     <li><a href="<?= Url::to(['/cnews/cnews/list']) ?>">Новости компаний</a></li>

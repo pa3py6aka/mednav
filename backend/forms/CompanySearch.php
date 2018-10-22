@@ -2,7 +2,7 @@
 
 namespace backend\forms;
 
-use Yii;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use core\entities\Company\Company;

@@ -130,6 +130,23 @@ class Settings
     public const BRANDS_DESCRIPTION_BOTTOM = 'brandsDescriptionBottom';
     public const BRANDS_DESCRIPTION_BOTTOM_ON = 'brandsDescriptionBottomOn';
 
+    public const EXPO_NAME = 'expoName';
+    public const EXPO_NAME_UP = 'expoNameUP';
+    public const EXPO_PAGE_SIZE = 'expoPageSize';
+    public const EXPO_SMALL_SIZE = 'expoSmallSize';
+    public const EXPO_BIG_SIZE = 'expoBigSize';
+    public const EXPO_MAX_SIZE = 'expoMaxSize';
+    public const EXPO_MODERATION = 'expoModeration';
+
+    public const EXPO_META_TITLE = 'expoMetaTitle';
+    public const EXPO_META_DESCRIPTION = 'expoMetaDescription';
+    public const EXPO_META_KEYWORDS = 'expoMetaKeywords';
+    public const EXPO_TITLE = 'expoTitle';
+    public const EXPO_DESCRIPTION_TOP = 'expoDescriptionTop';
+    public const EXPO_DESCRIPTION_TOP_ON = 'expoDescriptionTopOn';
+    public const EXPO_DESCRIPTION_BOTTOM = 'expoDescriptionBottom';
+    public const EXPO_DESCRIPTION_BOTTOM_ON = 'expoDescriptionBottomOn';
+
     protected $default = [
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
@@ -255,5 +272,22 @@ class Settings
         self::BRANDS_DESCRIPTION_TOP_ON => 1,
         self::BRANDS_DESCRIPTION_BOTTOM => '',
         self::BRANDS_DESCRIPTION_BOTTOM_ON => 1,
+
+        self::EXPO_NAME => 'Выставки',
+        self::EXPO_NAME_UP => 'Мои выставки',
+        self::EXPO_PAGE_SIZE => 10,
+        self::EXPO_SMALL_SIZE => 100,
+        self::EXPO_BIG_SIZE => 250,
+        self::EXPO_MAX_SIZE => 1000,
+        self::EXPO_MODERATION => 1,
+
+        self::EXPO_META_TITLE => 'Выставки',
+        self::EXPO_META_DESCRIPTION => 'Выставки медицинских компаний',
+        self::EXPO_META_KEYWORDS => '',
+        self::EXPO_TITLE => '',
+        self::EXPO_DESCRIPTION_TOP => '',
+        self::EXPO_DESCRIPTION_TOP_ON => 1,
+        self::EXPO_DESCRIPTION_BOTTOM => '',
+        self::EXPO_DESCRIPTION_BOTTOM_ON => 1,
     ];
 }

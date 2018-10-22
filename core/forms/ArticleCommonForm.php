@@ -51,9 +51,9 @@ class ArticleCommonForm extends Model
         parent::__construct($config);
     }
 
-    public function rules()
+    public function rules($rules = [])
     {
-        return [
+        return array_merge([
             [['categoryId', 'name', 'fullText'], 'required'],
             [['user_id', 'categoryId'], 'integer'],
             [['slug', 'title', 'metaKeywords', 'name'], 'string', 'max' => 255],
@@ -61,7 +61,7 @@ class ArticleCommonForm extends Model
             ['indirectLinks', 'boolean'],
             ['tags', 'string'],
             ['photos', 'each', 'rule' => ['string']],
-        ];
+        ], $rules);
     }
 
     public function scenarios()
@@ -84,9 +84,9 @@ class ArticleCommonForm extends Model
         return parent::beforeValidate();
     }
 
-    public function attributeLabels()
+    public function attributeLabels($attributeLabels = [])
     {
-        return [
+        return array_merge([
             'slug' => 'Slug',
             'user_id' => 'Пользователь',
             'title' => 'Title',
@@ -100,6 +100,6 @@ class ArticleCommonForm extends Model
             'fullText' => 'Полный текст',
             'tags' => 'Теги',
             'photos' => 'Фотографии',
-        ];
+        ], $attributeLabels);
     }
 }

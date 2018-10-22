@@ -3,7 +3,6 @@
 namespace backend\forms;
 
 use core\entities\Trade\Trade;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 

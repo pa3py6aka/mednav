@@ -3,8 +3,6 @@
 namespace backend\forms;
 
 use core\entities\Company\Company;
-use core\entities\User\User;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use core\entities\Order\Order;

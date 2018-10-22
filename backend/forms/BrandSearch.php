@@ -4,7 +4,6 @@ namespace backend\forms;
 
 use core\entities\Brand\Brand;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
 
 
 class BrandSearch extends Brand

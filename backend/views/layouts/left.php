@@ -47,6 +47,11 @@
                         ['label' => 'Бренды', 'icon' => 'list-alt', 'url' => ['/brand/brand/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/brand/settings/main']],
                     ]],
+                    ['label' => 'Выставки', 'icon' => 'list-alt', 'items' => [
+                        ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/expo/category/index']],
+                        ['label' => 'Выставки', 'icon' => 'list-alt', 'url' => ['/expo/expo/active']],
+                        ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/expo/settings/main']],
+                    ]],
                     ['label' => 'Блоки', 'icon' => 'object-ungroup', 'items' => [
                         ['label' => 'Контентные блоки', 'url' => ['/blocks/contents/index']],
                         ['label' => 'Контекстные блоки', 'url' => ['/blocks/context/index']],

@@ -100,9 +100,9 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels($attributeLabels = [])
     {
-        return [
+        return array_merge([
             'id' => 'ID',
             'user_id' => 'User ID',
             'category_id' => 'Category ID',
@@ -113,13 +113,13 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
             'slug' => 'Slug',
             'intro' => 'Анонс',
             'full_text' => 'Полный текст',
-            'indirect_links' => 'Indirect Links',
+            'indirect_links' => 'Непрямые ссылки',
             'main_photo_id' => 'Main Photo ID',
-            'status' => 'Status',
+            'status' => 'Статус',
             'views' => 'Просмотров',
             'created_at' => 'Дата добавления',
-            'updated_at' => 'Updated At',
-        ];
+            'updated_at' => 'Дата обновления',
+        ], $attributeLabels);
     }
 
     public function getUser(): ActiveQuery

@@ -34,7 +34,7 @@ class BrandService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == BrandForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::NEWS_MODERATION) ? Brand::STATUS_ON_PREMODERATION : Brand::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(SettingsManager::BRANDS_MODERATION) ? Brand::STATUS_ON_PREMODERATION : Brand::STATUS_ACTIVE)
             : Brand::STATUS_ACTIVE;
         $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 

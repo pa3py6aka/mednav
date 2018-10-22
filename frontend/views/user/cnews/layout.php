@@ -10,7 +10,7 @@ use core\helpers\HtmlHelper;
 
 /* @var $content string */
 
-$this->title = 'Личный кабинет | Мои новости';
+$this->title = 'Личный кабинет | ' . Yii::$app->settings->get(\core\components\SettingsManager::CNEWS_NAME_UP);
 $tab =  ArrayHelper::getValue($this->params, 'tab', 'active');
 $pagination = ArrayHelper::getValue($this->params, 'pagination');
 
@@ -22,8 +22,8 @@ $this->beginContent('@frontend/views/layouts/main.php');
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Мои новости']) ?>
-        <h1>Мои новости</h1>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([Yii::$app->settings->get(\core\components\SettingsManager::CNEWS_NAME_UP)]) ?>
+        <h1><?= Yii::$app->settings->get(\core\components\SettingsManager::CNEWS_NAME_UP) ?></h1>
 
         <p>
             <a href="<?= Url::to(['create']) ?>" class="btn btn-success">Добавить новость</a>

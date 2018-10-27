@@ -223,9 +223,9 @@ class TradeController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $this->service->createUserCategory($this->_user->id, $form);
+                $category = $this->service->createUserCategory($this->_user->id, $form);
                 Yii::$app->session->setFlash("success", "Категория успешно добавлена.");
-                return $this->redirect(['categories']);
+                return $this->redirect(['category', 'id' => $category->id]);
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash("error", $e->getMessage());
             }
@@ -250,7 +250,7 @@ class TradeController extends Controller
             try {
                 $this->service->editUserCategory($userCategory, $form);
                 Yii::$app->session->setFlash("success", "Категория сохранена.");
-                return $this->redirect(['categories']);
+                return $this->redirect(['category', 'id' => $userCategory->id]);
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash("error", $e->getMessage());
             }
@@ -277,7 +277,7 @@ class TradeController extends Controller
             Yii::$app->session->setFlash("error", $e->getMessage());
         }
 
-        return $this->redirect(['categories']);
+        return $this->redirect(['active']);
     }
 
     public function actionCategory($id)

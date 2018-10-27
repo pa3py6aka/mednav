@@ -22,8 +22,7 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show([
             ['label' => 'Товары', 'url' => ['/user/trade/active']],
-            ['label' => 'Категории', 'url' => ['/user/trade/categories']],
-            'Просмотр'
+            Html::encode($category->name)
         ]) ?>
 
         <h1><?= Html::encode($category->name) ?></h1>

@@ -9,6 +9,7 @@ use core\entities\User\User;
 use core\helpers\PriceHelper;
 use Yii;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 class TradeManageForm extends Model
 {
@@ -142,6 +143,12 @@ class TradeManageForm extends Model
         return $this->categoryId ?
             TradeUserCategory::find()->select('wholesale')->where(['id' => $this->categoryId])->scalar()
             : false;
+    }
+
+    public function getUserCategories(): array
+    {
+        $userId = $this->getUserId();
+        return ArrayHelper::map(TradeUserCategory::find()->where(['user_id' => $userId])->asArray()->all(), 'id', 'name');
     }
 
     public function attributeLabels()

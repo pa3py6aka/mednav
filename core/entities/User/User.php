@@ -45,6 +45,7 @@ use yii\web\IdentityInterface;
  *
 
  * @property string $typeName
+ * @property string $visibleName
  *
  * @property Company $company
  * @property Geo $geo

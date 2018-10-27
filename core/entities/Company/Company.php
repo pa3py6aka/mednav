@@ -48,6 +48,8 @@ use yii\helpers\Url;
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property string $phone
+ *
  * @property Geo $geo
  * @property CompanyPhoto $mainPhoto
  * @property CompanyPhoto[] $photos
@@ -147,6 +149,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     {
         $phones = $this->phones ? Json::decode($this->phones) : [];
         return $asString ? Html::encode(implode(', ', $phones)) : $phones;
+    }
+
+    public function getPhone(): string
+    {
+        $phones = $this->getPhones();
+        return $phones ? current($phones) : '';
     }
 
     private function setPhones($phones): void

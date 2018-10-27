@@ -61,7 +61,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                     <ul class="kt-item-listinfo">
                         <li><div class="kt-item-info">Артикул: <span class="kt-item-articul"><?= Html::encode($trade->code) ?></span></div></li>
                         <li><div class="kt-item-info">Статус: <span class="kt-item-status"><?= $trade->getStockString() ?></span></div></li>
-                        <li><div class="kt-item-info">Цена: <span class="kt-item-price"><?= $trade->getPriceString() ?>/<?= $trade->getUomString() ?></span></div></li>
+                        <li><div class="kt-item-info">Цена: <span class="kt-item-price"><?= $trade->getFullPriceString() ?></span></div></li>
                     </ul>
 
                     <?= OrderButtonWidget::widget(['productId' => $trade->id]) ?>

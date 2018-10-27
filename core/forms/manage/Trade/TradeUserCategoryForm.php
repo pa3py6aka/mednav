@@ -44,7 +44,7 @@ class TradeUserCategoryForm extends Model
     public function rules()
     {
         return [
-            [['name', 'categoryId', 'uomId', 'currencyId', 'wholeSale'], 'required'],
+            [['name', 'categoryId', 'uomId', 'currencyId'], 'required'],
             ['name', 'string', 'max' => 255],
             ['categoryId', 'exist', 'targetClass' => TradeCategory::class, 'targetAttribute' => 'id'],
             [['uomId', 'currencyId'], 'integer'],

@@ -170,13 +170,19 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         return $this->stock ? "В наличии" : "Под заказ";
     }
 
-    public function getPriceString(): string
+    public function getPriceString($nullable = true): string
     {
+        if (!$this->price && !$nullable) {
+            return "По запросу";
+        }
         return PriceHelper::normalize($this->price) . ' ' . $this->getCurrencyString();
     }
 
     public function getFullPriceString(): string
     {
+        if (!$this->price) {
+            return "По запросу";
+        }
         return $this->getPriceString() . '/' . $this->getUomString();
     }
 

@@ -84,8 +84,10 @@ class SelectCategoryWidget extends Widget
                 $children = ArrayHelper::map($category->getChildren()->active()->enabled()->all(), 'id', 'name');
             }
 
-            $dropdown = Html::activeDropDownList($this->model, 'categoryId[' . ($n + 1) . ']', $children, ['class' => 'form-control', 'prompt' => '']);
-            $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
+            if ($children) {
+                $dropdown = Html::activeDropDownList($this->model, 'categoryId[' . ($n + 1) . ']', $children, ['class' => 'form-control', 'prompt' => '']);
+                $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
+            }
         }
         return implode("\n", $dropdowns);
     }

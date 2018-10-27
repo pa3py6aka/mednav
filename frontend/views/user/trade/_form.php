@@ -16,7 +16,7 @@ use core\actions\UploadAction;
 <?php $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'categoryId')
-    ->dropDownList(ArrayHelper::map(TradeUserCategory::find()->asArray()->all(), 'id', 'name'), [
+    ->dropDownList($model->getUserCategories(), [
         'prompt' => '',
         'id' => 'category-selector'
     ]) ?>

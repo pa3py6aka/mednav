@@ -128,8 +128,8 @@ $orderNumber = 1;
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="cart-delivery">
                         <div class="kt-item-delivery">
-                            <input type="checkbox" id="hd-1" class="hide"/>
-                            <label for="hd-1" >Комментарий к заказу для <?= current($order)->trade->company->getFullName() ?></label>
+                            <input type="checkbox" id="hd-<?= $orderNumber ?>" class="hide"/>
+                            <label for="hd-<?= $orderNumber ?>" >Комментарий к заказу для <?= current($order)->trade->company->getFullName() ?></label>
                             <div>
                                 <div class="input-group">
                                     <textarea name="OrderForm[comments][<?= $orderNumber ?>]" class="form-control order-comment-textarea" rows="3" cols="40" placeholder="Комментарий к заказу"></textarea>
@@ -141,6 +141,7 @@ $orderNumber = 1;
             </div>
             <hr>
         </div>
+        <?php $orderNumber++; ?>
         <?php endforeach; ?>
 
         <?php if (count($cartItems)): ?>

@@ -24,13 +24,12 @@ ImageManagerAsset::register($this);
 <div class="board-form box box-primary">
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body table-responsive">
-
-        <?= $form->field($model, 'userId')->widget(\backend\widgets\UserIdFieldWidget::class) ?>
+        <?= $form->field($model, 'userId')->widget(\backend\widgets\UserFieldWidget\UserIdFieldWidget::class) ?>
 
         <?= $form->field($model, 'categoryId')
-            ->dropDownList(ArrayHelper::map(TradeUserCategory::find()->asArray()->all(), 'id', 'name'), [
+            ->dropDownList($model->getUserCategories(), [
                 'prompt' => '',
-                'id' => 'category-selector'
+                'id' => \backend\widgets\UserFieldWidget\dependencies\UserCategoryDependency::CATEGORY_SELECTOR_ID,
             ]) ?>
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

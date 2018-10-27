@@ -29,7 +29,7 @@ ImageManagerAsset::register($this);
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body table-responsive">
 
-        <?= $form->field($model, 'authorId')->widget(\backend\widgets\UserIdFieldWidget::class) ?>
+        <?= $form->field($model, 'authorId')->widget(\backend\widgets\UserFieldWidget\UserIdFieldWidget::class) ?>
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

@@ -5,7 +5,7 @@ use mihaildev\ckeditor\CKEditor;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use backend\widgets\UserIdFieldWidget;
+use backend\widgets\UserFieldWidget\UserIdFieldWidget;
 use frontend\widgets\SelectCategoryWidget;
 use core\entities\News\NewsCategory;
 

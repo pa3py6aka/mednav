@@ -18,9 +18,18 @@ class MarkHelper
         'geo_name_p' => 'geo.name_p',
         'phone' => 'author.phone',
         'category_name' => 'category.name',
-        'company_name' => 'author.companyName',
+        'company_name' => 'author.visibleName',
         'type' => 'defaultType',
     ];
+    public const MARKS_TRADE = [
+        'name' => 'name',
+        'geo_name' => 'geo.name',
+        'geo_name_p' => 'geo.name_p',
+        'phone' => 'company.phone',
+        'category_name' => 'category.name',
+        'company_name' => 'company.fullName',
+    ];
+
 
     public static function generateStringByMarks($string, $marks, $entity): string
     {

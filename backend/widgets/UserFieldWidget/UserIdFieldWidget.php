@@ -1,20 +1,22 @@
 <?php
 
-namespace backend\widgets;
+namespace backend\widgets\UserFieldWidget;
 
 
+use backend\widgets\UserFieldWidget\dependencies\UserCategoryDependency;
 use core\entities\User\User;
 use yii\helpers\Html;
 use yii\widgets\InputWidget;
 
 class UserIdFieldWidget extends InputWidget
 {
-    private $_inputId;
+    public const INPUT_ID = 'input-field-widget-user_id';
+
+    public $dependencies = null;
 
     public function init()
     {
         parent::init();
-        $this->_inputId = Html::getInputId($this->model, $this->attribute);
         $this->registerJs();
         $this->value = $this->model->{$this->attribute};
     }
@@ -26,13 +28,13 @@ class UserIdFieldWidget extends InputWidget
         <div class="container-fluid no-padding">
             <div style="width: 145px;display:inline-flex;vertical-align:middle;">
                 <div class="input-group input-group-sm">
-                    <input id="<?= $this->_inputId ?>" type="number" class="form-control" name="<?= Html::getInputName($this->model, $this->attribute) ?>" value="<?= $this->value ?>">
+                    <input id="<?= self::INPUT_ID ?>" type="number" class="form-control" name="<?= Html::getInputName($this->model, $this->attribute) ?>" value="<?= $this->value ?>">
                     <span class="input-group-btn">
-                    <button id="<?= $this->_inputId . '-go' ?>" type="button" class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
+                    <button id="<?= self::INPUT_ID . '-go' ?>" type="button" class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
                 </span>
                 </div>
             </div>
-            <div id="<?= $this->_inputId . '-link' ?>" style="display:inline-flex;vertical-align:middle;margin-left:20px;">
+            <div id="<?= self::INPUT_ID . '-link' ?>" style="display:inline-flex;vertical-align:middle;margin-left:20px;">
                 <?= $this->getUserLink() ?>
             </div>
         </div>
@@ -53,10 +55,12 @@ class UserIdFieldWidget extends InputWidget
 
     private function registerJs()
     {
+        $inputId = self::INPUT_ID;
+        $dependencies = (new UserCategoryDependency())->getJs();
         $js = <<<JS
-$(document).on('click', '#{$this->_inputId}-go', function() {
-  var id = $('#{$this->_inputId}').val();
-  var linkBlock = $('#{$this->_inputId}-link');
+$(document).on('click', '#{$inputId}-go', function() {
+  var id = $('#{$inputId}').val();
+  var linkBlock = $('#{$inputId}-link');
   $.ajax({
     url: '/user/get-user',
     method: "post",
@@ -71,6 +75,7 @@ $(document).on('click', '#{$this->_inputId}-go', function() {
         } else {
             linkBlock.html(data.message);
         }
+        {$dependencies}
     },
     complete: function () {
         

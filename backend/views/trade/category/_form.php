@@ -1,5 +1,6 @@
 <?php
 
+use core\helpers\MarkHelper;
 use core\helpers\PaginationHelper;
 use core\entities\Trade\TradeCategory;
 use mihaildev\ckeditor\CKEditor;
@@ -10,6 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $model \core\forms\manage\Trade\TradeCategoryForm */
 /* @var $form yii\widgets\ActiveForm */
 
+MarkHelper::js($this);
 ?>
 
 <div class="k-form">
@@ -36,9 +38,11 @@ use yii\widgets\ActiveForm;
                 ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']])
                 ->label('Описание снизу &nbsp; &nbsp;' . Html::activeCheckbox($model, 'descriptionBottomOn')) ?>
             <?= $form->field($model, 'metaTitleItem')
-                ->textInput(['maxlength' => true, 'id' => 'metaTitleItem']) ?>
+                ->textInput(['maxlength' => true, 'id' => 'metaTitleItem'])
+                ->hint(MarkHelper::links(MarkHelper::MARKS_TRADE, 'metaTitleItem')) ?>
             <?= $form->field($model, 'metaDescriptionItem')
-                ->textarea(['rows' => 4, 'id' => 'metaDescriptionItem']) ?>
+                ->textarea(['rows' => 4, 'id' => 'metaDescriptionItem'])
+                ->hint(MarkHelper::links(MarkHelper::MARKS_TRADE, 'metaDescriptionItem')) ?>
 
             <?= $form->field($model, 'metaTitleOther')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'metaDescriptionOther')->textarea(['rows' => 4]) ?>

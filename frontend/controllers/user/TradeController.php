@@ -166,7 +166,8 @@ class TradeController extends Controller
             try {
                 $trade = $this->service->create($form);
                 Yii::$app->session->setFlash('success', $trade->isActive() ? "Товар опубликован" : "Товар отправлен на проверку");
-                return $this->redirect([$trade->isActive() ? 'active' : 'waiting']);
+                //return $this->redirect([$trade->isActive() ? 'active' : 'waiting']);
+                return $this->redirect(['category', 'id' => $trade->user_category_id, 'status' => $trade->status]);
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash("error", $e->getMessage());
             }
@@ -190,7 +191,7 @@ class TradeController extends Controller
             try {
                 $this->service->edit($trade, $form);
                 Yii::$app->session->setFlash('success', "Данные по товару обновлены.");
-                return $this->redirect([$trade->isActive() ? 'active' : 'waiting']);
+                return $this->redirect(['category', 'id' => $trade->user_category_id, 'status' => $trade->status]);
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash("error", $e->getMessage());
             }

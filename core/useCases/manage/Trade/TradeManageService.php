@@ -14,6 +14,7 @@ use core\entities\User\User;
 use core\forms\manage\PhotosForm;
 use core\forms\manage\Trade\TradeManageForm;
 use core\forms\manage\Trade\TradeUserCategoryForm;
+use core\helpers\MarkHelper;
 use core\helpers\PriceHelper;
 use core\repositories\Company\CompanyDeliveryRepository;
 use core\repositories\Trade\TradeRepository;
@@ -66,6 +67,7 @@ class TradeManageService
         $this->transaction->wrap(function () use ($form, $trade) {
             $this->repository->save($trade);
             $this->saveTags($trade, $form->tags);
+            $this->updateColumns($trade);
             Yii::createObject(TradePhotoService::class)->savePhotosFromTempFolder($trade, $form->photos);
             $this->repository->save($trade);
         });
@@ -102,6 +104,7 @@ class TradeManageService
         }
 
         $this->transaction->wrap(function () use ($form, $trade) {
+            $this->updateColumns($trade);
             $this->repository->save($trade);
             $this->saveTags($trade, $form->tags);
         });
@@ -145,6 +148,16 @@ class TradeManageService
             Yii::createObject(TradePhotoService::class)->addPhoto($trade, $file);
         }
         $this->repository->save($trade);
+    }
+
+    private function updateColumns(Trade $trade): void
+    {
+        if (empty($trade->meta_title)) {
+            $trade->meta_title = MarkHelper::generateStringByMarks($trade->category->meta_title_item, MarkHelper::MARKS_TRADE, $trade);
+        }
+        if (empty($trade->meta_description)) {
+            $trade->meta_description = MarkHelper::generateStringByMarks($trade->category->meta_description_item, MarkHelper::MARKS_TRADE, $trade);
+        }
     }
 
     public function createUserCategory($userId, TradeUserCategoryForm $form): TradeUserCategory

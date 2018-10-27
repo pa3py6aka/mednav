@@ -6,15 +6,18 @@ namespace backend\controllers\trade;
 use core\components\TreeManager\TreeManageActions;
 use core\entities\Trade\TradeCategory;
 use core\entities\Trade\TradeCategoryRegion;
+use core\entities\Trade\TradeUserCategory;
 use core\forms\manage\Trade\TradeCategoryRegionForm;
 use core\forms\manage\Trade\TradeCategoryForm;
 use core\useCases\manage\Trade\TradeCategoryManageService;
 use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 class CategoryController extends Controller
 {
@@ -36,6 +39,7 @@ class CategoryController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'get-user-categories' => ['POST'],
                 ],
             ],
         ];
@@ -150,6 +154,14 @@ class CategoryController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGetUserCategories()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $userId = (int) Yii::$app->request->post('id');
+        $categories = ArrayHelper::map(TradeUserCategory::find()->where(['user_id' => $userId])->asArray()->all(), 'id', 'name');
+        return ['result' => 'success', 'categories' => $categories];
     }
 
     protected function findModel($id)

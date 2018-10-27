@@ -35,7 +35,7 @@ class TradeHelper
         ?>
         <ul class="breadcrumb">
             <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
-            <li><a href="<?= Url::to(['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>">Оборудование</a></li>
+            <li><a href="<?= Url::to(['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>"><?= Yii::$app->settings->get(SettingsManager::TRADE_NAME) ?></a></li>
             <?php foreach ($trade->category->parents as $category) {
                 if ($category->isRoot()) {
                     continue;

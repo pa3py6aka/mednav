@@ -8,7 +8,7 @@ use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use backend\widgets\UserIdFieldWidget;
+use backend\widgets\UserFieldWidget\UserIdFieldWidget;
 use frontend\widgets\CompanyCategoriesSelectWidget;
 
 /* @var $this yii\web\View */

@@ -41,7 +41,7 @@ use core\components\ContextBlock;
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-12">
-                    <div class="price-col"><?= $trade->getPriceString() ?></div>
+                    <div class="price-col"><?= $trade->getPriceString(false) ?></div>
                     <div class="list-item-option"><?= $trade->userCategory->uom->sign ?></div>
                     <div class="list-item-option"><?= $trade->userCategory->wholesale && $trade->getWholesales() ? "Есть опт" : "" ?></div>
                 </div>

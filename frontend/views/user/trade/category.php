@@ -2,6 +2,7 @@
 
 use core\entities\Trade\TradeUserCategory;
 use core\helpers\PaginationHelper;
+use core\helpers\TradeHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use core\helpers\HtmlHelper;
@@ -117,13 +118,9 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
                                     },
                                     'format' => 'raw',
                                 ],
-                                [
-                                    'attribute' => 'category_id',
-                                    'value' => function (Trade $trade) {
-                                        return Html::encode($trade->category->name);
-                                    },
-                                    'format' => 'raw',
-                                ],
+                                ['class' => \core\grid\CategoryColumn::class, 'url' => function (Trade $model) {
+                                    return TradeHelper::categoryUrl($model->category, Yii::$app->session->get('geo', 'all'));
+                                }],
                                 ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} / {delete}', 'buttons' => [
                                     'update' => function ($url, Trade $trade, $key) {
                                         return Html::a('Редактировать', $url);

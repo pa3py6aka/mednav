@@ -37,7 +37,7 @@ $this->beginContent('@frontend/views/layouts/main.php');
         <ul class="nav nav-tabs">
             <li<?= $tab == 'active' ? ' class="active"' : '' ?>><a href="<?= Url::to(['active']) ?>">Размещённые</a></li>
             <li<?= $tab == 'waiting' ? ' class="active"' : '' ?>><a href="<?= Url::to(['waiting']) ?>">На проверке (<?= \core\entities\Trade\Trade::find()->onModerationCount($this->params['user']['id']) ?>)</a></li>
-            <li<?= $tab == 'categories' ? ' class="active"' : '' ?>><a href="<?= Url::to(['categories']) ?>">Категории</a></li>
+            <?php /*<li<?= $tab == 'categories' ? ' class="active"' : '' ?>><a href="<?= Url::to(['categories']) ?>">Категории</a></li>*/ ?>
             <li<?= $tab == 'settings' ? ' class="active"' : '' ?>><a href="<?= Url::to(['settings']) ?>">Настройки</a></li>
             <span class="pull-right">
                 <?php if ($pagination) {

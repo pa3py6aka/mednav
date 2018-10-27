@@ -1,6 +1,7 @@
 <?php
 
 use core\entities\Trade\TradeUserCategory;
+use core\helpers\TradeHelper;
 use yii\helpers\Html;
 use core\entities\Trade\Trade;
 
@@ -41,12 +42,9 @@ $this->params['pagination'] = $provider->pagination;
                 return $category->uom->sign;
             },
         ],
-        [
-            'attribute' => 'category_id',
-            'value' => function (TradeUserCategory $category) {
-                return $category->category->name;
-            },
-        ],
+        ['class' => \core\grid\CategoryColumn::class, 'url' => function (TradeUserCategory $model) {
+            return TradeHelper::categoryUrl($model->category, Yii::$app->session->get('geo', 'all'));
+        }],
         ['class' => \yii\grid\ActionColumn::class, 'template' => '{update} {delete}', 'buttons' => [
             'update' => function ($url, TradeUserCategory $category, $key) {
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['category-update', 'id' => $category->id]);

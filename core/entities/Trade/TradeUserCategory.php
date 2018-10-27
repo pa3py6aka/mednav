@@ -2,6 +2,7 @@
 
 namespace core\entities\Trade;
 
+
 use core\entities\Currency;
 use core\entities\User\User;
 use Yii;

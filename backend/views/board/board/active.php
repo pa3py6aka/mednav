@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                 ],
                 ['class' => \core\grid\UserProfileColumn::class],
-                ['class' => \core\grid\CategoryColumn::class],
+                ['class' => \core\grid\CategoryColumn::class, 'url' => ['/board/category/update', 'id' => '{id}']],
                 [
                     'attribute' => 'created_at',
                     'label' => 'Размещено',

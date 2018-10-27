@@ -7,6 +7,7 @@ use core\entities\Board\queries\BoardCategoryQuery;
 /**
  * Interface CategoryInterface
  *
+ * @property int $id
  * @property string $name
  * @property string $context_name
  * @property int $enabled

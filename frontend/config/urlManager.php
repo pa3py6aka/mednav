@@ -58,6 +58,8 @@ return [
         'trade/<region:[\w-]+>' => 'trade/trade/list',
         'trade' => 'trade/trade/list',
 
+        'order/cart/successfully=id<id:\d+>' => 'order/cart/successfully',
+
         // Статьи
         'articles/<id:\d+>-<slug:[\w-]+>' => 'article/article/view',
         'articles/<category:[\w-]+>/page<page:\d+>' => 'article/article/list',

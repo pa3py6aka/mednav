@@ -8,7 +8,7 @@ use core\components\Cart\Cart;
 /* @var $order Order */
 /* @var $orderItemsProvider \yii\data\ActiveDataProvider */
 
-$this->title = 'Личный кабинет | Заказ № ' . $order->id;
+$this->title = 'Личный кабинет | Заказ № ' . $order->getNumber();
 $itemsSum = 0;
 
 ?>
@@ -18,8 +18,11 @@ $itemsSum = 0;
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Заказ № ' . $order->id]) ?>
-        <h1>Заказ № <?= $order->id ?></h1>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([
+            ['label' => 'Заказы', 'url' => ['/user/order/orders']],
+            'Заказ № ' . $order->getNumber()
+        ]) ?>
+        <h1>Заказ № <?= $order->getNumber() ?></h1>
 
         <div class="panel panel-default">
             <div class="panel-heading">Товары</div>
@@ -91,10 +94,10 @@ $itemsSum = 0;
                             'label' => 'Данные покупателя',
                             'value' => function (Order $order) {
                                 $rows = [];
-                                $rows[] = '<tr><td>ФИО/Компания</td><td>' . Html::encode($order->user_name) . '</td></tr>';
-                                $rows[] = '<tr><td>Телефон</td><td>' . Html::encode($order->user_phone) . '</td></tr>';
-                                $rows[] = '<tr><td>E-mail</td><td>' . Html::encode($order->user_email) . '</td></tr>';
-                                $rows[] = $order->address ? '<tr><td>Адрес</td><td>' . Html::encode($order->address) . '</td></tr>' : '';
+                                $rows[] = '<tr><td>ФИО/Компания</td><td>' . Html::encode($order->userOrder->user_name) . '</td></tr>';
+                                $rows[] = '<tr><td>Телефон</td><td>' . Html::encode($order->userOrder->user_phone) . '</td></tr>';
+                                $rows[] = '<tr><td>E-mail</td><td>' . Html::encode($order->userOrder->user_email) . '</td></tr>';
+                                $rows[] = $order->userOrder->address ? '<tr><td>Адрес</td><td>' . Html::encode($order->userOrder->address) . '</td></tr>' : '';
                                 return Html::tag('table', implode("\n", $rows), [
                                     'class' => 'table table-bordered no-padding',
                                     'style' => 'margin-bottom:0;'

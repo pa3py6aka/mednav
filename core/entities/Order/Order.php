@@ -15,18 +15,16 @@ use yii\db\ActiveRecord;
  * This is the model class for table "orders".
  *
  * @property int $id
+ * @property int $user_order_id [int(11)]
  * @property int $for_company_id [int(11)]
  * @property int $user_id
  * @property int $delivery_id
  * @property string $comment
- * @property string $user_name
- * @property string $user_phone
- * @property string $user_email
- * @property string $address
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property UserOrder $userOrder
  * @property Company $forCompany
  * @property OrderItem[] $orderItems
  * @property Trade[] $trades
@@ -39,19 +37,21 @@ class Order extends ActiveRecord
     const STATUS_NEW_VIEWED = 1;
     const STATUS_SENT = 5;
 
-    public static function create($forCompanyId, $userId, $deliveryId, $comment, $name, $phone, $email, $address): Order
+    public static function create($userOrderId, $forCompanyId, $userId, $deliveryId, $comment): Order
     {
         $order = new Order();
+        $order->user_order_id = $userOrderId;
         $order->for_company_id = $forCompanyId;
         $order->user_id = $userId;
         $order->delivery_id = $deliveryId;
         $order->comment = $comment;
-        $order->user_name = $name;
-        $order->user_phone = $phone;
-        $order->user_email = $email;
-        $order->address = $address;
         $order->status = self::STATUS_NEW;
         return $order;
+    }
+
+    public function getNumber(): string
+    {
+        return $this->user_order_id . "-" . $this->id;
     }
 
     public function behaviors(): array
@@ -126,5 +126,10 @@ class Order extends ActiveRecord
     public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getUserOrder(): ActiveQuery
+    {
+        return $this->hasOne(UserOrder::class, ['id' => 'user_order_id']);
     }
 }

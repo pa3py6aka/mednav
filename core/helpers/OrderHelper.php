@@ -4,6 +4,7 @@ namespace core\helpers;
 
 
 use core\entities\Order\Order;
+use core\entities\Order\UserOrder;
 use core\entities\User\User;
 
 class OrderHelper
@@ -25,7 +26,6 @@ class OrderHelper
         return '';
     }
 
-
     public static function newLabel(Order $order): string
     {
         $user = \Yii::$app->user->identity;
@@ -33,5 +33,14 @@ class OrderHelper
             return ' <span class="label label-danger label-as-badge">Новый</span>';
         }
         return '';
+    }
+
+    public static function getOrderNumbersString(UserOrder $fullOrder): string
+    {
+        $numbers = [];
+        foreach ($fullOrder->orders as $order) {
+            $numbers[] = '№ ' . $order->getNumber();
+        }
+        return implode(', ', $numbers);
     }
 }

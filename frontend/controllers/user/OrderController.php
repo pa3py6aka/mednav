@@ -78,9 +78,10 @@ class OrderController extends Controller
 
         if ($form->validate()) {
             try {
-                $this->service->create($form);
-                Yii::$app->session->setFlash("success", "Заказ(ы) успешно оформлены.");
-                return $this->redirect(Yii::$app->user->isGuest ? ['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')] : ['orders']);
+                $fullOrder = $this->service->create($form);
+                //Yii::$app->session->setFlash("success", "Ваш заказ " . implode(', ', $numbers['numbers']) . " успешно оформлен.");
+                return $this->redirect(['/order/cart/successfully', 'id' => $fullOrder->id]);
+                //return $this->redirect(Yii::$app->user->isGuest ? ['/trade/trade/list', 'region' => Yii::$app->session->get('geo', 'all')] : ['orders']);
             } catch (\DomainException $e) {
                 throw new UserException($e->getMessage());
             }
@@ -101,7 +102,7 @@ class OrderController extends Controller
     public function actionView($id)
     {
         $order = $this->getOrder($id);
-        if ($order->status == Order::STATUS_NEW) {
+        if ($order->status == Order::STATUS_NEW && $order->user_id != Yii::$app->user->id) {
             $order->updateAttributes(['status' => Order::STATUS_NEW_VIEWED]);
         }
         $orderItemsProvider = (new OrderReadRepository())->getOrderItems($order);

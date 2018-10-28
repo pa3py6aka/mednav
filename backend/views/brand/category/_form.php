@@ -35,10 +35,6 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'descriptionBottom')
                 ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']])
                 ->label('Описание снизу &nbsp; &nbsp;' . Html::activeCheckbox($model, 'descriptionBottomOn')) ?>
-            <?= $form->field($model, 'metaTitleItem')
-                ->textInput(['maxlength' => true, 'id' => 'metaTitleItem']) ?>
-            <?= $form->field($model, 'metaDescriptionItem')
-                ->textarea(['rows' => 4, 'id' => 'metaDescriptionItem']) ?>
 
             <?= $form->field($model, 'metaTitleOther')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'metaDescriptionOther')->textarea(['rows' => 4]) ?>

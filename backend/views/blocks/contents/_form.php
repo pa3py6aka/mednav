@@ -44,9 +44,9 @@ use yii\helpers\Html;
     <?= $form->field($model, 'showTitle')->checkbox() ?>
 
     <?= $form->field($model, 'view', ['wrapperOptions' => ['style' => 'display:inline-block']])
-        ->inline(true)->radioList(ContentBlock::viewsArray($model->place != ContentBlock::PLACE_MAIN)) ?>
+        ->inline(true)->radioList(ContentBlock::viewsArray($model->place != ContentBlock::PLACE_MAIN), ['id' => 'view-input']) ?>
 
-    <?= $form->field($model, 'items')->input('number') ?>
+    <?= $form->field($model, 'items')->input('number', ['id' => 'items-input']) ?>
 
     <div class="form-group<?= $model->type == ContentBlock::TYPE_HTML ? '' : ' hidden' ?>" id="html-group">
         <label class="col-sm-1">Html</label>
@@ -84,6 +84,24 @@ use yii\helpers\Html;
     window.addEventListener('load', function (ev) {
         var overlay = '<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
 
+        function typeSelectorDependency()
+        {
+            var $selector = $('#type-selector');
+            if ($selector.val() !== '<?= ContentBlock::TYPE_HTML ?>') {
+                $('#for-module-selector').prop('disabled', false);
+                $('#html-group').addClass('hidden');
+                $('textarea[name*=html]').prop('disabled', true);
+                $('#add-html-btn').hide();
+                $('#view-input input,#items-input').prop('disabled', false);
+            } else {
+                $('#for-module-selector').prop('disabled', true);
+                $('#html-group').removeClass('hidden');
+                $('textarea[name*=html]').prop('disabled', false);
+                $('#add-html-btn').show();
+                $('#view-input input,#items-input').prop('disabled', true);
+            }
+        }
+
         $('#block-form').find('select[name*="htmlCategories"]').each(function (k, selector) {
             $(selector).multiselect(multiSelectConfig);
         });
@@ -114,19 +132,7 @@ use yii\helpers\Html;
             $('#html-blocks').append($row);
         });
 
-        $('#type-selector').on('change', function () {
-            if ($(this).val() !== '<?= ContentBlock::TYPE_HTML ?>') {
-                $('#for-module-selector').prop('disabled', false);
-                $('#html-group').addClass('hidden');
-                $('textarea[name*=html]').prop('disabled', true);
-                $('#add-html-btn').hide();
-            } else {
-                $('#for-module-selector').prop('disabled', true);
-                $('#html-group').removeClass('hidden');
-                $('textarea[name*=html]').prop('disabled', false);
-                $('#add-html-btn').show();
-            }
-        });
+        $('#type-selector').on('change', typeSelectorDependency);
 
         $(document).on('change', 'select[name*=htmlModules]', function () {
             var module = $(this).val();
@@ -196,5 +202,7 @@ use yii\helpers\Html;
                 }
             }
         };
+
+        typeSelectorDependency();
     });
 </script>

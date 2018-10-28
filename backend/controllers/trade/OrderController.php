@@ -2,6 +2,8 @@
 
 namespace backend\controllers\trade;
 
+use backend\forms\FullOrderSearch;
+use core\entities\Order\UserOrder;
 use Yii;
 use core\entities\Order\Order;
 use backend\forms\OrderSearch;
@@ -36,7 +38,7 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new OrderSearch();
+        $searchModel = new FullOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,15 +54,16 @@ class OrderController extends Controller
      */
     public function actionView($id)
     {
-        $order = $this->findModel($id);
-        $orderItemsProvider = new ActiveDataProvider([
+        $fullOrder = $this->findModel($id);
+        /*$orderItemsProvider = new ActiveDataProvider([
             'query' => $order->getOrderItems()->with('trade'),
             'pagination' => false,
-        ]);
+        ]);*/
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'orderItemsProvider' => $orderItemsProvider,
+            //'model' => $this->findModel($id),
+            'fullOrder' => $fullOrder,
+            //'orderItemsProvider' => $orderItemsProvider,
         ]);
     }
 
@@ -118,12 +121,12 @@ class OrderController extends Controller
      * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Order the loaded model
+     * @return UserOrder the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Order::findOne($id)) !== null) {
+        if (($model = UserOrder::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

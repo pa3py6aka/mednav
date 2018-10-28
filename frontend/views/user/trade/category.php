@@ -99,7 +99,7 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
                                 [
                                     'attribute' => 'name',
                                     'value' => function (Trade $trade) {
-                                        return Html::a(Html::encode($trade->name), $trade->getUrl());
+                                        return Html::a(Html::encode($trade->name), $trade->getUrl(), ['target' => '_blank']);
                                     },
                                     'format' => 'raw',
                                 ],

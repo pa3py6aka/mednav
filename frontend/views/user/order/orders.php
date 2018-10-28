@@ -48,7 +48,7 @@ $pagination = ArrayHelper::getValue($this->params, 'pagination');
                     'label' => '№ заказа',
                     'attribute' => 'id',
                     'value' => function (Order $order) {
-                        return Html::a($order->id, ['view', 'id' => $order->id]);
+                        return Html::a($order->getNumber(), ['view', 'id' => $order->id]);
                     },
                     'format' => 'raw',
                 ],
@@ -68,6 +68,7 @@ $pagination = ArrayHelper::getValue($this->params, 'pagination');
                             Html::a($sellerName, $order->forCompany->getUrl()) :
                             $sellerName;
                     },
+                    'format' => 'raw',
                 ],
                 ['class' => \yii\grid\ActionColumn::class, 'template' => '{view}']
             ],

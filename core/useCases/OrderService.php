@@ -6,6 +6,7 @@ namespace core\useCases;
 use core\components\Cart\Cart;
 use core\entities\Order\Order;
 use core\entities\Order\OrderItem;
+use core\entities\Order\UserOrder;
 use core\entities\Trade\Trade;
 use core\forms\OrderForm;
 use core\jobs\SendMailJob;
@@ -25,24 +26,32 @@ class OrderService
         $this->transaction = $transaction;
     }
 
-    public function create(OrderForm $form): void
+    public function create(OrderForm $form): UserOrder
     {
         /* @var $newOrders Order[] */
         $newOrders = [];
-        $this->transaction->wrap(function () use ($form, &$newOrders) {
+
+        $userOrder = UserOrder::create(
+            Yii::$app->user->id,
+            $form->name,
+            $form->phone,
+            $form->email,
+            $form->address
+        );
+
+        $this->transaction->wrap(function () use ($form, $userOrder, &$newOrders) {
+            $this->repository->saveUserOrder($userOrder);
+
             foreach ($form->amounts as $orderNum => $amounts) {
                 if (!count($amounts) || !($companyId = Trade::find()->select('company_id')->where(['id' => key($amounts)])->scalar())) {
                     continue;
                 }
                 $order = Order::create(
+                    $userOrder->id,
                     $companyId,
                     Yii::$app->user->id,
-                    ArrayHelper::getValue($form->deliveries, $orderNum) ?: null,
-                    ArrayHelper::getValue($form->comments, $orderNum, ''),
-                    $form->name,
-                    $form->phone,
-                    $form->email,
-                    $form->address
+                    ArrayHelper::getValue($form->deliveries, $orderNum),
+                    ArrayHelper::getValue($form->comments, $orderNum, '')
                 );
                 $this->repository->save($order);
                 $hasItems = false;
@@ -63,10 +72,12 @@ class OrderService
             (new Cart(Yii::$app->user->identity))->clear(); // Очистка корзины
         });
 
-        //Yii::debug($newOrders);
+        if (!$newOrders) {
+            throw new \DomainException("Ни одного заказа не сформировано.");
+        }
+
         // Отправка email продавцам о новом заказе
         foreach ($newOrders as $order) {
-            Yii::debug("ORDER PUSH " . $order->id);
             Yii::$app->queue->push(new SendMailJob([
                 'view' => 'order/new-order-received',
                 'params' => ['order' => $order],
@@ -74,5 +85,7 @@ class OrderService
                 'to' => [$order->forCompany->email => $order->forCompany->getFullName()],
             ]));
         }
+
+        return $userOrder;
     }
 }

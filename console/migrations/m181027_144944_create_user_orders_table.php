@@ -12,6 +12,8 @@ class m181027_144944_create_user_orders_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
         $this->delete('{{%orders}}');
 
         $this->createTable('{{%user_orders}}', [
@@ -24,7 +26,7 @@ class m181027_144944_create_user_orders_table extends Migration
             'status' => $this->tinyInteger()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
         $this->createIndex('idx-user_orders-user_id', '{{%user_orders}}', 'user_id');
         $this->addForeignKey('fk-user_orders-user_id', '{{%user_orders}}', 'user_id', '{{%users}}', 'id', 'SET NULL', 'CASCADE');
 

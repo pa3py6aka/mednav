@@ -26,16 +26,18 @@ class CategoryColumn extends DataColumn
         }
 
         if (is_callable($this->url)) {
-            $this->url = call_user_func($this->url, $model);
+            $url = call_user_func($this->url, $model);
         } else if (is_array($this->url)) {
             array_walk($this->url, function (&$value) use ($category) {
                 $value = str_replace('{id}', $category->id, $value);
             });
+            $url = $this->url;
         } else {
             $this->url = str_replace('{id}', $category->id, $this->url);
+            $url = $this->url;
         }
 
-        return Html::a(Html::encode($category->name), $this->url, [
+        return Html::a(Html::encode($category->name), $url, [
             'data-toggle' => 'tooltip',
             'title' => CategoryHelper::categoryParentsString($category),
         ]);

@@ -86,7 +86,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         <li><a href="<?= $trade->company->getUrl() ?>"><?= $trade->company->getFullName() ?></a></li>
                         <li><span class="kt-item-infoset">Телефон:</span> <?= $trade->company->getPhones(true) ?></li>
                         <li><span class="kt-item-infoset">Факс:</span> <?= Html::encode($trade->company->fax) ?></li>
-                        <li><span class="kt-item-infoset">Адрес:</span> <?= Html::encode($trade->company->address) ?></li>
+                        <li><span class="kt-item-infoset">Адрес:</span> <?= $trade->company->geo->name . ", " . Html::encode($trade->company->address) ?></li>
                         <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/trade/outsite', 'url' => $trade->company->id]) ?>" target="_blank"><?= Html::encode($trade->company->site) ?></a></li>
                     </ul>
                     <div>

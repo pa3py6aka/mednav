@@ -238,6 +238,11 @@ class BoardCategory extends ActiveRecord implements CategoryInterface
         return Board::find()->where(['category_id' => $ids])->count();
     }
 
+    public function getContextName(): string
+    {
+        return $this->context_name ?: $this->name;
+    }
+
     public function getRegions(): ActiveQuery
     {
         return $this->hasMany(BoardCategoryRegion::class, ['category_id' => 'id']);

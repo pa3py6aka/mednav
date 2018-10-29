@@ -49,8 +49,7 @@ class TradeHelper
 
     public static function contextCategoryLink(Trade $trade): string
     {
-        $name = $trade->category->context_name ?: $trade->category->name;
-        return Html::a($name, self::categoryUrl($trade->category, Yii::$app->session->get('geo', 'all')), ['class' => 'list-lnk']);
+        return Html::a($trade->category->getContextName(), self::categoryUrl($trade->category, Yii::$app->session->get('geo', 'all')), ['class' => 'list-lnk']);
     }
 
     public static function categoryUrl(TradeCategory $category = null, $geo = null): string

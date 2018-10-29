@@ -46,4 +46,6 @@ use core\entities\Board\queries\BoardCategoryQuery;
 interface CategoryInterface
 {
     public function getElementsCount(): int;
+
+    public function getContextName(): string;
 }

@@ -114,6 +114,11 @@ trait CategoryTrait
         return $this->title ?: $this->name;
     }
 
+    public function getContextName(): string
+    {
+        return $this->context_name ?: $this->name;
+    }
+
     public function behaviors() {
         return [
             [

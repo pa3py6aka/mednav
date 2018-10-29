@@ -28,13 +28,12 @@ class CategoryColumn extends DataColumn
         if (is_callable($this->url)) {
             $url = call_user_func($this->url, $model);
         } else if (is_array($this->url)) {
-            array_walk($this->url, function (&$value) use ($category) {
+            $url = $this->url;
+            array_walk($url, function (&$value) use ($category) {
                 $value = str_replace('{id}', $category->id, $value);
             });
-            $url = $this->url;
         } else {
-            $this->url = str_replace('{id}', $category->id, $this->url);
-            $url = $this->url;
+            $url = str_replace('{id}', $category->id, $this->url);
         }
 
         return Html::a(Html::encode($category->name), $url, [

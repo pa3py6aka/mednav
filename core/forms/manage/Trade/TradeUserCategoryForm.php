@@ -18,6 +18,7 @@ class TradeUserCategoryForm extends Model
     public $wholeSale;
 
     private $_userCategory;
+    private $categories;
 
     public function __construct(TradeUserCategory $userCategory = null, array $config = [])
     {
@@ -47,13 +48,23 @@ class TradeUserCategoryForm extends Model
             [['name', 'categoryId', 'uomId', 'currencyId'], 'required'],
             ['name', 'string', 'max' => 255],
             ['categoryId', 'exist', 'targetClass' => TradeCategory::class, 'targetAttribute' => 'id'],
+            ['categoryId', 'validateCategory'],
             [['uomId', 'currencyId'], 'integer'],
             ['wholeSale', 'boolean']
         ];
     }
 
+    public function validateCategory($attribute, $params)
+    {
+        $category = TradeCategory::findOne((int) $this->$attribute);
+        if (!$category->enabled) {
+            $this->addError($attribute, 'Раздел “' . $category->name . '” недоступен для добавления товара, выберите вложенный подраздел.');
+        }
+    }
+
     public function beforeValidate()
     {
+        $this->categories = $this->categoryId;
         if (is_array($this->categoryId)) {
             $this->categoryId = array_diff($this->categoryId, ['', 0]);
             $categoryId = array_pop($this->categoryId);
@@ -61,6 +72,14 @@ class TradeUserCategoryForm extends Model
         }
 
         return parent::beforeValidate();
+    }
+
+    public function afterValidate()
+    {
+        if ($this->hasErrors()) {
+            $this->categoryId = $this->categories;
+        }
+        parent::afterValidate();
     }
 
     public function isNew(): bool

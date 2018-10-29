@@ -24,9 +24,9 @@ class CategorySelectAction extends Action
         $category = $this->entity::findOne($id);
 
         if ($category->depth < 2) {
-            $items = $category->getChildren()->orderBy('lft')->active()->enabled()->select(['id', 'name'])->asArray()->all();
+            $items = $category->getChildren()->orderBy('lft')->active()->select(['id', 'name'])->asArray()->all();
         } else if ($category->depth == 2) {
-            $items = $category->getDescendants()->orderBy('lft')->select(['id', 'name', 'depth'])->asArray()->active()->enabled()->all();
+            $items = $category->getDescendants()->orderBy('lft')->select(['id', 'name', 'depth'])->asArray()->active()->all();
             array_walk($items, function (&$item, $key) {
                 $item = [
                     'id' => $item['id'],

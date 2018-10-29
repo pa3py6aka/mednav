@@ -53,14 +53,14 @@ class SelectCategoryWidget extends Widget
         $n = 0;
         foreach ($this->model->categoryId as $n => $categoryId) {
             if ($n == 0) {
-                $categories = ArrayHelper::map($this->entity::find()->enabled()->roots()->asArray()->all(), 'id', 'name');
+                $categories = ArrayHelper::map($this->entity::find()->active()->roots()->asArray()->all(), 'id', 'name');
             } else if ($n == 2) {
-                $categories = ArrayHelper::map($this->entity::findOne($this->model->categoryId[$n - 1])->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
+                $categories = ArrayHelper::map($this->entity::findOne($this->model->categoryId[$n - 1])->getDescendants()->active()->all(), 'id', function ($item) {
                     return ($item['depth'] > 2 ? str_repeat('-', $item['depth'] - 2) . ' ' : '') . $item['name'];
                 });
                 $this->model->categoryId[$n] = end($this->model->categoryId);
             } else if ($n == 1) {
-                $categories = ArrayHelper::map($this->entity::findOne($this->model->categoryId[$n - 1])->getChildren()->active()->enabled()->all(), 'id', 'name');
+                $categories = ArrayHelper::map($this->entity::findOne($this->model->categoryId[$n - 1])->getChildren()->active()->all(), 'id', 'name');
             }
 
             if ($n < 3) {
@@ -77,11 +77,11 @@ class SelectCategoryWidget extends Widget
         if ($n < 2 && $this->model->categoryId[$n]) {
             $category = $this->entity::findOne($this->model->categoryId[$n]);
             if ($category->depth == 2) {
-                $children = ArrayHelper::map($category->getDescendants()->active()->enabled()->all(), 'id', function ($item) {
+                $children = ArrayHelper::map($category->getDescendants()->active()->all(), 'id', function ($item) {
                     return ($item['depth'] > 3 ? str_repeat('-', $item['depth'] - 3) . ' ' : '') . $item['name'];
                 });
             } else {
-                $children = ArrayHelper::map($category->getChildren()->active()->enabled()->all(), 'id', 'name');
+                $children = ArrayHelper::map($category->getChildren()->active()->all(), 'id', 'name');
             }
 
             if ($children) {

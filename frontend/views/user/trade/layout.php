@@ -23,8 +23,8 @@ $this->beginContent('@frontend/views/layouts/main.php');
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Мои товары']) ?>
-        <h1>Мои товары</h1>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP)]) ?>
+        <h1><?= Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP) ?></h1>
 
         <p>
             <a href="<?= Url::to(['create']) ?>" class="btn btn-success">Добавить товар</a>

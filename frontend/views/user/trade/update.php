@@ -9,7 +9,7 @@ use frontend\widgets\PhotosManagerWidget;
 /* @var $photosForm \core\forms\manage\PhotosForm */
 /* @var $tab string */
 
-$this->title = 'Личный кабинет | Товары | Редактирование товара';
+$this->title = 'Личный кабинет | ' . Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP) . ' | Редактирование товара';
 
 ?>
 <div class="row">
@@ -18,7 +18,7 @@ $this->title = 'Личный кабинет | Товары | Редактиро�
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => 'Товары', 'url' => ['/user/trade/active']], 'Редактирование товара']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP), 'url' => ['/user/trade/active']], 'Редактирование товара']) ?>
         <h1>Редактирование товара</h1>
 
         <ul class="nav nav-tabs" role="tablist">

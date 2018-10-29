@@ -20,7 +20,7 @@ $link = Yii::$app->controller->action->id;
             <li role="presentation"<?= $link == 'profile' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/profile']) ?>">Мои данные</a></li>
             <?php if ($user->isCompany()): ?>
                 <li role="presentation"<?= $link == 'company' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/company']) ?>">Моя компания</a></li>
-                <li role="presentation"<?= $controller == 'user/trade' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/trade/active']) ?>">Товары</a></li>
+                <li role="presentation"<?= $controller == 'user/trade' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/trade/active']) ?>"><?= Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP) ?></a></li>
                 <li role="presentation"<?= $controller == 'user/cnews' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/cnews/active']) ?>"><?= Yii::$app->settings->get(\core\components\SettingsManager::CNEWS_NAME_UP) ?></a></li>
                 <li role="presentation"<?= $controller == 'user/expo' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/expo/active']) ?>"><?= Yii::$app->settings->get(\core\components\SettingsManager::EXPO_NAME_UP) ?></a></li>
             <?php endif; ?>

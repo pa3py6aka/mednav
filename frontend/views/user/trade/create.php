@@ -18,7 +18,7 @@ ImageManagerAsset::register($this);
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => 'Товары', 'url' => ['/user/trade/active']], 'Новый товар']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP), 'url' => ['/user/trade/active']], 'Новый товар']) ?>
         <h1>Новый товар</h1>
 
         <?= $this->render('_form', ['model' => $model]) ?>

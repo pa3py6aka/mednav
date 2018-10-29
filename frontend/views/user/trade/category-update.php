@@ -17,7 +17,7 @@ $this->title = 'Личный кабинет | Редактирование по�
 
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show([
-            ['label' => 'Товары', 'url' => ['/user/trade/active']],
+            ['label' => Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP), 'url' => ['/user/trade/active']],
             'Редактирование категории'
         ]) ?>
         <h1>Редактирование категории</h1>

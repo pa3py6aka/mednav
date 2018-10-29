@@ -21,7 +21,7 @@ $this->title = 'Личный кабинет | ' . Html::encode($category->name);
     </div>
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show([
-            ['label' => 'Товары', 'url' => ['/user/trade/active']],
+            ['label' => Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP), 'url' => ['/user/trade/active']],
             Html::encode($category->name)
         ]) ?>
 

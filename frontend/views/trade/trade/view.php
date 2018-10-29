@@ -74,8 +74,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         <?php endforeach; ?>
                     </ul>
                     <?php endif; ?>
-                    <?php if ($trade->company->site): ?>
-                        <a href="<?= Url::to(['/site/outsite', 'url' => $trade->company->site]) ?>">Товар на сайте продавца</a>
+                    <?php if ($trade->external_link): ?>
+                        <a href="/trade/vendor?id=<?= $trade->id ?>" target="_blank">Товар на сайте продавца</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -87,7 +87,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         <li><span class="kt-item-infoset">Телефон:</span> <?= $trade->company->getPhones(true) ?></li>
                         <li><span class="kt-item-infoset">Факс:</span> <?= Html::encode($trade->company->fax) ?></li>
                         <li><span class="kt-item-infoset">Адрес:</span> <?= Html::encode($trade->company->address) ?></li>
-                        <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $trade->company->site]) ?>"><?= Html::encode($trade->company->site) ?></a></li>
+                        <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/trade/outsite', 'url' => $trade->company->id]) ?>" target="_blank"><?= Html::encode($trade->company->site) ?></a></li>
                     </ul>
                     <div>
                         <?= MessageWidget::widget([

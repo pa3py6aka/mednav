@@ -17,7 +17,7 @@ return [
         'signup' => 'auth/signup/request',
         'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
-        '<module:(board|trade|company|brand|cnews|news|articles|expo|site)>/outsite' => 'site/outsite',
+        '<module:(board|company|brand|cnews|news|articles|expo|site)>/outsite' => 'site/outsite',
 
         'account' => 'user/account/index',
         'account/<_a:[\w-]+>' => 'user/account/<_a>',
@@ -49,6 +49,7 @@ return [
 
         // Товары
         'trade/<id:\d+>-<slug:[\w-]+>' => 'trade/trade/view',
+        'trade/<_a:(outsite|vendor)>' => 'trade/trade/<_a>',
 
         'trade/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'trade/trade/list',
         'trade/<region:[\w-]+>/page<page:\d+>' => 'trade/trade/list',

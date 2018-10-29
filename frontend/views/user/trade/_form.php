@@ -32,6 +32,8 @@ use core\actions\UploadAction;
 
 <?= $form->field($model, 'stock')->checkbox() ?>
 
+<?= $form->field($model, 'externalLink')->textInput(['maxlength' => true]) ?>
+
 <?= $form->field($model, 'note')->textInput(['maxlength' => true]) ?>
 
 <?= $form->field($model, 'description')->widget(CKEditor::class, Yii::$app->params['CKEditorPreset']) ?>

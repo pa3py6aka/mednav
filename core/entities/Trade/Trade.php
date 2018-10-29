@@ -39,6 +39,7 @@ use yii\helpers\Url;
  * @property int $price
  * @property string $wholesale_prices
  * @property int $stock
+ * @property string $external_link [varchar(255)]
  * @property string $note
  * @property string $description
  * @property int $main_photo_id
@@ -79,6 +80,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         $code,
         $price,
         $stock,
+        $externalLink,
         $note,
         $description,
         $status
@@ -99,6 +101,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         $trade->code = $code;
         $trade->price = $price ? PriceHelper::optimize($price) : null;
         $trade->stock = $stock;
+        $trade->external_link = $externalLink;
         $trade->note = $note;
         $trade->description = $description;
         $trade->setStatus($status);
@@ -120,6 +123,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         $code,
         $price,
         $stock,
+        $externalLink,
         $note,
         $description
     ): void
@@ -138,6 +142,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         $this->code = $code;
         $this->price = $price ? PriceHelper::optimize($price) : null;
         $this->stock = $stock;
+        $this->external_link = $externalLink;
         $this->note = $note;
         $this->description = $description;
     }

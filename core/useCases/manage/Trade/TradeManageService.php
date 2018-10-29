@@ -58,6 +58,7 @@ class TradeManageService
             $form->code,
             $form->price,
             $form->stock,
+            $form->externalLink,
             $form->note,
             $form->description,
             $status
@@ -95,6 +96,7 @@ class TradeManageService
             $form->code,
             $form->price,
             $form->stock,
+            $form->externalLink,
             $form->note,
             $form->description
         );

@@ -25,6 +25,7 @@ class TradeManageForm extends Model
     public $wholeSalePrice;
     public $wholeSaleFrom;
     public $stock;
+    public $externalLink;
     public $note;
     public $description;
     public $tags;
@@ -54,6 +55,7 @@ class TradeManageForm extends Model
                 $this->wholeSaleFrom[$n] = $wholesale['from'];
             }
             $this->stock = $trade->stock;
+            $this->externalLink = $trade->external_link;
             $this->note = $trade->note;
             $this->description = $trade->description;
             $this->tags = implode(', ', $trade->getTags()->select('name')->column());
@@ -89,6 +91,8 @@ class TradeManageForm extends Model
 
             ['stock', 'boolean'],
 
+            ['externalLink', 'url'],
+
             ['note', 'string', 'max' => 80],
 
             ['description', 'required'],
@@ -105,7 +109,7 @@ class TradeManageForm extends Model
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_ADMIN_CREATE] = [
             'userId', 'categoryId', 'name', 'metaTitle', 'metaKeywords', 'metaDescription', 'slug', 'code', 'price',
-            'wholeSalePrice', 'wholeSaleFrom', 'stock', 'note', 'description', 'tags', 'photos'
+            'wholeSalePrice', 'wholeSaleFrom', 'stock', 'externalLink', 'note', 'description', 'tags', 'photos'
         ];
         $scenarios[self::SCENARIO_ADMIN_EDIT] = array_diff($scenarios[self::SCENARIO_ADMIN_CREATE], ['photos']);
         $scenarios[self::SCENARIO_USER_CREATE] = array_diff($scenarios[self::SCENARIO_ADMIN_CREATE], [
@@ -166,6 +170,7 @@ class TradeManageForm extends Model
             'wholeSalePrice' => 'Оптовая цена',
             'wholeSaleFrom' => 'Оптовая цена от',
             'stock' => 'В наличии',
+            'externalLink' => 'Товар на сайте продавца',
             'note' => 'Уточнение',
             'description' => 'Полное описание',
             'tags' => 'Теги',

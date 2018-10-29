@@ -17,6 +17,14 @@ use yii\web\NotFoundHttpException;
 
 class TradeReadRepository
 {
+    public function get($id): Trade
+    {
+        if (!$trade = Trade::find()->where(['id' => $id])->limit(1)->one()) {
+            throw new NotFoundHttpException("Товар не найден");
+        }
+        return $trade;
+    }
+
     public function getByIdAndSlug($id, $slug): Trade
     {
         if (!$trade = Trade::find()->where(['id' => $id, 'slug' => $slug])->with('user.company.deliveries.delivery')->limit(1)->one()) {

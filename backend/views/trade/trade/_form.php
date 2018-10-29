@@ -51,6 +51,8 @@ ImageManagerAsset::register($this);
 
         <?= $form->field($model, 'stock')->checkbox() ?>
 
+        <?= $form->field($model, 'externalLink')->textInput(['maxlength' => true]) ?>
+
         <?= $form->field($model, 'note')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'description')->widget(CKEditor::class, ['editorOptions' => ['preset' => 'full']]) ?>

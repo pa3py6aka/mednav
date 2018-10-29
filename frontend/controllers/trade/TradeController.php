@@ -3,12 +3,14 @@
 namespace frontend\controllers\trade;
 
 
+use core\entities\Company\Company;
 use core\readModels\Trade\TradeReadRepository;
 use core\repositories\Trade\TradeCategoryRepository;
 use core\repositories\GeoRepository;
 use Yii;
 use yii\base\Module;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class TradeController extends Controller
 {
@@ -78,5 +80,19 @@ class TradeController extends Controller
         return $this->render('view', [
             'trade' => $trade
         ]);
+    }
+
+    public function actionOutsite($url)
+    {
+        if (!$company = Company::findOne((int) $url)) {
+            throw new NotFoundHttpException();
+        }
+        return $this->redirect($company->site);
+    }
+
+    public function actionVendor($id)
+    {
+        $trade = $this->readRepository->get((int) $id);
+        return $this->redirect($trade->external_link);
     }
 }

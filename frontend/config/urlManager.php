@@ -60,6 +60,7 @@ return [
         'trade' => 'trade/trade/list',
 
         'order/cart/successfully=id<id:\d+>' => 'order/cart/successfully',
+        'order/cart' => 'user/order/cart',
 
         // Статьи
         'articles/<id:\d+>-<slug:[\w-]+>' => 'article/article/view',

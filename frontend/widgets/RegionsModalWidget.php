@@ -41,6 +41,8 @@ class RegionsModalWidget extends Widget
         parent::init();
         if ($this->type === null) {
             $this->view->registerJs($this->getJs());
+        } else if ($this->type === 'delivery') {
+            //$this->registerDeliveryJs();
         }
     }
 
@@ -112,6 +114,15 @@ class RegionsModalWidget extends Widget
       $('#form-geo-id').val(id).parent().removeClass('has-error').addClass('has-success').find('.help-block-error').text('');
       $('#modalRegion').modal('hide');
     });
+JS;
+    }
+
+    public static function getDeliveryJs(): void
+    {
+        $js = <<<JS
+$(document).on('change', '#modalRegion .v-checkbox', function(e) {
+  alert(8);
+});
 JS;
     }
 }

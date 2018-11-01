@@ -26,7 +26,7 @@ $orderNumber = 1;
     </div>
 </div>
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-10 col-md-offset-1" id="cart-full-block">
         <h1>Корзина</h1>
 
         <?php foreach ($cartItems as $order): ?>
@@ -55,7 +55,7 @@ $orderNumber = 1;
             </div>
 
             <?php foreach ($order as $cartItem): ?>
-                <div class="row">
+                <div class="row" data-row-item="<?= $cartItem->trade_id ?>">
                     <div class="col-md-1 col-sm-1 col-xs-12">
                         <div>&nbsp;</div>
                         <div class="cart-item-img">
@@ -101,7 +101,7 @@ $orderNumber = 1;
                     </div>
                     <div class="col-md-1 col-sm-6 col-xs-12">
                         <div>&nbsp;</div>
-                        <div><a href="#" title="Удалить"><i class="glyphicon glyphicon-remove city-icon-grey"></i></a></div>
+                        <div><a href="#" data-button="cart-remove-item" data-trade-id="<?= $cartItem->trade_id ?>" title="Удалить"><i class="glyphicon glyphicon-remove city-icon-grey"></i></a></div>
                     </div>
                 </div>
             <?php endforeach; ?>

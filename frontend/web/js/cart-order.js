@@ -64,5 +64,40 @@ $(function(){
         $form.submit();
     });
 
+    $(document).on('click', '[data-button=cart-remove-item]', function (e) {
+        e.preventDefault();
+        var tradeId = $(this).attr('data-trade-id'),
+            $loadBlock = $('[data-row-item=' + tradeId + ']');
+        $.ajax({
+            url: '/order/cart/remove-item',
+            method: "post",
+            dataType: "json",
+            data: {tradeId: tradeId},
+            beforeSend: function () {
+                $loadBlock.prepend(Mednav.overlay);
+            },
+            success: function(data, textStatus, jqXHR) {
+                if (data.result === 'success') {
+                    if (data.count === 0) {
+                        window.location.href = '/';
+                    } else {
+                        var $orderRow = $loadBlock.closest('[data-type=order-row]');
+                        $loadBlock.remove();
+                        if (!$orderRow.find('.row[data-row-item]').length) {
+                            $orderRow.remove();
+                        }
+                        updateSum();
+                        $('.cart-block-box').find('.products-amount').text(data.count);
+                    }
+                } else {
+                    alert(data.message);
+                }
+            },
+            complete: function () {
+                $loadBlock.find('.overlay').remove();
+            }
+        });
+    });
+
     updateSum();
 });

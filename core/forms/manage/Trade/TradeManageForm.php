@@ -91,7 +91,7 @@ class TradeManageForm extends Model
 
             ['stock', 'boolean'],
 
-            ['externalLink', 'url'],
+            ['externalLink', 'url', 'enableIDN' => true, 'defaultScheme' => 'http'],
 
             ['note', 'string', 'max' => 80],
 

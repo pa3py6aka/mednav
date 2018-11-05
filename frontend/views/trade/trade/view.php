@@ -117,7 +117,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                 <h4>Описание товара</h4>
                 <?= TextHelper::out($trade->description, 'trade') ?>
 
-                <div class="kt-item-vendgoods">Все товары продавца в <a href="<?= Url::to(['/trade/trade/list', 'category' => $trade->category->slug, 'region' => 'all']) ?>"><?= $trade->category->getContextName() ?></a> (<?= $trade::find()->countInCategoryForCompany($trade->category_id, $trade->company_id) ?>)</div>
+                <div class="kt-item-vendgoods">Все товары продавца в <a href="<?= $trade->company->getUrl('trades', false, ['category' => $trade->category_id])/*Url::to(['/trade/trade/list', 'category' => $trade->category->slug, 'region' => 'all'])*/ ?>"><?= $trade->category->getContextName() ?></a> (<?= $trade::find()->countInCategoryForCompany($trade->category_id, $trade->company_id) ?>)</div>
                 <div class="kt-notice-price">
                     Указанная цена на Комплекс изделий для проведения вертикального подводного вытяжения отделов позвоночника КИВ ПВП - "ТММ", носит ознакомительный характер и не является публичной офертой, определяемой положениями Статьи 437 (2) ГК РФ. Для уточнения цены, отправте запрос продавцу.
                     <br><br>

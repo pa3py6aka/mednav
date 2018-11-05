@@ -32,7 +32,7 @@ use core\actions\UploadAction;
 
 <?= $form->field($model, 'stock')->checkbox() ?>
 
-<?= $form->field($model, 'externalLink')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'externalLink')->textInput(['maxlength' => true, 'placeholder' => 'http://site.ru/tovar.html']) ?>
 
 <?= $form->field($model, 'note')->textInput(['maxlength' => true]) ?>
 

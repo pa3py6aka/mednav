@@ -171,10 +171,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         $this->status = $status;
     }
 
-    public function getUrl($page = null, $absolute = false): string
+    public function getUrl($page = null, $absolute = false, $params = []): string
     {
+        $urlArray = array_merge(['/company/company/' . ($page ?: 'view'), 'slug' => $this->slug, 'id' => $this->id], $params);
         return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
-            . Url::to(['/company/company/' . ($page ?: 'view'), 'slug' => $this->slug, 'id' => $this->id]);
+            . Url::to($urlArray);
     }
 
     public function getLogoUrl($absolute = false): string

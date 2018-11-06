@@ -5,6 +5,8 @@ namespace core\components;
 
 class Settings
 {
+    public const GENERAL_MODALS_SHOWTIME = 'generalModalsShowtime';
+
     public const USER_EMAIL_ACTIVATION = 'userEmailActivation';
     public const USER_PREMODERATION = 'userPremoderation';
 
@@ -148,6 +150,8 @@ class Settings
     public const EXPO_DESCRIPTION_BOTTOM_ON = 'expoDescriptionBottomOn';
 
     protected $default = [
+        self::GENERAL_MODALS_SHOWTIME => 4,
+
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
 

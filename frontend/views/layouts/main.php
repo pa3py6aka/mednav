@@ -106,7 +106,7 @@ AppAsset::register($this);
     </div>
 
     <?php //= \common\widgets\Alert::widget() ?>
-    <?= \pa3py6aka\yii2\ModalAlert::widget() ?>
+    <?= \pa3py6aka\yii2\ModalAlert::widget(['showTime' => Yii::$app->settings->get(\core\components\SettingsManager::GENERAL_MODALS_SHOWTIME)]) ?>
 
     <div class="scrollup hidden-sm hidden-xs">
         <i class="fa fa-chevron-up"></i>

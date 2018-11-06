@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use core\helpers\HtmlHelper;
 use core\helpers\TradeHelper;
 use core\helpers\TextHelper;
 use core\helpers\PriceHelper;
@@ -51,7 +52,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                             continue;
                         } ?>
                         <a class="fancybox" href="<?= $photo->getUrl('max') ?>" data-fancybox-group="gallery">
-                            <img src="<?= $photo->getUrl() ?>" alt="<?= $trade->getTitle() ?>" class="img-responsive">
+                            <img src="<?= $photo->getUrl() ?>" alt="<?= $trade->getTitle() ?>" class="img-responsive" width=”55” height=”55”>
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -84,10 +85,10 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                 <div class="kt-item-vendor-text">
                     <ul>
                         <li><a href="<?= $trade->company->getUrl() ?>"><?= $trade->company->getFullName() ?></a></li>
-                        <li><span class="kt-item-infoset">Телефон:</span> <?= $trade->company->getPhones(true) ?></li>
-                        <li><span class="kt-item-infoset">Факс:</span> <?= Html::encode($trade->company->fax) ?></li>
-                        <li><span class="kt-item-infoset">Адрес:</span> <?= $trade->company->geo->name . ", " . Html::encode($trade->company->address) ?></li>
-                        <li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/trade/outsite', 'url' => $trade->company->id]) ?>" target="_blank"><?= Html::encode($trade->company->site) ?></a></li>
+                        <?= HtmlHelper::infosetListItem('Телефон:', $trade->company->getPhones(true)) ?>
+                        <?= HtmlHelper::infosetListItem('Факс:', Html::encode($trade->company->fax)) ?>
+                        <?= HtmlHelper::infosetListItem('Адрес:', [$trade->company->geo->name, Html::encode($trade->company->address)]) ?>
+                        <?= HtmlHelper::infosetListItem('Сайт:', '<a href="' . Url::to(['/trade/outsite', 'url' => $trade->company->id]) .'" target="_blank">'. Html::encode($trade->company->site) .'</a>', $trade->company->site) ?>
                     </ul>
                     <div>
                         <?= MessageWidget::widget([

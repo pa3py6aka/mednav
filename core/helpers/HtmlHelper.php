@@ -108,4 +108,22 @@ class HtmlHelper
 
         return Breadcrumbs::widget(['links' => $items]);
     }
+
+    public static function infosetListItem($name, $value, $enable = null, $glue = ', '): string
+    {
+        if (is_array($value)) {
+            $value = implode($glue, array_filter($value));
+        }
+
+        if (func_num_args() > 2) {
+            $enable = (bool) func_get_arg(2);
+        } else {
+            $enable = (bool) $value;
+        }
+
+        if ($enable) {
+            return '<li><span class="kt-item-infoset">' . $name . ':</span> ' . $value . '</li>';
+        }
+        return '';
+    }
 }

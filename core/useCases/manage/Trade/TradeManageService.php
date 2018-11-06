@@ -5,6 +5,7 @@ namespace core\useCases\manage\Trade;
 
 use core\components\SettingsManager;
 use core\entities\Company\CompanyDelivery;
+use core\entities\Company\CompanyDeliveryRegion;
 use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeTag;
@@ -21,6 +22,7 @@ use core\repositories\Trade\TradeRepository;
 use core\services\TransactionManager;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\StringHelper;
 
 class TradeManageService
@@ -187,23 +189,45 @@ class TradeManageService
         }
     }
 
-    public function saveCompanyDeliveries($companyId, array $deliveries, array $terms, array $regions)
+    public function saveCompanyDeliveries($companyId, array $deliveries, array $terms, array $countries, array $regions)
     {
-        $this->transaction->wrap(function () use ($companyId, $deliveries, $terms, $regions) {
+        $this->transaction->wrap(function () use ($companyId, $deliveries, $terms, $regions, $countries) {
             $CDRepository = new CompanyDeliveryRepository();
             $CDRepository->clearByCompany($companyId);
+
+            // Сохраняем регионы
+            foreach ($countries as $countryId) {
+                $CDRegion = CompanyDeliveryRegion::create($companyId, $countryId, $countryId);
+                if (!$CDRegion->save()) {
+                    throw new \RuntimeException("Ошибка записи в базу.");
+                }
+                ArrayHelper::remove($regions, $countryId);
+            }
+
+            foreach ($regions as $countryId => $regionIds) {
+                if (in_array($countryId, $countries)) { continue; }
+
+                foreach ($regionIds as $regionId) {
+                    $CDRegion = CompanyDeliveryRegion::create($companyId, $countryId, $regionId);
+                    if (!$CDRegion->save()) {
+                        throw new \RuntimeException("Ошибка записи в базу.");
+                    }
+                }
+            }
+
+            // Сохраняем доставки
             foreach ($deliveries as $deliveryId => $nothing) {
                 $companyDelivery = CompanyDelivery::create($companyId, $deliveryId, ArrayHelper::getValue($terms, $deliveryId, ''));
                 $CDRepository->save($companyDelivery);
 
-                $dRegions = ArrayHelper::getValue($regions, $deliveryId, []);
+                /*$dRegions = ArrayHelper::getValue($regions, $deliveryId, []);
                 $dRegions = in_array(Yii::$app->params['geoRussiaId'], $dRegions) ? [Yii::$app->params['geoRussiaId']] : $dRegions;
                 foreach ($dRegions as $geoId) {
                     $CDRegion = CompanyDeliveryRegions::create($companyDelivery->id, $geoId);
                     if (!$CDRegion->save()) {
                         throw new \RuntimeException("Ошибка записи в базу.");
                     }
-                }
+                }*/
             }
         });
     }

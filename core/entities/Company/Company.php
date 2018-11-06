@@ -61,6 +61,7 @@ use yii\helpers\Url;
  * @property Board[] $boards
  * @property CNews[] $cNews
  * @property CompanyDelivery[] $deliveries
+ * @property CompanyDeliveryRegion $deliveryRegions
  * @property Trade[] $trades
  * @property Article[] $articles
  */
@@ -382,6 +383,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getDeliveries(): ActiveQuery
     {
         return $this->hasMany(CompanyDelivery::class, ['company_id' => 'id']);
+    }
+
+    public function getDeliveryRegions(): ActiveQuery
+    {
+        return $this->hasMany(CompanyDeliveryRegion::class, ['company_id' => 'id']);
     }
 
     public function getTrades($active = true): ActiveQuery

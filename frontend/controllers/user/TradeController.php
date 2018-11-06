@@ -10,6 +10,7 @@ use core\actions\MovePhotoAction;
 use core\actions\UploadAction;
 use core\behaviors\ActiveUserBehavior;
 use core\entities\Company\CompanyDelivery;
+use core\entities\Company\CompanyDeliveryRegion;
 use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
@@ -127,9 +128,10 @@ class TradeController extends Controller
             try {
                 $this->service->saveCompanyDeliveries(
                     $this->_user->company->id,
-                    Yii::$app->request->post('delivery'),
-                    Yii::$app->request->post('description'),
-                    Yii::$app->request->post('regions')
+                    Yii::$app->request->post('delivery', []),
+                    Yii::$app->request->post('description', []),
+                    Yii::$app->request->post('countries', []),
+                    Yii::$app->request->post('regions', [])
                 );
                 Yii::$app->session->setFlash("success", "Данные сохранены.");
             } catch (\DomainException $e) {
@@ -138,11 +140,13 @@ class TradeController extends Controller
         }
 
         $allDeliveries = TradeDelivery::find()->all();
-        $userDeliveries = Yii::$app->user->identity->company->getDeliveries()->with('geos')->indexBy('delivery_id')->all();
+        $userDeliveries = Yii::$app->user->identity->company->getDeliveries()/*->with('geos')*/->indexBy('delivery_id')->all();
+        $userDeliveryRegions = Yii::$app->user->identity->company->getDeliveryRegions()->select('country_id')->indexBy('geo_id')->column();
 
         return $this->render('settings', [
             'allDeliveries' => $allDeliveries,
             'userDeliveries' => $userDeliveries,
+            'userDeliveryRegions' => $userDeliveryRegions,
         ]);
     }
 
@@ -304,6 +308,27 @@ class TradeController extends Controller
 
         return $this->render('categories', [
             'provider' => $provider,
+        ]);
+    }
+
+    public function actionGetCountryRegions()
+    {
+        $countryId = (int) Yii::$app->request->post('countryId');
+        $regionIds = Yii::$app->request->post('regionIds', []);
+
+        if (count($regionIds)) {
+            $selectedIds = $regionIds;
+        } else {
+            $selectedIds = CompanyDeliveryRegion::find()
+                ->select('geo_id')
+                ->where(['company_id' => Yii::$app->user->identity->company->id])
+                ->column();
+        }
+
+        return RegionsModalWidget::widget([
+            'type' => 'delivery',
+            'countryId' => $countryId,
+            'selectedIds' => $selectedIds,
         ]);
     }
 

@@ -123,4 +123,15 @@ class CompanyHelper
 
         return $categories;
     }
+
+    public static function regionsSelectString($countryId, array $companyDeliveryRegions): string
+    {
+        $companyDeliveryRegions = array_filter($companyDeliveryRegions, function($v, $k) {
+            return $v != $k;
+        }, ARRAY_FILTER_USE_BOTH);
+        $counts = array_count_values($companyDeliveryRegions);
+        return isset($counts[$countryId]) && $counts[$countryId] > 0
+            ? Pluralize::get($counts[$countryId], 'Выбран', 'Выбрано', 'Выбрано', true) . ' ' . Pluralize::get($counts[$countryId], 'регион', 'региона', 'регионов')
+            : 'Выбрать регионы';
+    }
 }

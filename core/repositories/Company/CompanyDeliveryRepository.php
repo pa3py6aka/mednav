@@ -4,6 +4,7 @@ namespace core\repositories\Company;
 
 
 use core\entities\Company\CompanyDelivery;
+use core\entities\Company\CompanyDeliveryRegion;
 use core\repositories\NotFoundException;
 
 class CompanyDeliveryRepository
@@ -26,6 +27,7 @@ class CompanyDeliveryRepository
     public function clearByCompany($companyId): void
     {
         CompanyDelivery::deleteAll(['company_id' => $companyId]);
+        CompanyDeliveryRegion::deleteAll(['company_id' => $companyId]);
     }
 
     public function save(CompanyDelivery $companyDelivery)

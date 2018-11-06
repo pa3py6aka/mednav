@@ -36,6 +36,9 @@ class RegionsModalWidget extends Widget
     /* @var int|null ID типа доставки для type => delivery */
     public $deliveryId;
 
+    /* @var int|null ID страны для type => delivery */
+    public $countryId;
+
     public function init()
     {
         parent::init();
@@ -57,7 +60,12 @@ class RegionsModalWidget extends Widget
     private function getCategoriesArray(): array
     {
         return Yii::$app->cache->getOrSet(self::CACHE_KEY, function () {
-            $countries = Geo::find()->countries()->active()->all();
+            if ($this->type === 'delivery' && $this->countryId) {
+                $countries[] = Geo::findOne($this->countryId);
+            } else {
+                $countries = Geo::find()->countries()->active()->all();
+            }
+
             $countriesArray = [];
             foreach ($countries as $country) {
                 $countriesArray[$country->id]['country'] = $country;
@@ -93,8 +101,14 @@ class RegionsModalWidget extends Widget
                 'data-id' => $region->id,
                 'data-geo' => 'link',
             ]);
-        } else if ($this->type === 'delivery') {
+        } else if ($this->type === 'delivery' && $this->deliveryId) { // Не используется после изменения в ТЗ
             return Html::checkbox('regions[' . $this->deliveryId . '][]', in_array($region->id, $this->selectedIds), [
+                'label' => $text,
+                'class' => 'v-checkbox',
+                'value' => $region->id,
+            ]);
+        } else if ($this->type === 'delivery' && $this->countryId) {
+            return Html::checkbox("regions[{$this->countryId}][]", in_array($region->id, $this->selectedIds), [
                 'label' => $text,
                 'class' => 'v-checkbox',
                 'value' => $region->id,

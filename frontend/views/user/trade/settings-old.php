@@ -4,44 +4,32 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $allDeliveries \core\entities\Trade\TradeDelivery[] */
 /* @var $userDeliveries \core\entities\Company\CompanyDelivery[] */
-/* @var $userDeliveryRegions \core\entities\Company\CompanyDeliveryRegion[] */
 
 $this->params['tab'] = 'settings';
 
 ?>
 <div class="has-overlay" id="main-delivery-block">
+    <p>Отметьте требуемые типы доставки</p>
     <?= Html::beginForm() ?>
-    <table style="margin-bottom:10px;">
-        <tr>
-            <th width="150" valign="top">Регионы доставки:</th>
-            <td>
-                <?php foreach (\core\entities\Geo::find()->countries()->active()->all() as $country): ?>
-                    <?php //= Html::checkbox('region[' . $country->id. ']', array_key_exists($country->id, $userDeliveryRegions), ['label' => $country->name, 'data-country-main' => $country->id]) ?>
-                    <div style="margin-bottom:5px;">
-                        <input
-                                type="checkbox"
-                                name="countries[]"
-                                value="<?= $country->id ?>"
-                                data-country-main="<?= $country->id ?>"
-                            <?= array_key_exists($country->id, $userDeliveryRegions) ? ' checked' : '' ?>
-                        > <?= $country->name ?>
-                        или <a
-                                href="#"
-                                data-link="regionsSelectLink"
-                                data-country-id="<?= $country->id ?>"
-                                style="border-bottom:1px dashed;color:#2d5d9c;"
-                        ><?= \core\helpers\CompanyHelper::regionsSelectString($country->id, $userDeliveryRegions) ?></a>
-                        <div class="hidden region-inputs" data-country-id="<?= $country->id ?>"></div>
-                    </div>
-                <?php endforeach; ?>
-            </td>
-        </tr>
-    </table>
-
-    <b>Типы доставки:</b>
     <?php foreach ($allDeliveries as $delivery): ?>
         <div class="delivery-row" data-id="<?= $delivery->id ?>">
             <?= Html::checkbox('delivery[' . $delivery->id. ']', array_key_exists($delivery->id, $userDeliveries), ['label' => $delivery->name]) ?>
+
+            <?php if ($delivery->has_regions): ?>
+                <?= Html::checkbox(
+                    'regions[' . $delivery->id. '][]',
+                    isset($userDeliveries[$delivery->id]) && array_key_exists(Yii::$app->params['geoRussiaId'], $userDeliveries[$delivery->id]->geos),
+                    ['label' => 'По России', 'value' => Yii::$app->params['geoRussiaId'], 'class' => 'russia-region']
+                ) ?>
+                &nbsp;ИЛИ <a
+                    href="#"
+                    data-link="regionsSelectLink"
+                    data-id="<?= $delivery->id ?>"
+                    style="border-bottom:1px dashed;color:#2d5d9c;"
+                >Выбрать регионы</a>
+
+                <div class="hidden region-inputs"></div>
+            <?php endif; ?>
 
             <?php if ($delivery->has_terms): ?>
                 &nbsp;| <a
@@ -50,14 +38,14 @@ $this->params['tab'] = 'settings';
                     data-id="<?= $delivery->id ?>"
                     style="border-bottom:1px dashed;color:#2d5d9c;"
                     data-delivery-name="<?= $delivery->name ?>"
-                >Условия доставки</a>
+                >Описание</a>
                 <input type="hidden" name="description[<?= $delivery->id ?>]" value="<?= isset($userDeliveries[$delivery->id]) ? $userDeliveries[$delivery->id]->terms : '' ?>">
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
 
     <input type="hidden" name="save-user-deliveries" value="1">
-    <button type="submit" class="btn btn-primary" style="margin-top:7px;">Сохранить</button>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
     <?= Html::endForm() ?>
 </div>
 
@@ -89,18 +77,18 @@ $this->params['tab'] = 'settings';
         $(document).on('click', '[data-link=regionsSelectLink]', function (e) {
             e.preventDefault();
             $("#modalRegion").remove();
-            var countryId = $(this).attr('data-country-id'),
+            var deliveryId = $(this).attr('data-id'),
                 $mainBlock = $('#main-delivery-block'),
-                $regionInputs = $mainBlock.find('.region-inputs[data-country-id=' + countryId + ']').find('input'),
+                $regionInputs = $mainBlock.find('.delivery-row[data-id=' + deliveryId + ']').find('.region-inputs').find('input'),
                 regionIds = [];
             $regionInputs.each(function (k, input) {
                 regionIds.push($(input).val());
             });
             $.ajax({
-                url: '/user/trade/get-country-regions',
+                url: '/user/trade/get-delivery-regions',
                 method: "post",
                 dataType: "html",
-                data: {countryId: countryId, regionIds: regionIds},
+                data: {deliveryId: deliveryId, regionIds: regionIds},
                 beforeSend: function () {
                     $mainBlock.prepend('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
                 },
@@ -115,19 +103,17 @@ $this->params['tab'] = 'settings';
         });
 
         $(document).on('hidden.bs.modal', '#modalRegion', function (e) {
-            var countryId = $(this).attr('data-country-id'),
-                $inputsBlock = $('#main-delivery-block').find('.region-inputs[data-country-id=' + countryId + ']'),
-                $checkBoxes = $(this).find('.v-checkbox:checked'),
-                $regionsSelectLink = $('[data-link=regionsSelectLink][data-country-id=' + countryId + ']');
+            var deliveryId = $(this).attr('data-delivery-id'),
+                $row = $('#main-delivery-block').find('.delivery-row[data-id=' + deliveryId + ']'),
+                $inputsBlock = $row.find('.region-inputs'),
+                $checkBoxes = $(this).find('.v-checkbox:checked');
 
             if ($checkBoxes.length) {
                 $checkBoxes.attr('type', 'hidden');
                 $inputsBlock.html($checkBoxes);
-                $('[data-country-main=' + countryId + ']').prop('checked', false);
-                $regionsSelectLink.text(Mednav.public.pluralize($checkBoxes.length, ['Выбран','Выбрано','Выбрано']) + ' ' + $checkBoxes.length + ' ' + Mednav.public.pluralize($checkBoxes.length, ['регион','региона','регионов']))
+                $row.find('.russia-region').prop('checked', false);
             } else {
                 $inputsBlock.html('');
-                $regionsSelectLink.text('Выбрать регионы');
             }
         });
 
@@ -145,12 +131,7 @@ $this->params['tab'] = 'settings';
         });
 
         $(document).on('change', '#modalRegion .v-checkbox', function(e) {
-            var $inputs = $(this).closest('li').find('input.v-checkbox');
-            $inputs.prop('checked', $(this).is(':checked'));
-
-            /* if (!$(this).is(':checked')) {
-                $(this).closest('ul').parent().find('>label>input.v-checkbox').prop('checked', false);
-            } */
+            alert(8);
         });
     });
 </script>

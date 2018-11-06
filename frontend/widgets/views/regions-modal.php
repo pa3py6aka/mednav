@@ -8,11 +8,16 @@ use core\helpers\BoardHelper;
 $n = 1;
 
 ?>
-<div id="modalRegion" class="modal fade"<?= $widget->type === 'delivery' ? ' data-delivery-id="' .$widget->deliveryId . '"' : '' ?>>
+<div id="modalRegion" class="modal fade"<?= $widget->type === 'delivery' && $widget->deliveryId ? ' data-delivery-id="' .$widget->deliveryId . '"'
+    : ($widget->type === 'delivery' && $widget->countryId ? ' data-country-id="' .$widget->countryId . '"' : '') ?>>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <?php if ($widget->type === 'delivery'): ?>
+                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">Сохранить</button>
+                <?php else: ?>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <?php endif; ?>
                 <h4>Выбор региона</h4>
             </div>
             <div class="modal-body">
@@ -73,7 +78,7 @@ $n = 1;
             </div>
             <?php if ($widget->type === 'delivery'): ?>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Ок</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Сохранить</button>
             </div>
             <?php endif; ?>
         </div>

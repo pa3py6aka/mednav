@@ -7,6 +7,8 @@ use Yii;
 use yii\db\ActiveQuery;
 
 /**
+ * Это неиспользуемый теперь класс (после изменения в ТЗ)
+ *
  * This is the model class for table "{{%company_deliveries_regions}}".
  *
  * @property int $company_deliveries_id

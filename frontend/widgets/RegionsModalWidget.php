@@ -53,38 +53,47 @@ class RegionsModalWidget extends Widget
     {
         return $this->render('regions-modal', [
             'widget' => $this,
-            'countries' => $this->getCategoriesArray(),
+            'countries' => $this->getCashedCategoriesArray(),
         ]);
+    }
+
+    private function getCashedCategoriesArray(): array
+    {
+        if ($this->type == 'delivery') {
+            return $this->getCategoriesArray();
+        }
+
+        return Yii::$app->cache->getOrSet(self::CACHE_KEY, function () {
+            return $this->getCategoriesArray();
+        }, 60);
     }
 
     private function getCategoriesArray(): array
     {
-        return Yii::$app->cache->getOrSet(self::CACHE_KEY, function () {
-            if ($this->type === 'delivery' && $this->countryId) {
-                $countries[] = Geo::findOne($this->countryId);
-            } else {
-                $countries = Geo::find()->countries()->active()->all();
+        if ($this->type === 'delivery' && $this->countryId) {
+            $countries[] = Geo::findOne($this->countryId);
+        } else {
+            $countries = Geo::find()->countries()->active()->all();
+        }
+
+        $countriesArray = [];
+        foreach ($countries as $country) {
+            $countriesArray[$country->id]['country'] = $country;
+            if (!isset($countriesArray[$country->id]['popular'])) {
+                $countriesArray[$country->id]['popular'] = $country->getDescendants()->active()->popular()->all();
             }
 
-            $countriesArray = [];
-            foreach ($countries as $country) {
-                $countriesArray[$country->id]['country'] = $country;
-                if (!isset($countriesArray[$country->id]['popular'])) {
-                    $countriesArray[$country->id]['popular'] = $country->getDescendants()->active()->popular()->all();
-                }
+            $countriesArray[$country->id]['regions'] = [];
+            foreach ($country->getChildren()->active()->all() as $region) {
+                $countriesArray[$country->id]['regions'][$region->id]['region'] = $region;
+                $countriesArray[$country->id]['regions'][$region->id]['cities'] = [];
+                foreach ($region->getChildren()->active()->all() as $city) {
+                    $countriesArray[$country->id]['regions'][$region->id]['cities'][] = $city;
 
-                $countriesArray[$country->id]['regions'] = [];
-                foreach ($country->getChildren()->active()->all() as $region) {
-                    $countriesArray[$country->id]['regions'][$region->id]['region'] = $region;
-                    $countriesArray[$country->id]['regions'][$region->id]['cities'] = [];
-                    foreach ($region->getChildren()->active()->all() as $city) {
-                        $countriesArray[$country->id]['regions'][$region->id]['cities'][] = $city;
-
-                    }
                 }
             }
-            return $countriesArray;
-        }, 60);
+        }
+        return $countriesArray;
     }
 
     public function link(Geo $region = null): string

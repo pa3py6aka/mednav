@@ -24,7 +24,9 @@ class OrderForm extends Model
             $this->name = $user->getVisibleName();
             $this->phone = $user->getPhone();
             $this->email = $user->getEmail();
-            $this->address = $user->isCompany() && $user->isCompanyActive() ? $user->company->address : '';
+            $this->address = $user->isCompany() && $user->isCompanyActive()
+                ? ($user->company->geo_id ? $user->company->geo->name . ', ' : '') . $user->company->address
+                : '';
         }
         parent::__construct($config);
     }

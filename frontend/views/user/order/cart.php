@@ -107,6 +107,7 @@ $orderNumber = 1;
             <?php endforeach; ?>
 
             <div class="row">
+                <?php if (current($order)->trade->company->deliveries): ?>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="cart-delivery">
                         <select class="form-control input-md order-delivery-selector" style="width:auto;" name="OrderForm[deliveries][<?= $orderNumber ?>]">
@@ -117,6 +118,7 @@ $orderNumber = 1;
                         </select>
                     </div>
                 </div>
+                <?php endif; ?>
                 <div class="col-md-7 col-sm-5 col-xs-12">
                     <div class="cart-total-price"></div>
                 </div>

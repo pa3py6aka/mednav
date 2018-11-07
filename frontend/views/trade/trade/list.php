@@ -47,7 +47,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             'count' => 1
         ]) ?>
 
-        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::TRADE_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::TRADE_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion, $geo) ?>
 
         <div class="row">
             <div class="col-md-12">
@@ -90,7 +90,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             'start' => 2
         ]) ?>
 
-        <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::TRADE_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category, $categoryRegion) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::TRADE_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category, $categoryRegion, $geo) ?>
 
     </div>
 

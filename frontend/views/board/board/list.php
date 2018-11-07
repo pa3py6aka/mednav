@@ -20,7 +20,6 @@ use core\entities\ContentBlock;
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $type int */
 
-
 CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $category, $categoryRegion);
 
 ?>
@@ -42,7 +41,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             'count' => 1,
         ]) ?>
 
-        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::BOARD_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion) ?>
+        <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::BOARD_DESCRIPTION_TOP, !$provider->pagination->page, $category, $categoryRegion, $geo) ?>
 
         <div class="row">
             <div class="col-md-12">

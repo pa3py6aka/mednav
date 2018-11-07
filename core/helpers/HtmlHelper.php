@@ -71,12 +71,12 @@ class HtmlHelper
         return $title;
     }
 
-    public static function categoryDescriptionBlock($position, $settingsParam, $isMainPage, $category = null, $categoryRegion = null): string
+    public static function categoryDescriptionBlock($position, $settingsParam, $isMainPage, $category = null, $categoryRegion = null, $geo = null): string
     {
         $text = '';
         if ($categoryRegion && ($isMainPage || !$categoryRegion->{'description_' . $position . '_on'})) {
             $text = $categoryRegion->{'description_' . $position};
-        } else if ($category && ($isMainPage || !$category->{'description_' . $position . '_on'})) {
+        } else if ($category && !$geo && ($isMainPage || !$category->{'description_' . $position . '_on'})) {
             $text = $category->{'description_' . $position};
         } else if (Yii::$app->settings->get($settingsParam) && !$category) {
             $text = Yii::$app->settings->get($settingsParam);

@@ -15,7 +15,7 @@ use core\entities\ContentBlock;
 /* @var $trade \core\entities\Trade\Trade */
 
 $this->title = Html::encode($trade->meta_title ?: $trade->getTitle());
-$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($trade->description)]);
+$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($trade->meta_description ?: $trade->note)]);
 $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->meta_keywords)]);
 
 ?>

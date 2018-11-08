@@ -3,12 +3,14 @@
 namespace core\readModels\Trade;
 
 
+use core\components\Settings;
 use core\entities\Company\CompanyDelivery;
 use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
 use core\entities\Geo;
 use core\entities\Trade\TradeUserCategory;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
@@ -93,7 +95,7 @@ class TradeReadRepository
                 break;
             default: null;
         }
-        return $this->getProvider($query);
+        return $this->getProvider($query, 25);
     }
 
     public function getUserCategories($userId, $active = true): ActiveDataProvider
@@ -117,7 +119,7 @@ class TradeReadRepository
         return TradeUserCategory::find()->where(['user_id' => $userId])->count();
     }
 
-    private function getProvider(ActiveQuery $query): ActiveDataProvider
+    private function getProvider(ActiveQuery $query, $pageSize = null): ActiveDataProvider
     {
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -142,8 +144,8 @@ class TradeReadRepository
                 ],
             ],
             'pagination' => [
-                'pageSizeLimit' => [5, 250], //Todo Выставить 25 на продакшине
-                'defaultPageSize' => 5,
+                'pageSizeLimit' => [1, 250],
+                'defaultPageSize' => $pageSize ?: Yii::$app->settings->get(Settings::TRADE_PAGE_SIZE),
                 'forcePageParam' => false,
             ]
         ]);

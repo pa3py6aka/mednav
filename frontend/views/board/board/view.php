@@ -87,9 +87,9 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                     <div class="do-item-vendor-text">
                         <ul>
                             <li><span class="kt-item-infoset">Продавец:</span> <a href="<?= $board->author->getUrl() ?>"><?= $board->author->getVisibleName() ?></a></li>
-                            <?php if ($board->author->phone): ?><li><span class="kt-item-infoset">Телефон:</span> <?= Html::encode($board->author->phone) ?></li><?php endif; ?>
+                            <?php if ($board->author->getPhone()): ?><li><span class="kt-item-infoset">Телефон:</span> <?= $board->author->getPhone() ?></li><?php endif; ?>
                             <?php if ($board->author->isCompany() && $board->author->isCompanyActive()): ?><li><span class="kt-item-infoset">Адрес:</span> <?= Html::encode($board->author->company->address) ?></li><?php endif; ?>
-                            <?php if ($board->author->site): ?><li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $board->author->site]) ?>"><?= $board->author->site ?></a></li><?php endif; ?>
+                            <?php if ($board->author->getSite()): ?><li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $board->author->getSite()]) ?>" target="_blank"><?= Html::encode($board->author->getSite()) ?></a></li><?php endif; ?>
                         </ul>
                         <div>
                             <?= MessageWidget::widget([

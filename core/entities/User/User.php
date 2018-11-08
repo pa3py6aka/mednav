@@ -214,12 +214,17 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function getPhone(): string
     {
-        return $this->isCompany() && $this->isCompanyActive() ? $this->company->getPhones(true) : $this->phone;
+        return $this->isCompany() && $this->isCompanyActive() ? $this->company->getPhones(true) : Html::encode($this->phone);
     }
 
     public function getEmail(): string
     {
         return $this->isCompany() && $this->isCompanyActive() ? $this->company->email : $this->email;
+    }
+
+    public function getSite(): string
+    {
+        return $this->isCompany() && $this->isCompanyActive() ? $this->company->site : $this->site;
     }
 
     public function getUserName($short = false): string

@@ -16,6 +16,7 @@ class ContactForm extends Model
     //public $subject;
     public $message;
     public $captcha;
+    public $agreement;
 
     /**
      * {@inheritdoc}
@@ -33,6 +34,7 @@ class ContactForm extends Model
             // verifyCode needs to be entered correctly
             ['captcha', 'required', 'message' => 'Укажите проверочный код'],
             ['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
+            ['agreement', 'required', 'requiredValue' => 1, 'message' => 'Вы должны подтвердить своё согласие'],
         ];
     }
 

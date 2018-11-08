@@ -38,7 +38,7 @@ class TradeReadRepository
         $query = Trade::find()
             ->alias('t')
             ->active('t')
-            ->with('mainPhoto', 'geo', 'userCategory', 'category', 'company');
+            ->with('mainPhoto', 'geo', 'userCategory', 'category', 'company.deliveryRegions');
 
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());

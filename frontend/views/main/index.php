@@ -2,10 +2,14 @@
 
 use core\entities\ContentBlock;
 use frontend\widgets\ContentBlock\ShowContentBlock;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 
-$this->title = 'Главная';
+$this->title = Yii::$app->settings->get(Settings::GENERAL_TITLE);
+$this->registerMetaTag(['name' => 'description', 'content' => Yii::$app->settings->get(Settings::GENERAL_DESCRIPTION)]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => Yii::$app->settings->get(Settings::GENERAL_KEYWORDS)]);
+
 ?>
 <div class="row">
     <div class="col-md-3 hidden-sm hidden-xs">

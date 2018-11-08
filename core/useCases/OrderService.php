@@ -81,10 +81,12 @@ class OrderService
             Yii::$app->queue->push(new SendMailJob([
                 'view' => 'order/new-order-received',
                 'params' => ['order' => $order],
-                'subject' => 'Новый заказ на ' . Yii::$app->name,
+                'subject' => '[' . Yii::$app->params['siteName'] . '] Заказ № ' . $order->getNumber() . ' "' . substr($order->orderItems[0]->trade->name, 0, 25) . (strlen($order->orderItems[0]->trade->name) > 25 ? '...' : '') . '"',
                 'to' => [$order->forCompany->email => $order->forCompany->getFullName()],
             ]));
         }
+
+
 
         return $userOrder;
     }

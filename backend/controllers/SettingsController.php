@@ -5,6 +5,7 @@ namespace backend\controllers;
 
 use core\entities\Currency;
 use core\forms\manage\CurrenciesForm;
+use core\forms\manage\GeneralSettingsForm;
 use Yii;
 use yii\web\Controller;
 
@@ -29,5 +30,18 @@ class SettingsController extends Controller
         $tab = '@backend/views/settings/_currencies';
 
         return $this->render($view, ['model' => $form, 'tab' => $tab]);
+    }
+
+    public function actionIndex()
+    {
+        $form = new GeneralSettingsForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            if (Yii::$app->settings->saveForm($form)) {
+                Yii::$app->session->setFlash("success", "Настройки успешно сохранены");
+            }
+        }
+
+        return $this->render('index', ['model' => $form]);
     }
 }

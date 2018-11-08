@@ -5,6 +5,11 @@ namespace core\components;
 
 class Settings
 {
+    public const GENERAL_TITLE = 'generalTitle';
+    public const GENERAL_DESCRIPTION = 'generalDescription';
+    public const GENERAL_KEYWORDS = 'generalKeywords';
+    public const GENERAL_EMAIL = 'generalEmail';
+    public const GENERAL_EMAIL_FROM = 'generalEmailFrom';
     public const GENERAL_MODALS_SHOWTIME = 'generalModalsShowtime';
 
     public const USER_EMAIL_ACTIVATION = 'userEmailActivation';
@@ -150,6 +155,11 @@ class Settings
     public const EXPO_DESCRIPTION_BOTTOM_ON = 'expoDescriptionBottomOn';
 
     protected $default = [
+        self::GENERAL_TITLE => 'Поставщики и производители медицинского оборудования в России',
+        self::GENERAL_DESCRIPTION => 'Продажа медтехники и медицинского оборудования, расходных материалов и инструментов. Каталог поставщиков, дистрибьюторов и производителей медицинского оборудования и материалов для мед. учреждений, больниц и клиник России',
+        self::GENERAL_KEYWORDS => 'медтехника, медицинское оборудование, медицинские материалы, продажа, покупка, сервис, ремонт медтехники',
+        self::GENERAL_EMAIL => 'no-reply@mednav.ru',
+        self::GENERAL_EMAIL_FROM => 'MedNav.ru',
         self::GENERAL_MODALS_SHOWTIME => 4,
 
         self::USER_EMAIL_ACTIVATION => 1,

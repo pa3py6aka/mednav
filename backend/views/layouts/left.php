@@ -56,6 +56,7 @@
                         ['label' => 'Контентные блоки', 'url' => ['/blocks/contents/index']],
                         ['label' => 'Контекстные блоки', 'url' => ['/blocks/context/index']],
                     ]],
+                    ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/settings/index']],
                     [
                         'label' => 'Выйти',
                         'url' => ['site/logout'],

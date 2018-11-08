@@ -61,7 +61,7 @@ use yii\helpers\Url;
  * @property Board[] $boards
  * @property CNews[] $cNews
  * @property CompanyDelivery[] $deliveries
- * @property CompanyDeliveryRegion $deliveryRegions
+ * @property CompanyDeliveryRegion[] $deliveryRegions
  * @property Trade[] $trades
  * @property Article[] $articles
  */

@@ -124,6 +124,20 @@ class CompanyHelper
         return $categories;
     }
 
+    public static function getDeliveriesString(Company $company): string
+    {
+        $array = [];
+        foreach ($company->deliveryRegions as $deliveryRegion) {
+            if ($deliveryRegion->geo_id != $deliveryRegion->country_id) {
+                $array[] = $deliveryRegion->geo_id;
+            }
+        }
+        if (count($array)) {
+            return 'Доставка в др. регионы';
+        }
+        return 'Доставка по России';
+    }
+
     public static function regionsSelectString($countryId, array $companyDeliveryRegions): string
     {
         $companyDeliveryRegions = array_filter($companyDeliveryRegions, function($v, $k) {

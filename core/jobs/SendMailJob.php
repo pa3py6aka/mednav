@@ -3,6 +3,7 @@
 namespace core\jobs;
 
 
+use core\components\Settings;
 use Yii;
 use yii\base\BaseObject;
 use yii\queue\JobInterface;
@@ -32,7 +33,7 @@ class SendMailJob extends BaseObject implements JobInterface
         echo "start" . PHP_EOL;
         Yii::$app->mailer->compose($this->view, $this->params)
             ->setSubject($this->subject)
-            ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([Yii::$app->settings->get(Settings::GENERAL_EMAIL) => Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM)])
             ->setTo($this->to)
             ->send();
     }

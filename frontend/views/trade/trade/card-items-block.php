@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\TradeHelper;
+use core\helpers\CompanyHelper;
 use core\components\ContextBlock;
 
 /* @var $provider \yii\data\ActiveDataProvider */
@@ -36,7 +37,7 @@ use core\components\ContextBlock;
                         <a href="<?= $trade->user->company->getUrl() ?>"><?= $trade->user->company->getFullName() ?></a> /
                         <?php endif; ?>
                         <?= $trade->geo->name ?> /
-                        Доставка по России /
+                        <?= CompanyHelper::getDeliveriesString($trade->user->company) ?> /
                         <?= TradeHelper::contextCategoryLink($trade) ?>
                     </div>
                 </div>

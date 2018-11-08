@@ -6,14 +6,14 @@ namespace core\repositories\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Board\BoardCategoryParameter;
 use core\entities\Board\BoardCategoryRegion;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class BoardCategoryRepository
 {
     public function get($id): BoardCategory
     {
         if (!$category = BoardCategory::findOne($id)) {
-            throw new NotFoundException('Раздел не найден.');
+            throw new NotFoundHttpException('Раздел не найден.');
         }
         return $category;
     }
@@ -21,7 +21,7 @@ class BoardCategoryRepository
     public function getBySlug($slug): BoardCategory
     {
         if (!$category = BoardCategory::find()->where(['slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundException('Раздел не найден.');
+            throw new NotFoundHttpException('Раздел не найден.');
         }
         return $category;
     }

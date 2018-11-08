@@ -6,13 +6,14 @@ namespace core\repositories;
 use core\entities\Dialog\Dialog;
 use core\entities\Dialog\Message;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 class DialogRepository
 {
     public function get($id): Dialog
     {
         if (!$dialog = Dialog::findOne($id)) {
-            throw new NotFoundException('Диалог не найден.');
+            throw new NotFoundHttpException('Диалог не найден.');
         }
         return $dialog;
     }

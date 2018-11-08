@@ -12,7 +12,7 @@ class BoardParameterRepository
     public function get($id): BoardParameter
     {
         if (!$parameter = BoardParameter::findOne($id)) {
-            throw new NotFoundException('Регион не найден.');
+            throw new NotFoundException('Параметр не найден.');
         }
         return $parameter;
     }

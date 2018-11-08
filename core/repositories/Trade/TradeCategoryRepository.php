@@ -5,14 +5,14 @@ namespace core\repositories\Trade;
 
 use core\entities\Trade\TradeCategory;
 use core\entities\Trade\TradeCategoryRegion;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class TradeCategoryRepository
 {
     public function get($id): TradeCategory
     {
         if (!$category = TradeCategory::findOne($id)) {
-            throw new NotFoundException('Раздел не найден.');
+            throw new NotFoundHttpException('Раздел не найден.');
         }
         return $category;
     }
@@ -20,7 +20,7 @@ class TradeCategoryRepository
     public function getBySlug($slug): TradeCategory
     {
         if (!$category = TradeCategory::find()->where(['slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundException('Раздел не найден.');
+            throw new NotFoundHttpException('Раздел не найден.');
         }
         return $category;
     }

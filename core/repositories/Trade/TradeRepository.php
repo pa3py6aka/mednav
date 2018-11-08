@@ -6,14 +6,14 @@ namespace core\repositories\Trade;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeTagAssignment;
 use core\entities\Trade\TradeUserCategory;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class TradeRepository
 {
     public function get($id): Trade
     {
         if (!$trade = Trade::findOne($id)) {
-            throw new NotFoundException('Товар не найден.');
+            throw new NotFoundHttpException('Товар не найден.');
         }
         return $trade;
     }
@@ -21,7 +21,7 @@ class TradeRepository
     public function getUserCategory($id): TradeUserCategory
     {
         if (!$category = TradeUserCategory::findOne($id)) {
-            throw new NotFoundException('Категория не найдена.');
+            throw new NotFoundHttpException('Категория не найдена.');
         }
         return $category;
     }

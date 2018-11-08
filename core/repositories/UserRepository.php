@@ -4,6 +4,7 @@ namespace core\repositories;
 
 
 use core\entities\User\User;
+use yii\web\NotFoundHttpException;
 
 class UserRepository
 {
@@ -59,7 +60,7 @@ class UserRepository
     private function getBy(array $condition): User
     {
         if (!$user = User::find()->andWhere($condition)->limit(1)->one()) {
-            throw new NotFoundException('User not found.');
+            throw new NotFoundHttpException('User not found.');
         }
         return $user;
     }

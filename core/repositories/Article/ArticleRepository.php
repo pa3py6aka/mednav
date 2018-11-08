@@ -5,14 +5,14 @@ namespace core\repositories\Article;
 
 use core\entities\Article\Article;
 use core\entities\Article\ArticleTagsAssignment;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class ArticleRepository
 {
     public function get($id): Article
     {
         if (!$company = Article::findOne($id)) {
-            throw new NotFoundException('Объявление не найдено.');
+            throw new NotFoundHttpException('Статья не найдена.');
         }
         return $company;
     }

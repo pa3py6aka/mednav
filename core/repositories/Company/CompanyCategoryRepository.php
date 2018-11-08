@@ -5,14 +5,14 @@ namespace core\repositories\Company;
 
 use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryRegion;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class CompanyCategoryRepository
 {
     public function get($id): CompanyCategory
     {
         if (!$category = CompanyCategory::findOne($id)) {
-            throw new NotFoundException('Раздел не найден.');
+            throw new NotFoundHttpException('Раздел не найден.');
         }
         return $category;
     }
@@ -20,7 +20,7 @@ class CompanyCategoryRepository
     public function getBySlug($slug): CompanyCategory
     {
         if (!$category = CompanyCategory::find()->where(['slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundException('Раздел не найден.');
+            throw new NotFoundHttpException('Раздел не найден.');
         }
         return $category;
     }

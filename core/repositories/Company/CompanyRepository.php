@@ -6,14 +6,14 @@ namespace core\repositories\Company;
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\Company\CompanyTagsAssignment;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class CompanyRepository
 {
     public function get($id): Company
     {
         if (!$company = Company::findOne($id)) {
-            throw new NotFoundException('Объявление не найдено.');
+            throw new NotFoundHttpException('Компания не найдена.');
         }
         return $company;
     }

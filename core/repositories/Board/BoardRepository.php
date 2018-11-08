@@ -9,13 +9,14 @@ use core\entities\Board\BoardParameterAssignment;
 use core\entities\Board\BoardTagAssignment;
 use core\repositories\NotFoundException;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 class BoardRepository
 {
     public function get($id): Board
     {
         if (!$board = Board::findOne($id)) {
-            throw new NotFoundException('Объявление не найдено.');
+            throw new NotFoundHttpException('Объявление не найдено.');
         }
         return $board;
     }

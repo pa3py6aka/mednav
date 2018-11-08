@@ -5,14 +5,14 @@ namespace core\repositories\News;
 
 use core\entities\News\News;
 use core\entities\News\NewsTagsAssignment;
-use core\repositories\NotFoundException;
+use yii\web\NotFoundHttpException;
 
 class NewsRepository
 {
     public function get($id): News
     {
         if (!$company = News::findOne($id)) {
-            throw new NotFoundException('Новость не найдена.');
+            throw new NotFoundHttpException('Новость не найдена.');
         }
         return $company;
     }

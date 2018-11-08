@@ -122,7 +122,7 @@ class HtmlHelper
         }
 
         if ($enable) {
-            return '<li><span class="kt-item-infoset">' . $name . ':</span> ' . $value . '</li>';
+            return '<li><span class="kt-item-infoset">' . $name . '</span> ' . $value . '</li>';
         }
         return '';
     }

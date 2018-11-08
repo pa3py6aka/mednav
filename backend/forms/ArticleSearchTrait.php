@@ -48,8 +48,11 @@ trait ArticleSearchTrait
 
         $this->load($params);
 
-        if ($this->userType) {
+        if ($this->userType || $this->user_id) {
             $query->joinWith('user u');
+        }
+        if ($this->category) {
+            $query->joinWith('category cat');
         }
 
         if (!$this->validate()) {
@@ -78,7 +81,22 @@ trait ArticleSearchTrait
             ->andFilterWhere(['like', 'a.name', $this->name])
             ->andFilterWhere(['like', 'a.slug', $this->slug])
             ->andFilterWhere(['like', 'a.intro', $this->intro])
-            ->andFilterWhere(['like', 'a.full_text', $this->full_text]);
+            ->andFilterWhere(['like', 'a.full_text', $this->full_text])
+            ->andFilterWhere([
+                'or',
+                [
+                    'or',
+                    ['like', 'u.last_name', $this->user_id],
+                    ['like', 'u.name', $this->user_id],
+                    ['like', 'u.patronymic', $this->user_id]
+                ],
+                ['a.user_id' => $this->user_id]
+            ])
+            ->andFilterWhere([
+                'or',
+                ['like', 'cat.name', $this->category],
+                ['a.category_id' => $this->category]
+            ]);
 
         return $dataProvider;
     }

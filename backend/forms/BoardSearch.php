@@ -138,7 +138,7 @@ class BoardSearch extends Board
                 'or',
                 ['like', 'cat.name', $this->category],
                 ['b.category_id' => $this->category]
-            ]);;
+            ]);
 
         return $dataProvider;
     }

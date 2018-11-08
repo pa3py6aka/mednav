@@ -20,8 +20,8 @@ class CompanySearch extends Company
     public function rules()
     {
         return [
-            [['id', 'user_id', 'geo_id', 'main_photo_id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['form', 'name', 'logo', 'slug', 'site', 'address', 'phones', 'fax', 'email', 'info', 'title', 'short_description', 'description', 'userType'], 'safe'],
+            [['id', 'geo_id', 'main_photo_id', 'status'], 'integer'],
+            [['form', 'user_id', 'name', 'logo', 'slug', 'site', 'address', 'phones', 'fax', 'email', 'info', 'title', 'short_description', 'description', 'userType'], 'safe'],
         ];
     }
 
@@ -43,14 +43,16 @@ class CompanySearch extends Company
      */
     public function search($params, $tab = 'active')
     {
-        $query = Company::find()->with('user');
+        $query = Company::find()
+            ->alias('c')
+            ->joinWith('user u');
 
         if ($tab == 'active') {
-            $query->active();
+            $query->active('c');
         } else if ($tab == 'moderation') {
-            $query->onModeration();
+            $query->onModeration('c');
         } else if ($tab == 'deleted') {
-            $query->deleted();
+            $query->deleted('c');
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -68,28 +70,37 @@ class CompanySearch extends Company
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'geo_id' => $this->geo_id,
-            'main_photo_id' => $this->main_photo_id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'c.id' => $this->id,
+            'c.geo_id' => $this->geo_id,
+            'c.main_photo_id' => $this->main_photo_id,
+            'c.status' => $this->status,
+            'c.created_at' => $this->created_at,
+            'c.updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'form', $this->form])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'logo', $this->logo])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'site', $this->site])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'phones', $this->phones])
-            ->andFilterWhere(['like', 'fax', $this->fax])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'info', $this->info])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'short_description', $this->short_description])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'c.form', $this->form])
+            ->andFilterWhere(['like', 'c.name', $this->name])
+            ->andFilterWhere(['like', 'c.logo', $this->logo])
+            ->andFilterWhere(['like', 'c.slug', $this->slug])
+            ->andFilterWhere(['like', 'c.site', $this->site])
+            ->andFilterWhere(['like', 'c.address', $this->address])
+            ->andFilterWhere(['like', 'c.phones', $this->phones])
+            ->andFilterWhere(['like', 'c.fax', $this->fax])
+            ->andFilterWhere(['like', 'c.email', $this->email])
+            ->andFilterWhere(['like', 'c.info', $this->info])
+            ->andFilterWhere(['like', 'c.title', $this->title])
+            ->andFilterWhere(['like', 'c.short_description', $this->short_description])
+            ->andFilterWhere(['like', 'c.description', $this->description])
+            ->andFilterWhere([
+                'or',
+                [
+                    'or',
+                    ['like', 'u.last_name', $this->user_id],
+                    ['like', 'u.name', $this->user_id],
+                    ['like', 'u.patronymic', $this->user_id]
+                ],
+                ['c.user_id' => $this->user_id]
+            ]);
 
         return $dataProvider;
     }

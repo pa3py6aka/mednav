@@ -3,6 +3,7 @@
 namespace backend\forms;
 
 use core\entities\Trade\Trade;
+use core\entities\Trade\TradeCategory;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -13,6 +14,7 @@ class TradeSearch extends Trade
 {
     public $user;
     public $userType;
+    public $company;
 
     /**
      * @inheritdoc
@@ -20,9 +22,9 @@ class TradeSearch extends Trade
     public function rules()
     {
         return [
-            [['id', 'user_id', 'category_id', 'price', 'geo_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'user_id', 'category_id', 'price', 'geo_id', 'status'], 'integer'],
             [['name', 'slug', 'title', 'description', 'keywords', 'note'], 'safe'],
-            [['user', 'userType'], 'safe'],
+            [['user', 'userType', 'company_id'], 'safe'],
         ];
     }
 
@@ -47,7 +49,7 @@ class TradeSearch extends Trade
         $query = Trade::find()
             ->alias('t')
             ->with('category')
-            ->joinWith('user u');
+            ->joinWith('company c');
 
         if ($tab == 'active') {
             $query->active('t');
@@ -85,11 +87,17 @@ class TradeSearch extends Trade
             return $dataProvider;
         }
 
+        if ($this->category_id) {
+            $category = TradeCategory::findOne($this->category_id);
+            $categoryIds = $category->getDescendants()->select('id')->column();
+            $categoryIds[] = $this->category_id;
+            $query->andFilterWhere(['t.category_id' => $categoryIds]);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             't.id' => $this->id,
             't.user_id' => $this->user_id,
-            't.category_id' => $this->category_id,
             't.price' => $this->price,
             't.geo_id' => $this->geo_id,
             't.status' => $this->status,
@@ -101,7 +109,12 @@ class TradeSearch extends Trade
         $query->andFilterWhere(['like', 't.name', $this->name])
             ->andFilterWhere(['like', 't.slug', $this->slug])
             ->andFilterWhere(['like', 't.description', $this->description])
-            ->andFilterWhere(['like', 't.note', $this->note]);
+            ->andFilterWhere(['like', 't.note', $this->note])
+            ->andFilterWhere([
+                'or',
+                ['like', 'c.name', $this->company_id],
+                ['t.company_id' => $this->company_id]
+            ]);
 
         return $dataProvider;
     }

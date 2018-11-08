@@ -33,8 +33,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                 ],
                 'slug',
-                'popular:boolean',
-                'active:boolean',
+                [
+                    'attribute' => 'popular',
+                    'format' => 'boolean',
+                    'filter' => [0 => 'Нет', 1 => 'Да']
+                ],
+                [
+                    'attribute' => 'active',
+                    'format' => 'boolean',
+                    'filter' => [0 => 'Нет', 1 => 'Да']
+                ],
                 ['class' => ActionColumn::class, 'template' => "{delete}"],
             ],
         ]); ?>

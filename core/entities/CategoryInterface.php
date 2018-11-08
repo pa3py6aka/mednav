@@ -3,6 +3,7 @@
 namespace core\entities;
 use core\entities\Article\common\ArticleCategoryQueryCommon;
 use core\entities\Board\queries\BoardCategoryQuery;
+use core\entities\Trade\queries\TradeCategoryQuery;
 
 /**
  * Interface CategoryInterface
@@ -41,7 +42,7 @@ use core\entities\Board\queries\BoardCategoryQuery;
  * @property CategoryInterface $prev
  * @property CategoryInterface $next
  *
- * @method ArticleCategoryQueryCommon|BoardCategoryQuery find
+ * @method static ArticleCategoryQueryCommon|BoardCategoryQuery|TradeCategoryQuery find
  */
 interface CategoryInterface
 {

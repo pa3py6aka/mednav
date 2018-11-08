@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= GridView::widget([
             'id' => 'grid',
             'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
+            'filterModel' => $searchModel,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
                 ['class' => CheckboxColumn::class],
@@ -45,10 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                 ],
                 [
-                    'attribute' => 'user',
+                    'attribute' => 'company_id',
                     'label' => 'Компания',
                     'value' => function (Trade $trade) {
-                        return $trade->user_id . ' ' . Html::a($trade->user->getVisibleName(), ['/user/view', 'id' => $trade->user_id]);
+                        return $trade->company_id . ' ' . Html::a($trade->company->getFullName(), ['/company/company/view', 'id' => $trade->company_id]);
                     },
                     'format' => 'raw',
                 ],
@@ -62,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'format' => 'raw',
+                    'filter' => \core\forms\manage\CategoryForm::parentCategoriesList(\core\entities\Trade\TradeCategory::class, false, false)
                 ],
                 ['class' => \core\grid\ModeratorActionColumn::class],
             ],

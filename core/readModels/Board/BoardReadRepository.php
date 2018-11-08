@@ -3,9 +3,11 @@
 namespace core\readModels\Board;
 
 
+use core\components\Settings;
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
 use core\entities\Geo;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
@@ -68,7 +70,7 @@ class BoardReadRepository
                 break;
             default: $query->active('b');
         }
-        return $this->getProvider($query);
+        return $this->getProvider($query, 25);
     }
 
     public function toExtendCount($userId): int
@@ -88,7 +90,7 @@ class BoardReadRepository
             ->column();
     }
 
-    private function getProvider(ActiveQuery $query): ActiveDataProvider
+    private function getProvider(ActiveQuery $query, $pageSize = null): ActiveDataProvider
     {
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -112,8 +114,8 @@ class BoardReadRepository
                 ],
             ],
             'pagination' => [
-                'pageSizeLimit' => [25, 250], //Todo Выставить 25 на продакшине
-                'defaultPageSize' => 25,
+                'pageSizeLimit' => [1, 250],
+                'defaultPageSize' => $pageSize ?: Yii::$app->settings->get(Settings::BOARD_PAGE_SIZE),
                 'forcePageParam' => false,
             ]
         ]);

@@ -86,7 +86,14 @@ class OrderService
             ]));
         }
 
-
+        if ($userOrder->user_email) {
+            Yii::$app->queue->push(new SendMailJob([
+                'view' => 'order/new-order-for-user',
+                'params' => ['userOrder' => $userOrder],
+                'subject' => '[' . Yii::$app->params['siteName'] . '] Заказ № ' . $userOrder->id . ' "' . substr($userOrder->orders[0]->orderItems[0]->trade->name, 0, 25) . (strlen($userOrder->orders[0]->orderItems[0]->trade->name) > 25 ? '...' : '') . '"',
+                'to' => [$userOrder->user_email => $userOrder->user_name],
+            ]));
+        }
 
         return $userOrder;
     }

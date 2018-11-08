@@ -1,12 +1,55 @@
 <?php
 use yii\helpers\Html;
+use core\components\Cart\Cart;
 
 /* @var $this yii\web\View */
 /* @var $order \core\entities\Order\Order */
 
-$this->title = 'Новый заказ';
-$orderLink = Yii::$app->frontendUrlManager->createAbsoluteUrl(['user/order/view', 'id' => $order->id]);
+$this->title = 'Заказ №: ' . $order->getNumber() . ' от ' . Yii::$app->formatter->asDate($order->created_at);
+$ordersLink = Yii::$app->frontendUrlManager->createAbsoluteUrl(['user/order/orders']);
+$sum = 0;
+
 ?>
-<p>У Вас получен новый заказ на обработку.</p>
-<p>Просмотреть детали заказа и управлять статусом заказа Вы можете в своём личном кабинете:</p>
-<p><?= Html::a(Html::encode($orderLink), $orderLink) ?></p>
+<table>
+    <tr>
+        <th>Наименование:</th>
+        <th>Кол-во:</th>
+        <th>Цена:</th>
+        <th>Сумма:</th>
+    </tr>
+    <?php foreach ($order->orderItems as $orderItem): ?>
+        <tr>
+            <td>
+                <?= $orderItem->trade->name ?>
+                <?= $orderItem->trade->code ? '<br>(' . $orderItem->trade->code . ')' : '' ?>
+            </td>
+            <td>
+                <?= $orderItem->amount ?>
+            </td>
+            <td>
+                <?= $orderItem->trade->getPriceString() . '/' . $orderItem->trade->getUomString() ?>
+            </td>
+            <td>
+                <?php $sum = $sum + ($orderItem->trade->price * $orderItem->amount) ?>
+                <?= Cart::getItemPrice($orderItem->trade->price, $orderItem->amount) . ' ' . $orderItem->trade->getCurrencyString() ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    <tr>
+        <td colspan="4" align="right" style="text-align:right;">
+            Итого: <?= \core\helpers\PriceHelper::normalize($sum) . ' ' . $orderItem->trade->getCurrencyString() ?>
+        </td>
+    </tr>
+</table>
+
+<p><b>Комментарий:</b> <?= Html::encode($order->comment) ?></p>
+<p>
+    <b>Данные покупателя:</b><br>
+    <b>"Имя":</b> <?= Html::encode($order->userOrder->user_name) ?><br>
+    <b>"Телефон":</b> <?= Html::encode($order->userOrder->user_phone) ?><br>
+    <b>"E-mail":</b> <?= Html::encode($order->userOrder->user_email) ?><br>
+</p>
+<p>----</p>
+<p>
+    Все заказы <?= $order->forCompany->getFullName() ?> в разделе <a href="<?= $ordersLink ?>">"Заказы"</a> личного кабинета.
+</p>

@@ -6,8 +6,9 @@ return [
             'height' => 200,
             'toolbarGroups' => [
                 ['name' => 'clipboard', 'groups' => ['clipboard']],
+                ['name' => 'paragraph', 'groups' => ['list']],
             ],
-            'removeButtons' => 'Cut,Copy,Paste,Anchor,Image,TextColor,BGColor,About,RemoveFormat,Strike,Subscript,Superscript,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe'
+            'removeButtons' => 'Table,Cut,Copy,Paste,Anchor,Image,TextColor,BGColor,About,RemoveFormat,Strike,Subscript,Superscript,Flash,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe'
         ]
     ],
 ];

@@ -46,7 +46,7 @@ use core\actions\UploadAction;
     </div>
 </div>
 
-<?= $form->field($model, 'fullText')->widget(CKEditor::class, Yii::$app->params['CKEditorPreset']) ?>
+<?= $form->field($model, 'fullText')->widget(CKEditor::class, \core\helpers\EditorHelper::minimumPreset()) ?>
 
 <?= $form->field($model, 'tags')->textInput() ?>
 

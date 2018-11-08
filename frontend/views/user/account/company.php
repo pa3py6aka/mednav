@@ -101,7 +101,7 @@ $this->title = 'Личный кабинет | Моя компания';
 
         <?= $form->field($model, 'shortDescription')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'description')->widget(CKEditor::class, Yii::$app->params['CKEditorPreset']) ?>
+        <?= $form->field($model, 'description')->widget(CKEditor::class, \core\helpers\EditorHelper::minimumPreset()) ?>
 
         <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
 

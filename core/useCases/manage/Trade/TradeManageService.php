@@ -6,7 +6,6 @@ namespace core\useCases\manage\Trade;
 use core\components\SettingsManager;
 use core\entities\Company\CompanyDelivery;
 use core\entities\Company\CompanyDeliveryRegion;
-use core\entities\Company\CompanyDeliveryRegions;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeTag;
 use core\entities\Trade\TradeTagAssignment;
@@ -22,7 +21,6 @@ use core\repositories\Trade\TradeRepository;
 use core\services\TransactionManager;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\FileHelper;
 use yii\helpers\StringHelper;
 
 class TradeManageService

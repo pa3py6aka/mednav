@@ -124,7 +124,6 @@ class TradeManageForm extends Model
         if (!$this->slug) {
             $this->slug = $this->name;
         }
-
         return parent::beforeValidate();
     }
 

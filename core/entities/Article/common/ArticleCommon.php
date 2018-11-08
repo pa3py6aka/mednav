@@ -3,14 +3,13 @@
 namespace core\entities\Article\common;
 
 
-use core\entities\CategoryAssignmentInterface;
+use core\behaviors\SluggableBehavior;
 use core\entities\Company\Company;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
 use core\entities\UserOwnerInterface;
 use Yii;
-use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;

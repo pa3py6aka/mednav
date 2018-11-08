@@ -2,6 +2,7 @@
 
 namespace core\entities\Board;
 
+use core\behaviors\SluggableBehavior;
 use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Board\queries\BoardQuery;
 use core\entities\CategoryAssignmentInterface;
@@ -11,7 +12,6 @@ use core\entities\User\User;
 use core\entities\UserOwnerInterface;
 use core\helpers\PriceHelper;
 use Yii;
-use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;

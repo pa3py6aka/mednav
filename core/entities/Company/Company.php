@@ -2,13 +2,13 @@
 
 namespace core\entities\Company;
 
+use core\behaviors\SluggableBehavior;
 use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Article\Article;
 use core\entities\Board\Board;
 use core\entities\CNews\CNews;
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
-use core\entities\News\News;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\Trade\Trade;
@@ -16,7 +16,6 @@ use core\entities\User\User;
 use core\entities\UserOwnerInterface;
 use core\helpers\FileHelper;
 use Yii;
-use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;

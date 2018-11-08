@@ -47,7 +47,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             <div class="col-md-12">
                 <div class="list-panel-sort">
                     <div style="float: left; margin-right: 15px;">
-                        <?= Html::beginForm(BoardHelper::categoryUrl($category, $geo, true), 'get', ['class' => 'form-inline filter-form-auto']) ?>
+                        <?= Html::beginForm(/*BoardHelper::categoryUrl($category, $geo, true)*/ \core\helpers\UrlHelper::getUrl(['/board/board/list'], 'type'), 'get', ['class' => 'form-inline filter-form-auto']) ?>
                             Тип: <?= Html::dropDownList('type', $type, BoardHelper::typeParameterOptions(), ['class' => 'form-control input-sm', 'prompt' => 'Все']) ?>
                         <?= Html::endForm() ?>
                     </div>

@@ -12,6 +12,7 @@ use core\behaviors\ActiveUserBehavior;
 use core\entities\Company\CompanyDelivery;
 use core\entities\Company\CompanyDeliveryRegion;
 use core\entities\Company\CompanyDeliveryRegions;
+use core\entities\StatusesInterface;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
 use core\entities\Trade\TradeDelivery;
@@ -355,6 +356,13 @@ class TradeController extends Controller
             'deliveryId' => $deliveryId,
             'selectedIds' => $selectedIds,
         ]);
+    }
+
+    public function actionDelete($id)
+    {
+        $trade = (new TradeRepository())->get($id);
+        $trade->updateAttributes(['status' => StatusesInterface::STATUS_DELETED]);
+        return $this->redirect(['category', 'id' => $trade->user_category_id]);
     }
 
     private function selectedActionHandle(): void

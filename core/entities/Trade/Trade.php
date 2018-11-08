@@ -2,9 +2,9 @@
 
 namespace core\entities\Trade;
 
+use core\behaviors\SluggableBehavior;
 use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Company\Company;
-use core\entities\Currency;
 use core\entities\Geo;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
@@ -13,13 +13,13 @@ use core\entities\User\User;
 use core\entities\UserOwnerInterface;
 use core\helpers\PriceHelper;
 use Yii;
-use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\bootstrap\Html;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use Zelenin\yii\behaviors\Slug;
 
 /**
  * This is the model class for table "{{%trades}}".

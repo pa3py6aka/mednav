@@ -234,7 +234,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         }
 
         if ($this->name || $this->patronymic || $this->last_name) {
-            return Html::encode(str_replace('  ', ' ', trim(implode(" ", [$this->name, $this->patronymic, $this->last_name]))));
+            return Html::encode(str_replace('  ', ' ', trim(implode(" ", [ $this->last_name, $this->name]))));
         }
         return $this->email;
     }

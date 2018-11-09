@@ -100,8 +100,11 @@ class CompanyHelper
             ->all();
 
         $categories = ArrayHelper::map($query, 'id', function (array $category) {
-            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
+            if ($category['b_count']) {
+                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
+            }
         });
+        $categories = array_filter($categories);
 
         return $categories;
     }
@@ -118,8 +121,11 @@ class CompanyHelper
             ->all();
 
         $categories = ArrayHelper::map($query, 'id', function (array $category) {
-            return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
+            if ($category['t_count']) {
+                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
+            }
         });
+        $categories = array_filter($categories);
 
         return $categories;
     }

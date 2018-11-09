@@ -178,10 +178,10 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
             . Url::to($urlArray);
     }
 
-    public function getLogoUrl($absolute = false): string
+    public function getLogoUrl($absolute = false, $type = 'small'): string
     {
         return ($absolute ? Yii::$app->params['frontendHostInfo'] : '')
-            . ($this->logo ? '/i/company/lg/' . $this->logo
+            . ($this->logo ? '/i/company/lg/' . $type . '_' . $this->logo
                 : '/img/no-photo-250.jpg');
     }
 

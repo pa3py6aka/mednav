@@ -121,23 +121,8 @@ class CompanyService
         if (!$file instanceof UploadedFile) {
             return;
         }
-        $name = $company->id . "-" . time() . "." . $file->extension;
-        if (!$file->saveAs($company->logoPath() . '/' . $name)) {
-            Yii::error("Ошибка сохранения логотипа компании.");
-            throw new Exception("Ошибка сохранения логотипа компании.");
-        }
 
-        Image::resize($company->logoPath() . '/' . $name, 500, null)
-            ->save($company->logoPath() . '/' . $name);
-        $optimizerChain = OptimizerChainFactory::create();
-        $optimizerChain->optimize($company->logoPath() . '/' . $name);
-
-        // Удаляем старый файл
-        if ($company->logo && is_file($company->logoPath() . '/' . $company->logo) && $company->logo != $name) {
-            FileHelper::unlink($company->logoPath() . '/' . $company->logo);
-        }
-
-        $company->logo = $name;
+        Yii::createObject(CompanyPhotoService::class)->saveLogo($company, $file);
     }
 
     private function saveTags(Company $company, string $tags): void

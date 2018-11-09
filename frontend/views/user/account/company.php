@@ -1,6 +1,7 @@
 <?php
 
 use core\components\ImageManager\ImageManagerAsset;
+use core\components\Settings;
 use kartik\file\FileInput;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -19,7 +20,7 @@ use core\actions\UploadAction;
 $this->registerJsVar('_ImageUploadAction', Url::to(['/user/account/company-photo-upload']));
 ImageManagerAsset::register($this);
 
-$this->title = 'Личный кабинет | Моя компания';
+$this->title = 'Личный кабинет | ' . Yii::$app->settings->get(Settings::COMPANY_NAME_UP);
 
 ?>
 <div class="row">
@@ -28,7 +29,7 @@ $this->title = 'Личный кабинет | Моя компания';
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Моя компания']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([Yii::$app->settings->get(Settings::COMPANY_NAME_UP)]) ?>
 
         <?php if ($model->company && $model->company->isOnModeration()): ?>
             <div class="alert alert-info" role="alert" style="margin-top: 10px;">
@@ -37,7 +38,7 @@ $this->title = 'Личный кабинет | Моя компания';
             </div>
         <?php endif; ?>
 
-        <h1>Моя компания</h1>
+        <h1><?= Yii::$app->settings->get(Settings::COMPANY_NAME_UP) ?></h1>
 
         <?php if ($model->company): ?>
         <ul class="nav nav-tabs" role="tablist">

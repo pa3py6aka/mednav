@@ -1,5 +1,6 @@
 <?php
 
+use core\components\Settings;
 use core\components\ImageManager\ImageManagerAsset;
 use yii\helpers\Url;
 
@@ -17,7 +18,7 @@ ImageManagerAsset::register($this);
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => 'Статьи', 'url' => ['/user/article/active']], 'Новая статья']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(Settings::ARTICLE_NAME_UP), 'url' => ['/user/article/active']], 'Новая статья']) ?>
         <h1>Новая статья</h1>
 
         <?= $this->render('_form', ['model' => $model]) ?>

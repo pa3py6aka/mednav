@@ -1,6 +1,7 @@
 <?php
 
 use core\forms\CNews\CNewsForm;
+use core\components\Settings;
 use frontend\widgets\PhotosManagerWidget;
 
 /* @var $this yii\web\View */
@@ -17,7 +18,7 @@ $this->title = 'Личный кабинет | Редактирование но�
         <?= $this->render('@frontend/views/user/_left_menu', ['user' => $this->params['user']]) ?>
     </div>
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Редактирование новости']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(Settings::CNEWS_NAME_UP), 'url' => ['/user/cnews/active']], 'Редактирование новости']) ?>
         <h1>Редактирование новости</h1>
 
         <ul class="nav nav-tabs" role="tablist">

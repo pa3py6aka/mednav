@@ -1,5 +1,6 @@
 <?php
 
+use core\components\Settings;
 use core\forms\Expo\ExpoForm;
 use frontend\widgets\PhotosManagerWidget;
 
@@ -17,7 +18,7 @@ $this->title = 'Личный кабинет | Редактирование вы�
         <?= $this->render('@frontend/views/user/_left_menu', ['user' => $this->params['user']]) ?>
     </div>
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Редактирование выставки']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(Settings::EXPO_NAME_UP), 'url' => ['/user/expo/active']], 'Редактирование выставки']) ?>
         <h1>Редактирование выставки</h1>
 
         <ul class="nav nav-tabs" role="tablist">

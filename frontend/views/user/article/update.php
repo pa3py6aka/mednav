@@ -1,5 +1,6 @@
 <?php
 
+use core\components\Settings;
 use core\forms\Article\ArticleForm;
 use frontend\widgets\PhotosManagerWidget;
 
@@ -18,7 +19,7 @@ $this->title = 'Личный кабинет | Редактирование ст�
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Редактирование статьи']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(Settings::ARTICLE_NAME_UP), 'url' => ['/user/article/active']], 'Редактирование статьи']) ?>
         <h1>Редактирование статьи</h1>
 
         <ul class="nav nav-tabs" role="tablist">

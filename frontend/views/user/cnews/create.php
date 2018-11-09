@@ -2,6 +2,7 @@
 
 use core\components\ImageManager\ImageManagerAsset;
 use yii\helpers\Url;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $model \core\forms\CNews\CNewsForm */
@@ -17,7 +18,7 @@ ImageManagerAsset::register($this);
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => 'Новости', 'url' => ['/user/cnews/active']], 'Новая новость']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(Settings::CNEWS_NAME_UP), 'url' => ['/user/cnews/active']], 'Новая новость']) ?>
         <h1>Новая новость</h1>
 
         <?= $this->render('_form', ['model' => $model]) ?>

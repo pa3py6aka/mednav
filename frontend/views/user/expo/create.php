@@ -1,5 +1,6 @@
 <?php
 
+use core\components\Settings;
 use core\components\ImageManager\ImageManagerAsset;
 use yii\helpers\Url;
 
@@ -17,7 +18,7 @@ ImageManagerAsset::register($this);
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => 'Выставки', 'url' => ['/user/expo/active']], 'Новая выставка']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([['label' => Yii::$app->settings->get(Settings::EXPO_NAME_UP), 'url' => ['/user/expo/active']], 'Новая выставка']) ?>
         <h1>Новая выставка</h1>
 
         <?= $this->render('_form', ['model' => $model]) ?>

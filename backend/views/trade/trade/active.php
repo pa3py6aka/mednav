@@ -37,8 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'name',
                     'value' => function (Trade $trade) {
-                        return Html::a($trade->name, ['/trade/trade/view', 'id' => $trade->id]);
+                        return '<div style="width:400px;">' . Html::a($trade->name, ['/trade/trade/view', 'id' => $trade->id]) . '</div>';
                     },
+                    'contentOptions' => ['style' => 'white-space:normal;'],
                     'format' => 'raw',
                 ],
                 [

@@ -40,8 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'name',
                     'value' => function (Board $board) {
-                        return Html::a($board->name, ['/board/board/view', 'id' => $board->id]);
+                        return '<div style="width:400px;">' . Html::a($board->name, ['/board/board/view', 'id' => $board->id]) . '</div>';
                     },
+                    'contentOptions' => ['style' => 'white-space:normal;'],
                     'format' => 'raw',
                 ],
                 [

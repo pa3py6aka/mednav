@@ -3,14 +3,18 @@
 namespace console\controllers;
 
 
+use core\components\Settings;
 use core\entities\User\User;
 use core\forms\manage\User\UserCreateForm;
 use core\useCases\manage\UserManageService;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Yii;
 use yii\console\Controller;
 use yii\console\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
+use yii\helpers\FileHelper;
+use yii\imagine\Image;
 
 class UserController extends Controller
 {
@@ -57,6 +61,37 @@ class UserController extends Controller
         $role = $this->select('Role:', ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description'));
         $this->service->assignRole($user->id, $role);
         $this->stdout('Done!' . PHP_EOL);
+    }
+
+    public function actionUpdateLogos()
+    {
+        $path = Yii::getAlias('@frontend/web/i/company/lg/');
+        $files = FileHelper::findFiles($path);
+        $optimizerChain = OptimizerChainFactory::create();
+        $sizes = [
+            'small' => ['width' => Yii::$app->settings->get(Settings::COMPANY_SMALL_SIZE)],
+            'big' => ['width' => Yii::$app->settings->get(Settings::COMPANY_BIG_SIZE)],
+            'max' => ['width' => Yii::$app->settings->get(Settings::COMPANY_MAX_SIZE)],
+        ];
+
+        foreach ($files as $file) {
+            if (strpos($file, 'gitignore')) {
+                continue;
+            }
+            $dir = pathinfo($file, PATHINFO_DIRNAME);
+            $name = pathinfo($file, PATHINFO_BASENAME);
+
+            foreach ($sizes as $type => $item) {
+                $width = isset($item['width']) && (int) $item['width'] ? (int) $item['width'] : null;
+                $height = isset($item['height']) && (int) $item['height'] ? (int) $item['height'] : null;
+
+                Image::resize($file, $width, $height)
+                    ->save($dir . '/' . $type . '_' . $name);
+                $optimizerChain->optimize($dir . '/' . $type . '_' . $name);
+            }
+
+            unlink($file);
+        }
     }
 
     private function findModel($username): User

@@ -33,8 +33,8 @@ class UpdatePasswordForm extends Model
     public function attributeLabels()
     {
         return [
-            'oldPassword' => 'Старый пароль',
-            'password' => 'Пароль',
+            'oldPassword' => 'Текущий пароль',
+            'password' => 'Новый пароль',
             'repeatPassword' => 'Повторите пароль',
         ];
     }

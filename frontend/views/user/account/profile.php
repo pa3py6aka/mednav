@@ -83,6 +83,7 @@ $this->title = 'Личный кабинет | Данные профиля';
 
             <!-- Доступ -->
             <div class="tab-pane fade<?= $tab == 'access' ? ' active in' : '' ?>" role="tabpanel" id="access" aria-labelledby="access-tab">
+                <strong style="font-size:22px;display:block;margin-bottom:8px;margin-top:-11px;">Смена пароля</strong>
                 <?php $form = ActiveForm::begin(['action' => ['profile', 'tab' => 'access']]) ?>
 
                 <?= $form->field($passwordModel, 'oldPassword')->passwordInput() ?>

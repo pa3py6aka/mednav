@@ -2,6 +2,7 @@
 
 use core\forms\manage\Board\BoardManageForm;
 use frontend\widgets\PhotosManagerWidget;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
@@ -18,7 +19,10 @@ $this->title = 'Личный кабинет | Редактирование об�
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Редактирование объявления']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([
+            ['label' => Yii::$app->settings->get(Settings::BOARD_NAME_UP), 'url' => ['/user/board/active']],
+            'Редактирование объявления'
+        ]) ?>
         <h1>Редактирование объявления</h1>
 
         <ul class="nav nav-tabs" role="tablist">

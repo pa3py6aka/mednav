@@ -4,6 +4,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use core\helpers\BoardHelper;
 use core\helpers\HtmlHelper;
+use core\components\Settings;
+use frontend\widgets\AccountBreadcrumbs;
 
 /* @var $this yii\web\View */
 /* @var $tab string */
@@ -21,12 +23,12 @@ $this->beginContent('@frontend/views/layouts/main.php');
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Мои объявления']) ?>
-        <h1>Мои объявления</h1>
+        <?= AccountBreadcrumbs::show([Yii::$app->settings->get(Settings::BOARD_NAME_UP)]) ?>
+        <h1><?= Yii::$app->settings->get(Settings::BOARD_NAME_UP) ?></h1>
 
         <p>
             <a href="<?= Url::to(['create']) ?>" class="btn btn-primary">Добавить объявление</a>
-            <?php if ($tab == 'active') {
+            <?php if (in_array($tab, ['active', 'archive'])) {
                 echo HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger');
             } else if ($tab == 'archive') {
                 echo HtmlHelper::actionButtonForSelected('Продлить выбранные', 'extend', 'success');

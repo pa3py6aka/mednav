@@ -3,6 +3,7 @@
 use core\components\ImageManager\ImageManagerAsset;
 use core\forms\manage\Board\BoardManageForm;
 use yii\helpers\Url;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $model BoardManageForm */
@@ -19,7 +20,10 @@ ImageManagerAsset::register($this);
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show(['Новое объявление']) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([
+            ['label' => Yii::$app->settings->get(Settings::BOARD_NAME_UP), 'url' => ['/user/board/active']],
+            'Новое объявление'
+        ]) ?>
         <h1>Новое объявление</h1>
 
         <?= $this->render('_form', ['model' => $model]) ?>

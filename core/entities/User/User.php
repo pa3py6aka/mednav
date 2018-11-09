@@ -159,7 +159,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 
     public function getUrl($absolute = false): string
     {
-        return $this->isCompany() ? $this->company->getUrl(null, $absolute) : 'javascript:void(0);';
+        return $this->isCompany() && $this->isCompanyActive() ? $this->company->getUrl(null, $absolute) : 'javascript:void(0);';
     }
 
     public function updateStatus($status): void

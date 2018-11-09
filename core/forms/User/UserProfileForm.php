@@ -59,6 +59,7 @@ class UserProfileForm extends Model
             ['phone', 'string', 'max' => 25],
 
             [['last_name', 'name', 'patronymic', 'site', 'skype', 'organization', 'phone', 'email'], 'trim'],
+            ['site', 'url', 'enableIDN' => true, 'defaultScheme' => 'http'],
         ];
     }
 

@@ -29,7 +29,6 @@ $this->title = 'Личный кабинет';
             Для начала работы, заполните форму <a href="<?= Url::to(['/user/account/profile']) ?>">вашего профиля</a>
             <?= $user->isCompany() ? 'и ' . \yii\helpers\Html::a('данные о компании', ['/user/account/company']) : '' ?>
         </div>
-
         <?php endif; ?>
     </div>
 </div>

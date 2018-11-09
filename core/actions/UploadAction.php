@@ -49,19 +49,27 @@ class UploadAction extends Action
     public function run()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $file = UploadedFile::getInstanceByName('file');
+        $files = UploadedFile::getInstancesByName('file');
 
         try {
-            $this->validate($file);
-            $fileName = $this->saveFile($file);
+            $fileNames = [];
+            $n = 0;
+            foreach ($files as $k => $file) {
+                if ($n > 9) {
+                    break;
+                }
+                $this->validate($file);
+                $fileNames[] = $this->saveFile($file);
+                $n++;
+            }
         } catch (\DomainException $e) {
             return ['result' => 'error', 'message' => $e->getMessage()];
         }
 
         return [
             'result' => 'success',
-            'fileName' => $fileName,
-            'url' => $this->baseUrl . '/' . $fileName
+            'fileNames' => $fileNames,
+            'url' => $this->baseUrl . '/'// . $fileName
         ];
     }
 
@@ -125,7 +133,7 @@ class UploadAction extends Action
 <div class="photos-block" data-form-name="$formName" data-attribute="photos">
     <div class="add-image-item has-overlay">
         <img src="/img/add_image.png" alt="Добафить фото" class="add-image-img">
-        <input type="file" class="hidden" accept="image/*">
+        <input type="file" class="hidden" accept="image/*" multiple size="10">
         <span class="remove-btn fa fa-remove hidden"></span>
     </div>
     <div class="help-block"></div>

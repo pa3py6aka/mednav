@@ -54,7 +54,11 @@ class BasePhotoService
         $toBasePath = $this->getBaseFolder();
         $dirStart = Yii::getAlias('@frontend/web/') . $toBasePath;
 
+        $n = 0;
         foreach ($photos as $k => $photo) {
+            if ($n > 9) {
+                break;
+            }
             $toBase = '';
             if (is_file($this->tmpPath . '/' . $photo)) {
                 $original = substr($photo, 6);
@@ -71,6 +75,7 @@ class BasePhotoService
 
                 $boardPhoto = $this->photoEntityClass::create($entity->id, $toBase, $k);
                 $this->repository->save($boardPhoto);
+                $n++;
                 if (!$entity->main_photo_id) {
                     $entity->main_photo_id = $boardPhoto->id;
                 }

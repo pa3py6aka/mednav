@@ -18,9 +18,9 @@
         xhr.onreadystatechange = stateChange;
         xhr.open('POST', _ImageUploadAction);
         var formData = new FormData();
-        //$.each(files, function(k, file) {
-            formData.append("file", files[0]);
-        //});
+        $.each(files, function(k, file) {
+            formData.append("file[]", file);
+        });
         formData.append(yii.getCsrfParam(), yii.getCsrfToken());
         formData.append("num", $link.attr('data-num'));
         xhr.send(formData);
@@ -37,30 +37,34 @@
                     if (data.result === 'error') {
                         $photosBlock.find('.help-block').html(data.message);
                     } else {
-                        $link.find('img').attr('src', data.url);
-                        $link.find('.remove-btn').removeClass('hidden');
-                        $link.find('input[type=hidden]').remove();
+                        $.each(data.fileNames, function (k, fileName) {
+                            $link.find('img').attr('src', data.url + fileName);
+                            $link.find('.remove-btn').removeClass('hidden');
+                            $link.find('input[type=hidden]').remove();
 
-                        var input = '<input type="hidden" name="' + formName + '[' + attribute + '][]" value="' + data.fileName + '">';
-                        $link.append(input);
+                            var input = '<input type="hidden" name="' + formName + '[' + attribute + '][]" value="' + fileName + '">';
+                            $link.append(input);
 
-                        if ($photosBlock.find('.add-image-item').length < 10 && !$link.next().hasClass('add-image-item')) {
-                            addImageItem();
+                            $link = addImageItem();
+                        });
+                        console.log($photosBlock.find('.add-image-item').length);
+                        if ($photosBlock.find('.add-image-item').length > 10 || $link.next().hasClass('add-image-item')) {
+                            $link.remove();
                         }
                     }
                 } else {
                     console.log("error");
                 }
-                $link.find('.overlay').remove();
+                $photosBlock.find('.add-image-item .overlay').remove();
             }
         }
     });
 
     $photosBlock.on('click', '.remove-btn', function () {
-        if ($photosBlock.find('.add-image-item').length < 2) {
+        $(this).parent().remove();
+        if ($photosBlock.find('.add-image-item').length < 10 && !$photosBlock.find('.add-image-item .remove-btn.hidden').length) {
             addImageItem();
         }
-        $(this).parent().remove();
     });
 
     function addImageItem() {
@@ -72,5 +76,6 @@
         $newItem.find('input[type=file]').val('');
         $newItem.find('input[type=hidden]').remove();
         $last.after($newItem);
+        return $newItem;
     }
 })(jQuery);

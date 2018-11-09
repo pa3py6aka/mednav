@@ -144,13 +144,22 @@ class BoardManageService
         }
     }
 
-    public function addPhotos($id, PhotosForm $form): void
+    public function addPhotos($id, PhotosForm $form): bool
     {
         $board = $this->repository->get($id);
+        $num = $board->getPhotos()->count();
+        $ok = false;
         foreach ($form->files as $file) {
+            if ($num > 9) {
+                Yii::$app->session->setFlash("error", "Фото {$file->name} не загружено, превышен лимит кол-ва фотографий в объявлении.");
+                break;
+            }
             Yii::createObject(BoardPhotoService::class)->addPhoto($board, $file);
+            $num++;
+            $ok = true;
         }
         $this->repository->save($board);
+        return $ok;
     }
 
     public function extend($ids, $termId = null): void

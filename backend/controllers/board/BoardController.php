@@ -154,8 +154,10 @@ class BoardController extends Controller
         $photosForm = new PhotosForm();
         if ($photosForm->load(Yii::$app->request->post()) && $photosForm->validate()) {
             try {
-                $this->service->addPhotos($board->id, $photosForm);
-                Yii::$app->session->setFlash('success', 'Фотографии загружены');
+                $ok = $this->service->addPhotos($board->id, $photosForm);
+                if ($ok) {
+                    Yii::$app->session->setFlash('success', 'Фотографии загружены');
+                }
                 return $this->redirect(['view', 'id' => $board->id, 'tab' => 'photos']);
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);

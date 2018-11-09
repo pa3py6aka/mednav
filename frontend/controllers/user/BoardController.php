@@ -179,7 +179,8 @@ class BoardController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $this->service->edit($id, $form);
             Yii::$app->session->setFlash('success', 'Объявление обновлено');
-            return $this->redirect(['update', 'id' => $board->id]);
+            //return $this->redirect(['update', 'id' => $board->id]);
+            return $this->redirect([$board->isActive() ? 'active' : ($board->isOnModeration() ? 'waiting' : 'archive')]);
         }
 
         $photosForm = new PhotosForm();

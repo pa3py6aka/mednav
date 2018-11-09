@@ -15,7 +15,7 @@ class TextHelper
 
         $config = [];
         if ($indirectLink) {
-            $config['URI.Munge'] = Url::to(['/site/outsite', 'module' => $module]) . '?url=%s';
+            $config['URI.Munge'] = Url::to(['/site/outsite', 'module' => $module]) . '?id=%s';
         }
 
         $out = HtmlPurifier::process($content, $config);

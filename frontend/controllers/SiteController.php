@@ -81,9 +81,9 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionOutsite($url)
+    public function actionOutsite($id)
     {
-        return $this->redirect($url);
+        return $this->redirect($id);
     }
 
     public function actionEditColumn()

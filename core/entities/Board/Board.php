@@ -197,6 +197,11 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
         return time() < ($this->updated_at + (15 * 24 * 3600));
     }
 
+    public function isOnModeration(): bool
+    {
+        return $this->status == self::STATUS_ON_MODERATION;
+    }
+
     public function hasExtendNotification(): bool
     {
         $termTime = $this->term->getNotificationInSeconds();

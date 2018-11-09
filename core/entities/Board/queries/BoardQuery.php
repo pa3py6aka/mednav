@@ -37,6 +37,11 @@ class BoardQuery extends ActiveQuery
         return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ON_MODERATION]);
     }
 
+    public function notDeleted($alias = null)
+    {
+        return $this->andWhere(['not', [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_DELETED]]);
+    }
+
     public function deleted($alias = null)
     {
         return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_DELETED]);

@@ -50,8 +50,7 @@ class BoardSearch extends Board
         $query = Board::find()
             ->alias('b')
             ->with('category', 'typeBoardParameter.option')
-            ->joinWith('author u')
-            ->joinWith('typeBoardParameter param');
+            ->joinWith('author u');
 
         if ($tab == 'active') {
             $query->active('b');
@@ -91,6 +90,9 @@ class BoardSearch extends Board
 
         if ($this->category) {
             $query->joinWith('category cat');
+        }
+        if ($this->typeParameter) {
+            $query->joinWith('typeBoardParameter param');
         }
 
         /*if (!$this->validate()) {

@@ -3,11 +3,13 @@
 namespace frontend\controllers\board;
 
 
+use core\access\Rbac;
 use core\readModels\Board\BoardReadRepository;
 use core\repositories\Board\BoardCategoryRepository;
 use core\repositories\GeoRepository;
 use Yii;
 use yii\base\Module;
+use yii\base\UserException;
 use yii\web\Controller;
 
 class BoardController extends Controller
@@ -74,6 +76,11 @@ class BoardController extends Controller
     public function actionView($id, $slug)
     {
         $board = $this->readRepository->getByIdAndSlug($id, $slug);
+
+        if ($board->isOnModeration() && !Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $board->author_id])) {
+            throw new UserException("Данное объявление находится на проверке");
+        }
+
         $board->updateCounters(['views' => 1]);
 
         return $this->render('view', [

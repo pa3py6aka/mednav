@@ -39,7 +39,7 @@ class CategorySelectAction extends Action
 
         return $this->controller->asJson([
             'items' => $items,
-            'params' => $this->entity instanceof BoardCategory ? BoardHelper::generateParameterFields($category, $formName) : '',
+            'params' => strpos($this->entity, 'BoardCategory') ? BoardHelper::generateParameterFields($category, $formName) : '',
         ]);
     }
 }

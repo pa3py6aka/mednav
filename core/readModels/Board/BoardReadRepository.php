@@ -18,7 +18,7 @@ class BoardReadRepository
 {
     public function getByIdAndSlug($id, $slug): Board
     {
-        if (!$board = Board::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
+        if (!$board = Board::find()->notDeleted()->andWhere(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
             throw new NotFoundHttpException("Объявление не найдено");
         }
         return $board;

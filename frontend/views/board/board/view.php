@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use core\helpers\BoardHelper;
+use core\helpers\HtmlHelper;
 use frontend\widgets\message\MessageWidget;
 use frontend\widgets\ContentBlock\ShowContentBlock;
 use core\entities\ContentBlock;
@@ -29,6 +30,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <ul class="breadcrumb">
                     <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
+                    <li><a href="<?= Url::to(['/board/board/list', 'region' => Yii::$app->session->get('geo', 'all')]) ?>"><?= Yii::$app->settings->get(\core\components\Settings::BOARD_NAME) ?></a></li>
                     <?php foreach ($board->category->parents as $category) {
                         if ($category->isRoot()) {
                             continue;
@@ -89,8 +91,9 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                             <li><span class="kt-item-infoset">Продавец:</span> <a href="<?= $board->author->getUrl() ?>"><?= $board->author->getVisibleName() ?></a></li>
                             <?php if ($board->author->getPhone()): ?><li><span class="kt-item-infoset">Телефон:</span> <?= $board->author->getPhone() ?></li><?php endif; ?>
                             <?php if ($board->author->isCompany() && $board->author->isCompanyActive()): ?><li><span class="kt-item-infoset">Адрес:</span> <?= $board->author->company->geo->name . ', ' . Html::encode($board->author->company->address) ?></li><?php endif; ?>
+                            <?= HtmlHelper::infosetListItem('Регоин:', $board->author->geo_id ? $board->author->geo->name : '', !$board->author->isCompany() && $board->author->geo_id) ?>
                             <?php if ($board->author->getSite()): ?><li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $board->author->getSite()]) ?>" target="_blank"><?= Html::encode($board->author->getSite()) ?></a></li><?php endif; ?>
-                            <?= \core\helpers\HtmlHelper::infosetListItem('Skype:', $board->author->skype, !$board->author->isCompany() && $board->author->skype) ?>
+                            <?= HtmlHelper::infosetListItem('Skype:', $board->author->skype, !$board->author->isCompany() && $board->author->skype) ?>
                         </ul>
                         <div>
                             <?= MessageWidget::widget([

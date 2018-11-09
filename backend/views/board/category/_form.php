@@ -34,9 +34,9 @@ MarkHelper::js($this);
                         $disable = false;
                         $hiddenType = '';
                         if ($value == '1') {
-                            $checked = true;
-                            $disable = true;
-                            $hiddenType = Html::hiddenInput($name, $value);
+                            //$checked = true;
+                            //$disable = true;
+                            //$hiddenType = Html::hiddenInput($name, $value);
                         }
                         $checkbox = Html::checkbox($name, $checked, ['value' => $value, 'disabled' => $disable]);
                         return $hiddenType . Html::label($checkbox . ' ' . $label);

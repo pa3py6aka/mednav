@@ -3,18 +3,14 @@
 namespace console\controllers;
 
 
-use core\components\Settings;
 use core\entities\User\User;
 use core\forms\manage\User\UserCreateForm;
 use core\useCases\manage\UserManageService;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Yii;
 use yii\console\Controller;
 use yii\console\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
-use yii\helpers\FileHelper;
-use yii\imagine\Image;
 
 class UserController extends Controller
 {
@@ -63,7 +59,16 @@ class UserController extends Controller
         $this->stdout('Done!' . PHP_EOL);
     }
 
-    public function actionUpdateLogos()
+    private function findModel($username): User
+    {
+        if (!$model = User::findOne(['email' => $username])) {
+            throw new Exception('User is not found');
+        }
+        return $model;
+    }
+
+
+    /*public function actionUpdateLogos()
     {
         $path = Yii::getAlias('@frontend/web/i/company/lg/');
         $files = FileHelper::findFiles($path);
@@ -92,13 +97,5 @@ class UserController extends Controller
 
             unlink($file);
         }
-    }
-
-    private function findModel($username): User
-    {
-        if (!$model = User::findOne(['email' => $username])) {
-            throw new Exception('User is not found');
-        }
-        return $model;
-    }
+    }*/
 }

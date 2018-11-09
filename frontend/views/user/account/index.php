@@ -17,17 +17,19 @@ $this->title = 'Личный кабинет';
 
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show() ?>
-
-        <?php if ($user->isProfileEmpty()): ?>
         <br>
         <div id="info" class="alert-info alert fade in">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            Добро пожаловать на сайт http://mednav.ru
+        </div>
+        <?php if ($user->isProfileEmpty()): ?>
+        <div id="info" class="alert-danger alert fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 
-            Добро пожаловать на сайт http://mednav.ru<br>
             Для начала работы, заполните форму <a href="<?= Url::to(['/user/account/profile']) ?>">вашего профиля</a>
             <?= $user->isCompany() ? 'и ' . \yii\helpers\Html::a('данные о компании', ['/user/account/company']) : '' ?>
-
         </div>
+
         <?php endif; ?>
     </div>
 </div>

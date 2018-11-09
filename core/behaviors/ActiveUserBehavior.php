@@ -30,11 +30,15 @@ class ActiveUserBehavior extends Behavior
                 return Yii::$app->controller->redirect(Yii::$app->user->loginUrl);
             }
 
-            if ($this->onlyForCompany && !$user->isCompany()) {
-                throw new UserException("Этот раздел доступен только для компаний.");
-            } else if ($user->isProfileEmpty()) {
-                throw new UserException("Для начала работы, заполните форму <a href=\"" . Url::to(['/user/account/profile']) . "\">вашего профиля</a>
+            try {
+                if ($this->onlyForCompany && !$user->isCompany()) {
+                    throw new UserException("Этот раздел доступен только для компаний.");
+                } else if ($user->isProfileEmpty()) {
+                    throw new UserException("Для начала работы, заполните форму <a href=\"" . Url::to(['/user/account/profile']) . "\">вашего профиля</a>
             " . ($user->isCompany() ? " и " . Html::a('данные о компании', ['/user/account/company']) : "" ));
+                }
+            } catch (UserException $e) {
+                return Yii::$app->response->redirect(['/user/account/index']);
             }
         }
 

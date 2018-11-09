@@ -79,7 +79,8 @@ class AuthController extends Controller
             try {
                 $user = $this->service->auth($form);
                 Yii::$app->user->login($user, $form->rememberMe ? Yii::$app->params['user.rememberMeDuration'] : 0);
-                return $this->goBack();
+                return $this->redirect(['/user/account/index']);
+                //return $this->goBack();
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());

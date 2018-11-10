@@ -69,7 +69,7 @@ $('#message-form').on('beforeSubmit', function (e) {
         success: function(data, textStatus, jqXHR) {
             if (data.result === 'success') {
                 modal.modal('hide');
-                alert("Сообщение успешно отправлено!");
+                alert("Ваше сообщение успешно отправлено");
             } else {
                 alert(data.message);
             }

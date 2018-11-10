@@ -3,6 +3,7 @@
 namespace core\useCases;
 
 
+use core\components\Settings;
 use core\entities\Dialog\Dialog;
 use core\entities\Dialog\Message;
 use core\jobs\SendMailJob;
@@ -58,10 +59,10 @@ class DialogService
         !$isFromChat ? $params['page'] = Yii::$app->request->getReferrer() : null;
 
         Yii::$app->queue->push(new SendMailJob([
-            'view' => $isFromChat ? 'message-from-chat' : 'message',
+            'view' => $isFromChat ? 'message-from-chat' : ($message->user_id ? 'message' : 'message-from-unregistered'),
             'params' => $params,
             'to' => [$toUser->getEmail() => $toUser->getVisibleName()],
-            'subject' => '[' . Yii::$app->params['robotEmail'] . '] Сообщение - ' . $message->dialog->subject
+            'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
         ]));
     }
 

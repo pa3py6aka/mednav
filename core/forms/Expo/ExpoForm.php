@@ -18,8 +18,8 @@ class ExpoForm extends ArticleCommonForm
     {
         if ($expo) {
             $this->showDates = $expo->show_dates;
-            $this->startDate = Yii::$app->formatter->asDatetime($expo->start_date);
-            $this->endDate = Yii::$app->formatter->asDatetime($expo->end_date);
+            $this->startDate = Yii::$app->formatter->asDate($expo->start_date);
+            $this->endDate = Yii::$app->formatter->asDate($expo->end_date);
             $this->city = $expo->city;
         }
         parent::__construct($expo, $config);
@@ -32,7 +32,7 @@ class ExpoForm extends ArticleCommonForm
             ['showDates', 'boolean'],
             [['startDate', 'endDate'], 'trim'],
             [['startDate', 'endDate'], 'required'],
-            [['startDate', 'endDate'], 'datetime', 'format' => 'php:d.m.Y H:i'],
+            [['startDate', 'endDate'], 'datetime', 'format' => 'php:d.m.Y'],
             ['endDate', 'expoDatesValidate'],
             ['city', 'string', 'max' => 255],
             ['city', 'trim'],

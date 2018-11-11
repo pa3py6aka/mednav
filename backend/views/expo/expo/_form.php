@@ -29,22 +29,14 @@ ImageManagerAsset::register($this);
 
         <?= $form->field($model, 'showDates')->checkbox() ?>
 
-        <?= $form->field($model, 'startDate')->widget(\kartik\datetime\DateTimePicker::class, [
-            'convertFormat' => true,
-            'pluginOptions' => [
-                'format' => 'php:d.m.Y H:i',
-                'autoclose' => true,
-                'todayHighlight' => true
-            ]
+        <?= $form->field($model, 'startDate')->widget(\yii\widgets\MaskedInput::class, [
+            'mask' => '99.99.9999',
+            'clientOptions' => ['placeholder' => 'дд.мм.гггг']
         ]) ?>
 
-        <?= $form->field($model, 'endDate')->widget(\kartik\datetime\DateTimePicker::class, [
-            'convertFormat' => true,
-            'pluginOptions' => [
-                'format' => 'php:d.m.Y H:i',
-                'autoclose' => true,
-                'todayHighlight' => true
-            ]
+        <?= $form->field($model, 'endDate')->widget(\yii\widgets\MaskedInput::class, [
+            'mask' => '99.99.9999',
+            'clientOptions' => ['placeholder' => 'дд.мм.гггг']
         ]) ?>
 
         <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>

@@ -23,13 +23,13 @@ use core\actions\UploadAction;
 <?= $form->field($model, 'showDates')->checkbox() ?>
 
 <?= $form->field($model, 'startDate')->widget(\yii\widgets\MaskedInput::class, [
-    'mask' => '99.99.9999 99:99',
-    'clientOptions' => ['placeholder' => 'дд.мм.гггг чч:мм']
+    'mask' => '99.99.9999',
+    'clientOptions' => ['placeholder' => 'дд.мм.гггг']
 ]) ?>
 
 <?= $form->field($model, 'endDate')->widget(\yii\widgets\MaskedInput::class, [
-    'mask' => '99.99.9999 99:99',
-    'clientOptions' => ['placeholder' => 'дд.мм.гггг чч:мм']
+    'mask' => '99.99.9999',
+    'clientOptions' => ['placeholder' => 'дд.мм.гггг']
 ]) ?>
 
 <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>

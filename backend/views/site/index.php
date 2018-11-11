@@ -58,7 +58,7 @@ $this->title = 'Панель управления сайтом';
             <div class="info-box-content">
                 <span class="info-box-text"><?= Yii::$app->settings->get(Settings::CNEWS_NAME) ?></span>
                 <span class="info-box-number">
-                    На модерации: <a href="<?= Url::to(['/cnews/cnews/moderation']) ?>"><?= \core\entities\Cnews\Cnews::find()->onModeration()->count() ?></a>
+                    На модерации: <a href="<?= Url::to(['/cnews/cnews/moderation']) ?>"><?= \core\entities\CNews\CNews::find()->onModeration()->count() ?></a>
                 </span>
             </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->

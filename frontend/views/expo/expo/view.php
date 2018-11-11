@@ -54,7 +54,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $expo->getTagsString(
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="kk-content">
-                    <?= TextHelper::out($expo->full_text, 'brand', false, (bool) $expo->indirect_links) ?>
+                    <?= TextHelper::out($expo->full_text, 'expo', true, (bool) $expo->indirect_links) ?>
                     <div>
                         Опубликовано: <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $expo->created_at) ?>
                     </div>

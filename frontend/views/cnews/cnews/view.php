@@ -51,7 +51,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="kk-content">
-                    <?= TextHelper::out($news->full_text, 'cnews', false, (bool) $news->indirect_links) ?>
+                    <?= TextHelper::out($news->full_text, 'cnews', true, (bool) $news->indirect_links) ?>
                     <div>
                         Опубликовано: <?= $news->company_id ? '<a href="'. $news->company->getUrl() .'">' . $news->company->getFullName() . '</a> / ' : '' ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $news->created_at) ?>
                     </div>

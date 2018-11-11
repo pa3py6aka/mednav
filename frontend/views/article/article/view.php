@@ -54,7 +54,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $article->getTagsStri
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="kk-content">
-                    <?= TextHelper::out($article->full_text, 'articles', false, (bool) $article->indirect_links) ?>
+                    <?= TextHelper::out($article->full_text, 'articles', true, (bool) $article->indirect_links) ?>
                     <div>
                         Опубликовано: <?= $article->company_id ? '<a href="'. $article->company->getUrl() .'">' . $article->company->getFullName() . '</a> / ' : '' ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $article->created_at) ?>
                     </div>

@@ -54,7 +54,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="kk-content">
-                    <?= TextHelper::out($news->full_text, 'news', false, (bool) $news->indirect_links) ?>
+                    <?= TextHelper::out($news->full_text, 'news', true, (bool) $news->indirect_links) ?>
                     <div>
                         Опубликовано: <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $news->created_at) ?>
                     </div>

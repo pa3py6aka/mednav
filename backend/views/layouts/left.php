@@ -37,9 +37,9 @@
                         ['label' => 'Новости', 'icon' => 'list-alt', 'url' => ['/news/news/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/news/settings/main']],
                     ]],
-                    ['label' => 'Новости компаний', 'icon' => 'list-alt', 'items' => [
+                    ['label' => 'Новости компаний', 'icon' => 'tasks', 'items' => [
                         ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/cnews/category/index']],
-                        ['label' => 'Новости компаний', 'icon' => 'list-alt', 'url' => ['/cnews/cnews/active']],
+                        ['label' => 'Новости компаний', 'icon' => 'tasks', 'url' => ['/cnews/cnews/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/cnews/settings/main']],
                     ]],
                     ['label' => 'Бренды', 'icon' => 'list-alt', 'items' => [
@@ -47,9 +47,9 @@
                         ['label' => 'Бренды', 'icon' => 'list-alt', 'url' => ['/brand/brand/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/brand/settings/main']],
                     ]],
-                    ['label' => 'Выставки', 'icon' => 'list-alt', 'items' => [
+                    ['label' => 'Выставки', 'icon' => 'calendar', 'items' => [
                         ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/expo/category/index']],
-                        ['label' => 'Выставки', 'icon' => 'list-alt', 'url' => ['/expo/expo/active']],
+                        ['label' => 'Выставки', 'icon' => 'calendar', 'url' => ['/expo/expo/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/expo/settings/main']],
                     ]],
                     ['label' => 'Блоки', 'icon' => 'object-ungroup', 'items' => [

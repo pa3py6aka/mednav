@@ -2,6 +2,9 @@
 
 namespace core\entities\User\queries;
 
+
+use core\entities\User\User;
+
 /**
  * This is the ActiveQuery class for [[\core\entities\User\User]].
  *
@@ -9,10 +12,10 @@ namespace core\entities\User\queries;
  */
 class UserQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    public function onModeration($alias = null)
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere([($alias ? $alias.'.' : '' ) . 'status' => User::STATUS_ON_PREMODERATION]);
+    }
 
     /**
      * @inheritdoc

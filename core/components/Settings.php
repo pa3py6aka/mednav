@@ -11,6 +11,7 @@ class Settings
     public const GENERAL_EMAIL = 'generalEmail';
     public const GENERAL_EMAIL_FROM = 'generalEmailFrom';
     public const GENERAL_MODALS_SHOWTIME = 'generalModalsShowtime';
+    public const GENERAL_CONTACT_EMAIL = 'generalContactEmail';
 
     public const USER_EMAIL_ACTIVATION = 'userEmailActivation';
     public const USER_PREMODERATION = 'userPremoderation';
@@ -161,6 +162,7 @@ class Settings
         self::GENERAL_EMAIL => 'no-reply@mednav.ru',
         self::GENERAL_EMAIL_FROM => 'MedNav.ru',
         self::GENERAL_MODALS_SHOWTIME => 4,
+        self::GENERAL_CONTACT_EMAIL => 'contact@mednav.ru',
 
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,

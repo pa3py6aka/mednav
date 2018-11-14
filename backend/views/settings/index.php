@@ -21,6 +21,7 @@ $this->title = 'Основные настройки сайта';
         <?= $form->field($model, Settings::GENERAL_EMAIL)->input('email') ?>
         <?= $form->field($model, Settings::GENERAL_EMAIL_FROM)->textInput() ?>
         <?= $form->field($model, Settings::GENERAL_MODALS_SHOWTIME)->input('number') ?>
+        <?= $form->field($model, Settings::GENERAL_CONTACT_EMAIL)->input('email') ?>
     </div>
     <div class="box-footer">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success btn-flat']) ?>

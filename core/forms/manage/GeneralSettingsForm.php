@@ -13,6 +13,7 @@ class GeneralSettingsForm extends CommonSettingsForm
     public $generalEmail;
     public $generalEmailFrom;
     public $generalModalsShowtime;
+    public $generalContactEmail;
 
     public function rules()
     {
@@ -22,9 +23,9 @@ class GeneralSettingsForm extends CommonSettingsForm
                 Settings::GENERAL_TITLE,
                 Settings::GENERAL_DESCRIPTION,
                 Settings::GENERAL_KEYWORDS,
-                Settings::GENERAL_EMAIL,
                 Settings::GENERAL_EMAIL_FROM,
             ], 'string'],
+            [[Settings::GENERAL_CONTACT_EMAIL, Settings::GENERAL_EMAIL], 'email'],
         ];
     }
 
@@ -37,6 +38,7 @@ class GeneralSettingsForm extends CommonSettingsForm
             Settings::GENERAL_EMAIL => 'E-mail сайта',
             Settings::GENERAL_EMAIL_FROM => 'От кого',
             Settings::GENERAL_MODALS_SHOWTIME => 'Время показа всплывающих уведомлений(в секундах)',
+            Settings::GENERAL_CONTACT_EMAIL => 'E-mail на который приходят письма с формы обратной связи',
         ];
     }
 

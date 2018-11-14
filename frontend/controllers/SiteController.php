@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use core\access\Rbac;
+use core\components\Settings;
 use core\entities\Trade\Trade;
 use core\helpers\PriceHelper;
 use core\services\Mailer;
@@ -145,7 +146,7 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
-                Mailer::send(Yii::$app->params['supportEmail'], 'Сообщение с формы обратной связи Mednav.ru', 'contact', ['contactForm' => $model]);
+                Mailer::send(Yii::$app->settings->get(Settings::GENERAL_CONTACT_EMAIL), 'Сообщение с формы обратной связи Mednav.ru', 'contact', ['contactForm' => $model]);
                 Yii::$app->session->setFlash('success', 'Сообщение отправлено.');
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash('error', 'Ошибка отправки.');

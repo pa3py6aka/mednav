@@ -3,6 +3,7 @@
 namespace frontend\controllers\auth;
 
 
+use core\actions\CaptchaAction;
 use core\entities\User\User;
 use core\forms\auth\LoginForm;
 use core\forms\auth\SignupForm;
@@ -60,7 +61,7 @@ class AuthController extends Controller
     {
         return [
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => CaptchaAction::class,
                 'minLength' => 4,
                 'maxLength' => 4,
                 'fontFile' => '@webroot/fonts/RobotoCondensed-Regular.ttf'

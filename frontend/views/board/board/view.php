@@ -35,9 +35,9 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                         if ($category->isRoot()) {
                             continue;
                         }
-                        ?><li><a href="<?= BoardHelper::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->getTitle() ?></a></li><?php
+                        ?><li><a href="<?= BoardHelper::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->name ?></a></li><?php
                     } ?>
-                    <li><a href="<?= BoardHelper::categoryUrl($board->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $board->category->getTitle() ?></a></li>
+                    <li><a href="<?= BoardHelper::categoryUrl($board->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $board->category->name ?></a></li>
                 </ul>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">

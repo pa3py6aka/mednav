@@ -16,7 +16,7 @@ class ContactForm extends Model
     //public $subject;
     public $message;
     public $captcha;
-    public $agreement;
+    public $agreement = 1;
 
     /**
      * {@inheritdoc}

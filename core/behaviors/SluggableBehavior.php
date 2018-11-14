@@ -30,6 +30,9 @@ class SluggableBehavior extends Slug
                 $slugParts[] = $part;
             }
             $slug = substr($this->generateSlug($slugParts), 0, $this->slugLength);
+            if (substr($slug, -1) == '-') {
+                $slug = substr($slug, 0, -1);
+            }
         } else {
             $slug = parent::getValue($event);
         }

@@ -6,10 +6,10 @@ namespace core\jobs;
 use core\components\Settings;
 use Yii;
 use yii\base\BaseObject;
-use yii\queue\JobInterface;
 use yii\queue\Queue;
+use yii\queue\RetryableJobInterface;
 
-class SendMailJob extends BaseObject implements JobInterface
+class SendMailJob extends BaseObject implements RetryableJobInterface
 {
     /* @var string mail view template */
     public $view;
@@ -30,7 +30,6 @@ class SendMailJob extends BaseObject implements JobInterface
      */
     public function execute($queue)
     {
-        echo "start" . PHP_EOL;
         Yii::$app->mailer->compose($this->view, $this->params)
             ->setSubject($this->subject)
             ->setFrom([Yii::$app->settings->get(Settings::GENERAL_EMAIL) => Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM)])

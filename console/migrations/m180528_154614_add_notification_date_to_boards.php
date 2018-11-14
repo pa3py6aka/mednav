@@ -16,7 +16,7 @@ class m180528_154614_add_notification_date_to_boards extends Migration
 
         /* @var $board \core\entities\Board\Board */
         foreach (\core\entities\Board\Board::find()->each() as $board) {
-            $time = $board->term->getNotificationInSeconds();
+            $time = $board->getSafeTerm()->getNotificationInSeconds();
             $board->notification_date = $board->active_until - $time;
             $board->save();
         }

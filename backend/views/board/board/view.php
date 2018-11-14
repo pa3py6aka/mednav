@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'term_id',
                             'value' => function (Board $board) {
-                                return $board->term->daysHuman;
+                                return $board->getSafeTerm()->daysHuman;
                             },
                         ],
                         [

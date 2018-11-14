@@ -149,7 +149,7 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
      */
     public function extend($termId = null): void
     {
-        $term = BoardTerm::findOne($termId ?: $this->term_id);
+        $term = $termId ? BoardTerm::findOne($termId) : $this->getSafeTerm();
         $from = !$this->active_until || $this->active_until < time() ? time() : $this->active_until;
         $this->active_until = $from + ($term->days * 24 * 60 * 60);
         $this->notification_date = $this->active_until - $term->getNotificationInSeconds();
@@ -204,7 +204,7 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
 
     public function hasExtendNotification(): bool
     {
-        $termTime = $this->term->getNotificationInSeconds();
+        $termTime = $this->getSafeTerm()->getNotificationInSeconds();
         return $this->isActive() && time() >= ($this->active_until - $termTime);
     }
 
@@ -373,6 +373,14 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
     public function getTerm()
     {
         return $this->hasOne(BoardTerm::class, ['id' => 'term_id']);
+    }
+
+    public function getSafeTerm(): BoardTerm
+    {
+        if ($this->term) {
+            return $this->term;
+        }
+        return BoardTerm::find()->where(['default' => 1])->one();
     }
 
     public function getCurrency()

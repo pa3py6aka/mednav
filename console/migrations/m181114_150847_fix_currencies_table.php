@@ -24,7 +24,7 @@ class m181114_150847_fix_currencies_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropPrimaryKey('PRIMARY', '{{%currencies}}');
+        $this->dropPrimaryKey('pk-currencies', '{{%currencies}}');
         $this->alterColumn('{{%currencies}}', 'id', 'INT(11) NOT NULL AUTO_INCREMENT');
         $this->addPrimaryKey('PRIMARY', '{{%currencies}}', 'id');
         $this->addForeignKey('fk-boards-currency_id', '{{%boards}}', 'currency_id', '{{%currencies}}', 'id', 'RESTRICT', 'CASCADE');

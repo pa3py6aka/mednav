@@ -24,6 +24,14 @@ class BoardReadRepository
         return $board;
     }
 
+    public function getById($id): Board
+    {
+        if (!$board = Board::find()->notDeleted()->andWhere(['id' => $id])->limit(1)->one()) {
+            throw new NotFoundHttpException("Объявление не найдено");
+        }
+        return $board;
+    }
+
     public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null, $userId = null): DataProviderInterface
     {
         $query = Board::find()

@@ -87,4 +87,13 @@ class BoardController extends Controller
             'board' => $board
         ]);
     }
+
+    public function actionOutsite($id)
+    {
+        $board = $this->readRepository->getById($id);
+        if ($site = $board->author->getSite()) {
+            return $this->redirect($site);
+        }
+        throw new UserException("Адрес сайта не указан.");
+    }
 }

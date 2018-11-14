@@ -92,7 +92,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                             <?php if ($board->author->getPhone()): ?><li><span class="kt-item-infoset">Телефон:</span> <?= $board->author->getPhone() ?></li><?php endif; ?>
                             <?php if ($board->author->isCompany() && $board->author->isCompanyActive()): ?><li><span class="kt-item-infoset">Адрес:</span> <?= $board->author->company->geo->name . ', ' . Html::encode($board->author->company->address) ?></li><?php endif; ?>
                             <?= HtmlHelper::infosetListItem('Регоин:', $board->author->geo_id ? $board->author->geo->name : '', !$board->author->isCompany() && $board->author->geo_id) ?>
-                            <?php if ($board->author->getSite()): ?><li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/site/outsite', 'url' => $board->author->getSite()]) ?>" target="_blank"><?= Html::encode($board->author->getSite()) ?></a></li><?php endif; ?>
+                            <?php if ($board->author->getSite()): ?><li><span class="kt-item-infoset">Сайт:</span> <a href="<?= Url::to(['/board/outsite', 'id' => $board->id]) ?>" target="_blank"><?= Html::encode($board->author->getSite()) ?></a></li><?php endif; ?>
                             <?= HtmlHelper::infosetListItem('Skype:', $board->author->skype, !$board->author->isCompany() && $board->author->skype) ?>
                         </ul>
                         <div>

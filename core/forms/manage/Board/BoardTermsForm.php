@@ -63,12 +63,12 @@ class BoardTermsForm extends Model
                 $term->save();
             } else {
                 if ($term = BoardTerm::find()->where(['id' => $id])->one()) {
+                    if ($term->default) {
+                        $defaultTerm = BoardTerm::find()->orderBy('id')->one();
+                        $defaultTerm->default = 1;
+                        $defaultTerm->save();
+                    }
                     $term->delete();
-                }
-                if ($term->default) {
-                    $defaultTerm = BoardTerm::find()->orderBy('id')->one();
-                    $defaultTerm->default = 1;
-                    $defaultTerm->save();
                 }
             }
         }

@@ -65,6 +65,11 @@ class BoardTermsForm extends Model
                 if ($term = BoardTerm::find()->where(['id' => $id])->one()) {
                     $term->delete();
                 }
+                if ($term->default) {
+                    $defaultTerm = BoardTerm::find()->orderBy('id')->one();
+                    $defaultTerm->default = 1;
+                    $defaultTerm->save();
+                }
             }
         }
     }

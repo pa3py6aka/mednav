@@ -26,6 +26,7 @@ return [
 
         // Объявления
         'board/<id:\d+>-<slug:[\w-]+>' => 'board/board/view',
+        'board/<_a:(outsite)>' => 'board/board/<_a>',
 
         'board/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'board/board/list',
         'board/<region:[\w-]+>/page<page:\d+>' => 'board/board/list',

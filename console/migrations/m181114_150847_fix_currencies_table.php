@@ -12,11 +12,11 @@ class m181114_150847_fix_currencies_table extends Migration
      */
     public function safeUp()
     {
-        $this->dropForeignKey('fk-boards-currency_id', '{{%boards}}');
-        $this->dropForeignKey('fk-trade_user_categories-currency_id', '{{%trade_user_categories}}');
-        $this->alterColumn('{{%currencies}}', 'id', $this->integer()->notNull());
-        $this->dropPrimaryKey('PRIMARY', '{{%currencies}}');
-        $this->addPrimaryKey('PRIMARY', '{{%currencies}}', ['id', 'module']);
+        //$this->dropForeignKey('fk-boards-currency_id', '{{%boards}}');
+        //$this->dropForeignKey('fk-trade_user_categories-currency_id', '{{%trade_user_categories}}');
+        //$this->alterColumn('{{%currencies}}', 'id', $this->integer()->notNull());
+        //$this->dropPrimaryKey('PRIMARY', '{{%currencies}}');
+        $this->addPrimaryKey('pk-currencies', '{{%currencies}}', ['id', 'module']);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace core\jobs;
 
 
 use core\components\Settings;
+use core\services\Mailer;
 use Yii;
 use yii\base\BaseObject;
 use yii\queue\Queue;
@@ -30,11 +31,18 @@ class SendMailJob extends BaseObject implements RetryableJobInterface
      */
     public function execute($queue)
     {
-        Yii::$app->mailer->compose($this->view, $this->params)
+        /*Yii::$app->mailer->compose($this->view, $this->params)
             ->setSubject($this->subject)
             ->setFrom([Yii::$app->settings->get(Settings::GENERAL_EMAIL) => Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM)])
             ->setTo($this->to)
-            ->send();
+            ->send();*/
+
+        Mailer::send(
+            $this->to,
+            $this->subject,
+            $this->view,
+            $this->params
+        );
     }
 
     public function getTtr()

@@ -46,6 +46,7 @@ class SettingsController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->save();
             Yii::$app->session->setFlash("success", "Данные обновлены");
+            $this->redirect(['terms']);
         }
 
         return $this->render('index', ['model' => $form, 'tab' => 'terms']);

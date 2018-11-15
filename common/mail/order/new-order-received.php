@@ -20,7 +20,7 @@ $sum = 0;
     <?php foreach ($order->orderItems as $orderItem): ?>
         <tr>
             <td>
-                <?= $orderItem->trade->name ?>
+                <a href="<?= $orderItem->trade->getUrl(true) ?>"><?= $orderItem->trade->name ?></a>
                 <?= $orderItem->trade->code ? '<br>(' . $orderItem->trade->code . ')' : '' ?>
             </td>
             <td>

@@ -29,4 +29,4 @@ use yii\helpers\Html;
         $message->user->getPhone()
         : $message->dialog->phone) ?></p>
 <p>---</p>
-<span style="font-style:italic;">Данное сообщение отправлено посетителем на странице <a href="<?= $page ?>"><?= $page ?></a></span>
+<span style="font-style:italic;">Данное сообщение отправлено посетителем на странице <a href="<?= $page ?>"><?= $page ?></a></span> */ ?>

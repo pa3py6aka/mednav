@@ -29,7 +29,6 @@ class SendMessageAction extends Action
                 return $this->controller->asJson(['result' => 'error', 'message' => $e->getMessage()]);
             }
         }
-        \Yii::debug($form->errors);
 
         return $this->controller->asJson(['result' => 'error', 'message' => 'Какая-то ошибка...']);
     }

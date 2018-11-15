@@ -10,6 +10,7 @@ return [
     'baseUrl' => '/',
     'rules' => [
         '' => 'site/index',
+        'dialogs' => 'dialog/dialogs',
         '<_a:login|logout>' => 'site/<_a>',
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',

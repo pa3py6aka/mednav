@@ -56,10 +56,16 @@
                         ['label' => 'Контентные блоки', 'url' => ['/blocks/contents/index']],
                         ['label' => 'Контекстные блоки', 'url' => ['/blocks/context/index']],
                     ]],
+                    [
+                        'label' => 'Сообщения',
+                        'url' => ['/dialog/dialogs'],
+                        'icon' => 'envelope',
+                        'template' => '<a href="{url}">{icon} {label}' . \core\helpers\DialogHelper::getSupportNewMessagesCount() . '</a>'
+                    ],
                     ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/settings/index']],
                     [
                         'label' => 'Выйти',
-                        'url' => ['site/logout'],
+                        'url' => ['/site/logout'],
                         'icon' => 'sign-out',
                         'visible' => !Yii::$app->user->isGuest,
                         'template' => '<a href="{url}" data-method="post">{icon} {label}</a>'

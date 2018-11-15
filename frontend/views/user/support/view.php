@@ -1,18 +1,18 @@
 <?php
 
 use yii\helpers\Html;
-use core\entities\Dialog\Dialog;
-use core\entities\Dialog\Message;
+use core\entities\SupportDialog\SupportDialog;
+use core\entities\SupportDialog\SupportMessage;
 use frontend\assets\AppAsset;
 
 /* @var $this yii\web\View */
 /* @var $provider \yii\data\ActiveDataProvider */
-/* @var $dialog Dialog */
+/* @var $dialog SupportDialog */
 /* @var $user \core\entities\User\User */
 
-/* @var $message Message */
+/* @var $message SupportMessage */
 
-$this->title = 'Личный кабинет | Переписка';
+$this->title = 'Личный кабинет | Служба поддержки';
 $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/js/chat.js')), ['depends' => AppAsset::class]);
 
 ?>
@@ -23,7 +23,7 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
 
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show([
-            ['label' => 'Сообщения', 'url' => ['/user/message/dialogs']],
+            ['label' => 'Служба поддержки', 'url' => ['/user/support/dialogs']],
             Html::encode($dialog->subject)
         ]) ?>
         <h1>
@@ -36,20 +36,12 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
         </div>
         <?= Html::beginForm('', 'post', ['id' => 'chat-message-form', 'class' => 'has-overlay']) ?>
 
-        <?php if ($dialog->getInterlocutorId($user->id)): ?>
-            <div class="form-group">
-                <textarea name="message" class="form-control" rows="3" title="Сообщение" placeholder="Введите сообщение..."></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-info">Отправить</button>
-            </div>
-        <?php else: ?>
-            <div class="chat-user-details">
-                <b>Имя:</b> <?= Html::encode($dialog->name) ?><br>
-                <b>Телефон:</b> <?= Html::encode($dialog->phone) ?><br>
-                <b>E-mail:</b> <?= Html::a(Html::encode($dialog->email), 'mailto:' . Html::encode($dialog->email)) ?><br>
-            </div>
-        <?php endif; ?>
+        <div class="form-group">
+            <textarea name="message" class="form-control" rows="3" title="Сообщение" placeholder="Введите сообщение..."></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-info">Отправить</button>
+        </div>
 
         <?= Html::endForm() ?>
     </div>

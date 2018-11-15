@@ -36,6 +36,12 @@ Mednav = (function () {
             }
             return sEnding;
         },
+        scrollTo: function ($el, margin) {
+            margin = margin ? margin : 0;
+            $('html, body').animate({
+                scrollTop: $el.offset().top + margin
+            }, 700);
+        },
         overlay: '<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>'
     };
 
@@ -46,5 +52,4 @@ Mednav = (function () {
 
 $(function () {
     ControlPanelHead.init();
-    Mednav.public;
 });

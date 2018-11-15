@@ -3,9 +3,7 @@
 namespace core\jobs;
 
 
-use core\components\Settings;
 use core\services\Mailer;
-use Yii;
 use yii\base\BaseObject;
 use yii\queue\Queue;
 use yii\queue\RetryableJobInterface;

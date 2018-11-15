@@ -69,6 +69,11 @@ class SelectCategoryWidget extends Widget
                         ->dropDownList($categories, ['prompt' => 'Выберите раздел']);
                 } else {
                     $dropdown = Html::activeDropDownList($this->model, 'categoryId[' . $n . ']',$categories, ['class' => 'form-control', 'prompt' => '']);
+
+                    if ($this->model->hasErrors('category-' . $categoryId)) {
+                        $dropdown = $dropdown . '<p class="help-block" style="color:red;">' . $this->model->getFirstError('category-' . $categoryId) . '</p>';
+                    }
+
                     $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
                 }
             }
@@ -86,6 +91,11 @@ class SelectCategoryWidget extends Widget
 
             if ($children) {
                 $dropdown = Html::activeDropDownList($this->model, 'categoryId[' . ($n + 1) . ']', $children, ['class' => 'form-control', 'prompt' => '']);
+
+                if ($this->model->hasErrors('category-' . $category->id)) {
+                    $dropdown = $dropdown . '<p class="help-block" style="color:red;">' . $this->model->getFirstError('category-' . $category->id) . '</p>';
+                }
+
                 $dropdowns[] = Html::tag('div', $dropdown, ['class' => 'form-group category-dropdown']);
             }
         }

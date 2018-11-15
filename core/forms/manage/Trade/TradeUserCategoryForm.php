@@ -58,7 +58,8 @@ class TradeUserCategoryForm extends Model
     {
         $category = TradeCategory::findOne((int) $this->$attribute);
         if (!$category->enabled) {
-            $this->addError($attribute, 'Раздел “' . $category->name . '” недоступен для добавления товара, выберите вложенный подраздел.');
+            $attr = $category->depth == 1 ? $attribute : 'category-' . $category->id;
+            $this->addError($attr, 'Раздел “' . $category->name . '” недоступен для добавления товара, выберите вложенный подраздел.');
         }
     }
 

@@ -59,19 +59,19 @@ class DialogService
         $params = ['message' => $message];
         !$isFromChat ? $params['page'] = Yii::$app->request->getReferrer() : null;
 
-        Mailer::send(
+        /*Mailer::send(
             [$toUser->getEmail() => $toUser->getVisibleName()],
             '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject,
             $isFromChat ? 'message-from-chat' : ($message->user_id ? 'message' : 'message-from-unregistered'),
             $params
-        );
+        );*/
 
-        /*Yii::$app->queue->push(new SendMailJob([
+        Yii::$app->queue->push(new SendMailJob([
             'view' => $isFromChat ? 'message-from-chat' : ($message->user_id ? 'message' : 'message-from-unregistered'),
             'params' => $params,
             'to' => [$toUser->getEmail() => $toUser->getVisibleName()],
             'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
-        ]));*/
+        ]));
     }
 
     public function markAsRead($dialogId, $userId)

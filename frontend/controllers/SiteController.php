@@ -6,6 +6,7 @@ use core\components\Settings;
 use core\entities\Trade\Trade;
 use core\helpers\PriceHelper;
 use core\services\Mailer;
+use core\useCases\SearchService;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -99,6 +100,22 @@ class SiteController extends Controller
         $price = PriceHelper::optimize($value);
         $entity->updateAttributes(['price' => $price]);
         return ['result' => 'success', 'value' => $entity->getPriceString(), 'original' => $entity->price / 100];
+    }
+
+    public function actionSearch()
+    {
+        $service = new SearchService();
+        $component = Yii::$app->request->get('for');
+        $text = Yii::$app->request->get('q');
+
+        try {
+            $provider = $service->search($component, $text);
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            return $this->goHome();
+        }
+
+        return $this->render('search', ['provider' => $provider]);
     }
 
     /**

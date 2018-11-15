@@ -6,6 +6,7 @@ use core\behaviors\SluggableBehavior;
 use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Company\Company;
 use core\entities\Geo;
+use core\entities\SearchInterface;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\Trade\queries\TradeQuery;
@@ -60,7 +61,7 @@ use Zelenin\yii\behaviors\Slug;
  * @property User $user
  * @property Company $company
  */
-class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface
+class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface, SearchInterface
 {
     use StatusesTrait;
 
@@ -369,5 +370,10 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     public function getOwnerUser(): User
     {
         return $this->user;
+    }
+
+    public static function getSearchQuery($text): ActiveQuery
+    {
+        return self::find()->andWhere(['like', 'name', $text]);
     }
 }

@@ -9,6 +9,7 @@ use core\entities\Board\Board;
 use core\entities\CNews\CNews;
 use core\entities\Company\queries\CompanyQuery;
 use core\entities\Geo;
+use core\entities\SearchInterface;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\Trade\Trade;
@@ -64,7 +65,7 @@ use yii\helpers\Url;
  * @property Trade[] $trades
  * @property Article[] $articles
  */
-class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface
+class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterface, ContentBlockInterface, SearchInterface
 {
     use StatusesTrait;
 
@@ -414,5 +415,10 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public static function find()
     {
         return new CompanyQuery(get_called_class());
+    }
+
+    public static function getSearchQuery($text): ActiveQuery
+    {
+        return self::find()->andWhere(['like', 'name', $text]);
     }
 }

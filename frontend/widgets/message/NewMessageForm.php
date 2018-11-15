@@ -14,6 +14,7 @@ class NewMessageForm extends Model
     public $phone;
     public $captcha;
     public $toId;
+    public $agreement = 1;
 
     public function rules()
     {
@@ -35,6 +36,7 @@ class NewMessageForm extends Model
             }],
 
             ['toId', 'integer'],
+            ['agreement', 'required', 'requiredValue' => 1, 'message' => 'Вы должны подтвердить своё согласие'],
         ];
     }
 

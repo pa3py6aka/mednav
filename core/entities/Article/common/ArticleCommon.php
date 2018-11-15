@@ -5,6 +5,7 @@ namespace core\entities\Article\common;
 
 use core\behaviors\SluggableBehavior;
 use core\entities\Company\Company;
+use core\entities\SearchInterface;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\User\User;
@@ -37,7 +38,7 @@ use yii\helpers\Html;
  * @property User $user
  * @property Company $company
  */
-class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwnerInterface
+class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwnerInterface, SearchInterface
 {
     use StatusesTrait;
 
@@ -138,5 +139,10 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
     public static function find()
     {
         return new ArticlesQueryCommon(get_called_class());
+    }
+
+    public static function getSearchQuery($text): ActiveQuery
+    {
+        return self::find()->andWhere(['like', 'title', $text]);
     }
 }

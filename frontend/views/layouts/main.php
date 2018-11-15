@@ -47,13 +47,9 @@ AppAsset::register($this);
             <div class="col-md-8">
                 <!--search form-->
                 <div class="fm-search">
-                    <form id="form-search" class="form-inline" action="#" method="get">
-                        <input class="form-control" placeholder="Поиск" value="" size="45" type="text" id="search-input">
-                        <select class="form-control">
-                            <option>Товары</option>
-                            <option>Объявления</option>
-                            <option>Новости</option>
-                        </select>
+                    <form id="form-search" class="form-inline" action="<?= Url::to(['/site/search']) ?>" method="get">
+                        <input class="form-control" placeholder="Поиск" value="<?= Yii::$app->request->get('q') ?>" name="q" size="45" type="text" id="search-input">
+                        <?= \core\helpers\SearchHelper::componentsDropdown() ?>
                         <button class="btn btn-default" type="submit">Найти</button>
                     </form>
                 </div>
@@ -61,7 +57,6 @@ AppAsset::register($this);
             </div>
 
             <?= CartWidget::widget() ?>
-
         </div>
 
         <!--menu-->

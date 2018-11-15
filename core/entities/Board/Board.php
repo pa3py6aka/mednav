@@ -8,6 +8,7 @@ use core\entities\Board\queries\BoardQuery;
 use core\entities\CategoryAssignmentInterface;
 use core\entities\Currency;
 use core\entities\Geo;
+use core\entities\SearchInterface;
 use core\entities\User\User;
 use core\entities\UserOwnerInterface;
 use core\helpers\PriceHelper;
@@ -61,7 +62,7 @@ use yii\helpers\Url;
  * @property BoardPhoto[] $photos
  * @property BoardPhoto $mainPhoto
  */
-class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface, CategoryAssignmentInterface
+class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface, CategoryAssignmentInterface, SearchInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ON_MODERATION = 1;
@@ -426,5 +427,10 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
     public static function find()
     {
         return new BoardQuery(get_called_class());
+    }
+
+    public static function getSearchQuery($text): ActiveQuery
+    {
+        return self::find()->andWhere(['like', 'name', $text]);
     }
 }

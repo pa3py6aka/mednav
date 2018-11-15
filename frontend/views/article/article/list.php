@@ -25,7 +25,7 @@ CategoryHelper::registerHeadMeta('article', $this, 'Справочная инф�
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= HtmlHelper::breadCrumbs(SettingsManager::ARTICLE_NAME, $category) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::ARTICLE_NAME, $category) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::ARTICLE_TITLE, $category) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

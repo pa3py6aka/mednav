@@ -7,14 +7,13 @@ use yii\grid\ActionColumn;
 use core\helpers\PaginationHelper;
 use yii\grid\CheckboxColumn;
 use core\helpers\HtmlHelper;
-use core\entities\User\User;
-use core\helpers\CategoryHelper;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\ArticleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Статьи';
+$this->title = Yii::$app->settings->get(Settings::ARTICLE_TITLE) ?: 'Статьи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="board-index box box-primary">

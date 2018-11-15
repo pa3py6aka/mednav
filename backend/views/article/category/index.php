@@ -6,8 +6,9 @@ use core\components\TreeManager\TreeManagerWidget;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Разделы';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Разделы статей';
+$this->params['breadcrumbs'][] = ['label' => 'Статьи', 'url' => ['/article/article/active']];
+$this->params['breadcrumbs'][] = 'Разделы';
 
 ?>
 <div class="box">

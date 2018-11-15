@@ -23,7 +23,7 @@ CategoryHelper::registerHeadMeta('expo', $this, 'Выставки', $category);
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= HtmlHelper::breadCrumbs(SettingsManager::EXPO_NAME, $category) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::EXPO_NAME, $category) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::EXPO_TITLE, $category) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

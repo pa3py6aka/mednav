@@ -29,7 +29,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= TradeHelper::breadCrumbs($category, $geo) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::TRADE_NAME, $category, $categoryRegion) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::TRADE_TITLE, $category, $categoryRegion) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

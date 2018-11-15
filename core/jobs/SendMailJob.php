@@ -29,12 +29,6 @@ class SendMailJob extends BaseObject implements RetryableJobInterface
      */
     public function execute($queue)
     {
-        /*Yii::$app->mailer->compose($this->view, $this->params)
-            ->setSubject($this->subject)
-            ->setFrom([Yii::$app->settings->get(Settings::GENERAL_EMAIL) => Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM)])
-            ->setTo($this->to)
-            ->send();*/
-
         Mailer::send(
             $this->to,
             $this->subject,

@@ -201,9 +201,9 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         return Html::encode($this->userCategory->currency->sign);
     }
 
-    public function getUrl(): string
+    public function getUrl($absolute = false): string
     {
-        return Url::to(['/trade/trade/view', 'slug' => $this->slug, 'id' => $this->id]);
+        return ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '') . Url::to(['/trade/trade/view', 'slug' => $this->slug, 'id' => $this->id]);
     }
 
     public function getMainPhotoUrl($type = 'small', $absolute = false): string

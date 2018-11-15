@@ -11,7 +11,7 @@ $sum = 0;
 
 ?>
 <?php foreach ($userOrder->orders as $order): ?>
-    <p><b>Заказ №":</b> <?= $order->getNumber() ?> от <?= $order->forCompany->getFullName() ?>, <?= Yii::$app->formatter->asDate($order->created_at) ?></p>
+    <p><b>Заказ №":</b> <?= $order->getNumber() ?> от <a href="<?= $order->forCompany->getUrl(null, true) ?>"><?= $order->forCompany->getFullName() ?></a>, <?= Yii::$app->formatter->asDate($order->created_at) ?></p>
     <table>
         <tr>
             <th>Наименование:</th>
@@ -22,7 +22,7 @@ $sum = 0;
         <?php foreach ($order->orderItems as $orderItem): ?>
             <tr>
                 <td>
-                    <?= $orderItem->trade->name ?>
+                    <a href="<?= $orderItem->trade->getUrl(true) ?>"><?= $orderItem->trade->name ?></a>
                     <?= $orderItem->trade->code ? '<br>(' . $orderItem->trade->code . ')' : '' ?>
                 </td>
                 <td>

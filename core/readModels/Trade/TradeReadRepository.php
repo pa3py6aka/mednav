@@ -4,8 +4,7 @@ namespace core\readModels\Trade;
 
 
 use core\components\Settings;
-use core\entities\Company\CompanyDelivery;
-use core\entities\Company\CompanyDeliveryRegions;
+use core\entities\Company\CompanyDeliveryRegion;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
 use core\entities\Geo;
@@ -49,11 +48,15 @@ class TradeReadRepository
 
         if ($geo) {
             $ids = ArrayHelper::merge([$geo->id], $geo->getDescendants()->select('id')->column());
-            $companyIds = CompanyDeliveryRegions::find()
+            /*$companyIds = CompanyDeliveryRegions::find()
                 ->alias('cdr')
                 ->leftJoin(CompanyDelivery::tableName() . ' cd', 'cdr.company_deliveries_id=cd.id')
                 ->select('cd.company_id')
                 ->where(['cdr.geo_id' => $ids])
+                ->column();*/
+            $companyIds = CompanyDeliveryRegion::find()
+                ->select('company_id')
+                ->where(['geo_id' => $ids])
                 ->column();
             $query->andWhere([
                 'or',

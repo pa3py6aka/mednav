@@ -8,6 +8,7 @@ use core\entities\Dialog\Dialog;
 use core\entities\Dialog\Message;
 use core\jobs\SendMailJob;
 use core\repositories\DialogRepository;
+use core\services\Mailer;
 use core\services\TransactionManager;
 use frontend\widgets\message\NewMessageForm;
 use Yii;
@@ -58,12 +59,19 @@ class DialogService
         $params = ['message' => $message];
         !$isFromChat ? $params['page'] = Yii::$app->request->getReferrer() : null;
 
-        Yii::$app->queue->push(new SendMailJob([
+        Mailer::send(
+            [$toUser->getEmail() => $toUser->getVisibleName()],
+            '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject,
+            $isFromChat ? 'message-from-chat' : ($message->user_id ? 'message' : 'message-from-unregistered'),
+            $params
+        );
+
+        /*Yii::$app->queue->push(new SendMailJob([
             'view' => $isFromChat ? 'message-from-chat' : ($message->user_id ? 'message' : 'message-from-unregistered'),
             'params' => $params,
             'to' => [$toUser->getEmail() => $toUser->getVisibleName()],
             'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
-        ]));
+        ]));*/
     }
 
     public function markAsRead($dialogId, $userId)

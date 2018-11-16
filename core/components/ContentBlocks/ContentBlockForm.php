@@ -44,7 +44,9 @@ class ContentBlockForm extends Model
             [['type', 'showTitle', 'module', 'place'], 'required'],
             [['view', 'items'], 'required', 'when' => function (ContentBlockForm $model) {
                 return $model->type != ContentBlock::TYPE_HTML;
-            }],
+            },'whenClient' => "function(attribute, value) {
+                  return $('#type-selector').val() != " . ContentBlock::TYPE_HTML . ";
+            }"],
             [['type', 'view', 'items', 'module', 'place', 'forModule'], 'integer'],
             [['name'], 'string'],
             ['showTitle', 'boolean'],

@@ -36,10 +36,12 @@ class ShowContentBlock extends Widget
                 $view = 'carousel';
             } else if ($block->view == ContentBlock::VIEW_TILE) {
                 $view = 'tile';
-            } elseif ($block->view == ContentBlock::VIEW_LINE) {
+            } else if ($block->view == ContentBlock::VIEW_LINE) {
                 $view = 'line';
-            } else {
+            } else if ($block->type != ContentBlock::TYPE_HTML) {
                 throw new InvalidArgumentException("Неверное значение 'Вид блока'.");
+            } else {
+                $view = 'line';
             }
 
             if ($block->place == ContentBlock::PLACE_MAIN) {
@@ -61,7 +63,9 @@ class ShowContentBlock extends Widget
     {
         $module = $block->for_module;
 
-        $query = $this->getQuery($module);
+        if ($block->type != ContentBlock::TYPE_HTML) {
+            $query = $this->getQuery($module);
+        }
 
         if ($block->type == ContentBlock::TYPE_NEW) {
             $query->orderBy(['ent.id' => SORT_DESC]);
@@ -97,7 +101,7 @@ class ShowContentBlock extends Widget
             $query = Trade::find()->with('mainPhoto', 'company.geo');
         } else if ($module == ContentBlock::MODULE_COMPANY) {
             $query = Company::find()->with('mainPhoto');
-        } else {
+        } else if ($block->type != ContentBlock::TYPE_HTML) {
             throw new InvalidArgumentException("Неверный модуль контентного блока.");
         }
         return $query->active()->alias('ent');

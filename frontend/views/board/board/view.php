@@ -120,10 +120,13 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
         ]) ?>
 
     </div>
-    <!-- right col -->
+
     <div class="col-md-3 col-sm-3 hidden-xs">
+        <!-- right col -->
         <div id="rightCol">
+            <!-- Banner ДО-Контент -->
             <div style="margin: 10px 0;"><img src="/img/234.png" class="img-responsive" alt=""></div>
+            <!-- // Banner ДО-Контент -->
 
             <?= ShowContentBlock::widget([
                 'module' => ContentBlock::MODULE_BOARD,
@@ -131,6 +134,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 'page' => ContentBlock::PAGE_VIEW,
                 'entity' => $board,
             ]) ?>
-        </div><!-- // right col -->
+        </div>
+        <!-- // right col -->
     </div>
 </div>

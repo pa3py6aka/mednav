@@ -18,7 +18,7 @@ class ContentBlockService
         $block->view = $form->view ?: 0;
         $block->items = $form->items;
         $block->module = $form->module;
-        $block->for_module = $form->forModule;
+        $block->for_module = $form->forModule ?: 0;
         $block->place = $form->place;
         $block->page = $form->page;
         $block->sort = ContentBlock::find()->where(['module' => $form->module, 'place' => $form->place, 'page' => $form->page])->max('sort') + 1;
@@ -48,7 +48,7 @@ class ContentBlockService
         $block->module = $form->module;
         $block->place = $form->place;
         $block->page = $form->page;
-        $block->for_module = $form->forModule;
+        $block->for_module = $form->forModule ?: 0;
 
         $htmls = [];
         $htmlCategories = [];

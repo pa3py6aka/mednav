@@ -11,7 +11,7 @@ class ContentBlockForm extends Model
     public $type;
     public $name;
     public $showTitle;
-    public $view;
+    public $view = ContentBlock::VIEW_CAROUSEL;
     public $items = 5;
     public $html = [];
     public $htmlCategories;

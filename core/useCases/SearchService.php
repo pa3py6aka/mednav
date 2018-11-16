@@ -42,11 +42,12 @@ class SearchService
         ];
     }
 
-    public function search($component, $text): ActiveDataProvider
+    public function search($component, $text): array
     {
         $this->validate($component, $text);
+        return $this->getUrl($component, $text);
 
-        $class = $this->getComponentClass($component);
+        /*$class = $this->getComponentClass($component);
         $query = $class::getSearchQuery($text);
 
         return new ActiveDataProvider([
@@ -65,7 +66,34 @@ class SearchService
                 'defaultPageSize' => 10,
                 'forcePageParam' => false,
             ]
-        ]);
+        ]);*/
+    }
+
+    private function getUrl($component, $text): array
+    {
+        $region = Yii::$app->request->get('region', Yii::$app->session->get('geo'));
+        $category = Yii::$app->request->get('category');
+        $for = Yii::$app->request->get('for');
+
+        switch ($component) {
+            case self::COMPONENT_BOARD:
+                return ['/board/board/list', 'region' => $region, 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_TRADE:
+                return ['/trade/trade/list', 'region' => $region, 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_COMPANY:
+                return ['/company/company/list', 'region' => $region, 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_ARTICLE:
+                return ['/article/article/list', 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_BRAND:
+                return ['/brand/brand/list', 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_CNEWS:
+                return ['/cnews/cnews/list', 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_EXPO:
+                return ['/expo/expo/list', 'category' => $category, 'q' => $text, 'for' => $for];
+            case self::COMPONENT_NEWS:
+                return ['/news/news/list', 'category' => $category, 'q' => $text, 'for' => $for];
+            default: throw new InvalidArgumentException("Компонент не найден.");
+        }
     }
 
     private function validate($component, $text): void
@@ -73,7 +101,7 @@ class SearchService
         if (strlen($text) == 0) {
             throw new \DomainException("Введён пустой поисковый запрос.");
         }
-        if (!in_array($component, self::componentsArray())) {
+        if (!in_array($component, array_keys(self::componentsArray()))) {
             throw new \DomainException("Компонент не найден.");
         }
     }

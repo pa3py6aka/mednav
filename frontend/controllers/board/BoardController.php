@@ -48,7 +48,7 @@ class BoardController extends Controller
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
         $type =  (int) Yii::$app->request->get('type');
 
-        $provider = $this->readRepository->getAllByFilter($category, $geo, $type);
+        $provider = $this->readRepository->getAllByFilter($category, $geo, $type, null, Yii::$app->request->get('q'));
 
         // Вывод объявлений по клику "показать ещё"
         if (Yii::$app->request->get('showMore')) {

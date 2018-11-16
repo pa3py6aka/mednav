@@ -109,7 +109,8 @@ class SiteController extends Controller
         $text = Yii::$app->request->get('q');
 
         try {
-            $provider = $service->search($component, $text);
+            $url = $service->search($component, $text);
+            return $this->redirect($url);
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
             return $this->goHome();

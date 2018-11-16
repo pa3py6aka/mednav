@@ -32,7 +32,7 @@ class BoardReadRepository
         return $board;
     }
 
-    public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null, $userId = null): DataProviderInterface
+    public function getAllByFilter(BoardCategory $category = null, Geo $geo = null, $typeParameterOption = null, $userId = null, $search = null): DataProviderInterface
     {
         $query = Board::find()
             ->alias('b')
@@ -56,6 +56,10 @@ class BoardReadRepository
 
         if ($userId) {
             $query->andWhere(['b.author_id' => $userId]);
+        }
+
+        if ($search) {
+            $query->andWhere(['like', 'b.name', $search]);
         }
 
         $query->groupBy('b.id');

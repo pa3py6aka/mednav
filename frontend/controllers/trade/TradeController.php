@@ -47,7 +47,7 @@ class TradeController extends Controller
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
 
-        $provider = $this->readRepository->getAllByFilter($category, $geo);
+        $provider = $this->readRepository->getAllByFilter($category, $geo, null, Yii::$app->request->get('q'));
 
         // Вывод объявлений по клику "показать ещё"
         if (Yii::$app->request->get('showMore')) {

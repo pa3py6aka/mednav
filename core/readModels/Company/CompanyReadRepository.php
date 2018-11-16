@@ -23,7 +23,7 @@ class CompanyReadRepository
         return $company;
     }
 
-    public function getAllBy(CompanyCategory $category = null, Geo $geo = null): DataProviderInterface
+    public function getAllBy(CompanyCategory $category = null, Geo $geo = null, $search = null): DataProviderInterface
     {
         $query = Company::find()->alias('c')->active('c')->with('mainPhoto', 'geo', 'boards', 'trades', 'cNews', 'articles');
 
@@ -36,6 +36,10 @@ class CompanyReadRepository
         if ($geo) {
             $ids = ArrayHelper::merge([$geo->id], $geo->getDescendants()->select('id')->column());
             $query->andWhere(['c.geo_id' => $ids]);
+        }
+
+        if ($search) {
+            $query->andWhere(['like', 'c.name', $search]);
         }
 
         $query->groupBy('c.id');

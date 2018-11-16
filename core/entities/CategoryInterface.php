@@ -4,6 +4,7 @@ namespace core\entities;
 use core\entities\Article\common\ArticleCategoryQueryCommon;
 use core\entities\Board\queries\BoardCategoryQuery;
 use core\entities\Trade\queries\TradeCategoryQuery;
+use paulzi\nestedsets\NestedSetsBehavior;
 
 /**
  * Interface CategoryInterface
@@ -43,6 +44,7 @@ use core\entities\Trade\queries\TradeCategoryQuery;
  * @property CategoryInterface $next
  *
  * @method static ArticleCategoryQueryCommon|BoardCategoryQuery|TradeCategoryQuery find
+ * @mixin NestedSetsBehavior
  */
 interface CategoryInterface
 {

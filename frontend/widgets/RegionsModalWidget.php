@@ -54,6 +54,7 @@ class RegionsModalWidget extends Widget
         return $this->render('regions-modal', [
             'widget' => $this,
             'countries' => $this->getCashedCategoriesArray(),
+            //'q' => Yii::$app->request->get('q'),
         ]);
     }
 

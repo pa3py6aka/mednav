@@ -34,16 +34,20 @@ class TradeReadRepository
         return $trade;
     }
 
-    public function getAllByFilter(TradeCategory $category = null, Geo $geo = null, $companyId = null): DataProviderInterface
+    public function getAllByFilter(TradeCategory $category = null, Geo $geo = null, $companyId = null, $search = null): DataProviderInterface
     {
         $query = Trade::find()
             ->alias('t')
             ->active('t')
-            ->with('mainPhoto', 'geo', 'userCategory', 'category', 'company.deliveryRegions');
+            ->with('mainPhoto', 'geo', 'userCategory.currency', 'userCategory.uom', 'category', 'user.company.deliveryRegions');
 
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
             $query->andWhere(['t.category_id' => $ids]);
+        }
+
+        if ($search) {
+            $query->andWhere(['like', 't.name', $search]);
         }
 
         if ($geo) {

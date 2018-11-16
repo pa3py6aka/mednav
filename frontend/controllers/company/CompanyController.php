@@ -52,7 +52,7 @@ class CompanyController extends Controller
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
         $categoryRegion = $geo && $category ? $this->categoryRepository->getRegion($category->id, $geo->id) : null;
 
-        $provider = $this->repository->getAllBy($category, $geo);
+        $provider = $this->repository->getAllBy($category, $geo, Yii::$app->request->get('q'));
 
         // Вывод объявлений по клику "показать ещё"
         if (Yii::$app->request->get('showMore')) {

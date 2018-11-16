@@ -30,7 +30,7 @@ class ExpoController extends Controller
     public function actionList($category = null)
     {
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
-        $provider = $this->readRepository->getAllBy($category);
+        $provider = $this->readRepository->getAllBy($category, null, Yii::$app->request->get('q'));
 
         // Вывод выставок по клику "показать ещё"
         if (Yii::$app->request->get('showMore')) {

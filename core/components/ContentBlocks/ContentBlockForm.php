@@ -41,7 +41,10 @@ class ContentBlockForm extends Model
     public function rules()
     {
         return [
-            [['type', 'showTitle', 'view', 'items', 'module', 'place'], 'required'],
+            [['type', 'showTitle', 'module', 'place'], 'required'],
+            [['view', 'items'], 'required', 'when' => function (ContentBlockForm $model) {
+                return $model->type != ContentBlock::TYPE_HTML;
+            }],
             [['type', 'view', 'items', 'module', 'place', 'forModule'], 'integer'],
             [['name'], 'string'],
             ['showTitle', 'boolean'],

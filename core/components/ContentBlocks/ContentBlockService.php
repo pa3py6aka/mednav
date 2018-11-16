@@ -15,7 +15,7 @@ class ContentBlockService
         $block->name = $form->name ?: 'Без названия';
         $block->show_title = $form->showTitle;
         $block->enable = 1;
-        $block->view = $form->view;
+        $block->view = $form->view ?: 0;
         $block->items = $form->items;
         $block->module = $form->module;
         $block->for_module = $form->forModule;
@@ -43,7 +43,7 @@ class ContentBlockService
         $block->name = $form->name ?: 'Без названия';
         $block->show_title = $form->showTitle;
         $block->enable = 1;
-        $block->view = $form->view;
+        $block->view = $form->view ?: 0;
         $block->items = $form->items;
         $block->module = $form->module;
         $block->place = $form->place;

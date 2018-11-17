@@ -57,14 +57,16 @@ class HtmlHelper
     }
 
     /**
-     * @param string $titleParam (например SettingsManager::BOARD_TITLE)
-     * @param BoardCategory|CompanyCategory|null $category
+     * @param string $titleParam (например Settings::BOARD_TITLE)
+     * @param CategoryInterface $category
      * @param BoardCategoryRegion|CompanyCategoryRegion|null $categoryRegion
+     * @param int $page
      * @return string
      */
-    public static function getTitleForList($titleParam, $category = null, $categoryRegion = null): string
+    public static function getTitleForList($titleParam, CategoryInterface $category = null, $categoryRegion = null, $page = 0): string
     {
-        $title = $categoryRegion ? $categoryRegion->title : '';
+        $title = $page && $category ? $category->title_other : '';
+        $title = $title ?: ($categoryRegion ? $categoryRegion->title : '');
         $title = $title ?: ($category ? $category->title : '');
         $title = $title ?: ($category ? $category->name : '');
         $title = !$category && !$categoryRegion ? Yii::$app->settings->get($titleParam) : $title;

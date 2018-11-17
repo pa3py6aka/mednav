@@ -29,7 +29,7 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= CompanyHelper::breadCrumbs($category, $geo) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::COMPANY_TITLE, $category, $categoryRegion) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::COMPANY_TITLE, $category, $categoryRegion, $provider->pagination->page) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

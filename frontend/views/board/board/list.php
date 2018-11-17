@@ -29,7 +29,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= BoardHelper::breadCrumbs($category, $geo) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::BOARD_TITLE, $category, $categoryRegion) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::BOARD_TITLE, $category, $categoryRegion, $provider->pagination->page) ?></h1></div>
         </div>
 
         <?= BoardCategoriesListWidget::widget(['category' => $category, 'region' => $geo]) ?>

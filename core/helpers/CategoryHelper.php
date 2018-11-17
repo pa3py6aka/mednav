@@ -3,13 +3,10 @@
 namespace core\helpers;
 
 
-use core\components\SettingsManager;
-use core\entities\Board\BoardCategory;
+use core\components\Settings;
 use core\entities\Board\BoardCategoryRegion;
 use core\entities\CategoryInterface;
-use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryRegion;
-use core\entities\Trade\TradeCategory;
 use core\entities\Trade\TradeCategoryRegion;
 use Yii;
 use yii\web\View;
@@ -33,11 +30,12 @@ class CategoryHelper
      * @param string $module
      * @param View $view
      * @param string $defaultTitle
-     * @param BoardCategory|TradeCategory|CompanyCategory|null $category
+     * @param CategoryInterface|null $category
      * @param BoardCategoryRegion|TradeCategoryRegion|CompanyCategoryRegion|null $categoryRegion
      */
-    public static function registerHeadMeta($module, View $view, $defaultTitle, $category = null, $categoryRegion = null): void
+    public static function registerHeadMeta($module, View $view, $defaultTitle, CategoryInterface $category = null, $categoryRegion = null): void
     {
+        $page = Yii::$app->request->get('page');
         $title = null;
         $description = null;
         $keywords = null;
@@ -47,51 +45,58 @@ class CategoryHelper
             $keywords = $categoryRegion->meta_keywords;
         }
         if ($category) {
-            $title = $title ?: ($category->meta_title ?: ($category->title ?: $category->name));
-            $description = $description ?: $category->meta_description;
-            $keywords = $keywords ?: $category->meta_keywords;
+            if ($page && !$categoryRegion) {
+                $title = $category->meta_title_other;
+                $description = $category->meta_description_other;
+                $keywords = $category->meta_keywords_other;
+            } else {
+                $title = $title ?: ($category->meta_title ?: ($category->title ?: $category->name));
+                $description = $description ?: $category->meta_description;
+                $keywords = $keywords ?: $category->meta_keywords;
+            }
         }
+
         if (!$category && !$categoryRegion) {
             switch ($module) {
                 case 'company':
-                    $settingsTitle = SettingsManager::COMPANY_META_TITLE;
-                    $settingsDescription = SettingsManager::COMPANY_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::COMPANY_META_KEYWORDS;
+                    $settingsTitle = Settings::COMPANY_META_TITLE;
+                    $settingsDescription = Settings::COMPANY_META_DESCRIPTION;
+                    $settingsKeywords = Settings::COMPANY_META_KEYWORDS;
                     break;
                 case 'trade':
-                    $settingsTitle = SettingsManager::TRADE_META_TITLE;
-                    $settingsDescription = SettingsManager::TRADE_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::TRADE_META_KEYWORDS;
+                    $settingsTitle = Settings::TRADE_META_TITLE;
+                    $settingsDescription = Settings::TRADE_META_DESCRIPTION;
+                    $settingsKeywords = Settings::TRADE_META_KEYWORDS;
                     break;
                 case 'article':
-                    $settingsTitle = SettingsManager::ARTICLE_META_TITLE;
-                    $settingsDescription = SettingsManager::ARTICLE_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::ARTICLE_META_KEYWORDS;
+                    $settingsTitle = Settings::ARTICLE_META_TITLE;
+                    $settingsDescription = Settings::ARTICLE_META_DESCRIPTION;
+                    $settingsKeywords = Settings::ARTICLE_META_KEYWORDS;
                     break;
                 case 'news':
-                    $settingsTitle = SettingsManager::NEWS_META_TITLE;
-                    $settingsDescription = SettingsManager::NEWS_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::NEWS_META_KEYWORDS;
+                    $settingsTitle = Settings::NEWS_META_TITLE;
+                    $settingsDescription = Settings::NEWS_META_DESCRIPTION;
+                    $settingsKeywords = Settings::NEWS_META_KEYWORDS;
                     break;
                 case 'cnews':
-                    $settingsTitle = SettingsManager::CNEWS_META_TITLE;
-                    $settingsDescription = SettingsManager::CNEWS_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::CNEWS_META_KEYWORDS;
+                    $settingsTitle = Settings::CNEWS_META_TITLE;
+                    $settingsDescription = Settings::CNEWS_META_DESCRIPTION;
+                    $settingsKeywords = Settings::CNEWS_META_KEYWORDS;
                     break;
                 case 'brand':
-                    $settingsTitle = SettingsManager::BRANDS_META_TITLE;
-                    $settingsDescription = SettingsManager::BRANDS_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::BRANDS_META_KEYWORDS;
+                    $settingsTitle = Settings::BRANDS_META_TITLE;
+                    $settingsDescription = Settings::BRANDS_META_DESCRIPTION;
+                    $settingsKeywords = Settings::BRANDS_META_KEYWORDS;
                     break;
                 case 'expo':
-                    $settingsTitle = SettingsManager::EXPO_META_TITLE;
-                    $settingsDescription = SettingsManager::EXPO_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::EXPO_META_KEYWORDS;
+                    $settingsTitle = Settings::EXPO_META_TITLE;
+                    $settingsDescription = Settings::EXPO_META_DESCRIPTION;
+                    $settingsKeywords = Settings::EXPO_META_KEYWORDS;
                     break;
                 default:
-                    $settingsTitle = SettingsManager::BOARD_META_TITLE;
-                    $settingsDescription = SettingsManager::BOARD_META_DESCRIPTION;
-                    $settingsKeywords = SettingsManager::BOARD_META_KEYWORDS;
+                    $settingsTitle = Settings::BOARD_META_TITLE;
+                    $settingsDescription = Settings::BOARD_META_DESCRIPTION;
+                    $settingsKeywords = Settings::BOARD_META_KEYWORDS;
             }
 
             $title = Yii::$app->settings->get($settingsTitle);
@@ -99,8 +104,8 @@ class CategoryHelper
             $keywords = Yii::$app->settings->get($settingsKeywords);
         }
         $title = $title ?: $defaultTitle;
-
         $view->title = $title;
+
         if ($description) {
             $view->registerMetaTag(['name' => 'description', 'content' => $description]);
         }

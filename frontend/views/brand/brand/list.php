@@ -23,7 +23,7 @@ CategoryHelper::registerHeadMeta('brand', $this, 'Бренды', $category);
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= HtmlHelper::breadCrumbs(SettingsManager::BRANDS_TITLE, $category) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::BRANDS_NAME, $category) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::BRANDS_NAME, $category, null, $provider->pagination->page) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

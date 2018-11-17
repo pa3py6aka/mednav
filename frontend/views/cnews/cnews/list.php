@@ -23,7 +23,7 @@ CategoryHelper::registerHeadMeta('cnews', $this, 'Новости компани�
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?= HtmlHelper::breadCrumbs(SettingsManager::CNEWS_TITLE, $category) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::CNEWS_NAME, $category) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::CNEWS_NAME, $category, null, $provider->pagination->page) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

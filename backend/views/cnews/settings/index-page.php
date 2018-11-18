@@ -16,6 +16,6 @@ use yii\bootstrap\Html;
 <?= $form->field($model, SettingsManager::CNEWS_DESCRIPTION_TOP)
     ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']])
     ->label('Описание сверху &nbsp; &nbsp;' . Html::activeCheckbox($model, SettingsManager::CNEWS_DESCRIPTION_TOP_ON)) ?>
-<?= $form->field($model, SettingsManager::NEWS_DESCRIPTION_BOTTOM)
+<?= $form->field($model, SettingsManager::CNEWS_DESCRIPTION_BOTTOM)
     ->widget(CKEditor::class,['editorOptions' => ['preset' => 'full']])
     ->label('Описание снизу &nbsp; &nbsp;' . Html::activeCheckbox($model, SettingsManager::CNEWS_DESCRIPTION_BOTTOM_ON)) ?>

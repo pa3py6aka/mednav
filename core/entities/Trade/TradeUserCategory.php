@@ -99,7 +99,7 @@ class TradeUserCategory extends ActiveRecord
 
     public function getCurrency()
     {
-        return $this->hasOne(Currency::class, ['id' => 'currency_id']);
+        return $this->hasOne(Currency::class, ['id' => 'currency_id'])->where(['module' => Currency::MODULE_TRADE]);
     }
 
     public function getUom()

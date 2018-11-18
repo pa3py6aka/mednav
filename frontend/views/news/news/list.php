@@ -21,9 +21,9 @@ CategoryHelper::registerHeadMeta('news', $this, 'Справочная инфор
     <div class="col-md-9 col-sm-9 col-xs-12" style="border: 0px solid #000;">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <?= HtmlHelper::breadCrumbs(SettingsManager::NEWS_TITLE, $category) ?>
+                <?= HtmlHelper::breadCrumbs(SettingsManager::NEWS_NAME, $category) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::NEWS_NAME, $category, null, $provider->pagination->page) ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::NEWS_TITLE, $category, null, $provider->pagination->page) ?></h1></div>
         </div>
 
         <?= CategoriesListWidget::widget([

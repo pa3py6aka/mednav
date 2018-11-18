@@ -86,7 +86,11 @@ class CurrenciesForm extends Model
     private function checkUsing(Currency $currency)
     {
         $class = $currency->getModuleClass();
-        if ($class::find()->where(['currency_id' => $currency->id])->exists()) {
+        $query = $class::find()
+            ->alias('e')
+            ->leftJoin(Currency::tableName() . ' c', 'c.id=e.currency_id AND c.module=' . $currency->module)
+            ->where(['e.currency_id' => $currency->id]);
+        if (/*$class::find()->where(['currency_id' => $currency->id])->exists()*/$query->exists()) {
             throw new \DomainException("Денежная единица {$currency->name} используется и не может быть удалена.");
         }
     }

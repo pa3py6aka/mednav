@@ -386,7 +386,7 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
 
     public function getCurrency()
     {
-        return $this->hasOne(Currency::class, ['id' => 'currency_id']);
+        return $this->hasOne(Currency::class, ['id' => 'currency_id'])->where(['module' => Currency::MODULE_BOARD]);
     }
 
     public function getTagsAssignments(): ActiveQuery

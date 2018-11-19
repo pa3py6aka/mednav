@@ -3,7 +3,7 @@
 namespace core\useCases\manage\Trade;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\Company\CompanyDelivery;
 use core\entities\Company\CompanyDeliveryRegion;
 use core\entities\Trade\Trade;
@@ -38,7 +38,7 @@ class TradeManageService
     {
         $userId = $form->getUserId();
         $status = $form->scenario === TradeManageForm::SCENARIO_USER_CREATE
-            ? (Yii::$app->settings->get(SettingsManager::TRADE_MODERATION) ? Trade::STATUS_ON_PREMODERATION : Trade::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::TRADE_MODERATION) ? Trade::STATUS_ON_PREMODERATION : Trade::STATUS_ACTIVE)
             : Trade::STATUS_ACTIVE;
 
         $userCategory = TradeUserCategory::findOne($form->categoryId);
@@ -101,7 +101,7 @@ class TradeManageService
             $form->description
         );
         $trade->setWholesales($this->getWholesales($userCategory, $form));
-        if ($form->scenario == TradeManageForm::SCENARIO_USER_EDIT && Yii::$app->settings->get(SettingsManager::TRADE_MODERATION)) {
+        if ($form->scenario == TradeManageForm::SCENARIO_USER_EDIT && Yii::$app->settings->get(Settings::TRADE_MODERATION)) {
             $trade->setStatus(Trade::STATUS_ON_PREMODERATION);
         }
 

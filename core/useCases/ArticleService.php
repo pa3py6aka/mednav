@@ -3,7 +3,7 @@
 namespace core\useCases;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\Article\Article;
 use core\entities\Article\ArticleTag;
 use core\entities\Article\ArticleTagsAssignment;
@@ -34,7 +34,7 @@ class ArticleService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == ArticleForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::ARTICLE_MODERATION) ? Article::STATUS_ON_PREMODERATION : Article::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::ARTICLE_MODERATION) ? Article::STATUS_ON_PREMODERATION : Article::STATUS_ACTIVE)
             : Article::STATUS_ACTIVE;
         $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
@@ -84,7 +84,7 @@ class ArticleService
             trim($form->fullText),
             $form->indirectLinks
         );
-        if ($form->scenario == ArticleForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::ARTICLE_MODERATION)) {
+        if ($form->scenario == ArticleForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(Settings::ARTICLE_MODERATION)) {
             $article->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
         }
 

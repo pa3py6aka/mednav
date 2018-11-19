@@ -64,11 +64,11 @@ use yii\helpers\Url;
  */
 class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface, CategoryAssignmentInterface, SearchInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ON_MODERATION = 1;
-    const STATUS_NOT_ACTIVE = 3;
-    const STATUS_ACTIVE = 5;
-    const STATUS_ARCHIVE = 8;
+    public const STATUS_DELETED = 0;
+    public const STATUS_ON_MODERATION = 1;
+    public const STATUS_NOT_ACTIVE = 3;
+    public const STATUS_ACTIVE = 5;
+    public const STATUS_ARCHIVE = 8;
 
     public $userSlug;
 

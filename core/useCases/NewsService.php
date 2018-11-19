@@ -3,7 +3,7 @@
 namespace core\useCases;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\News\News;
 use core\entities\News\NewsTag;
 use core\entities\News\NewsTagsAssignment;
@@ -34,7 +34,7 @@ class NewsService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == NewsForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::NEWS_MODERATION) ? News::STATUS_ON_PREMODERATION : News::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::NEWS_MODERATION) ? News::STATUS_ON_PREMODERATION : News::STATUS_ACTIVE)
             : News::STATUS_ACTIVE;
         $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
@@ -84,7 +84,7 @@ class NewsService
             trim($form->fullText),
             $form->indirectLinks
         );
-        if ($form->scenario == NewsForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::NEWS_MODERATION)) {
+        if ($form->scenario == NewsForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(Settings::NEWS_MODERATION)) {
             $article->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
         }
 

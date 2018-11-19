@@ -3,7 +3,7 @@
 namespace core\useCases;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\Expo\Expo;
 use core\entities\Expo\ExpoTag;
 use core\entities\Expo\ExpoTagsAssignment;
@@ -34,7 +34,7 @@ class ExpoService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == ExpoForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::EXPO_MODERATION) ? Expo::STATUS_ON_PREMODERATION : Expo::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::EXPO_MODERATION) ? Expo::STATUS_ON_PREMODERATION : Expo::STATUS_ACTIVE)
             : Expo::STATUS_ACTIVE;
         $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
@@ -92,7 +92,7 @@ class ExpoService
             Yii::$app->formatter->asTimestamp($form->endDate),
             $form->city
         );
-        if ($form->scenario == ExpoForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::EXPO_MODERATION)) {
+        if ($form->scenario == ExpoForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(Settings::EXPO_MODERATION)) {
             $expo->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
         }
 

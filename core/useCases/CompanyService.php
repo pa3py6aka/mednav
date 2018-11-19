@@ -3,7 +3,7 @@
 namespace core\useCases;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\Company\CompanyTag;
@@ -15,12 +15,8 @@ use core\repositories\Company\CompanyRepository;
 use core\services\TransactionManager;
 use core\useCases\manage\Company\CompanyPhotoService;
 use Yii;
-use yii\base\Exception;
-use yii\helpers\FileHelper;
 use yii\helpers\StringHelper;
 use yii\web\UploadedFile;
-use yii\imagine\Image;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class CompanyService
 {
@@ -39,7 +35,7 @@ class CompanyService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == CompanyForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::COMPANY_MODERATION) ? Company::STATUS_ON_PREMODERATION : Company::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::COMPANY_MODERATION) ? Company::STATUS_ON_PREMODERATION : Company::STATUS_ACTIVE)
             : Company::STATUS_ACTIVE;
 
         $company = Company::create(
@@ -95,7 +91,7 @@ class CompanyService
             trim($form->description),
             $form->slug
         );
-        if ($form->scenario == CompanyForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::COMPANY_MODERATION)) {
+        if ($form->scenario == CompanyForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(Settings::COMPANY_MODERATION)) {
             $company->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
         }
 

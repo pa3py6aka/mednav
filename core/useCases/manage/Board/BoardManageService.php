@@ -3,7 +3,7 @@
 namespace core\useCases\manage\Board;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\Board\Board;
 use core\entities\Board\BoardParameterAssignment;
 use core\entities\Board\BoardTag;
@@ -33,7 +33,7 @@ class BoardManageService
             ? Yii::$app->user->id
             : ($form->authorId ?: Yii::$app->user->id);
         $status = in_array($form->scenario, [BoardManageForm::SCENARIO_USER_EDIT, BoardManageForm::SCENARIO_USER_CREATE])
-            ? (Yii::$app->settings->get(SettingsManager::BOARD_MODERATION) ? Board::STATUS_ON_MODERATION : Board::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::BOARD_MODERATION) ? Board::STATUS_ON_MODERATION : Board::STATUS_ACTIVE)
             : Board::STATUS_ACTIVE;
 
         $board = Board::create(
@@ -94,6 +94,10 @@ class BoardManageService
             $form->fullText,
             $form->geoId
         );
+
+        if ($form->scenario === BoardManageForm::SCENARIO_USER_EDIT && Yii::$app->settings->get(Settings::BOARD_MODERATION)) {
+            $board->setStatus(Board::STATUS_ON_MODERATION);
+        }
 
         $this->transaction->wrap(function () use ($form, $board) {
             $this->saveTags($board, $form->tags);

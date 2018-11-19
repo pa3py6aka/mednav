@@ -3,7 +3,7 @@
 namespace core\useCases;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\Brand\Brand;
 use core\entities\Brand\BrandTag;
 use core\entities\Brand\BrandTagsAssignment;
@@ -34,7 +34,7 @@ class BrandService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == BrandForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::BRANDS_MODERATION) ? Brand::STATUS_ON_PREMODERATION : Brand::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::BRANDS_MODERATION) ? Brand::STATUS_ON_PREMODERATION : Brand::STATUS_ACTIVE)
             : Brand::STATUS_ACTIVE;
         $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
@@ -84,7 +84,7 @@ class BrandService
             trim($form->fullText),
             $form->indirectLinks
         );
-        if ($form->scenario == BrandForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::BRANDS_MODERATION)) {
+        if ($form->scenario == BrandForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(Settings::BRANDS_MODERATION)) {
             $brand->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
         }
 

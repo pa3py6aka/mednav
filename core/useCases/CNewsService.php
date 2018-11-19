@@ -3,7 +3,7 @@
 namespace core\useCases;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\entities\CNews\CNews;
 use core\entities\CNews\CNewsTag;
 use core\entities\CNews\CNewsTagsAssignment;
@@ -34,7 +34,7 @@ class CNewsService
             ? Yii::$app->user->id
             : ($form->user_id ?: Yii::$app->user->id);
         $status = $form->scenario == CNewsForm::SCENARIO_USER_MANAGE
-            ? (Yii::$app->settings->get(SettingsManager::CNEWS_MODERATION) ? CNews::STATUS_ON_PREMODERATION : CNews::STATUS_ACTIVE)
+            ? (Yii::$app->settings->get(Settings::CNEWS_MODERATION) ? CNews::STATUS_ON_PREMODERATION : CNews::STATUS_ACTIVE)
             : CNews::STATUS_ACTIVE;
         $companyId = Company::find()->select('id')->where(['user_id' => $userId])->scalar() ?: null;
 
@@ -84,7 +84,7 @@ class CNewsService
             trim($form->fullText),
             $form->indirectLinks
         );
-        if ($form->scenario == CNewsForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(SettingsManager::CNEWS_MODERATION)) {
+        if ($form->scenario == CNewsForm::SCENARIO_USER_MANAGE && Yii::$app->settings->get(Settings::CNEWS_MODERATION)) {
             $article->setStatus(StatusesInterface::STATUS_ON_PREMODERATION);
         }
 

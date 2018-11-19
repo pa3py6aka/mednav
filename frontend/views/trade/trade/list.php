@@ -73,7 +73,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
         <?= ContextBlock::getBlock(5) ?>
 
         <div class="list-pagination has-overlay">
-            <?php if ($category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>
+            <?php if ($category && $geo && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>
                 <?= LinkPager::widget([
                     'pagination' => $provider->pagination
                 ]) ?>

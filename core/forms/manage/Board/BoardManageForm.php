@@ -33,6 +33,7 @@ class BoardManageForm extends Model
     public $photos;
 
     private $_board;
+    private $categories;
 
     const SCENARIO_ADMIN_EDIT = 'adminEdit';
     const SCENARIO_USER_CREATE = 'userCreate';
@@ -87,10 +88,20 @@ class BoardManageForm extends Model
             ['priceFrom', 'boolean'],
             ['categoryId', 'integer'],
             ['categoryId', 'exist', 'targetClass' => BoardCategory::class, 'targetAttribute' => 'id'],
+            ['categoryId', 'validateCategory'],
             [['params'], 'each', 'rule' => ['safe']],
             ['photos', 'each', 'rule' => ['string']],
             ['price', 'match', 'pattern' => PriceHelper::REGEXP]
         ];
+    }
+
+    public function validateCategory($attribute, $params)
+    {
+        $category = BoardCategory::findOne((int) $this->$attribute);
+        if (!$category->enabled) {
+            $attr = $category->depth == 1 ? $attribute : 'category-' . $category->id;
+            $this->addError($attr, 'Раздел “' . $category->name . '” недоступен для добавления объявления, выберите вложенный подраздел.');
+        }
     }
 
     public function scenarios()
@@ -110,13 +121,23 @@ class BoardManageForm extends Model
         if (!$this->slug) {
             $this->slug = $this->name;
         }
-        if (is_array($this->categoryId)) {
+
+        $this->categories = $this->categoryId;
+        if (\is_array($this->categoryId)) {
             $this->categoryId = array_diff($this->categoryId, ['', 0]);
             $categoryId = array_pop($this->categoryId);
             $this->categoryId = $categoryId;
         }
 
         return parent::beforeValidate();
+    }
+
+    public function afterValidate()
+    {
+        if ($this->hasErrors()) {
+            $this->categoryId = $this->categories;
+        }
+        parent::afterValidate();
     }
 
     public function attributeLabels()

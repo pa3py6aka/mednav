@@ -66,7 +66,7 @@ class TradeUserCategoryForm extends Model
     public function beforeValidate()
     {
         $this->categories = $this->categoryId;
-        if (is_array($this->categoryId)) {
+        if (\is_array($this->categoryId)) {
             $this->categoryId = array_diff($this->categoryId, ['', 0]);
             $categoryId = array_pop($this->categoryId);
             $this->categoryId = $categoryId;

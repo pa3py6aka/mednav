@@ -198,7 +198,14 @@ class UserController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
         $id = (int) Yii::$app->request->post('id');
         if (($user = User::findOne($id)) !== null) {
-            return ['result' => 'success', 'name' => $user->getVisibleName(), 'url' => Url::to(['/user/view', 'id' => $user->id])];
+            return [
+                'result' => 'success',
+                'name' => $user->getVisibleName(),
+                'url' => Url::to(['/user/view', 'id' => $user->id]),
+                'geo' => $user->isCompany() && $user->isCompanyActive()
+                    ? $user->company->getGeo()->select(['id', 'name'])->asArray()->one()
+                    : $user->getGeo()->select(['id', 'name'])->asArray()->one(),
+            ];
         }
         return ['result' => 'error', 'message' => 'Пользователь не найден'];
     }

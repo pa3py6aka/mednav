@@ -12,7 +12,7 @@ class UserIdFieldWidget extends InputWidget
 {
     public const INPUT_ID = 'input-field-widget-user_id';
 
-    public $dependencies = null;
+    public $dependencies;
 
     public function init()
     {
@@ -72,6 +72,12 @@ $(document).on('click', '#{$inputId}-go', function() {
     success: function(data, textStatus, jqXHR) {
         if (data.result === 'success') {
             linkBlock.html('<a href="' + data.url + '" target="_blank">' + data.name + '</a>');
+            var geoIdInput = $('#form-geo-id');
+            console.log(typeof data.geo);
+            if (data.geo && typeof data.geo.id !== 'undefined' && geoIdInput.length) {
+                geoIdInput.val(data.geo.id);
+                $('#region-select-link').text(data.geo.name);
+            }
         } else {
             linkBlock.html(data.message);
         }

@@ -23,12 +23,12 @@ $link = Yii::$app->controller->action->id;
 
             <?php if ($user->isCompany()): ?>
                 <li role="presentation"<?= $link == 'company' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/account/company']) ?>"><?= Yii::$app->settings->get(Settings::COMPANY_NAME_UP) ?></a></li>
+                <li role="presentation"<?= $controller == 'user/trade' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/trade/active']) ?>"><?= Yii::$app->settings->get(Settings::TRADE_NAME_UP) ?></a></li>
             <?php endif; ?>
 
             <li role="presentation"<?= $controller == 'user/board' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/board/active']) ?>"><?= Yii::$app->settings->get(Settings::BOARD_NAME_UP) ?></a></li>
 
             <?php if ($user->isCompany()): ?>
-                <li role="presentation"<?= $controller == 'user/trade' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/trade/active']) ?>"><?= Yii::$app->settings->get(Settings::TRADE_NAME_UP) ?></a></li>
                 <li role="presentation"<?= $controller == 'user/cnews' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/cnews/active']) ?>"><?= Yii::$app->settings->get(Settings::CNEWS_NAME_UP) ?></a></li>
                 <?php /*<li role="presentation"<?= $controller == 'user/expo' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/expo/active']) ?>"><?= Yii::$app->settings->get(Settings::EXPO_NAME_UP) ?></a></li> */ ?>
             <?php endif; ?>

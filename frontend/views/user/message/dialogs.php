@@ -43,7 +43,6 @@ $tab =  ArrayHelper::getValue($this->params, 'tab', 'active');
                 ],
                 [
                     'label' => 'Контакт',
-                    'attribute' => 'created_at',
                     'value' => function (Dialog $dialog) {
                         return ($contact = $dialog->getInterlocutor(Yii::$app->user->id)) ?
                             Html::a($contact->getVisibleName(), $contact->getUrl())
@@ -52,6 +51,7 @@ $tab =  ArrayHelper::getValue($this->params, 'tab', 'active');
                     'format' => 'raw',
                 ],
                 [
+                    'attribute' => 'date',
                     'label' => 'Дата',
                     'value' => function (Dialog $dialog) {
                         return $dialog->lastMessage->created_at;

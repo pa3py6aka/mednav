@@ -40,13 +40,21 @@ class DialogRepository
             ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read'])
             ->with('userFrom', 'userTo', 'lastMessage')
             ->leftJoin('{{%messages}} m', 'm.dialog_id=d.id')
-            ->where(['or', ['d.user_from' => $userId], ['user_to' => $userId]])
-            ->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
-            ->groupBy('d.id');
+            ->where(['or', ['d.user_from' => $userId], ['d.user_to' => $userId]])
+            //->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
+            ->groupBy(['d.id']);
 
         return new ActiveDataProvider([
             'query' => $query,
-            'sort' => false,
+            'sort' => [
+                'defaultOrder' => ['date' => SORT_DESC],
+                'attributes' => [
+                    'date' => [
+                        'asc' => ['not_read' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
+                        'desc' => ['not_read' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
+                    ],
+                ],
+            ],
             'pagination' => [
                 'pageSizeLimit' => [25, 250],
                 'defaultPageSize' => 25,

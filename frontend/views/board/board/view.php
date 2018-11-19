@@ -70,7 +70,13 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 <div class="kt-item-block">
                     <div class="do-item-vendor">
                         Цена: <span class="kt-item-price"><?= $board->getPriceString() ?></span>
+                        <?php foreach ($board->boardParameters as $parameter): ?>
+                            <div>
+                                <?= $parameter->parameter->name ?>: <span><?= Html::encode($parameter->getValueByType(false, true)) ?></span>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
+
 
                     <?= \core\helpers\TextHelper::out($board->full_text, 'board') ?>
                 </div>

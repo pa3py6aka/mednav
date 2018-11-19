@@ -5,6 +5,7 @@ namespace core\entities\Board;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%board_parameters_assignment}}".
@@ -36,15 +37,27 @@ class BoardParameterAssignment extends ActiveRecord
         return $assignment;
     }
 
-    public function getValueByType($forForm = false)
+    public function getValueByType($forForm = false, $forFront = false)
     {
         $type = $this->parameter->type;
         if ($type == BoardParameter::TYPE_DROPDOWN) {
-            $value = $forForm ? $this->option_id : $this->option->name;
+            if ($forFront) {
+                $value = Html::encode($this->option->name);
+            } else {
+                $value = $forForm ? $this->option_id : $this->option->name;
+            }
         } else if ($type == BoardParameter::TYPE_STRING) {
-            $value = $this->value;
+            if ($forFront) {
+                $value = Html::encode($this->value);
+            } else {
+                $value = $this->value;
+            }
         } else if ($type == BoardParameter::TYPE_CHECKBOX) {
-            $value = $forForm ? $this->value : Yii::$app->formatter->asBoolean($this->value);
+            if ($forFront) {
+                $value = $this->value ? 'Да' : 'Нет';
+            } else {
+                $value = $forForm ? $this->value : Yii::$app->formatter->asBoolean($this->value);
+            }
         } else {
             $value = null;
         }

@@ -17,7 +17,7 @@ class MarkHelper
         'geo_name' => 'geo.name',
         'geo_name_p' => 'geo.name_p',
         'phone' => 'author.phone',
-        'category_name' => 'category.name',
+        'category_name' => 'category.contextName',
         'company_name' => 'author.visibleName',
         'type' => 'defaultType',
     ];
@@ -26,7 +26,7 @@ class MarkHelper
         'geo_name' => 'geo.name',
         'geo_name_p' => 'geo.name_p',
         'phone' => 'company.phone',
-        'category_name' => 'category.name',
+        'category_name' => 'category.contextName',
         'company_name' => 'company.fullName',
     ];
 
@@ -35,6 +35,16 @@ class MarkHelper
     {
         foreach ($marks as $mark => $attribute) {
             try {
+                /*if (\is_array($attribute)) {
+                    foreach ($attribute as $attr) {
+                        $replace = ArrayHelper::getValue($entity, $attr, '');
+                        if ($replace) {
+                            break;
+                        }
+                    }
+                } else {
+                    $replace = ArrayHelper::getValue($entity, $attribute, '');
+                }*/
                 $replace = ArrayHelper::getValue($entity, $attribute, '');
             } catch (UnknownPropertyException $e) {
                 $replace = '';

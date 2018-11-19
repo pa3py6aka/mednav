@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\NewsHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 
@@ -20,7 +21,7 @@ use core\helpers\NewsHelper;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $news->getUrl() ?>">
-                        <img src="<?= $news->getMainPhotoUrl() ?>" alt="<?= $news->getTitle() ?>" class="img-responsive">
+                        <img src="<?= $news->getMainPhotoUrl() ?>"<?= HtmlHelper::altForMainImage($news->hasMainPhoto(), $news->name) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">

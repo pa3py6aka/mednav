@@ -23,7 +23,7 @@ trait PhotoTrait
         ];
     }
 
-    public function removePhotos()
+    public function removePhotos(): void
     {
         $path = Yii::getAlias('@frontend/web/');
         foreach ($this->getPhotos() as $file) {

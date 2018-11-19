@@ -51,7 +51,7 @@ class HtmlHelper
         return $current == $tab ? ' class="active"' : '';
     }
 
-    public static function active($one, $two)
+    public static function active($one, $two): string
     {
         return $one == $two ? ' active' : '';
     }
@@ -127,5 +127,10 @@ class HtmlHelper
             return '<li><span class="kt-item-infoset">' . $name . '</span> ' . $value . '</li>';
         }
         return '';
+    }
+
+    public static function altForMainImage($isPhoto, $value): string
+    {
+        return $isPhoto ? ' alt="' . Html::encode($value) . '"' : '';
     }
 }

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\ExpoHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 
@@ -20,7 +21,7 @@ use core\helpers\ExpoHelper;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $expo->getUrl() ?>">
-                        <img src="<?= $expo->getMainPhotoUrl() ?>" alt="<?= $expo->getTitle() ?>" class="img-responsive">
+                        <img src="<?= $expo->getMainPhotoUrl() ?>"<?= HtmlHelper::altForMainImage($expo->hasMainPhoto(), $expo->name) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">

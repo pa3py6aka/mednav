@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\CNewsHelper;
+use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
 use frontend\widgets\CompanyMenuWidget;
 
@@ -31,7 +32,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="art-item-img">
                             <a class="fancybox" href="<?= $news->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                                <img src="<?= $news->getMainPhotoUrl('big') ?>" alt="<?= $news->getTitle() ?>" class="img-responsive">
+                                <img src="<?= $news->getMainPhotoUrl('big') ?>"<?= HtmlHelper::altForMainImage($news->hasMainPhoto(), $news->name) ?> class="img-responsive">
                             </a>
                         </div>
                     </div>

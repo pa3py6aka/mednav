@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\CompanyHelper;
+use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
 use frontend\widgets\message\MessageWidget;
 use frontend\widgets\ContentBlock\ShowContentBlock;
@@ -39,7 +40,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                 <div class="">
                     <!--на остальных страницах, ссылка ведет на страницу "О компании"-->
                     <a class="fancybox" href="<?= $page == 'main' ? $company->getLogoUrl(false, 'max') : $company->getUrl() ?>" data-fancybox-group="gallery">
-                        <img src="<?= $company->getLogoUrl(false, 'big') ?>" alt="" class="img-responsive">
+                        <img src="<?= $company->getLogoUrl(false, 'big') ?>"<?= HtmlHelper::altForMainImage((bool) $company->logo, $company->getTitle()) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="kk-btn">

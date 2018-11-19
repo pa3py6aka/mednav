@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use core\helpers\BrandHelper;
 use core\helpers\TextHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $this \yii\web\View */
 /* @var $brand \core\entities\Brand\Brand */
@@ -30,7 +31,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $brand->getTagsString
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="art-item-img">
                             <a class="fancybox" href="<?= $brand->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                                <img src="<?= $brand->getMainPhotoUrl('big') ?>" alt="<?= $brand->getTitle() ?>" class="img-responsive">
+                                <img src="<?= $brand->getMainPhotoUrl('big') ?>"<?= HtmlHelper::altForMainImage($brand->hasMainPhoto(), $brand->name) ?> class="img-responsive">
                             </a>
                         </div>
                     </div>

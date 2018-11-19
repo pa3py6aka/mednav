@@ -5,6 +5,7 @@ namespace core\entities\Article\common;
 
 use core\behaviors\SluggableBehavior;
 use core\entities\Company\Company;
+use core\entities\PhotoInterface;
 use core\entities\SearchInterface;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
@@ -37,6 +38,11 @@ use yii\helpers\Html;
  *
  * @property User $user
  * @property Company $company
+ * @property string $tagsString
+ * @property string $metaDescription
+ * @property int $ownerId
+ * @property \core\entities\User\User $ownerUser
+ * @property PhotoInterface mainPhoto
  */
 class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwnerInterface, SearchInterface
 {
@@ -51,9 +57,14 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
 
     public function getMainPhotoUrl($type = 'small', $absolute = false): string
     {
-        return $this->main_photo_id ?
+        return $this->hasMainPhoto() ?
             $this->mainPhoto->getUrl($type, $absolute)
             : ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . '/img/no-photo-250.jpg';
+    }
+
+    public function hasMainPhoto(): bool
+    {
+        return (bool) $this->main_photo_id;
     }
 
     public function getTitle(): string

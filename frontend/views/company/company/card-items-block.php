@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use core\components\ContextBlock;
+use core\helpers\HtmlHelper;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 /* @var $geo \core\entities\Geo|null */
@@ -22,7 +23,7 @@ use core\components\ContextBlock;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $company->getUrl() ?>">
-                        <img src="<?= $company->getLogoUrl() ?>" alt="<?= $company->getTitle() ?>" class="img-responsive">
+                        <img src="<?= $company->getLogoUrl() ?>"<?= HtmlHelper::altForMainImage((bool) $company->logo, $company->getTitle()) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">

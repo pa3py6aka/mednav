@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\ExpoHelper;
+use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
 
 /* @var $this \yii\web\View */
@@ -34,7 +35,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $expo->getTagsString(
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="art-item-img">
                             <a class="fancybox" href="<?= $expo->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                                <img src="<?= $expo->getMainPhotoUrl('big') ?>" alt="<?= $expo->getTitle() ?>" class="img-responsive">
+                                <img src="<?= $expo->getMainPhotoUrl('big') ?>"<?= HtmlHelper::altForMainImage($expo->hasMainPhoto(), $expo->name) ?> class="img-responsive">
                             </a>
                         </div>
                     </div>

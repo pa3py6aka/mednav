@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use core\helpers\ArticleHelper;
 use core\helpers\TextHelper;
+use core\helpers\HtmlHelper;
 use frontend\widgets\CompanyMenuWidget;
 
 /* @var $this \yii\web\View */
@@ -22,9 +23,6 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $article->getTagsStri
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <h1><?= Html::encode($article->getTitle()) ?></h1>
-                <!--для выставок
-                <i class="glyphicon glyphicon-map-marker btn-xs city-icon-grey"></i>Москва, <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> с 11-10-2017 по 15-10-2017
-                <!--для выставок -->
             </div>
         </div>
 
@@ -34,7 +32,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $article->getTagsStri
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="art-item-img">
                             <a class="fancybox" href="<?= $article->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                                <img src="<?= $article->getMainPhotoUrl('big') ?>" alt="<?= $article->getTitle() ?>" class="img-responsive">
+                                <img src="<?= $article->getMainPhotoUrl('big') ?>"<?= HtmlHelper::altForMainImage($article->hasMainPhoto(), $article->name) ?> class="img-responsive">
                             </a>
                         </div>
                     </div>

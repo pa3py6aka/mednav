@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use core\helpers\TradeHelper;
 use core\helpers\CompanyHelper;
+use core\helpers\HtmlHelper;
 use core\components\ContextBlock;
 
 /* @var $provider \yii\data\ActiveDataProvider */
@@ -24,7 +25,7 @@ use core\components\ContextBlock;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $trade->getUrl() ?>">
-                        <img src="<?= $trade->getMainPhotoUrl() ?>" alt="<?= $trade->getTitle() ?>" class="img-responsive">
+                        <img src="<?= $trade->getMainPhotoUrl() ?>"<?= HtmlHelper::altForMainImage((bool) $trade->main_photo_id, $trade->name) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-8 col-sm-8 col-xs-12">

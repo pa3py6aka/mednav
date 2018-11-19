@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use core\helpers\NewsHelper;
 use core\helpers\TextHelper;
-use frontend\widgets\CompanyMenuWidget;
+use core\helpers\HtmlHelper;
 
 /* @var $this \yii\web\View */
 /* @var $news \core\entities\News\News */
@@ -22,9 +22,6 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <h1><?= Html::encode($news->getTitle()) ?></h1>
-                <!--для выставок
-                <i class="glyphicon glyphicon-map-marker btn-xs city-icon-grey"></i>Москва, <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i> с 11-10-2017 по 15-10-2017
-                <!--для выставок -->
             </div>
         </div>
 
@@ -34,7 +31,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="art-item-img">
                             <a class="fancybox" href="<?= $news->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                                <img src="<?= $news->getMainPhotoUrl('big') ?>" alt="<?= $news->getTitle() ?>" class="img-responsive">
+                                <img src="<?= $news->getMainPhotoUrl('big') ?>"<?= HtmlHelper::altForMainImage($news->hasMainPhoto(), $news->name) ?> class="img-responsive">
                             </a>
                         </div>
                     </div>

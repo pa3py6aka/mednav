@@ -43,7 +43,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="">
                     <a class="fancybox" href="<?= $trade->getMainPhotoUrl('max') ?>" data-fancybox-group="gallery">
-                        <img src="<?= $trade->getMainPhotoUrl('big') ?>" alt="Заголовок" class="img-responsive">
+                        <img src="<?= $trade->getMainPhotoUrl('big') ?>"<?= HtmlHelper::altForMainImage((bool) $trade->main_photo_id, $trade->name) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="kt-item-thumb">

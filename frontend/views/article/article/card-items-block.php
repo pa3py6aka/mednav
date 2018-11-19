@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\ArticleHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 
@@ -20,7 +21,7 @@ use core\helpers\ArticleHelper;
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="<?= $article->getUrl() ?>">
-                        <img src="<?= $article->getMainPhotoUrl() ?>" alt="<?= $article->getTitle() ?>" class="img-responsive">
+                        <img src="<?= $article->getMainPhotoUrl() ?>"<?= HtmlHelper::altForMainImage($article->hasMainPhoto(), $article->name) ?> class="img-responsive">
                     </a>
                 </div>
                 <div class="col-md-10 col-sm-10 col-xs-12">

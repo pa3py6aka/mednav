@@ -17,6 +17,8 @@ interface PhotoInterface
 
     public static function getRelationAttribute(): string;
 
+    public function getUrl($type = 'small', $absolute = false): string;
+
     /**
      * @return ActiveQuery
      */

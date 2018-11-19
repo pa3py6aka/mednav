@@ -18,7 +18,15 @@ class CompanyReadRepository
     public function getByIdAndSlug($id, $slug): Company
     {
         if (!$company = Company::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Объявление не найдено");
+            throw new NotFoundHttpException('Объявление не найдено');
+        }
+        return $company;
+    }
+
+    public function getById($id): Company
+    {
+        if (!$company = Company::find()->where(['id' => $id])->limit(1)->one()) {
+            throw new NotFoundHttpException('Объявление не найдено');
         }
         return $company;
     }

@@ -17,6 +17,7 @@ use core\repositories\GeoRepository;
 use core\repositories\Trade\TradeCategoryRepository;
 use Yii;
 use yii\base\Module;
+use yii\base\UserException;
 use yii\web\Controller;
 
 class CompanyController extends Controller
@@ -200,5 +201,23 @@ class CompanyController extends Controller
             'provider' => $provider,
             'category' => $category,
         ]);
+    }
+
+    public function actionOutsite($id = null, $url = null): \yii\web\Response
+    {
+        if ($id) {
+            $company = $this->repository->getById($id);
+            if ($company->site) {
+                $url = $company->site;
+            } else {
+                throw new UserException('Сайт компании не установлен.');
+            }
+        }
+
+        if ($url) {
+            return $this->redirect($url);
+        }
+
+        throw new UserException('Неверный запрос.');
     }
 }

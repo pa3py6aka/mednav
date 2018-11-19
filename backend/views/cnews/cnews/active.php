@@ -39,8 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'name',
                     'value' => function (CNews $news) {
-                        return Html::a(Html::encode($news->name), ['/cnews/cnews/view', 'id' => $news->id]);
+                        return '<div style="width:400px;">' . Html::a(Html::encode($news->name), ['/cnews/cnews/view', 'id' => $news->id]) . '</div>';
                     },
+                    'contentOptions' => ['style' => 'white-space:normal;'],
                     'format' => 'raw',
                 ],
                 [

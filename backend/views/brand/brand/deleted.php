@@ -38,8 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'name',
                     'value' => function (Brand $brand) {
-                        return Html::a(Html::encode($brand->name), ['/brand/brand/view', 'id' => $brand->id]);
+                        return '<div style="width:400px;">' . Html::a(Html::encode($brand->name), ['/brand/brand/view', 'id' => $brand->id]) . '</div>';
                     },
+                    'contentOptions' => ['style' => 'white-space:normal;'],
                     'format' => 'raw',
                 ],
                 [

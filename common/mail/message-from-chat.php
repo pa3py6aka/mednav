@@ -15,7 +15,7 @@ use yii\helpers\Html;
         '<a href="mailto:' . $message->user->getEmail() . '">' . $message->user->getEmail() . '</a>'
         : '<a href="mailto:' . $message->dialog->email . '">' . $message->dialog->email . '</a>' ?></p>
 <p><strong>Телефон:</strong> <?= Html::encode($message->user_id ?
-        $message->user->getPhone()
+        $message->user->getPhoneString()
         : $message->dialog->phone) ?></p>
 <p>---</p>
 <span style="font-style:italic;">Все Ваши сообщения Вы можете прочитать в личном кабинете: <a href="<?= Yii::$app->frontendUrlManager->createAbsoluteUrl(['user/message/dialogs']) ?>"><?= Yii::$app->frontendUrlManager->createAbsoluteUrl(['user/message/dialogs']) ?></a></span>

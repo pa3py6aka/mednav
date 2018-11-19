@@ -16,7 +16,7 @@ class MarkHelper
         'name' => 'name',
         'geo_name' => 'geo.name',
         'geo_name_p' => 'geo.name_p',
-        'phone' => 'author.phone',
+        'phone' => 'author.phoneString',
         'category_name' => 'category.contextName',
         'company_name' => 'author.visibleName',
         'type' => 'defaultType',

@@ -22,7 +22,7 @@ class OrderForm extends Model
     {
         if ($user) {
             $this->name = $user->getVisibleName();
-            $this->phone = $user->getPhone();
+            $this->phone = $user->getPhoneString();
             $this->email = $user->getEmail();
             $this->address = $user->isCompany() && $user->isCompanyActive()
                 ? ($user->company->geo_id ? $user->company->geo->name . ', ' : '') . $user->company->address

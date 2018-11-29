@@ -4,10 +4,13 @@ namespace core\useCases;
 
 
 use core\components\Settings;
+use core\entities\Contact;
 use core\entities\Dialog\Dialog;
 use core\entities\Dialog\Message;
 use core\jobs\SendMailJob;
+use core\repositories\Company\CompanyRepository;
 use core\repositories\DialogRepository;
+use core\repositories\UserRepository;
 use core\services\Mailer;
 use core\services\TransactionManager;
 use frontend\widgets\message\NewMessageForm;
@@ -79,4 +82,13 @@ class DialogService
         $this->repository->markAsRead($dialogId, $userId);
     }
 
+    public function addContact($contactId, $userId): void
+    {
+        $user = (new UserRepository())->get($contactId);
+        if ($this->repository->hasContact($userId, $contactId)) {
+            throw new \DomainException("Компания <b>{$user->getVisibleName()}</b> уже находится в вашем списке контактов.");
+        }
+        $contact = Contact::create($userId, $contactId);
+        $this->repository->saveContact($contact);
+    }
 }

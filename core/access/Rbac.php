@@ -5,10 +5,10 @@ namespace core\access;
 
 class Rbac
 {
-    const ROLE_ADMIN = "admin";
-    const ROLE_MODERATOR  = "moderator";
-    const ROLE_USER = "user";
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_MODERATOR  = 'moderator';
+    public const ROLE_USER = 'user';
 
-    const PERMISSION_MANAGE = "manage";
-    const PERMISSION_OWN_MANAGE = "ownManage";
+    public const PERMISSION_MANAGE = 'manage';
+    public const PERMISSION_OWN_MANAGE = 'ownManage';
 }

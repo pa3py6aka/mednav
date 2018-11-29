@@ -7,6 +7,7 @@ use core\helpers\TextHelper;
 use frontend\widgets\message\MessageWidget;
 use frontend\widgets\ContentBlock\ShowContentBlock;
 use core\entities\ContentBlock;
+use frontend\widgets\ContactButtonWidget\ContactButtonWidget;
 
 /* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
@@ -49,29 +50,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                         'subjectType' => MessageWidget::SUBJECT_TYPE_INPUT,
                         'btnClass' => 'kt-btn-cart',
                     ]) ?>
-                    <a href="#ModalContact" class="form-control btn kk-btn-contact" data-toggle="modal">
-                        <span class="glyphicon glyphicon-user btn-xs"></span> Добавить в контакты
-                    </a>
-
-                    <!-- modal add contact-->
-                    <div id="ModalContact" class="modal fade">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4>Уведомление</h4>
-                                </div>
-                                <div class="modal-body">
-                                    Компания <b><?= $company->getFullName() ?></b> добавлена в ваш список контактов.
-                                    <!--Уведомление, что данная компания уже в списке контактов "Компания <b>ООО "Название компании"</b> уже находится в вашем списке контактов." -->
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--// modal add contact-->
+                    <?= ContactButtonWidget::widget(['contactId' => $company->user_id]) ?>
                 </div>
             </div>
             <div class="col-md-8 col-sm-8 col-xs-12">

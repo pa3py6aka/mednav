@@ -9,6 +9,8 @@ use yii\helpers\Url;
 use core\components\Cart\widgets\CartWidget;
 
 AppAsset::register($this);
+$this->registerJsVar('UserIsGuest', Yii::$app->user->isGuest);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

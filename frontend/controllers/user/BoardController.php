@@ -151,10 +151,10 @@ class BoardController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $board = $this->service->create($form);
-                Yii::$app->session->setFlash('success', $board->isActive() ? "Объявление опубликовано" : "Объявление отправлено на проверку");
+                Yii::$app->session->setFlash('success', $board->isActive() ? 'Объявление опубликовано' : 'Объявление отправлено на проверку');
                 return $this->redirect([$board->isActive() ? 'active' : 'waiting']);
             } catch (\DomainException $e) {
-                Yii::$app->session->setFlash("error", $e->getMessage());
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
 
@@ -167,7 +167,7 @@ class BoardController extends Controller
         $board = (new BoardRepository())->get($id);
 
         if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $board->author_id])) {
-            throw new ForbiddenHttpException("У вас нет прав на это действие");
+            throw new ForbiddenHttpException('У вас нет прав на это действие');
         }
 
         $form = new BoardManageForm($board);
@@ -175,7 +175,6 @@ class BoardController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $this->service->edit($id, $form);
             Yii::$app->session->setFlash('success', 'Объявление обновлено');
-            //return $this->redirect(['update', 'id' => $board->id]);
             return $this->redirect([$board->isActive() ? 'active' : ($board->isOnModeration() ? 'waiting' : 'archive')]);
         }
 
@@ -220,7 +219,7 @@ class BoardController extends Controller
             $boards = Board::findAll(['id' => $ids]);
             foreach ($boards as $board) {
                 if (!$board->canExtend($this->_user->id)) {
-                    $key = array_search($board->id, $ids);
+                    $key = array_search($board->id, $ids, true);
                     unset($ids[$key]);
                 }
             }
@@ -237,23 +236,23 @@ class BoardController extends Controller
     {
         $ids = (array) Yii::$app->request->post('ids');
         $action = Yii::$app->request->post('action');
-        if (count($ids)) {
+        if (\count($ids)) {
             // Проверка на наличие прав на действие
             $boards = Board::findAll(['id' => $ids]);
             foreach ($boards as $board) {
                 if (!Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $board->author_id]) || ($action == 'extend' && !$board->canExtend($this->_user->id))) {
-                    $key = array_search($board->id, $ids);
+                    $key = array_search($board->id, $ids, true);
                     unset($ids[$key]);
                 }
             }
 
-            if ($action == 'remove') {
+            if ($action === 'remove') {
                 $count = $this->service->massRemove($ids);
                 Yii::$app->session->setFlash('info', 'Удалено объявлений: ' . $count);
-            } else if ($action == 'extend') {
+            } else if ($action === 'extend') {
                 $term = Yii::$app->request->post('term');
                 $this->service->extend($ids, $term);
-                Yii::$app->session->setFlash('info', 'Продлено объявлений: ' . count($ids));
+                Yii::$app->session->setFlash('info', 'Продлено объявлений: ' . \count($ids));
             }/* else if ($action == 'publish') {
                 $this->service->publish($ids);
                 Yii::$app->session->setFlash('info', 'Опубликовано объявлений: ' . count($ids));

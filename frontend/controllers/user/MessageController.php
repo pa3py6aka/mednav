@@ -5,6 +5,7 @@ namespace frontend\controllers\user;
 
 use core\access\Rbac;
 use core\repositories\DialogRepository;
+use core\repositories\UserRepository;
 use core\useCases\DialogService;
 use frontend\widgets\message\SendMessageAction;
 use Yii;
@@ -13,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\Response;
 
 class MessageController extends Controller
 {
@@ -46,6 +48,7 @@ class MessageController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'send-message' => ['post'],
+                    'add-contact' => ['post'],
                 ]
             ]
         ];
@@ -60,7 +63,10 @@ class MessageController extends Controller
 
     public function actionDialogs()
     {
+        $this->layout = '@frontend/views/user/message/layout';
         $provider = $this->repository->getUserDialogs($this->_user->id);
+        $this->view->params['pagination'] = $provider->pagination;
+        $this->view->params['tab'] = 'dialogs';
 
         return $this->render('dialogs', [
             'provider' => $provider,
@@ -70,7 +76,7 @@ class MessageController extends Controller
     public function actionView($id)
     {
         $dialog = $this->repository->get($id);
-        if (!in_array($this->_user->id, [$dialog->user_from, $dialog->user_to])) {
+        if (!\in_array($this->_user->id, [$dialog->user_from, $dialog->user_to], true)) {
             throw new ForbiddenHttpException("Это чужая переписка!");
         }
 
@@ -93,6 +99,30 @@ class MessageController extends Controller
             'dialog' => $dialog,
             'provider' => $provider,
             'user' => $this->_user,
+        ]);
+    }
+
+    public function actionAddContact()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $contactId = Yii::$app->request->post('contactId');
+        $user = (new UserRepository())->get($contactId);
+        try {
+            $this->service->addContact($user->id, Yii::$app->user->id);
+            return ['result' => 'success', 'message' => "Компания <b>{$user->getVisibleName()}</b> добавлена в ваш список контактов."];
+        } catch (\DomainException $e) {
+            return ['result' => 'error', 'message' => $e->getMessage()];
+        }
+    }
+
+    public function actionContacts()
+    {
+        $this->layout = '@frontend/views/user/message/layout';
+        $this->view->params['tab'] = 'contacts';
+        $provider = $this->repository->getUserContacts($this->_user->id);
+
+        return $this->render('contacts', [
+            'provider' => $provider,
         ]);
     }
 }

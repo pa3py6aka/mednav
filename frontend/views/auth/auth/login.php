@@ -4,7 +4,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $this \yii\web\View */
 /* @var $model \core\forms\auth\LoginForm */
 
-$this->title = "Регистрация";
+$this->title = "Вход";
 
 ?>
 <div class="row">

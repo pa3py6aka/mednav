@@ -1,0 +1,44 @@
+<?php
+use core\helpers\PaginationHelper;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+/* @var $tab string */
+/* @var $pagination \yii\data\Pagination|null */
+
+/* @var $content string */
+
+$this->title = 'Личный кабинет | Сообщения';
+$tab =  ArrayHelper::getValue($this->params, 'tab', 'dialogs');
+$pagination = ArrayHelper::getValue($this->params, 'pagination');
+
+$this->beginContent('@frontend/views/layouts/main.php');
+?>
+<div class="row">
+    <div class="col-md-3">
+        <?= $this->render('@frontend/views/user/_left_menu', ['user' => $this->params['user']]) ?>
+    </div>
+
+    <div class="col-md-9">
+        <?= \frontend\widgets\AccountBreadcrumbs::show(['Сообщения']) ?>
+        <h1>Сообщения</h1>
+
+        <ul class="nav nav-tabs">
+            <li<?= $tab === 'dialogs' ? ' class="active"' : '' ?>><a href="<?= Url::to(['dialogs']) ?>">Диалоги</a></li>
+            <li<?= $tab === 'contacts' ? ' class="active"' : '' ?>><a href="<?= Url::to(['contacts']) ?>">Контакты</a></li>
+            <span class="pull-right">
+                <?php if ($pagination) {
+                    echo PaginationHelper::pageSizeSelector($pagination, PaginationHelper::SITE_SIZES);
+                } ?>
+            </span>
+        </ul>
+        <br>
+        <div class="tab-content">
+            <div class="tab-pane fade active in">
+                <?= $content ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->endContent() ?>

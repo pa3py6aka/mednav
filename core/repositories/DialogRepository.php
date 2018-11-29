@@ -3,6 +3,7 @@
 namespace core\repositories;
 
 
+use core\entities\Contact;
 use core\entities\Dialog\Dialog;
 use core\entities\Dialog\Message;
 use yii\data\ActiveDataProvider;
@@ -28,20 +29,12 @@ class DialogRepository
 
     public function getUserDialogs($userId): ActiveDataProvider
     {
-        /*$query = Dialog::find()
-            ->where([
-                'or',
-                ['user_to' => $userId],
-                ['user_from' => $userId],
-            ])->andWhere(['status' => Dialog::STATUS_ACTIVE]);*/
-
         $query = Dialog::find()
             ->alias('d')
             ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read'])
             ->with('userFrom', 'userTo', 'lastMessage')
             ->leftJoin('{{%messages}} m', 'm.dialog_id=d.id')
             ->where(['or', ['d.user_from' => $userId], ['d.user_to' => $userId]])
-            //->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
             ->groupBy(['d.id']);
 
         return new ActiveDataProvider([
@@ -100,6 +93,39 @@ class DialogRepository
     public function remove(Dialog $dialog): void
     {
         if (!$dialog->delete()) {
+            throw new \RuntimeException('Ошибка при удалении из базы.');
+        }
+    }
+
+    public function getUserContacts($userId): ActiveDataProvider
+    {
+        $query = Contact::find()->where(['user_id' => $userId]);
+        return new ActiveDataProvider([
+            'query' => $query,
+            'sort' => false,
+            'pagination' => [
+                'pageSizeLimit' => [25, 250],
+                'defaultPageSize' => 25,
+                'forcePageParam' => false,
+            ]
+        ]);
+    }
+
+    public function hasContact($userId, $contactId): bool
+    {
+        return Contact::find()->where(['user_id' => $userId, 'contact_id' => $contactId])->exists();
+    }
+
+    public function saveContact(Contact $contact): void
+    {
+        if (!$contact->save()) {
+            throw new \RuntimeException('Ошибка записи в базу.');
+        }
+    }
+
+    public function removeContact(Contact $contact): void
+    {
+        if (!$contact->delete()) {
             throw new \RuntimeException('Ошибка при удалении из базы.');
         }
     }

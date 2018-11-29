@@ -193,6 +193,11 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
         return $this->status == self::STATUS_ACTIVE && time() < $this->active_until;
     }
 
+    public function isArchive(): bool
+    {
+        return $this->status == self::STATUS_ARCHIVE || time() > $this->active_until;
+    }
+
     public function isActually(): bool
     {
         return time() < ($this->updated_at + (15 * 24 * 3600));

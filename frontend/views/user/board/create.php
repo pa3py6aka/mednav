@@ -9,7 +9,7 @@ use core\components\Settings;
 /* @var $model BoardManageForm */
 
 
-$this->title = 'Личный кабинет | Добавление объявления';
+$this->title = Yii::$app->settings->get(Settings::BOARD_NAME_UP) . ' | Новое объявление';
 $this->registerJsVar('_ImageUploadAction', Url::to(['/user/board/upload']));
 ImageManagerAsset::register($this);
 

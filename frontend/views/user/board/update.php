@@ -10,7 +10,7 @@ use core\components\Settings;
 /* @var $photosForm \core\forms\manage\PhotosForm */
 /* @var $tab string */
 
-$this->title = 'Личный кабинет | Редактирование объявления';
+$this->title = Yii::$app->settings->get(Settings::BOARD_NAME_UP) . ' | Редактирование объявления';
 
 ?>
 <div class="row">

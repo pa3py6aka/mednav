@@ -7,12 +7,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use core\helpers\HtmlHelper;
 use core\entities\Trade\Trade;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $category TradeUserCategory */
 /* @var $tradesProvider \yii\data\ActiveDataProvider */
 
-$this->title = 'Личный кабинет | ' . Html::encode($category->name);
+$this->title = Yii::$app->settings->get(Settings::TRADE_NAME_UP) . ' | ' . Html::encode($category->name);
 
 ?>
 <div class="row">

@@ -2,7 +2,7 @@
 use core\helpers\PaginationHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use core\helpers\BoardHelper;
+use core\components\Settings;
 use core\helpers\HtmlHelper;
 
 /* @var $this yii\web\View */
@@ -11,7 +11,7 @@ use core\helpers\HtmlHelper;
 
 /* @var $content string */
 
-$this->title = 'Личный кабинет | Мои товары';
+$this->title = Yii::$app->settings->get(Settings::TRADE_NAME_UP);
 $tab =  ArrayHelper::getValue($this->params, 'tab', 'active');
 $pagination = ArrayHelper::getValue($this->params, 'pagination');
 
@@ -23,7 +23,7 @@ $this->beginContent('@frontend/views/layouts/main.php');
     </div>
 
     <div class="col-md-9">
-        <?= \frontend\widgets\AccountBreadcrumbs::show([Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP)]) ?>
+        <?= \frontend\widgets\AccountBreadcrumbs::show([Yii::$app->settings->get(Settings::TRADE_NAME_UP)]) ?>
         <h1><?= Yii::$app->settings->get(\core\components\SettingsManager::TRADE_NAME_UP) ?></h1>
 
         <p>

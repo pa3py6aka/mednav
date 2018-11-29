@@ -3,11 +3,12 @@
 use core\components\ImageManager\ImageManagerAsset;
 use core\forms\manage\Trade\TradeManageForm;
 use yii\helpers\Url;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $model TradeManageForm */
 
-$this->title = 'Личный кабинет | Добавление товара';
+$this->title = Yii::$app->settings->get(Settings::TRADE_NAME_UP) . ' | Добавление товара';
 $this->registerJsVar('_ImageUploadAction', Url::to(['/user/trade/upload']));
 ImageManagerAsset::register($this);
 

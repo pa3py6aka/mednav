@@ -11,7 +11,7 @@ use frontend\widgets\AccountBreadcrumbs;
 /* @var $tab string */
 /* @var $pagination \yii\data\Pagination|null */
 
-$this->title = 'Личный кабинет | Мои объявления';
+$this->title = Yii::$app->settings->get(Settings::BOARD_NAME_UP);
 $tab =  ArrayHelper::getValue($this->params, 'tab', 'active');
 $pagination = ArrayHelper::getValue($this->params, 'pagination');
 

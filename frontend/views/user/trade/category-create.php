@@ -1,13 +1,13 @@
 <?php
 
 use core\forms\manage\Trade\TradeUserCategoryForm;
-use yii\helpers\Url;
+use core\components\Settings;
 
 /* @var $this yii\web\View */
 /* @var $model TradeUserCategoryForm */
 
 
-$this->title = 'Личный кабинет | Добавление пользовательской категории';
+$this->title = Yii::$app->settings->get(Settings::TRADE_NAME_UP) . ' | Добавление пользовательской категории';
 
 ?>
 <div class="row">

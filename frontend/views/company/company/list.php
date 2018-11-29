@@ -69,16 +69,11 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
 
         <?= ContextBlock::getBlock(5) ?>
 
-        <div class="list-pagination has-overlay">
-            <?php if ($category && $geo && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>
-                <?= LinkPager::widget([
-                    'pagination' => $provider->pagination
-                ]) ?>
-            <?php elseif ($provider->pagination->pageCount > $provider->pagination->page + 1): ?>
-                <br>
-                <p id="list-btn-scroll" class="btn btn-list" data-url="<?= $provider->pagination->createUrl($provider->pagination->page + 1) ?>">Показать ещё</p>
-            <?php endif; ?>
-        </div>
+        <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
+            'provider' => $provider,
+            'geo' => $geo,
+            'category' => $category,
+        ]) ?>
 
         <?= ShowContentBlock::widget([
             'module' => ContentBlock::MODULE_COMPANY,

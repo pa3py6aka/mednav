@@ -85,6 +85,7 @@ class CompanyForm extends Model
             [['info', 'shortDescription', 'description'], 'string'],
             ['tags', 'string'],
             ['photos', 'each', 'rule' => ['string']],
+            ['site', 'url', 'enableIDN' => true, 'defaultScheme' => 'http'],
         ];
     }
 

@@ -88,7 +88,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 <?php if ($board->isArchive()): ?>
                     <br>
                     <div class="alert alert-warning">
-                        Владелец данного объявления его давно не обновлял, возможно, оно потеряло актуальность.
+                        <noindex>Владелец данного объявления его давно не обновлял, возможно, оно потеряло актуальность.</noindex>
                     </div>
                 <?php endif; ?>
                 <div class="do-item-vendor-block">

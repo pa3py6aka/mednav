@@ -53,13 +53,19 @@ class SupportDialogService
     {
         $message = SupportMessage::create($dialogId, $userId, $text);
         $this->repository->saveMessage($message);
+
+        // Уведомление пользователю о новом сообщении от админа
         if (!$userId && !$message->dialog->user->isOnline()) {
             $this->sendNotificationToEmail($message);
         }
+
+        // Уведомление админу о новом сообщении от юзера
+
+
         return $message;
     }
 
-    public function sendNotificationToEmail(SupportMessage $message)
+    public function sendNotificationToEmail(SupportMessage $message): void
     {
         Yii::$app->queue->push(new SendMailJob([
             'view' => 'message-from-support',
@@ -69,7 +75,7 @@ class SupportDialogService
         ]));
     }
 
-    public function markAsRead($dialogId, $userId = null)
+    public function markAsRead($dialogId, $userId = null): void
     {
         $this->repository->markAsRead($dialogId, $userId);
     }

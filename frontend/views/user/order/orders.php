@@ -37,20 +37,20 @@ $pagination = ArrayHelper::getValue($this->params, 'pagination');
             'id' => 'grid',
             'columns' => [
                 [
-                    'label' => 'Создан',
-                    'attribute' => 'created_at',
+                    'label' => '№ заказа',
+                    'attribute' => 'id',
                     'value' => function (Order $order) {
-                        return Yii::$app->formatter->asDatetime($order->created_at) . OrderHelper::newLabel($order);
+                        return Html::a($order->getNumber(), ['view', 'id' => $order->id]) . OrderHelper::newLabel($order);
                     },
                     'format' => 'raw',
                 ],
                 [
-                    'label' => '№ заказа',
-                    'attribute' => 'id',
-                    'value' => function (Order $order) {
-                        return Html::a($order->getNumber(), ['view', 'id' => $order->id]);
-                    },
-                    'format' => 'raw',
+                    'label' => 'Создан',
+                    'attribute' => 'created_at',
+                    /*'value' => function (Order $order) {
+                        return Yii::$app->formatter->asDatetime($order->created_at);
+                    },*/
+                    'format' => 'datetime',
                 ],
                 [
                     'label' => 'Покупатель',

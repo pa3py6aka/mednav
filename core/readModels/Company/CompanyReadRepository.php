@@ -38,7 +38,7 @@ class CompanyReadRepository
         if ($category) {
             $ids = ArrayHelper::merge([$category->id], $category->getDescendants()->select('id')->column());
             $query->leftJoin(CompanyCategoryAssignment::tableName() . ' cca', 'c.id=cca.company_id');
-            $query->andWhere(['cca.company_id' => $ids]);
+            $query->andWhere(['cca.category_id' => $ids]);
         }
 
         if ($geo) {

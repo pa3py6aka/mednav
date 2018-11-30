@@ -59,12 +59,16 @@ class CompanyReadRepository
         $provider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['name' => SORT_ASC],
+                'defaultOrder' => ['id' => SORT_DESC],
                 'attributes' => [
                     'name' => [
                         'asc' => ['c.name' => SORT_ASC],
                         'desc' => ['c.name' => SORT_DESC],
                     ],
+                    'id' => [
+                        'asc' => ['c.id' => SORT_ASC],
+                        'desc' => ['c.id' => SORT_DESC],
+                    ]
                 ],
             ],
             'pagination' => [

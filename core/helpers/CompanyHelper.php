@@ -130,6 +130,10 @@ class CompanyHelper
                 } else {
                     $yes = false;
                 }
+            } else {
+                if ($category['depth'] == 1) {
+                    $yes = false;
+                }
             }
             //if ($category['b_count']) {
                 return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');

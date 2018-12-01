@@ -117,7 +117,7 @@ class CompanyHelper
 
         $yes = false;
         $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
-            if ($category['depth'] == 1 && !$category['b_count']) {
+            /*if ($category['depth'] == 1 && !$category['b_count']) {
                 return '';
             }
             if (!$category['b_count'] && !$yes) {
@@ -134,7 +134,7 @@ class CompanyHelper
                 if ($category['depth'] == 1) {
                     $yes = false;
                 }
-            }
+            }*/
             //if ($category['b_count']) {
                 return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
             //}

@@ -115,7 +115,7 @@ class CompanyHelper
             }
         }*/
 
-        $yes = false;
+        $yes = 0;
         $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
             /*if ($category['depth'] == 1 && !$category['b_count']) {
                 return '';
@@ -137,12 +137,12 @@ class CompanyHelper
             }*/
 
 
-            if ($category['b_count'] || $yes) {
+            if ($category['b_count'] || $category['depth'] < $yes || ($category['depth'] == $yes && $category['b_count'])) {
                 if ($category['b_count']) {
-                    $yes = true;
+                    $yes = $category['depth'];
                 }
                 if ($category['depth'] == 1) {
-                    $yes = false;
+                    $yes = 0;
                 }
 
                 return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');

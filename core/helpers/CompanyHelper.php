@@ -135,8 +135,21 @@ class CompanyHelper
                     $yes = false;
                 }
             }*/
-            //if ($category['b_count']) {
+
+
+            if ($category['b_count'] || $yes) {
+                if ($category['b_count']) {
+                    $yes = true;
+                }
+                if ($category['depth'] == 1) {
+                    $yes = false;
+                }
+
                 return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
+            }
+
+            //if ($category['b_count']) {
+                //return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
             //}
         });
 

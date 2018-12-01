@@ -153,7 +153,7 @@ class CompanyHelper
             //}
         });
 
-        $categories = array_reverse(array_filter($categories));
+        $categories = array_reverse(array_filter($categories), true);
         return $categories;
     }
 

@@ -95,17 +95,48 @@ class CompanyHelper
             ->from(BoardCategory::tableName() . ' bc')
             ->leftJoin(Board::tableName() . ' b', 'b.category_id=bc.id AND b.author_id=' . $company->user_id . ' AND b.status=' . Board::STATUS_ACTIVE . ' AND b.active_until>' . time())
             ->where(['>', 'bc.depth', 0])
-            ->orderBy('bc.lft')
+            ->orderBy(['bc.lft' => SORT_DESC])
             ->groupBy('bc.id')
             ->all();
 
-        $categories = ArrayHelper::map($query, 'id', function (array $category) {
-            if ($category['b_count']) {
-                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
+        /*$result = [];
+        $n = 0;
+        foreach ($query as $item) {
+            if ($item['depth'] === 1) {
+                $n++;
+                $result[$n][] = $item;
             }
-        });
-        $categories = array_filter($categories);
+        }
+        foreach ($result as $n => $cat) {
+            foreach ($cat as $item) {
+                if ($item['b_count']) {
 
+                }
+            }
+        }*/
+
+        $yes = false;
+        $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
+            if ($category['depth'] == 1 && !$category['b_count']) {
+                return '';
+            }
+            if (!$category['b_count'] && !$yes) {
+                return '';
+            }
+
+            if ($category['b_count']) {
+                if ($category['depth'] > 1) {
+                    $yes = true;
+                } else {
+                    $yes = false;
+                }
+            }
+            //if ($category['b_count']) {
+                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
+            //}
+        });
+
+        $categories = array_reverse(array_filter($categories));
         return $categories;
     }
 

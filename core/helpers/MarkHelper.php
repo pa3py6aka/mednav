@@ -15,7 +15,7 @@ class MarkHelper
     public const MARKS_BOARD = [
         'name' => 'name',
         'geo_name' => 'geo.name',
-        'geo_name_p' => 'geo.name_p',
+        'geo_name_p' => 'geo.nameP',
         'phone' => 'author.phoneString',
         'category_name' => 'category.contextName',
         'company_name' => 'author.visibleName',
@@ -24,7 +24,7 @@ class MarkHelper
     public const MARKS_TRADE = [
         'name' => 'name',
         'geo_name' => 'geo.name',
-        'geo_name_p' => 'geo.name_p',
+        'geo_name_p' => 'geo.nameP',
         'phone' => 'company.phone',
         'category_name' => 'category.contextName',
         'company_name' => 'company.fullName',

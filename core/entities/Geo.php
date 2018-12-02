@@ -20,6 +20,8 @@ use yii\db\ActiveRecord;
  * @property int $rgt
  * @property int $depth
  *
+ * @property string $nameP
+ *
  * @property Geo $parent
  * @property Geo[] $parents
  * @property Geo[] $children
@@ -47,6 +49,11 @@ class Geo extends ActiveRecord
         $this->slug = $slug;
         $this->popular = $popular;
         $this->active = $active;
+    }
+
+    public function getNameP(): string
+    {
+        return $this->name_p ?: $this->name;
     }
 
     /**

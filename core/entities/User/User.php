@@ -244,6 +244,13 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         return $this->isCompany() && $this->isCompanyActive() ? $this->company->geo_id : $this->geo_id;
     }
 
+    public function geoName(): string
+    {
+        return $this->isCompany() && $this->isCompanyActive()
+            ? ($this->company->geo_id ? $this->company->geo->name : '')
+            : ($this->geo_id ? $this->geo->name : '');
+    }
+
     public function requestPasswordReset(): void
     {
         if (!empty($this->password_reset_token) && self::isPasswordResetTokenValid($this->password_reset_token)) {

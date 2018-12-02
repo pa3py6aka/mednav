@@ -202,4 +202,9 @@ class CompanyHelper
             ? Pluralize::get($counts[$countryId], 'Выбран', 'Выбрано', 'Выбрано', true) . ' ' . Pluralize::get($counts[$countryId], 'регион', 'региона', 'регионов')
             : 'Выбрать регионы';
     }
+
+    public static function pageTitle($title, Company $company): string
+    {
+        return $title . ' ' . $company->getFullName() . ($company->geo ? ', ' . $company->geo->name : '');
+    }
 }

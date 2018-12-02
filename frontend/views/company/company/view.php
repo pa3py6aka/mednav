@@ -13,9 +13,9 @@ use frontend\widgets\ContactButtonWidget\ContactButtonWidget;
 /* @var $company \core\entities\Company\Company */
 /* @var $page string */
 
-$this->title = $company->getTitle();
-$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($company->description)]);
-$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company->getTagsString())]);
+$this->title = $company->getFullName() . ' - ' . Html::encode($company->title);
+$this->registerMetaTag(['name' => 'description', 'content' => $company->getFullName() . ' ' . $company->getAddressString() . ', ' . Html::encode($company->title)], 'description');
+$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company->getTagsString())], 'keywords');
 
 ?>
 <div class="row">

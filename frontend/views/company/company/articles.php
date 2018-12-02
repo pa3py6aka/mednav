@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use core\helpers\CompanyHelper;
+use core\components\Settings;
 
 /* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
@@ -10,9 +11,9 @@ use core\helpers\CompanyHelper;
 
 /* @var $article \core\entities\Article\Article */
 
-$this->title = $company->getTitle();
-$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($company->description)]);
-$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company->getTagsString())]);
+$this->title = CompanyHelper::pageTitle(Yii::$app->settings->get(Settings::ARTICLE_NAME), $company);
+$this->registerMetaTag(['name' => 'description', 'content' => Yii::$app->settings->get(Settings::ARTICLE_NAME) . ' компании ' . $company->getFullName()]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company->form . ', ' . $company->name . ($company->geo ? ', ' . $company->geo->name : '') . ', ' . Yii::$app->settings->get(Settings::ARTICLE_NAME))]);
 
 ?>
 <div class="row">

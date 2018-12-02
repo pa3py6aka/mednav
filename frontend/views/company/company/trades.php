@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use core\helpers\CompanyHelper;
-use core\helpers\TradeHelper;
+use core\components\Settings;
 
 /* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
@@ -10,9 +10,9 @@ use core\helpers\TradeHelper;
 
 /* @var $trade \core\entities\Trade\Trade */
 
-$this->title = $company->getTitle();
-$this->registerMetaTag(['name' => 'description', 'content' => Html::encode($company->description)]);
-$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company->getTagsString())]);
+$this->title = CompanyHelper::pageTitle(Yii::$app->settings->get(Settings::TRADE_NAME), $company);
+$this->registerMetaTag(['name' => 'description', 'content' => Yii::$app->settings->get(Settings::TRADE_NAME) . ' компании ' . $company->getFullName()]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company->form . ', ' . $company->name . ($company->geo ? ', ' . $company->geo->name : '') . ', ' . Yii::$app->settings->get(Settings::TRADE_NAME))]);
 
 ?>
 <div class="row">

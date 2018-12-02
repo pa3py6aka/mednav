@@ -1,9 +1,13 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+/* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
+
+$this->title = $company->getFullName() . ($company->geo ? ' ' . $company->geo->name : '') . ', контакты компании';
+$this->registerMetaTag(['name' => 'description', 'content' => $company->getFullName() . ($company->geo ? ' ' . $company->geo->name : '') . ', телефон и адрес организации'], 'description');
+$this->registerMetaTag(['name' => 'keywords', 'content' => $company->getFullName() . ($company->geo ? ', ' . $company->geo->name : '')], 'keywords');
 
 ?>
 <h3>Контакты</h3>

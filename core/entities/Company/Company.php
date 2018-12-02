@@ -208,6 +208,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return Html::encode(trim($this->form . ' ' . $this->name));
     }
 
+    public function getAddressString(): string
+    {
+        return ($this->geo ? $this->geo->name . ', ' : '') . Html::encode($this->address);
+    }
+
     public function getTagsString(): string
     {
         return implode(', ', $this->getTags()->select('name')->column());

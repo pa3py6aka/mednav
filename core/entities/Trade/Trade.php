@@ -204,7 +204,7 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
 
     public function getUrl($absolute = false): string
     {
-        return ($absolute ? Yii::$app->params['frontendHostInfo'] . '/' : '') . Url::to(['/trade/trade/view', 'slug' => $this->slug, 'id' => $this->id]);
+        return ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . Url::to(['/trade/trade/view', 'slug' => $this->slug, 'id' => $this->id]);
     }
 
     public function getMainPhotoUrl($type = 'small', $absolute = false): string

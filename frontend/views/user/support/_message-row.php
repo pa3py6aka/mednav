@@ -7,7 +7,7 @@ use core\helpers\DialogHelper;
 
 ?>
 <div class="message-row pull-<?= $message->isMy() ? 'right' : 'left' ?>">
-    <div class="message-from">
+    <div class="message-from<?= !$message->isMy() ? ' text-green' : '' ?>">
         <?= DialogHelper::getSupportUserName($message) ?>
         <span class="message-date"><?= Yii::$app->formatter->asDatetime($message->created_at) ?></span>
     </div>

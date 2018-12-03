@@ -6,7 +6,7 @@ use yii\helpers\Url;
 /* @var $company \core\entities\Company\Company */
 
 $this->title = $company->getFullName() . ($company->geo ? ' ' . $company->geo->name : '') . ', контакты компании';
-$this->registerMetaTag(['name' => 'description', 'content' => $company->getFullName() . ($company->geo ? ' ' . $company->geo->name : '') . ', телефон и адрес организации'], 'description');
+$this->registerMetaTag(['name' => 'description', 'content' => $company->getFullName() . ($company->geo ? ' ' . $company->geo->name : '') . ', ' . Html::encode($company->address) . ', ' . $company->getPhones(true)], 'description');
 $this->registerMetaTag(['name' => 'keywords', 'content' => $company->getFullName() . ($company->geo ? ', ' . $company->geo->name : '')], 'keywords');
 
 ?>

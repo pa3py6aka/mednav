@@ -24,7 +24,7 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show([
             ['label' => 'Сообщения', 'url' => ['/user/message/dialogs']],
-            Html::encode($dialog->subject)
+            $dialog->getDialogName()
         ]) ?>
         <h1>
             Тема: <?= Html::encode($dialog->subject) ?>

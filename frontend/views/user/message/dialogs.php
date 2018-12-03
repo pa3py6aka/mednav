@@ -17,7 +17,7 @@ $this->title = 'Личный кабинет | Мои сообщения';
             [
                 'label' => 'Тема',
                 'value' => function (Dialog $dialog) {
-                    return Html::a(Html::encode($dialog->subject), ['view', 'id' => $dialog->id]) .
+                    return Html::a($dialog->getDialogName(), ['view', 'id' => $dialog->id]) .
                         ($dialog->not_read ? ' <span class="label label-danger label-as-badge">' . $dialog->not_read . '</span>' : '');
                 },
                 'format' => 'raw',

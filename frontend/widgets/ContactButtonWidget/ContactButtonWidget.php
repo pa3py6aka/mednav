@@ -8,7 +8,11 @@ use yii\base\Widget;
 
 class ContactButtonWidget extends Widget
 {
+    public const BUTTON_BIG = 'big';
+    public const BUTTON_SMALL = 'small';
+
     public $contactId;
+    public $buttonType = self::BUTTON_BIG;
 
     public function init()
     {
@@ -22,7 +26,8 @@ class ContactButtonWidget extends Widget
     {
         if (\Yii::$app->user->id !== $this->contactId) {
             $this->registerJs();
-            return $this->render('button', ['contactId' => $this->contactId]);
+            $view = $this->buttonType === self::BUTTON_BIG ? 'button' : 'small-button';
+            return $this->render($view, ['contactId' => $this->contactId]);
         }
         return '';
     }

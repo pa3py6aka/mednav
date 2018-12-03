@@ -27,7 +27,7 @@ $this->title = 'Личный кабинет | Контакты';
                 'template' => '{message} {delete}',
                 'buttons' => [
                     'message' => function ($url, $model, $key) {
-                        return '<a href="' . Url::to(['view', 'id' => $model->id]) . '"><i class="glyphicon glyphicon-envelope"></i></a>';
+                        return '<a href="' . Url::to(['contact', 'id' => $model->id]) . '"><i class="glyphicon glyphicon-envelope"></i></a>';
                     },
                     'delete' => function ($url, $model, $key) {
                         return '<a href="' . Url::to(['contact-remove', 'id' => $model->id]) . '" data-method="post" data-confirm="Удалить данный контакт?"><i class="glyphicon glyphicon-trash"></i></a>';

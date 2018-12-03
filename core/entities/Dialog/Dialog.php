@@ -6,6 +6,7 @@ use core\entities\User\User;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%dialogs}}".
@@ -46,6 +47,7 @@ class Dialog extends ActiveRecord
 
     public function getDialogName(): string
     {
+        return $this->subject ? Html::encode($this->subject) : 'Переписка';
         //$firstName = $this->user_one ? $this->userOne->getVisibleName() : "Посетитель сайта";
         //$secondName = $this->user_two ? $this->userTwo->getVisibleName() : "Посетитель сайта";
         //return $firstName . ' - ' . $secondName;

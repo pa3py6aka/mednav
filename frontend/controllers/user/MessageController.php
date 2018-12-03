@@ -4,6 +4,7 @@ namespace frontend\controllers\user;
 
 
 use core\access\Rbac;
+use core\entities\Dialog\Dialog;
 use core\repositories\DialogRepository;
 use core\repositories\UserRepository;
 use core\useCases\DialogService;
@@ -124,5 +125,20 @@ class MessageController extends Controller
         return $this->render('contacts', [
             'provider' => $provider,
         ]);
+    }
+
+    public function actionContact($id)
+    {
+        $contact = $this->repository->getUserContact($id, Yii::$app->user->id);
+        $dialog = $this->service->getOrCreateContactDialog($contact);
+        return $this->redirect(['view', 'id' => $dialog->id]);
+    }
+
+    public function actionContactRemove($id)
+    {
+        $contact = $this->repository->getUserContact($id, Yii::$app->user->id);
+        $contact->delete();
+        Yii::$app->session->setFlash('success', 'Контакт удалён.');
+        return $this->redirect(['contacts']);
     }
 }

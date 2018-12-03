@@ -3,6 +3,7 @@
 namespace core\useCases;
 
 
+use Codeception\Lib\Di;
 use core\components\Settings;
 use core\entities\Contact;
 use core\entities\Dialog\Dialog;
@@ -90,5 +91,20 @@ class DialogService
         }
         $contact = Contact::create($userId, $contactId);
         $this->repository->saveContact($contact);
+    }
+
+    public function getOrCreateContactDialog(Contact $contact): Dialog
+    {
+        if (!$dialog = Dialog::find()->where([
+            'user_from' => [$contact->contact_id, $contact->user_id],
+            'user_to' => [$contact->contact_id, $contact->user_id],
+            'subject' => ''
+        ])->limit(1)->one()) {
+            // Создаём диалог
+            $dialog = Dialog::create($contact->user_id, $contact->contact_id, '');
+            $this->repository->save($dialog);
+        }
+
+        return $dialog;
     }
 }

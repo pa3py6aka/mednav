@@ -1,5 +1,5 @@
 <?php
-
+use frontend\widgets\ContactButtonWidget\ContactButtonWidget;
 use frontend\widgets\message\MessageWidget;
 
 /* @var $company \core\entities\Company\Company */
@@ -11,6 +11,8 @@ use frontend\widgets\message\MessageWidget;
         'subjectType' => MessageWidget::SUBJECT_TYPE_INPUT,
         'buttonType' => MessageWidget::BTN_TYPE_SMALL,
     ]) ?>
-    <span class="glyphicon glyphicon-user btn-xs icon-blue"></span>
-    <a href="#">Добавить в контакты</a>
+    <?= ContactButtonWidget::widget([
+        'buttonType' => ContactButtonWidget::BUTTON_SMALL,
+        'contactId' => $company->user_id,
+    ]) ?>
 </div>

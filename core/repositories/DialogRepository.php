@@ -111,6 +111,14 @@ class DialogRepository
         ]);
     }
 
+    public function getUserContact($contactId, $userId): Contact
+    {
+        if (!$contact = Contact::find()->where(['user_id' => $userId, 'id' => $contactId])->limit(1)->one()) {
+            throw new NotFoundHttpException("Контакт не найден");
+        }
+        return $contact;
+    }
+
     public function hasContact($userId, $contactId): bool
     {
         return Contact::find()->where(['user_id' => $userId, 'contact_id' => $contactId])->exists();

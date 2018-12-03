@@ -52,12 +52,6 @@ class TradeReadRepository
 
         if ($geo) {
             $ids = ArrayHelper::merge([$geo->id], $geo->getDescendants()->select('id')->column());
-            /*$companyIds = CompanyDeliveryRegions::find()
-                ->alias('cdr')
-                ->leftJoin(CompanyDelivery::tableName() . ' cd', 'cdr.company_deliveries_id=cd.id')
-                ->select('cd.company_id')
-                ->where(['cdr.geo_id' => $ids])
-                ->column();*/
             $companyIds = CompanyDeliveryRegion::find()
                 ->select('company_id')
                 ->where(['geo_id' => $ids])

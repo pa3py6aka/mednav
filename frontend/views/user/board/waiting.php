@@ -18,7 +18,7 @@ $this->params['pagination'] = $provider->pagination;
         [
             'attribute' => 'name',
             'value' => function (Board $board) {
-                return Html::a($board->name, $board->getUrl());
+                return Html::a($board->name, $board->getUrl(), ['target' => '_blank']);
             },
             'format' => 'raw',
         ],

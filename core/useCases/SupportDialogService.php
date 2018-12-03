@@ -54,13 +54,14 @@ class SupportDialogService
         $message = SupportMessage::create($dialogId, $userId, $text);
         $this->repository->saveMessage($message);
 
-        // Уведомление пользователю о новом сообщении от админа
+        // Уведомления
         if (!$userId && !$message->dialog->user->isOnline()) {
+            // Уведомление пользователю о новом сообщении от админа
             $this->sendNotificationToEmail($message);
+        } else if ($userId) {
+            // Уведомление админу о новом сообщении от юзера
+            $this->sendNotificationToAdmin($message);
         }
-
-        // Уведомление админу о новом сообщении от юзера
-
 
         return $message;
     }
@@ -71,6 +72,16 @@ class SupportDialogService
             'view' => 'message-from-support',
             'params' => ['message' => $message],
             'to' => [$message->dialog->user->getEmail() => $message->dialog->user->getVisibleName()],
+            'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
+        ]));
+    }
+
+    public function sendNotificationToAdmin(SupportMessage $message): void
+    {
+        Yii::$app->queue->push(new SendMailJob([
+            'view' => 'message-to-support',
+            'params' => ['message' => $message],
+            'to' => [Yii::$app->settings->get(Settings::GENERAL_CONTACT_EMAIL) => Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM)],
             'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
         ]));
     }

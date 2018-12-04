@@ -44,6 +44,7 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
             'module' => ContentBlock::MODULE_COMPANY,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
             'count' => 1,
         ]) ?>
 
@@ -79,6 +80,7 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
             'module' => ContentBlock::MODULE_COMPANY,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
             'start' => 2,
         ]) ?>
 
@@ -95,6 +97,7 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
                 'module' => ContentBlock::MODULE_COMPANY,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_LISTING,
+                'category' => $category,
             ]) ?>
         </div><!-- // right col -->
     </div>

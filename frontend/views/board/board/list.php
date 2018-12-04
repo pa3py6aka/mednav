@@ -38,6 +38,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             'module' => ContentBlock::MODULE_BOARD,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
             'count' => 1,
         ]) ?>
 
@@ -82,6 +83,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             'module' => ContentBlock::MODULE_BOARD,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
             'start' => 2,
         ]) ?>
 
@@ -98,6 +100,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
                 'module' => ContentBlock::MODULE_BOARD,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_LISTING,
+                'category' => $category,
             ]) ?>
 
         </div><!-- // right col -->

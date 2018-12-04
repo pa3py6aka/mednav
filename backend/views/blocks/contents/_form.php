@@ -35,9 +35,11 @@ use yii\helpers\Html;
     <?= $form->field($model, 'type')
         ->dropDownList(ContentBlock::typesArray($model->page == ContentBlock::PAGE_VIEW && $model->module != ContentBlock::MODULE_MAIN_PAGE), ['id' => 'type-selector']) ?>
 
-    <?= $form->field($model, 'forModule')
-        ->dropDownList(ContentBlock::modulesArray(false), ['id' => 'for-module-selector', 'disabled' => $model->type == ContentBlock::TYPE_HTML])
-        ->hint('С какого модуля брать контент') ?>
+    <?php if ($model->module === ContentBlock::MODULE_MAIN_PAGE): ?>
+        <?= $form->field($model, 'forModule')
+            ->dropDownList(ContentBlock::modulesArray(false), ['id' => 'for-module-selector', 'disabled' => $model->type == ContentBlock::TYPE_HTML])
+            ->hint('С какого модуля брать контент') ?>
+    <?php endif; ?>
 
     <?= $form->field($model, 'name')->textInput() ?>
 

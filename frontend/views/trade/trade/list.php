@@ -44,6 +44,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             'module' => ContentBlock::MODULE_TRADE,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
             'count' => 1
         ]) ?>
 
@@ -82,6 +83,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             'module' => ContentBlock::MODULE_TRADE,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
             'start' => 2
         ]) ?>
 
@@ -98,6 +100,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
                 'module' => ContentBlock::MODULE_TRADE,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_LISTING,
+                'category' => $category,
             ]) ?>
         </div><!-- // right col -->
     </div>

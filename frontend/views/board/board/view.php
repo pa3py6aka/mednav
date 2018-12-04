@@ -22,6 +22,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
             'module' => ContentBlock::MODULE_BOARD,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_VIEW,
+            'category' => $board->category,
             'count' => 1,
             'entity' => $board,
         ]) ?>
@@ -121,6 +122,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
             'module' => ContentBlock::MODULE_BOARD,
             'place' => ContentBlock::PLACE_MAIN,
             'page' => ContentBlock::PAGE_VIEW,
+            'category' => $board->category,
             'start' => 2,
             'entity' => $board,
         ]) ?>
@@ -138,6 +140,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($board->
                 'module' => ContentBlock::MODULE_BOARD,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_VIEW,
+                'category' => $board->category,
                 'entity' => $board,
             ]) ?>
         </div>

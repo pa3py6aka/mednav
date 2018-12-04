@@ -4,7 +4,9 @@ namespace frontend\widgets\ContentBlock;
 
 
 use core\entities\Board\Board;
+use core\entities\CategoryInterface;
 use core\entities\Company\Company;
+use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\ContentBlock;
 use core\entities\Trade\Trade;
 use yii\base\InvalidArgumentException;
@@ -16,8 +18,13 @@ class ShowContentBlock extends Widget
     public $place;
     public $page;
     public $start = 1; // С какого блока начинать(номер блока)
-    public $count = null; // Сколько блоков вывести(null = все начиная со $start)
-    public $entity = null; // Объявление/товар/компания если виджет на странице контента
+    public $count; // Сколько блоков вывести(null = все начиная со $start)
+
+    /* @var CategoryInterface|null */
+    public $category; // Раздел
+
+    /* @var Board|Trade|Company|null */
+    public $entity; // Объявление/товар/компания если виджет на странице контента
 
     public function run()
     {
@@ -61,11 +68,12 @@ class ShowContentBlock extends Widget
 
     private function getItems(ContentBlock $block)
     {
-        $module = $block->for_module;
-
-        if ($block->type != ContentBlock::TYPE_HTML) {
-            $query = $this->getQuery($module);
+        if ($block->type == ContentBlock::TYPE_HTML) {
+            return $block->html;
         }
+
+        $module = $block->for_module;
+        $query = $this->getQuery($module);
 
         if ($block->type == ContentBlock::TYPE_NEW) {
             $query->orderBy(['ent.id' => SORT_DESC]);
@@ -73,21 +81,40 @@ class ShowContentBlock extends Widget
             $query->orderBy(['ent.views' => SORT_ASC]);
         } else if ($block->type == ContentBlock::TYPE_SIMILAR) {
             $entity = $this->entity;
-            /* @var $entity Board|Trade|Company */
-            $tags = $entity->getTags()->select('name')->column();
+            $words = explode(' ', $entity->name);
+            $words = array_map('trim', $words);
+            $words = array_filter($words, function ($val) {
+                return mb_strlen($val) > 2;
+            });
+            $words = array_map(function ($val) {
+                return ' ' . $val . ' ';
+            }, $words);
+
+            $query->andWhere(['or like', 'ent.name', $words]);
+            $query->orderBy(['ent.id' => SORT_DESC]);
+
+            /*$tags = $entity->getTags()->select('name')->column();
             $query->joinWith('tags t');
             $likes = [];
             foreach ($tags as $tag) {
                 $likes[] = ['like', 't.name', $tag];
             }
             $query->andWhere(array_merge(['or'], $likes));
-            $query->orderBy(['ent.id' => SORT_DESC]);
-        } else {
-            return $block->html;
+            $query->orderBy(['ent.id' => SORT_DESC]);*/
         }
 
         if ($this->entity) {
             $query->andWhere(['<>', 'ent.id', $this->entity->id]);
+        }
+
+        if ($this->category) {
+            $categoryIds = array_merge([$this->category->id], $this->category->getDescendants()->select('id')->column());
+            if ($this->module === ContentBlock::MODULE_COMPANY) {
+                $query->leftJoin(CompanyCategoryAssignment::tableName() . ' cca', 'cca.company_id=ent.id')
+                    ->andWhere(['cca.category_id' => $categoryIds]);
+            } else {
+                $query->andWhere(['ent.category_id' => $categoryIds]);
+            }
         }
 
         return $query->limit($block->items)->all();
@@ -101,7 +128,7 @@ class ShowContentBlock extends Widget
             $query = Trade::find()->with('mainPhoto', 'company.geo');
         } else if ($module == ContentBlock::MODULE_COMPANY) {
             $query = Company::find()->with('mainPhoto');
-        } else if ($block->type != ContentBlock::TYPE_HTML) {
+        } else {
             throw new InvalidArgumentException("Неверный модуль контентного блока.");
         }
         return $query->active()->alias('ent');

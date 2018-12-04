@@ -99,9 +99,9 @@ class ShowContentBlock extends Widget
             $words = array_filter($words, function ($val) {
                 return mb_strlen($val) > 2;
             });
-            $words = array_map(function ($val) {
+            /*$words = array_map(function ($val) {
                 return ' ' . $val . ' ';
-            }, $words);
+            }, $words);*/
 
             $query->andWhere(['or like', 'ent.name', $words]);
             $query->orderBy(['ent.id' => SORT_DESC]);

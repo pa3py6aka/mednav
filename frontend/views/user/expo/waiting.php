@@ -19,7 +19,7 @@ $this->params['pagination'] = $provider->pagination;
         [
             'attribute' => 'name',
             'value' => function (Expo $expo) {
-                return Html::a(Html::encode($expo->name), $expo->getUrl());
+                return Html::a(Html::encode($expo->name), $expo->getUrl(), ['target' => '_blank']);
             },
             'format' => 'raw',
         ],

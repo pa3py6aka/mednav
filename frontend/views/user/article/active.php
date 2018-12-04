@@ -19,7 +19,7 @@ $this->params['pagination'] = $provider->pagination;
         [
             'attribute' => 'name',
             'value' => function (Article $article) {
-                return Html::a(Html::encode($article->name), $article->getUrl());
+                return Html::a(Html::encode($article->name), $article->getUrl(), ['target' => '_blank']);
             },
             'format' => 'raw',
         ],

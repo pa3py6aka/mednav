@@ -19,7 +19,7 @@ $this->params['pagination'] = $provider->pagination;
         [
             'attribute' => 'name',
             'value' => function (CNews $news) {
-                return Html::a(Html::encode($news->name), $news->getUrl());
+                return Html::a(Html::encode($news->name), $news->getUrl(), ['target' => '_blank']);
             },
             'format' => 'raw',
         ],

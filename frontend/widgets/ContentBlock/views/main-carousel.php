@@ -1,8 +1,6 @@
 <?php
-use yii\helpers\Html;
-
 /* @var $block \core\entities\ContentBlock */
-/* @var $items string|\core\entities\Board\Board[]|\core\entities\Trade\Trade[]|\core\entities\Company\Company[] */
+/* @var $items \core\components\ContentBlocks\ContentBlockInterface[]|array */
 
 ?>
 <div class="sidebar-title"><?= $block->show_title ? $block->name : '' ?></div>
@@ -17,12 +15,12 @@ use yii\helpers\Html;
                 <div class="brand-baner__item">
                     <div class="content-block-caorusel-img">
                         <a href="<?= $item->getUrl() ?>">
-                            <img src="<?= $item->getMainPhotoUrl() ?>" alt="<?= Html::encode($item->name) ?>" align="center" class="img-responsive">
+                            <img src="<?= $item->getMainPhotoUrl() ?>" alt="<?= $item->getContentName() ?>" align="center" class="img-responsive">
                         </a>
                     </div>
                     <div class="text-col">
                         <a href="<?= $item->getUrl() ?>">
-                            <?= Html::encode($item->name) ?>
+                            <?= $item->getContentName() ?>
                         </a>
                     </div>
                     <div class="price-col"><?= $item->getFullPriceString() ?></div>

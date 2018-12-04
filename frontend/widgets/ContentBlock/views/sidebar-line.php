@@ -1,9 +1,8 @@
 <?php
-use yii\helpers\Html;
 use frontend\widgets\ContentBlock\ShowContentBlock;
 
 /* @var $block \core\entities\ContentBlock */
-/* @var $items string|\core\entities\Board\Board[]|\core\entities\Trade\Trade[]|\core\entities\Company\Company[] */
+/* @var $items array|\core\components\ContentBlocks\ContentBlockInterface[] */
 
 ?>
 <div class="sidebar-title"><?= $block->show_title ? $block->name : '' ?></div>
@@ -18,14 +17,14 @@ use frontend\widgets\ContentBlock\ShowContentBlock;
                 <div class="col-md-4">
                     <div class="sidebar-block-string-img">
                         <a href="<?= $item->getUrl() ?>">
-                            <img src="<?= $item->getMainPhotoUrl() ?>" alt="<?= Html::encode($item->name) ?>" class="img-responsive">
+                            <img src="<?= $item->getMainPhotoUrl() ?>" alt="<?= $item->getContentName() ?>" class="img-responsive">
                         </a>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="text-col">
                         <a href="<?= $item->getUrl() ?>">
-                            <?= Html::encode($item->name) ?>
+                            <?= $item->getContentName() ?>
                         </a>
                     </div>
                     <div class="price-col"><?= $item->getFullPriceString() ?></div>

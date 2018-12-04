@@ -1,8 +1,7 @@
 <?php
-use yii\helpers\Html;
 
 /* @var $block \core\entities\ContentBlock */
-/* @var $items string|\core\entities\Board\Board[]|\core\entities\Trade\Trade[]|\core\entities\Company\Company[] */
+/* @var $items \core\components\ContentBlocks\ContentBlockInterface[]|array */
 $i = 0;
 
 ?>
@@ -22,12 +21,12 @@ $i = 0;
             <?php else: ?>
                 <div class="content-block-tile-img">
                     <a href="<?= $item->getUrl() ?>">
-                        <img src="<?= $item->getMainPhotoUrl() ?>" alt="<?= Html::encode($item->name) ?>" class="img-responsive">
+                        <img src="<?= $item->getMainPhotoUrl() ?>" alt="<?= $item->getContentName() ?>" class="img-responsive">
                     </a>
                 </div>
                 <div class="text-col">
                     <a href="<?= $item->getUrl() ?>">
-                        <?= Html::encode($item->name) ?>
+                        <?= $item->getContentName() ?>
                     </a>
                 </div>
                 <div class="price-col"><?= $item->getFullPriceString() ?></div>

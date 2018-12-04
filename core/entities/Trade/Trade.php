@@ -20,7 +20,6 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use Zelenin\yii\behaviors\Slug;
 
 /**
  * This is the model class for table "{{%trades}}".
@@ -222,6 +221,11 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
     public function getContentDescription() : string
     {
         return Html::encode($this->note);
+    }
+
+    public function getContentName(): string
+    {
+        return Html::encode($this->name);
     }
 
     public function beforeDelete()

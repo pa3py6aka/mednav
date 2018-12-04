@@ -219,12 +219,12 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
         return $this->author_id === $userId && $this->status > self::STATUS_ON_MODERATION;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title ?: Html::encode($this->name);
     }
 
-    public function getMainPhotoUrl($type = 'small', $absolute = false)
+    public function getMainPhotoUrl($type = 'small', $absolute = false): string
     {
         return $this->main_photo_id ?
             $this->mainPhoto->getUrl($type, $absolute)
@@ -262,7 +262,7 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
         return $this->author;
     }
 
-    public function getOwnerName()
+    public function getOwnerName(): string
     {
         return $this->author->getVisibleName();
     }
@@ -298,6 +298,11 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
     public function getContentDescription() : string
     {
         return Html::encode($this->note);
+    }
+
+    public function getContentName(): string
+    {
+        return Html::encode($this->name);
     }
 
     public function behaviors(): array

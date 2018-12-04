@@ -191,12 +191,12 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return Yii::getAlias('@frontend/web/i/company/lg');
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title ?: Html::encode($this->name);
     }
 
-    public function getMainPhotoUrl($type = 'small', $absolute = false)
+    public function getMainPhotoUrl($type = 'small', $absolute = false): string
     {
         return $this->main_photo_id ?
             $this->mainPhoto->getUrl($type, $absolute)
@@ -291,6 +291,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
     public function getContentDescription() : string
     {
         return Html::encode($this->short_description);
+    }
+
+    public function getContentName(): string
+    {
+        return $this->getFullName();
     }
 
     /**

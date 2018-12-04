@@ -33,22 +33,32 @@ CategoryHelper::registerHeadMeta('news', $this, 'Справочная инфор
             'helperClass' => NewsHelper::class,
         ]) ?>
 
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_NEWS,
+            'page' => ContentBlock::PAGE_LISTING,
+            'place' => ContentBlock::PLACE_MAIN,
+            'category' => $category,
+            'count' => 1
+        ]) ?>
+
         <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::NEWS_DESCRIPTION_TOP, !$provider->pagination->page, $category) ?>
 
         <div class="card-items-block">
             <?= $this->render('card-items-block', ['provider' => $provider]) ?>
         </div>
 
-        <div class="list-pagination has-overlay">
-            <?php if ($category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC): ?>
-                <?= LinkPager::widget([
-                    'pagination' => $provider->pagination
-                ]) ?>
-            <?php elseif ($provider->pagination->pageCount > $provider->pagination->page + 1): ?>
-                <br>
-                <p id="list-btn-scroll" class="btn btn-list" data-url="<?= $provider->pagination->createUrl($provider->pagination->page + 1) ?>">Показать ещё</p>
-            <?php endif; ?>
-        </div>
+        <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
+            'provider' => $provider,
+            'category' => $category,
+        ]) ?>
+
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_NEWS,
+            'place' => ContentBlock::PLACE_MAIN,
+            'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
+            'start' => 2,
+        ]) ?>
 
         <?= HtmlHelper::categoryDescriptionBlock('bottom', SettingsManager::NEWS_DESCRIPTION_BOTTOM, !$provider->pagination->page, $category) ?>
 
@@ -60,9 +70,10 @@ CategoryHelper::registerHeadMeta('news', $this, 'Справочная инфор
             <div style="margin: 10px 0;"><img src="/img/234.png" class="img-responsive" alt=""></div>
 
             <?= ShowContentBlock::widget([
-                'module' => ContentBlock::MODULE_TRADE,
+                'module' => ContentBlock::MODULE_NEWS,
                 'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
                 'page' => ContentBlock::PAGE_LISTING,
+                'category' => $category,
             ]) ?>
         </div><!-- // right col -->
     </div>

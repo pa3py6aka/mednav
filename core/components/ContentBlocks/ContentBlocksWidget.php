@@ -3,9 +3,14 @@
 namespace core\components\ContentBlocks;
 
 
+use core\entities\Article\ArticleCategory;
 use core\entities\Board\BoardCategory;
+use core\entities\Brand\BrandCategory;
+use core\entities\CNews\CNewsCategory;
 use core\entities\Company\CompanyCategory;
 use core\entities\ContentBlock;
+use core\entities\Expo\ExpoCategory;
+use core\entities\News\NewsCategory;
 use core\entities\Trade\TradeCategory;
 use core\forms\manage\CategoryForm;
 use yii\base\Widget;
@@ -64,6 +69,16 @@ class ContentBlocksWidget extends Widget
             $class = BoardCategory::class;
         } else if ($module == ContentBlock::MODULE_COMPANY) {
             $class = CompanyCategory::class;
+        } else if ($module == ContentBlock::MODULE_ARTICLE) {
+            $class = ArticleCategory::class;
+        } else if ($module == ContentBlock::MODULE_BRAND) {
+            $class = BrandCategory::class;
+        } else if ($module == ContentBlock::MODULE_CNEWS) {
+            $class = CNewsCategory::class;
+        } else if ($module == ContentBlock::MODULE_EXPO) {
+            $class = ExpoCategory::class;
+        } else if ($module == ContentBlock::MODULE_NEWS) {
+            $class = NewsCategory::class;
         } else {
             $class = BoardCategory::class;
         }

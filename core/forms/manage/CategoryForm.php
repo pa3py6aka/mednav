@@ -4,6 +4,7 @@ namespace core\forms\manage;
 
 
 use core\entities\Board\BoardCategory;
+use core\entities\CategoryInterface;
 use core\entities\Company\CompanyCategory;
 use core\entities\Trade\TradeCategory;
 use yii\base\Model;
@@ -100,7 +101,7 @@ class CategoryForm extends Model
     }
 
     /**
-     * @param string|BoardCategory|CompanyCategory|TradeCategory $class
+     * @param string|CategoryInterface $class
      * @param bool $onlyEnabled
      * @return array
      */

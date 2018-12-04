@@ -5,6 +5,8 @@ use core\helpers\CNewsHelper;
 use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
 use frontend\widgets\CompanyMenuWidget;
+use frontend\widgets\ContentBlock\ShowContentBlock;
+use core\entities\ContentBlock;
 
 /* @var $this \yii\web\View */
 /* @var $news \core\entities\CNews\CNews */
@@ -16,6 +18,15 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
 ?>
 <div class="row">
     <div class="col-md-9 col-sm-9 col-xs-12">
+
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_CNEWS,
+            'place' => ContentBlock::PLACE_MAIN,
+            'page' => ContentBlock::PAGE_VIEW,
+            'category' => $news->category,
+            'count' => 1,
+            'entity' => $news,
+        ]) ?>
 
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -63,12 +74,31 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
                 </div>
             </div>
         </div>
+
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_CNEWS,
+            'place' => ContentBlock::PLACE_MAIN,
+            'page' => ContentBlock::PAGE_VIEW,
+            'category' => $news->category,
+            'start' => 2,
+            'entity' => $news,
+        ]) ?>
     </div>
 
     <!-- right col -->
     <div class="col-md-3 col-sm-3 hidden-xs">
         <div id="rightCol">
+            <div style="margin: 10px 0;">
+                <img src="/img/234.png" class="img-responsive" alt="">
+            </div>
 
+            <?= ShowContentBlock::widget([
+                'module' => ContentBlock::MODULE_CNEWS,
+                'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
+                'page' => ContentBlock::PAGE_VIEW,
+                'category' => $news->category,
+                'entity' => $news,
+            ]) ?>
         </div><!-- // right col -->
     </div>
 </div>

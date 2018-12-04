@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use core\helpers\ExpoHelper;
 use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
+use frontend\widgets\ContentBlock\ShowContentBlock;
+use core\entities\ContentBlock;
 
 /* @var $this \yii\web\View */
 /* @var $expo \core\entities\Expo\Expo */
@@ -15,6 +17,15 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $expo->getTagsString(
 ?>
 <div class="row">
     <div class="col-md-9 col-sm-9 col-xs-12">
+
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_EXPO,
+            'place' => ContentBlock::PLACE_MAIN,
+            'page' => ContentBlock::PAGE_VIEW,
+            'category' => $expo->category,
+            'count' => 1,
+            'entity' => $expo,
+        ]) ?>
 
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -64,6 +75,15 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $expo->getTagsString(
                 </div>
             </div>
         </div>
+
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_EXPO,
+            'place' => ContentBlock::PLACE_MAIN,
+            'page' => ContentBlock::PAGE_VIEW,
+            'category' => $expo->category,
+            'start' => 2,
+            'entity' => $expo,
+        ]) ?>
     </div>
 
     <!-- right col -->
@@ -72,6 +92,14 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $expo->getTagsString(
             <div style="margin: 10px 0;">
                 <img src="/img/234.png" class="img-responsive" alt="">
             </div>
+
+            <?= ShowContentBlock::widget([
+                'module' => ContentBlock::MODULE_EXPO,
+                'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
+                'page' => ContentBlock::PAGE_VIEW,
+                'category' => $expo->category,
+                'entity' => $expo,
+            ]) ?>
         </div><!-- // right col -->
     </div>
 </div>

@@ -39,6 +39,11 @@ class ContentBlock extends ActiveRecord
     public const MODULE_BOARD = 2;
     public const MODULE_TRADE = 3;
     public const MODULE_COMPANY = 4;
+    public const MODULE_ARTICLE = 5;
+    public const MODULE_BRAND = 6;
+    public const MODULE_CNEWS = 7;
+    public const MODULE_EXPO = 8;
+    public const MODULE_NEWS = 9;
 
     public const PLACE_SIDEBAR_LEFT = 1;
     public const PLACE_SIDEBAR_RIGHT = 2;
@@ -54,6 +59,11 @@ class ContentBlock extends ActiveRecord
             self::MODULE_BOARD => 'Доска объявлений',
             self::MODULE_TRADE => 'Каталог товаров',
             self::MODULE_COMPANY => 'Каталог компаний',
+            self::MODULE_ARTICLE => 'Статьи',
+            self::MODULE_BRAND => 'Бренды',
+            self::MODULE_CNEWS => 'Новости компаний',
+            self::MODULE_EXPO => 'Выставки',
+            self::MODULE_NEWS => 'Новости',
         ];
 
         if (!$withMainPage) {

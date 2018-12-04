@@ -2,10 +2,12 @@
 
 namespace core\entities\Article;
 
+use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Article\common\ArticleCommon;
 use core\entities\CategoryAssignmentInterface;
 use core\entities\StatusesTrait;
 use yii\db\ActiveQuery;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -17,7 +19,7 @@ use yii\helpers\Url;
  * @property ArticleCategory $category
  * @property ArticlePhoto $mainPhoto
  */
-class Article extends ArticleCommon implements CategoryAssignmentInterface
+class Article extends ArticleCommon implements CategoryAssignmentInterface, ContentBlockInterface
 {
     use StatusesTrait;
 
@@ -80,7 +82,7 @@ class Article extends ArticleCommon implements CategoryAssignmentInterface
         $this->userSlug = $slug;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return Url::to(['/article/article/view', 'id' => $this->id, 'slug' => $this->slug]);
     }

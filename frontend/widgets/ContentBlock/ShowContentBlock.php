@@ -3,11 +3,16 @@
 namespace frontend\widgets\ContentBlock;
 
 
+use core\entities\Article\Article;
 use core\entities\Board\Board;
+use core\entities\Brand\Brand;
 use core\entities\CategoryInterface;
+use core\entities\CNews\CNews;
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\ContentBlock;
+use core\entities\Expo\Expo;
+use core\entities\News\News;
 use core\entities\Trade\Trade;
 use yii\base\InvalidArgumentException;
 use yii\base\Widget;
@@ -140,6 +145,16 @@ class ShowContentBlock extends Widget
             $query = Trade::find()->with('mainPhoto', 'company.geo');
         } else if ($module == ContentBlock::MODULE_COMPANY) {
             $query = Company::find()->with('mainPhoto');
+        } else if ($module == ContentBlock::MODULE_ARTICLE) {
+            $query = Article::find()->with('mainPhoto');
+        } else if ($module == ContentBlock::MODULE_BRAND) {
+            $query = Brand::find()->with('mainPhoto');
+        } else if ($module == ContentBlock::MODULE_CNEWS) {
+            $query = CNews::find()->with('mainPhoto');
+        } else if ($module == ContentBlock::MODULE_EXPO) {
+            $query = Expo::find()->with('mainPhoto');
+        } else if ($module == ContentBlock::MODULE_NEWS) {
+            $query = News::find()->with('mainPhoto');
         } else {
             throw new InvalidArgumentException("Неверный модуль контентного блока.");
         }

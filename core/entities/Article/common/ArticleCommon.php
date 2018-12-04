@@ -94,6 +94,22 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
             : $this->intro . ', ' . ($this->company_id ? $this->company->getFullName() : $this->user->getUserName());
     }
 
+
+    public function getFullPriceString(): string
+    {
+        return '';
+    }
+
+    public function getContentDescription(): string
+    {
+        return Html::encode($this->intro);
+    }
+
+    public function getContentName(): string
+    {
+        return Html::encode($this->name);
+    }
+
     public function behaviors(): array
     {
         return [

@@ -74,7 +74,6 @@ class ShowContentBlock extends Widget
     {
         if ($block->type === ContentBlock::TYPE_HTML) {
             $needle = $this->category ? $this->category->id : 0;
-            echo $needle;
             $result = [];
             foreach ($block->html as $k => $html) {
                 $htmlCats = ArrayHelper::getValue($block->htmlCategories, $k, []);

@@ -5,6 +5,7 @@ use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Trade\Trade;
 use core\helpers\PriceHelper;
+use core\jobs\SendMailJob;
 use core\services\Mailer;
 use core\useCases\SearchService;
 use Yii;
@@ -164,7 +165,12 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
-                Mailer::send(Yii::$app->settings->get(Settings::GENERAL_CONTACT_EMAIL), 'Сообщение с формы обратной связи Mednav.ru', 'contact', ['contactForm' => $model]);
+                Yii::$app->queue->push(new SendMailJob([
+                    'to' => Yii::$app->settings->get(Settings::GENERAL_CONTACT_EMAIL),
+                    'view' => 'contact',
+                    'params' => ['contactForm' => $model],
+                    'subject' => 'Сообщение с формы обратной связи Mednav.ru'
+                ]));
                 Yii::$app->session->setFlash('success', 'Сообщение отправлено.');
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash('error', 'Ошибка отправки.');

@@ -7,7 +7,7 @@ use core\components\Settings;
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $tab string */
-/* @var $model \yii\base\Model */
+/* @var $model \core\forms\manage\GeneralSettingsForm */
 
 $this->title = 'Основные настройки сайта';
 

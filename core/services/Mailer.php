@@ -5,6 +5,7 @@ namespace core\services;
 
 use core\components\Settings;
 use Yii;
+use yii\base\Exception;
 
 class Mailer
 {
@@ -18,7 +19,8 @@ class Mailer
             ->setSubject($subject)
             ->send()
         ) {
-            throw new \DomainException("Ошибка отправки письма");
+            //Yii::$app->errorHandler->logException(new Exception('Ошибка отправки письма'));
+            throw new \DomainException('Ошибка отправки письма');
         }
     }
 }

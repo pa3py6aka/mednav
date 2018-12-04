@@ -122,7 +122,7 @@ class ShowContentBlock extends Widget
 
         if ($this->category) {
             $categoryIds = array_merge([$this->category->id], $this->category->getDescendants()->select('id')->column());
-            if ($this->module === ContentBlock::MODULE_COMPANY) {
+            if ($module === ContentBlock::MODULE_COMPANY) {
                 $query->leftJoin(CompanyCategoryAssignment::tableName() . ' cca', 'cca.company_id=ent.id')
                     ->andWhere(['cca.category_id' => $categoryIds]);
             } else {

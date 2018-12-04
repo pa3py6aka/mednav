@@ -117,7 +117,7 @@ class CategoryForm extends Model
             return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'];
         });
 
-        return array_merge([0 => 'Главная страница'], $categories);
+        return [0 => 'Главная страница'] + $categories;
     }
 
     public function attributeLabels()

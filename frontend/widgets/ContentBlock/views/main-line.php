@@ -2,14 +2,14 @@
 use yii\helpers\Html;
 
 /* @var $block \core\entities\ContentBlock */
-/* @var $items string|\core\entities\Board\Board[]|\core\entities\Trade\Trade[]|\core\entities\Company\Company[] */
+/* @var $items array|\core\entities\Board\Board[]|\core\entities\Trade\Trade[]|\core\entities\Company\Company[] */
 
 ?>
 <div class="sidebar-title"><?= $block->show_title ? $block->name : '' ?></div>
 <div class="row">
     <?php foreach ($items as $item): ?>
         <div class="content-block-string">
-            <?php if ($block->type == \core\entities\ContentBlock::TYPE_HTML): ?>
+            <?php if ($block->type === \core\entities\ContentBlock::TYPE_HTML): ?>
                 <?= $item ?>
             <?php else: ?>
                 <div class="col-md-2">

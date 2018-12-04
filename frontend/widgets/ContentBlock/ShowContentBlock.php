@@ -11,6 +11,7 @@ use core\entities\ContentBlock;
 use core\entities\Trade\Trade;
 use yii\base\InvalidArgumentException;
 use yii\base\Widget;
+use yii\helpers\ArrayHelper;
 
 class ShowContentBlock extends Widget
 {
@@ -57,10 +58,13 @@ class ShowContentBlock extends Widget
                 $placeView = 'sidebar';
             }
 
-            $result[] = $this->render($placeView . '-' . $view, [
-                'block' => $block,
-                'items' => $this->getItems($block),
-            ]);
+            $items = $this->getItems($block);
+            if ($items) {
+                $result[] = $this->render($placeView . '-' . $view, [
+                    'block' => $block,
+                    'items' => $items,
+                ]);
+            }
         }
 
         return implode("\n", $result);
@@ -68,8 +72,17 @@ class ShowContentBlock extends Widget
 
     private function getItems(ContentBlock $block)
     {
-        if ($block->type == ContentBlock::TYPE_HTML) {
-            return $block->html;
+        if ($block->type === ContentBlock::TYPE_HTML) {
+            $needle = $this->category ? $this->category->id : 0;
+            echo $needle;
+            $result = [];
+            foreach ($block->html as $k => $html) {
+                $htmlCats = ArrayHelper::getValue($block->htmlCategories, $k, []);
+                if (\in_array($needle, $htmlCats)) {
+                    $result[] = $html;
+                }
+            }
+            return $result;
         }
 
         $module = $block->for_module;

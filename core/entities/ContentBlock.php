@@ -17,9 +17,9 @@ use yii\helpers\Json;
  * @property bool $view [tinyint]
  * @property bool $items [tinyint]
  * @property bool $for_module [tinyint]
- * @property string $html
+ * @property string|array $html
  * @property bool $module [tinyint]
- * @property string $htmlCategories
+ * @property string|array $htmlCategories
  * @property bool $place [tinyint]
  * @property bool $page [tinyint]
  * @property bool $sort [tinyint]

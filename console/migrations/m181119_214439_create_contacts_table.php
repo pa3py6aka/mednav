@@ -12,11 +12,16 @@ class m181119_214439_create_contacts_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('{{%contacts}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'contact_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         $this->createIndex('idx-contacts-user_id-contact_id', '{{%contacts}}', ['user_id', 'contact_id'], true);
         $this->addForeignKey('fk-contacts-user_id', '{{%contacts}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');

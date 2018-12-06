@@ -52,6 +52,7 @@
                         ['label' => 'Выставки', 'icon' => 'calendar', 'url' => ['/expo/expo/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/expo/settings/main']],
                     ]],
+                    ['label' => 'Страницы', 'icon' => 'columns', 'url' => ['/page/index']],
                     ['label' => 'Блоки', 'icon' => 'object-ungroup', 'items' => [
                         ['label' => 'Контентные блоки', 'url' => ['/blocks/contents/index']],
                         ['label' => 'Контекстные блоки', 'url' => ['/blocks/context/index']],

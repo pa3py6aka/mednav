@@ -114,13 +114,7 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
     {
         return [
             TimestampBehavior::class,
-            'slug' => [
-                'class' => SluggableBehavior::class,
-                'slugAttribute' => 'slug',
-                'attribute' => 'userSlug',
-                'ensureUnique' => true,
-                //'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
-            ]
+            SluggableBehavior::class,
         ];
     }
 

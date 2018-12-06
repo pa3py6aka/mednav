@@ -17,7 +17,7 @@ return [
         'signup' => 'auth/signup/request',
         'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
-        '<module:(brand|cnews|news|articles|expo|site)>/outsite' => 'site/outsite',
+        '<module:(brand|cnews|news|articles|expo|site|pages)>/outsite' => 'site/outsite',
 
         'account' => 'user/account/index',
         'account/<_a:[\w-]+>' => 'user/account/<_a>',
@@ -96,6 +96,8 @@ return [
         'expo' => 'expo/expo/list',
 
         'user/dialogs' => 'user/message/dialogs',
+
+        'pages/<slug:[\w-]+>' => 'page/view',
 
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',

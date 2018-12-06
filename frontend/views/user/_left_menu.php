@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 use core\helpers\OrderHelper;
 use core\helpers\DialogHelper;
 use core\components\Settings;
@@ -35,6 +36,10 @@ $link = Yii::$app->controller->action->id;
 
             <li role="presentation"<?= $controller == 'user/order' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/order/orders']) ?>">Заказы<?= OrderHelper::getNewOrdersCount($user) ?></a></li>
             <li role="presentation"<?= $controller == 'user/support' ? ' class="active"' : '' ?>><a href="<?= Url::to(['/user/support/dialogs']) ?>">Служба поддержки<?= DialogHelper::getSupportNewMessagesCount($user) ?></a></li>
+
+            <?php foreach ((new \core\readModels\PageReadRepository())->getPagesLinks() as $slug => $name): ?>
+                <li role="presentation"<?= $controller === 'page' && Yii::$app->request->get('slug') === $slug ? ' class="active"' : '' ?>><a href="<?= Url::to(['/page/view', 'slug' => $slug]) ?>"><?= Html::encode($name) ?></a></li>
+            <?php endforeach; ?>
         </ul>
     </div>
 </div>

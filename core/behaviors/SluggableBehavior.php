@@ -10,6 +10,7 @@ use Zelenin\yii\behaviors\Slug;
 class SluggableBehavior extends Slug
 {
     public $slugLength = 100;
+    public $attribute = 'userSlug';
     public $transliterateOptions = 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;';
 
     /**
@@ -97,9 +98,4 @@ class SluggableBehavior extends Slug
 
         return $str;
     }
-
-    /*protected function generateSlug($slugParts)
-    {
-        return
-    }*/
 }

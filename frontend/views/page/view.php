@@ -3,7 +3,12 @@
 use yii\helpers\Html;
 use core\helpers\TextHelper;
 
+/* @var $this \yii\web\View */
 /* @var $page \core\entities\Page */
+
+$this->title = $page->meta_title ?: $page->name;
+$this->registerMetaTag(['name' => 'description', 'content' => $page->meta_description]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => $page->meta_keywords]);
 
 ?>
 <div class="row">

@@ -54,14 +54,14 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 {
     use StatusesTrait;
 
-    const STATUS_WAIT = 1;
+    public const STATUS_WAIT = 1;
 
-    const TYPE_USER = 1;
-    const TYPE_COMPANY = 2;
+    public const TYPE_USER = 1;
+    public const TYPE_COMPANY = 2;
 
-    const GENDER_NOT_SET = 0;
-    const GENDER_MALE = 1;
-    const GENDER_FEMALE = 2;
+    public const GENDER_NOT_SET = 0;
+    public const GENDER_MALE = 1;
+    public const GENDER_FEMALE = 2;
 
     public static function create($email, $password, $type): User
     {
@@ -167,14 +167,18 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         $this->status = $status;
     }
 
-    public static function getStatusesArray(): array
+    public static function getStatusesArray($forActive = false): array
     {
-        return [
+        $statuses = [
             self::STATUS_DELETED => 'Удалён',
             self::STATUS_WAIT => 'Ожидает email-подтверждения',
             self::STATUS_ON_PREMODERATION => 'На премодерации',
             self::STATUS_ACTIVE => 'Активен',
         ];
+        if ($forActive) {
+            unset($statuses[self::STATUS_ON_PREMODERATION], $statuses[self::STATUS_DELETED]);
+        }
+        return $statuses;
     }
 
     public static function getTypesArray(): array
@@ -268,9 +272,9 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         $this->password_reset_token = null;
     }
 
-    public function afterFind()
+    public function afterFind(): void
     {
-        $this->last_online = Yii::$app->redis->get('online-' . $this->id) ?: null;
+        $this->last_online = Yii::$app->redis->get('online-' . $this->id) ?: 0;
         parent::afterFind();
     }
 

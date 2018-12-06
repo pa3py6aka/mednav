@@ -3,12 +3,14 @@
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use core\entities\User\User;
 
 /* @var $this yii\web\View */
 /* @var $model core\entities\User\User */
 
+$tab = in_array($model->status, [User::STATUS_ACTIVE, User::STATUS_WAIT], true) ? 'active' : ($model->status === User::STATUS_DELETED ? 'deleted' : 'moferation');
 $this->title = $model->typeName .' #' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => [$tab]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view box box-primary">

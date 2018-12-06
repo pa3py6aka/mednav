@@ -50,11 +50,27 @@ class UserRepository
         }
     }
 
+    public function safeRemove(User $user): void
+    {
+        $user->updateStatus(User::STATUS_DELETED);
+        if (!$user->save()) {
+            throw new \RuntimeException('Ошибка при удалении из базы.');
+        }
+    }
+
     public function remove(User $user): void
     {
         if (!$user->delete()) {
             throw new \RuntimeException('Removing error.');
         }
+    }
+
+    public function massRemove(array $ids, $hardRemove = false): int
+    {
+        if ($hardRemove) {
+            return User::deleteAll(['id' => $ids]);
+        }
+        return User::updateAll(['status' => User::STATUS_DELETED], ['id' => $ids]);
     }
 
     private function getBy(array $condition): User

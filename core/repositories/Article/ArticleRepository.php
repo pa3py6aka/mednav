@@ -55,8 +55,7 @@ class ArticleRepository
     {
         if ($hardRemove) {
             return Article::deleteAll(['id' => $ids]);
-        } else {
-            return Article::updateAll(['status' => Article::STATUS_DELETED], ['id' => $ids]);
         }
+        return Article::updateAll(['status' => Article::STATUS_DELETED], ['id' => $ids]);
     }
 }

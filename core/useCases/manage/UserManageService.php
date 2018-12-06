@@ -3,13 +3,16 @@
 namespace core\useCases\manage;
 
 
+use core\components\Settings;
 use core\entities\User\User;
 use core\forms\manage\User\UserCreateForm;
 use core\forms\manage\User\UserEditForm;
+use core\jobs\SendMailJob;
 use core\repositories\UserRepository;
 use core\services\Mailer;
 use core\services\RoleManager;
 use core\services\TransactionManager;
+use Yii;
 
 class UserManageService
 {
@@ -63,12 +66,12 @@ class UserManageService
         $this->repository->save($user);
 
         if ($user->status == User::STATUS_ACTIVE && $oldStatus < User::STATUS_ACTIVE) {
-            Mailer::send(
-                $user->email,
-                \Yii::$app->params['siteName'] . ': Ваш профиль активирован',
-                'auth/user-activated',
-                ['user' => $user]
-            );
+            Yii::$app->queue->push(new SendMailJob([
+                'to' => $user->email,
+                'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Ваш профиль активирован',
+                'view' => 'auth/user-activated',
+                'params' => ['user' => $user],
+            ]));
         }
     }
 
@@ -78,9 +81,30 @@ class UserManageService
         $this->roles->assign($user->id, $role);
     }
 
-    public function remove($id): void
+    public function activate($ids): void
+    {
+        if (!\is_array($ids)) {
+            $ids = [$ids];
+        }
+        foreach ($ids as $id) {
+            $user = $this->repository->get($id);
+            $this->updateStatus($user, User::STATUS_ACTIVE);
+            $this->repository->save($user);
+        }
+    }
+
+    public function massRemove(array $ids, $hardRemove = false): int
+    {
+        return $this->repository->massRemove($ids, $hardRemove);
+    }
+
+    public function remove($id, $safe = true): void
     {
         $user = $this->repository->get($id);
-        $this->repository->remove($user);
+        if ($safe) {
+            $this->repository->safeRemove($user);
+        } else {
+            $this->repository->remove($user);
+        }
     }
 }

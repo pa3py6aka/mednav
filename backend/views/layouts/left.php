@@ -7,7 +7,7 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     ['label' => 'Пользователи', 'icon' => 'users', 'items' => [
-                        ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index']],
+                        ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/active']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/user/settings']],
                     ]],
                     ['label' => 'Гео', 'icon' => 'globe', 'url' => ['/geo/index'], 'active' => $this->context->id == 'geo'],

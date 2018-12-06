@@ -52,12 +52,14 @@ class UserController extends Controller
      * Lists all User models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionActive()
     {
+        $this->selectedActionHandle();
+
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('active', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -124,6 +126,23 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Листинг удалённых пользователей.
+     * @return mixed
+     */
+    public function actionDeleted()
+    {
+        $this->selectedActionHandle(true);
+
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'deleted');
+
+        return $this->render('deleted', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     public function actionConfirm($id)
     {
         $user = $this->findModel($id);
@@ -136,7 +155,7 @@ class UserController extends Controller
             return $this->redirect(['view', 'id' => $id]);
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['active']);
     }
 
     public function actionMessage($id)
@@ -176,24 +195,23 @@ class UserController extends Controller
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
+     * @param int $hard
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $hard = 0)
     {
-        $user = $this->findModel($id);
-
         try {
-            $this->service->updateStatus($user, User::STATUS_DELETED);
-            Yii::$app->session->setFlash('success', 'Профиль удалён');
+            $this->service->remove($id, !(bool) $hard);
+            Yii::$app->session->setFlash('success', 'Профиль удалён' . ($hard ? ' полностью из базы' : ''));
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
             return $this->redirect(['view', 'id' => $id]);
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['active']);
     }
 
-    public function actionGetUser()
+    public function actionGetUser(): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $id = (int) Yii::$app->request->post('id');
@@ -211,18 +229,36 @@ class UserController extends Controller
     }
 
     /**
+     * Отслеживание нажатия кнопок действий с выбранными элементами (Удалить выбранные,продлить и так далее)
+     * @param bool $hardRemove флаг удалять полностью из базы или нет
+     */
+    private function selectedActionHandle($hardRemove = false): void
+    {
+        $ids = (array) Yii::$app->request->post('ids');
+        $action = Yii::$app->request->post('action');
+        if (\count($ids)) {
+            if ($action === 'remove') {
+                $count = $this->service->massRemove($ids, $hardRemove);
+                Yii::$app->session->setFlash('info', 'Удалено пользователей: ' . $count);
+            } else if ($action === 'publish') {
+                $this->service->activate($ids);
+                Yii::$app->session->setFlash('info', 'Размещено пользователей: ' . \count($ids));
+            }
+        }
+    }
+
+    /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): User
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+        throw new NotFoundHttpException('Пользователь не найден.');
     }
 }

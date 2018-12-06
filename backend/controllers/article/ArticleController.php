@@ -207,10 +207,10 @@ class ArticleController extends Controller
         $ids = (array) Yii::$app->request->post('ids');
         $action = Yii::$app->request->post('action');
         if (count($ids)) {
-            if ($action == 'remove') {
+            if ($action === 'remove') {
                 $count = $this->service->massRemove($ids, $hardRemove);
                 Yii::$app->session->setFlash('info', 'Удалено статей: ' . $count);
-            } else if ($action == 'publish') {
+            } else if ($action === 'publish') {
                 $this->service->publish($ids);
                 Yii::$app->session->setFlash('info', 'Размещено статей: ' . count($ids));
             }

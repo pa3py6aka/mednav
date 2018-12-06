@@ -14,7 +14,7 @@ $this->title = 'Панель управления сайтом';
             <div class="info-box-content">
                 <span class="info-box-text">Пользователи</span>
                 <span class="info-box-number">
-                    На модерации: <a href="<?= Url::to(['/user/index', 'UserSearch[status]' => \core\entities\User\User::STATUS_ON_PREMODERATION]) ?>"><?= \core\entities\User\User::find()->onModeration()->count() ?></a>
+                    На модерации: <a href="<?= Url::to(['/user/moderation']) ?>"><?= \core\entities\User\User::find()->onModeration()->count() ?></a>
                 </span>
             </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->

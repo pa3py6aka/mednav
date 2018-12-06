@@ -37,13 +37,21 @@ class UserSearch extends User
      *
      * @param array $params
      *
+     * @param string $tab
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $tab = 'active')
     {
-        $query = User::find();
+        $query = User::find()
+            ->alias('u');
 
-        // add conditions that should always apply here
+        if ($tab === 'active') {
+            $query->active('u');
+        } else if ($tab === 'moderation') {
+            $query->onModeration('u');
+        } else if ($tab === 'deleted') {
+            $query->deleted('u');
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

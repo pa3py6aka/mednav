@@ -33,11 +33,11 @@ trait ArticleSearchTrait
             ->alias('a')
             ->with('user');
 
-        if ($tab == 'active') {
+        if ($tab === 'active') {
             $query->active('a');
-        } else if ($tab == 'moderation') {
+        } else if ($tab === 'moderation') {
             $query->onModeration('a');
-        } else if ($tab == 'deleted') {
+        } else if ($tab === 'deleted') {
             $query->deleted('a');
         }
 

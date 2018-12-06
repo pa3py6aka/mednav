@@ -35,6 +35,7 @@ class DialogRepository
             ->with('userFrom', 'userTo', 'lastMessage')
             ->leftJoin('{{%messages}} m', 'm.dialog_id=d.id')
             ->where(['or', ['d.user_from' => $userId], ['d.user_to' => $userId]])
+            ->andWhere(['>', 'm.id', 0])
             ->groupBy(['d.id']);
 
         return new ActiveDataProvider([

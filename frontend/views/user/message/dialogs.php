@@ -36,6 +36,7 @@ $this->title = 'Личный кабинет | Мои сообщения';
                 'label' => 'Дата',
                 'value' => function (Dialog $dialog) {
                     return $dialog->lastMessage->created_at;
+                    //return $dialog->lastMessage ? Yii::$app->formatter->asDatetime($dialog->lastMessage->created_at) : '-';
                 },
                 'format' => 'datetime',
             ],

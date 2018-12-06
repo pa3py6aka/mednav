@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="board-index box box-primary">
     <div class="box-header with-border">
         <?= Html::a('Добавить пользователя', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
-        <?= HtmlHelper::actionButtonForSelected('Активировать выбранные', 'publish', 'primary') ?>
-        <?= HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
+        <?= HtmlHelper::actionButtonForSelected('Активировать выбранных', 'publish', 'primary') ?>
+        <?= HtmlHelper::actionButtonForSelected('Удалить выбранных', 'remove', 'danger') ?>
 
         <div class="box-tools">
             <?= PaginationHelper::pageSizeSelector($dataProvider->pagination) ?>
@@ -59,6 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
     <div class="box-footer">
-        <?= HtmlHelper::actionButtonForSelected('Удалить выбранные', 'remove', 'danger') ?>
+        <?= HtmlHelper::actionButtonForSelected('Удалить выбранных', 'remove', 'danger') ?>
     </div>
 </div>

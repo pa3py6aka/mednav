@@ -1,8 +1,11 @@
 <?php
 
-use core\entities\User\User;
+use core\grid\ModeratorActionColumn;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use core\entities\User\User;
+use core\helpers\PaginationHelper;
+use core\helpers\HtmlHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\UserSearch */
@@ -10,19 +13,34 @@ use yii\grid\GridView;
 
 $this->title = 'Пользователи';
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
-<div class="user-index box box-primary">
+<div class="board-index box box-primary">
     <div class="box-header with-border">
         <?= Html::a('Добавить пользователя', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+        <?= HtmlHelper::actionButtonForSelected('Активировать выбранных', 'publish', 'primary') ?>
+        <?= HtmlHelper::actionButtonForSelected('Удалить выбранных', 'remove', 'danger') ?>
+
+        <div class="box-tools">
+            <?= PaginationHelper::pageSizeSelector($dataProvider->pagination) ?>
+        </div>
     </div>
     <div class="box-body table-responsive">
+        <?= $this->render('_tabs', ['tab' => 'deleted']) ?>
+
         <?= GridView::widget([
+            'id' => 'grid',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
-                'id',
+                ['class' => \yii\grid\CheckboxColumn::class],
+                [
+                    'attribute' => 'id',
+                    'value' => function(User $user) {
+                        return Html::a($user->id, ['view', 'id' => $user->id]);
+                    },
+                    'format' => 'raw',
+                ],
                 'email:email',
                 [
                     'attribute' => 'type',
@@ -35,21 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'created_at',
                     'format' => 'date'
                 ],
-                [
-                    'attribute' => 'status',
-                    'value' => function(User $user) {
-                        return $user->statusName;
-                    },
-                    'filter' => User::getStatusesArray(),
-                ],
-                // 'auth_key',
-                // 'password_hash',
-                // 'password_reset_token',
-                // 'created_at',
-                // 'updated_at',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                ['class' => ModeratorActionColumn::class],
             ],
         ]); ?>
+    </div>
+    <div class="box-footer">
+        <?= HtmlHelper::actionButtonForSelected('Удалить выбранных', 'remove', 'danger') ?>
     </div>
 </div>

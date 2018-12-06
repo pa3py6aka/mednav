@@ -127,6 +127,23 @@ class UserController extends Controller
     }
 
     /**
+     * Листинг пользователей на модерации
+     * @return mixed
+     */
+    public function actionModeration()
+    {
+        $this->selectedActionHandle(true);
+
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'moderation');
+
+        return $this->render('moderation', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * Листинг удалённых пользователей.
      * @return mixed
      */

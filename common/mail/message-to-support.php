@@ -6,6 +6,7 @@ use yii\helpers\Html;
 
 ?>
 <p><strong>Дата:</strong> <?= Yii::$app->formatter->asDatetime($message->created_at) ?></p>
+<p><strong>От кого:</strong> <a href="<?= $message->user->getUrl(true) ?>"><?= $message->user->getVisibleName() ?></a></p>
 <p><strong>Тема:</strong> <?= Html::encode($message->dialog->subject) ?></p>
 <p><strong>Сообщение:</strong> <?= Yii::$app->formatter->asNtext($message->text) ?></p>
 <p>---</p>

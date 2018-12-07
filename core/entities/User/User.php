@@ -234,7 +234,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
     public function getUserName($short = false): string
     {
         if ($short) {
-            return $this->last_name ? $this->last_name . ' ' . substr($this->name, 0, 1) . "." : "";
+            return $this->last_name ? Html::encode($this->last_name . ' ' . $this->name[0]) . '.' : '';
         }
 
         if ($this->name || $this->patronymic || $this->last_name) {

@@ -72,7 +72,7 @@ class SupportDialogService
             'view' => 'message-from-support',
             'params' => ['message' => $message],
             'to' => [$message->dialog->user->getEmail() => $message->dialog->user->getVisibleName()],
-            'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
+            'subject' => '[Служба поддержки] ' . $message->dialog->subject . '.'
         ]));
     }
 
@@ -82,7 +82,7 @@ class SupportDialogService
             'view' => 'message-to-support',
             'params' => ['message' => $message],
             'to' => [Yii::$app->settings->get(Settings::GENERAL_CONTACT_EMAIL) => Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM)],
-            'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение - ' . $message->dialog->subject
+            'subject' => '[Служба поддержки] ' . $message->dialog->subject . '.'
         ]));
     }
 

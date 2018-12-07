@@ -77,7 +77,7 @@ class SupportController extends Controller
                 $dialog = $this->service->sendNew($form);
                 return $this->redirect(['view', 'id' => $dialog->id]);
             } catch (\DomainException $e) {
-                Yii::$app->session->setFlash("error", $e->getMessage());
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
 
@@ -88,7 +88,7 @@ class SupportController extends Controller
     {
         $dialog = $this->repository->get($id);
         if ($this->_user->id != $dialog->user_id) {
-            throw new ForbiddenHttpException("Это чужая переписка!");
+            throw new ForbiddenHttpException('Это чужая переписка!');
         }
 
         $provider = $this->repository->getDialogMessages($dialog);

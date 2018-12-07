@@ -43,6 +43,8 @@ class SupportDialogService
 
             if ($fromSupport) {
                 $this->sendNotificationToEmail($message);
+            } else {
+                $this->sendNotificationToAdmin($message);
             }
         });
 

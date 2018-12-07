@@ -33,13 +33,13 @@ use yii\db\ActiveRecord;
  */
 class Order extends ActiveRecord
 {
-    const STATUS_NEW = 0;
-    const STATUS_NEW_VIEWED = 1;
-    const STATUS_SENT = 5;
+    public const STATUS_NEW = 0;
+    public const STATUS_NEW_VIEWED = 1;
+    public const STATUS_SENT = 5;
 
     public static function create($userOrderId, $forCompanyId, $userId, $deliveryId, $comment): Order
     {
-        $order = new Order();
+        $order = new self();
         $order->user_order_id = $userOrderId;
         $order->for_company_id = $forCompanyId;
         $order->user_id = $userId;
@@ -51,7 +51,7 @@ class Order extends ActiveRecord
 
     public function getNumber(): string
     {
-        return $this->user_order_id . "-" . $this->id;
+        return $this->user_order_id . '-' . $this->id;
     }
 
     public function behaviors(): array

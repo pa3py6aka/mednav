@@ -46,22 +46,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $fullOrder->user_id ? ($fullOrder->user->isCompany() && $fullOrder->user->isCompanyActive() ? $fullOrder->user->company->id : $fullOrder->user_id) . ' ' . Html::a(
                                 $fullOrder->user->getVisibleName(),
                                 $fullOrder->user->isCompany() && $fullOrder->user->isCompanyActive() ? ['/company/company/view', 'id' => $fullOrder->user->company->id] : ['/user/view', 'id' => $fullOrder->user->id]
-                        ) : "Посетитель сайта";
+                        ) : 'Посетитель сайта';
                     },
                     'format' => 'raw',
                     'filterInputOptions' => ['placeholder' => 'ID пользователя или компании', 'class' => 'form-control']
                 ],
-                /*[
-                    'label' => 'Продавец',
-                    'attribute' => 'seller',
-                    'value' => function (UserOrder $order) {
-                        $sellerName = $order->forCompany->getFullName();
-                        return $order->forCompany->id . ' ' . Html::a($sellerName, ['/company/company/view', 'id' => $order->forCompany->id]);
+                [
+                    'label' => 'Продавцы',
+                    'attribute' => 'sellers',
+                    'value' => function (UserOrder $fullOrder) {
+                        $sellers = [];
+                        foreach ($fullOrder->orders as $order) {
+                            $sellerName = $order->forCompany->getFullName();
+                            $sellers[] = $order->forCompany->id . ' ' . Html::a($sellerName, ['/company/company/view', 'id' => $order->forCompany->id]);
+                        }
+                        return implode('<br>', $sellers);
                     },
                     'format' => 'raw',
                     'filterInputOptions' => ['placeholder' => 'ID компании', 'class' => 'form-control']
-                ],*/
-                ['class' => \yii\grid\ActionColumn::class, 'template' => '{view}']
+                ],
+                //['class' => \yii\grid\ActionColumn::class, 'template' => '{view}']
             ],
         ]); ?>
     </div>

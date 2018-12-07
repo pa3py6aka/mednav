@@ -13,7 +13,7 @@ use core\entities\Order\Order;
 class OrderSearch extends Order
 {
     public $buyer;
-    public $seller;
+    public $sellers;
 
     /**
      * @inheritdoc
@@ -23,7 +23,7 @@ class OrderSearch extends Order
         return [
             [['id', 'for_company_id', 'user_id', 'delivery_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['comment', 'user_name', 'user_phone', 'user_email', 'address'], 'safe'],
-            [['buyer', 'seller'], 'string'],
+            [['buyer', 'sellers'], 'string'],
         ];
     }
 

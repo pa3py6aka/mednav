@@ -44,6 +44,7 @@ class SupportDialogService
             if ($fromSupport) {
                 $this->sendNotificationToEmail($message);
             } else {
+                Yii::debug('Сообщение админу');
                 $this->sendNotificationToAdmin($message);
             }
         });

@@ -83,6 +83,7 @@ class ContentBlocksWidget extends Widget
             $class = BoardCategory::class;
         }
 
-        return CategoryForm::parentCategoriesList($class, false, false);
+        $categories = CategoryForm::parentCategoriesList($class, false, false);
+        return [0 => 'Главная страница'] + $categories;
     }
 }

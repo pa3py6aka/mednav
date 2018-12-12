@@ -72,6 +72,7 @@ class TreeManagerWidget extends Widget
                 'data' => [
                     'geoUrl' => Url::to([$url . '/update', 'id' => $item->id, 'tab' => 'geo']),
                     'editUrl' => Url::to([$url . '/update', 'id' => $item->id]),
+                    'deleteUrl' => Url::to([$url . '/delete', 'id' => $item->id]),
                 ],
             ];
         });
@@ -104,7 +105,8 @@ $('#tree_{$this->id}').fancytree({
 		
 		tdList.eq(1).html(
 		    '<a href="' + node.data.geoUrl + '" data-toggle="tooltip" title="Привязка к регионам"><i class="fa fa-globe"></i></a>' +
-		    '<a href="' + node.data.editUrl + '" data-toggle="tooltip" title="Редактировать"><i class="fa fa-pencil"></i></a>'
+		    '<a href="' + node.data.editUrl + '" data-toggle="tooltip" title="Редактировать"><i class="fa fa-pencil"></i></a>' +
+		    '<a href="' + node.data.deleteUrl + '" data-toggle="tooltip" title="Удалить" data-method="post" data-confirm="Удалить данный раздел вместе со всеми вложенными разделами и элементами?"><i class="fa fa-trash"></i></a>'
 		);
 	},
 	dnd: {

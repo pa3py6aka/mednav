@@ -27,7 +27,7 @@ class SendMailJob extends BaseObject implements RetryableJobInterface
     /**
      * @param Queue $queue which pushed and is handling the job
      */
-    public function execute($queue)
+    public function execute($queue): void
     {
         Mailer::send(
             $this->to,

@@ -144,7 +144,7 @@ class CategoryController extends Controller
     {
         try {
             $this->service->remove($id);
-            Yii::$app->session->setFlash('success', 'Регион удалён');
+            Yii::$app->session->setFlash('success', 'Раздел удалён');
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
         }

@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Тема',
                     'value' => function (SupportDialog $dialog) {
-                        return Html::a(Html::encode($dialog->subject), ['view', 'id' => $dialog->id]) .
+                        return Html::a('[Служба поддержки] ' . Html::encode($dialog->subject), ['view', 'id' => $dialog->id]) .
                             ($dialog->not_read ? ' <span class="label label-danger label-as-badge">' . $dialog->not_read . '</span>' : '');
                     },
                     'format' => 'raw',

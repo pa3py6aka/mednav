@@ -17,7 +17,7 @@ $this->registerJsFile(Yii::$app->params['frontendHostInfo'] . '/js/chat.js?v=' .
 ?>
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title">Тема: <?= Html::encode($dialog->subject) ?></h3>
+        <h3 class="box-title">[Служба поддержки] <?= Html::encode($dialog->subject) ?></h3>
     </div>
     <div class="box-body message-block">
         <?php foreach ($provider->models as $message): ?>

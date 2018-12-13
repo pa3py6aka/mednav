@@ -54,7 +54,7 @@ class BoardQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \core\entities\Board\BoardCategory[]|array
+     * @return \core\entities\Board\Board[]|array
      */
     public function all($db = null)
     {
@@ -63,10 +63,19 @@ class BoardQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \core\entities\Board\BoardCategory|array|null
+     * @return \core\entities\Board\Board|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    /**
+     * @inheritdoc
+     * @return array|Board[]|\yii\db\BatchQueryResult
+     */
+    public function each($batchSize = 100, $db = null)
+    {
+        return parent::each($batchSize, $db);
     }
 }

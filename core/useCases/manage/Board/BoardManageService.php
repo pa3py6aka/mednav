@@ -190,6 +190,12 @@ class BoardManageService
         }
     }
 
+    public function archive(Board $board): void
+    {
+        $board->setStatus(Board::STATUS_ARCHIVE);
+        $this->repository->save($board);
+    }
+
     public function massRemove(array $ids, $hardRemove = false): int
     {
         return $this->repository->massRemove($ids, $hardRemove);

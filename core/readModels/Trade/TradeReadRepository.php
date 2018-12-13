@@ -13,6 +13,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
@@ -61,6 +62,7 @@ class TradeReadRepository
                 ['t.geo_id' => $ids],
                 ['t.company_id' => $companyIds]
             ]);
+            $query->addOrderBy(new Expression('case when t.geo_id in(' . implode(',', $ids) . ') then -1 else 1 end asc'));
         }
 
         if ($companyId) {

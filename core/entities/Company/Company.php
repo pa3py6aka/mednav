@@ -295,7 +295,7 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
 
     public function getContentName(): string
     {
-        return $this->getFullName();
+        return $this->getFullName() . ($this->geo_id ? ', ' . $this->geo->name : '');
     }
 
     /**

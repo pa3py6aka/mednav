@@ -78,6 +78,9 @@ class ShowContentBlock extends Widget
     private function getItems(ContentBlock $block)
     {
         if ($block->type === ContentBlock::TYPE_HTML) {
+            if ($block->module === ContentBlock::MODULE_MAIN_PAGE) {
+                return $block->html;
+            }
             $needle = $this->category ? $this->category->id : 0;
             $result = [];
             foreach ($block->html as $k => $html) {

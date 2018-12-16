@@ -25,10 +25,7 @@ $i = 0;
                     </a>
                 </div>
                 <div class="text-col">
-                    <a href="<?= $item->getUrl() ?>">
-                        <?= $item->getContentName() ?>
-                    </a>
-                    <?= $item->getContentBlockRegionString() ?>
+                    <a href="<?= $item->getUrl() ?>"><?= $item->getContentName() ?></a><?= $item->getContentBlockRegionString() ?>
                 </div>
                 <div class="price-col"><?= $item->getFullPriceString() ?></div>
                 <div class="desc-col"><?= $item->getContentDescription() ?></div>

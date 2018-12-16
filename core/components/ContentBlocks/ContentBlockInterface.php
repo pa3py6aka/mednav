@@ -14,4 +14,6 @@ interface ContentBlockInterface
     public function getUrl(): string;
 
     public function getMainPhotoUrl(): string;
+
+    public function getContentBlockRegionString(): string;
 }

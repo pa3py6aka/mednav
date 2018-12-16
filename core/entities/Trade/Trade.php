@@ -228,6 +228,11 @@ class Trade extends ActiveRecord implements StatusesInterface, UserOwnerInterfac
         return Html::encode($this->name);
     }
 
+    public function getContentBlockRegionString(): string
+    {
+        return '';
+    }
+
     public function beforeDelete()
     {
         if (!parent::beforeDelete()) {

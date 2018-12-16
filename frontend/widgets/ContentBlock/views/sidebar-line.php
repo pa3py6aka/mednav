@@ -26,6 +26,7 @@ use frontend\widgets\ContentBlock\ShowContentBlock;
                         <a href="<?= $item->getUrl() ?>">
                             <?= $item->getContentName() ?>
                         </a>
+                        <?= $item->getContentBlockRegionString() ?>
                     </div>
                     <div class="price-col"><?= $item->getFullPriceString() ?></div>
                     <div class="desc-col"><?= $item->getContentDescription() ?></div>

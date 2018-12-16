@@ -305,6 +305,11 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
         return Html::encode($this->name);
     }
 
+    public function getContentBlockRegionString(): string
+    {
+        return '';
+    }
+
     public function behaviors(): array
     {
         return [

@@ -4,6 +4,7 @@ namespace core\entities\Article\common;
 
 
 use core\behaviors\SluggableBehavior;
+use core\components\ContentBlocks\ContentBlockInterface;
 use core\entities\Company\Company;
 use core\entities\PhotoInterface;
 use core\entities\SearchInterface;
@@ -108,6 +109,11 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
     public function getContentName(): string
     {
         return Html::encode($this->name);
+    }
+
+    public function getRegionString(): string
+    {
+        return '';
     }
 
     public function behaviors(): array

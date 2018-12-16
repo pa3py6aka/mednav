@@ -97,7 +97,7 @@ class ShowContentBlock extends Widget
             $result = [];
             foreach ($block->html as $k => $html) {
                 $htmlCats = ArrayHelper::getValue($block->htmlCategories, $k, []);
-                if (\in_array($needle, $htmlCats)) {
+                if (\is_array($htmlCats) && \in_array($needle, $htmlCats)) {
                     $result[] = $html;
                 }
             }

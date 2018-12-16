@@ -111,7 +111,7 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
         return Html::encode($this->name);
     }
 
-    public function getRegionString(): string
+    public function getContentBlockRegionString(): string
     {
         return '';
     }

@@ -9,7 +9,7 @@ return [
     'bootstrap' => [
         'queue',
     ],
-    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'vendorPath' => dirname(__DIR__, 2) . '/vendor',
     'components' => [
         'cache' => [
             'class' => \yii\redis\Cache::class,
@@ -50,7 +50,7 @@ return [
         ],
         'sqlite' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'sqlite:'. realpath(__DIR__ . "/../../core/data") . "/data.db",
+            'dsn' => 'sqlite:'. dirname(__DIR__, 2) . "/core/data" . "/data.db",
         ],
     ],
 ];

@@ -14,8 +14,11 @@ use core\entities\ContentBlock;
 use core\entities\Expo\Expo;
 use core\entities\News\News;
 use core\entities\Trade\Trade;
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Widget;
+use yii\caching\ExpressionDependency;
+use yii\caching\TagDependency;
 use yii\helpers\ArrayHelper;
 
 class ShowContentBlock extends Widget
@@ -33,6 +36,15 @@ class ShowContentBlock extends Widget
     public $entity; // Объявление/товар/компания если виджет на странице контента
 
     public function run()
+    {
+        /*return Yii::$app->cache->getOrSet('ContentBlock', function () {
+            return $this->renderContent();
+        }, 60, new TagDependency(['tags' => $this->module . $this->place . $this->page . $this->start . $this->count . ($this->category ? $this->category->id : 'NULL') . ($this->entity ? $this->entity->id : 'NULL')
+        }]));*/
+        return $this->renderContent();
+    }
+
+    private function renderContent(): string
     {
         $query = ContentBlock::find()
             ->where(['module' => $this->module, 'place' => $this->place, 'page' => $this->page])
@@ -143,9 +155,9 @@ class ShowContentBlock extends Widget
     private function getQuery($module)
     {
         if ($module == ContentBlock::MODULE_BOARD) {
-            $query = Board::find()->with('mainPhoto', 'author.geo', 'author.company.geo');
+            $query = Board::find()->with('mainPhoto', 'author.geo', 'author.company.geo', 'currency');
         } else if ($module == ContentBlock::MODULE_TRADE) {
-            $query = Trade::find()->with('mainPhoto', 'company.geo');
+            $query = Trade::find()->with('mainPhoto', 'company.geo', 'userCategory.currency');
         } else if ($module == ContentBlock::MODULE_COMPANY) {
             $query = Company::find()->with('mainPhoto');
         } else if ($module == ContentBlock::MODULE_ARTICLE) {

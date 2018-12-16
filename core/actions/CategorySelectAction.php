@@ -8,6 +8,7 @@ use core\helpers\BoardHelper;
 use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 
 /**
  * Экшин для выбора категорий методом dependency dropdown
@@ -22,6 +23,10 @@ class CategorySelectAction extends Action
         $id = (int) Yii::$app->request->post('id');
         $formName = Yii::$app->request->post('formName');
         $category = $this->entity::findOne($id);
+
+        if ($category === null) {
+            throw new NotFoundHttpException('Раздел не найден.');
+        }
 
         if ($category->depth < 2) {
             $items = $category->getChildren()->orderBy('lft')->active()->select(['id', 'name'])->asArray()->all();

@@ -129,7 +129,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
     {
         if ($this->type == self::TYPE_USER) {
             return empty($this->name) || empty($this->email) || empty($this->geo_id);
-        } elseif ($this->type == self::TYPE_COMPANY) {
+        } else if ($this->type == self::TYPE_COMPANY) {
             return empty($this->name) || empty($this->email) || !$this->isCompanyActive();
         }
         return true;
@@ -145,6 +145,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         return $this->company
             && $this->company->form
             && $this->company->name
+            && $this->company->email
             && $this->company->slug
             && $this->company->geo_id
             && $this->company->address

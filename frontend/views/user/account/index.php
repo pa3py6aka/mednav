@@ -1,6 +1,5 @@
 <?php
 
-
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -26,8 +25,7 @@ $this->title = 'Личный кабинет';
         <div id="info" class="alert-danger alert fade in">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 
-            Для начала работы, заполните форму <a href="<?= Url::to(['/user/account/profile']) ?>">вашего профиля</a>
-            <?= $user->isCompany() ? 'и ' . \yii\helpers\Html::a('данные о компании', ['/user/account/company']) : '' ?>
+            Для начала работы, заполните <?= \core\helpers\UserHelper::fillProfileMessage($user) ?>
         </div>
         <?php endif; ?>
     </div>

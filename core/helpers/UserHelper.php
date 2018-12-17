@@ -11,7 +11,7 @@ class UserHelper
     public static function fillProfileMessage(User $user): string
     {
         $need = [];
-        if (empty($user->name) || empty($user->email) || empty($user->geo_id)) {
+        if (empty($user->name) || empty($user->email) || (!$user->isCompany() && empty($user->geo_id))) {
             $need[] = 'форму <a href="' . Url::to(['/user/account/profile']) . '">вашего профиля</a>';
         }
         if ($user->isCompany() && !$user->isCompanyActive()) {

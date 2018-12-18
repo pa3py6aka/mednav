@@ -98,7 +98,7 @@ $this->title = 'Личный кабинет | ' . Yii::$app->settings->get(Setti
 
         <?= $form->field($model, 'info')->textarea(['rows' => 3]) ?>
 
-        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'title')->textInput(['maxlength' => true, 'placeholder' => 'Напр. Сфера деятельности компании. Не пишите здесь название компании']) ?>
 
         <?= $form->field($model, 'shortDescription')->textarea(['maxlength' => true, 'rows' => 2]) ?>
 

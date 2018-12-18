@@ -122,7 +122,7 @@ class CompanyForm extends Model
             'fax' => 'Факс',
             'email' => 'E-mail',
             'info' => 'Доп. информация',
-            'title' => 'Заголовок стр. компании',
+            'title' => 'Заголовок карточки компании',
             'shortDescription' => 'Краткое описание',
             'description' => 'Описание компании',
             'tags' => 'Теги',

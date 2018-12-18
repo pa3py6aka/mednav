@@ -32,10 +32,10 @@ use core\helpers\HtmlHelper;
                     </div>
                     <div class="desc-col"><?= Html::encode(StringHelper::truncate($company->short_description, 100)) ?></div>
                     <div class="list-vendor-info">
-                        <a href="<?= $company->getUrl('trades') ?>">Товары</a> <sup><?= count($company->trades) ?></sup>
-                        <a href="<?= $company->getUrl('boards') ?>">Объявления</a> <sup><?= count($company->boards) ?></sup>
-                        <a href="<?= $company->getUrl('cnews') ?>">Новости</a> <sup><?= count($company->cNews) ?></sup>
-                        <a href="<?= $company->getUrl('articles') ?>">Статьи</a> <sup><?= count($company->articles) ?></sup>
+                        <?= HtmlHelper::showIfIs('<a href="' . $company->getUrl('trades') . '">Товары</a> <sup>' . count($company->trades) . '</sup>', count($company->trades)) ?>
+                        <?= HtmlHelper::showIfIs('<a href="' . $company->getUrl('boards') . '">Объявления</a> <sup>' . count($company->boards) . '</sup>', count($company->boards)) ?>
+                        <?= HtmlHelper::showIfIs('<a href="' . $company->getUrl('cnews') . '">Новости</a> <sup>' . count($company->cNews) . '</sup>', count($company->cNews)) ?>
+                        <?= HtmlHelper::showIfIs('<a href="' . $company->getUrl('articles') . '">Статьи</a> <sup>' . count($company->articles) . '</sup>', count($company->articles)) ?>
                         <span class="glyphicon glyphicon-map-marker btn-xs city-icon-grey"></span><?= $company->geo->name ?>
                     </div>
                 </div>

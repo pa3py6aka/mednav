@@ -58,7 +58,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                     <?= $this->render('_menu', ['company' => $company]) ?>
                 </div>
                 <div class="kk-content">
-                    <?php if ($page == 'main'): ?>
+                    <?php if ($page === 'main'): ?>
                         <?= TextHelper::out($company->description, 'company', true) ?>
 
                         <div class="kk-gallery">

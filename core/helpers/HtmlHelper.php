@@ -133,4 +133,12 @@ class HtmlHelper
     {
         return $isPhoto ? ' alt="' . Html::encode($value) . '"' : '';
     }
+
+    public static function showIfIs($html, $condition): string
+    {
+        if ($condition) {
+            return $html;
+        }
+        return '';
+    }
 }

@@ -40,7 +40,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="">
                     <!--на остальных страницах, ссылка ведет на страницу "О компании"-->
-                    <a class="fancybox" href="<?= $page == 'main' ? $company->getLogoUrl(false, 'max') : $company->getUrl() ?>" data-fancybox-group="gallery">
+                    <a class="fancybox" href="<?= $page === 'main' ? $company->getLogoUrl(false, 'max') : $company->getUrl() ?>" data-fancybox-group="gallery">
                         <img src="<?= $company->getLogoUrl(false, 'big') ?>"<?= HtmlHelper::altForMainImage((bool) $company->logo, $company->getFullName()) ?> class="img-responsive">
                     </a>
                 </div>

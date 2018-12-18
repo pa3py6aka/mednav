@@ -187,7 +187,7 @@ class CompanyHelper
             }
         }
         if (count($array)) {
-            return 'Доставка в др. регионы';
+            return 'Доставка в ваш регион';
         }
         return 'Доставка по России';
     }

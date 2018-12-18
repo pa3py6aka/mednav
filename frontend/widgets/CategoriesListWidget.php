@@ -33,17 +33,17 @@ class CategoriesListWidget extends Widget
     /* @var Geo|null */
     public $region;
 
-    private $isMainPage = null;
+    private $isMainPage;
     private $cacheKeyPrefix;
 
     public function init()
     {
         parent::init();
         if (!$this->component) {
-            throw new \InvalidArgumentException("Не определён компонент.");
+            throw new \InvalidArgumentException('Не определён компонент.');
         }
         if (!$this->categoryClass) {
-            throw new \InvalidArgumentException("Не определён класс категории.");
+            throw new \InvalidArgumentException('Не определён класс категории.');
         }
 
         $this->isMainPage = !$this->category;

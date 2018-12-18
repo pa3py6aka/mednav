@@ -35,7 +35,7 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
         <?= CategoriesListWidget::widget([
             'category' => $category,
             'region' => $geo,
-            'component' => 'company',
+            'component' => 'trade',
             'categoryClass' => TradeCategory::class,
             'helperClass' => TradeHelper::class,
         ]) ?>

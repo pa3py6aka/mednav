@@ -100,7 +100,7 @@ $this->title = 'Личный кабинет | ' . Yii::$app->settings->get(Setti
 
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'shortDescription')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'shortDescription')->textarea(['maxlength' => true, 'rows' => 2]) ?>
 
         <?= $form->field($model, 'description')->widget(CKEditor::class, \core\helpers\EditorHelper::minimumPreset()) ?>
 

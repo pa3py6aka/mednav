@@ -23,6 +23,12 @@ class m181219_141938_update_fk_boards_author_id_key extends Migration
 
         $this->dropForeignKey('fk-companies-user_id', '{{%companies}}');
         $this->addForeignKey('fk-companies-user_id', '{{%companies}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->dropForeignKey('fk-orders-for_company_id', '{{%orders}}');
+        $this->addForeignKey('fk-orders-for_company_id', '{{%orders}}', 'for_company_id', '{{%companies}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->dropForeignKey('fk-orders-user_id', '{{%orders}}');
+        $this->addForeignKey('fk-orders-user_id', '{{%orders}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**
@@ -41,5 +47,11 @@ class m181219_141938_update_fk_boards_author_id_key extends Migration
 
         $this->dropForeignKey('fk-companies-user_id', '{{%companies}}');
         $this->addForeignKey('fk-companies-user_id', '{{%companies}}', 'user_id', '{{%users}}', 'id', 'SET NULL', 'CASCADE');
+
+        $this->dropForeignKey('fk-orders-for_company_id', '{{%orders}}');
+        $this->addForeignKey('fk-orders-for_company_id', '{{%orders}}', 'for_company_id', '{{%companies}}', 'id', 'SET NULL', 'CASCADE');
+
+        $this->dropForeignKey('fk-orders-user_id', '{{%orders}}');
+        $this->addForeignKey('fk-orders-user_id', '{{%orders}}', 'user_id', '{{%users}}', 'id', 'SET NULL', 'CASCADE');
     }
 }

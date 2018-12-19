@@ -63,6 +63,9 @@ $pagination = ArrayHelper::getValue($this->params, 'pagination');
                     'label' => 'Продавец',
                     'attribute' => 'seller',
                     'value' => function (Order $order) {
+                        if (!$order->for_company_id) {
+                            return 'Компания удалена';
+                        }
                         $sellerName = $order->forCompany->getFullName();
                         return Yii::$app->user->identity->company && Yii::$app->user->identity->company->id !== $order->for_company_id ?
                             Html::a($sellerName, $order->forCompany->getUrl()) :

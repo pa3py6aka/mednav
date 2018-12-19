@@ -54,6 +54,11 @@ class Order extends ActiveRecord
         return $this->user_order_id . '-' . $this->id;
     }
 
+    public function getForCompanyName(): string
+    {
+        return $this->for_company_id ? $this->forCompany->getFullName() : 'Компания удалена';
+    }
+
     public function behaviors(): array
     {
         return [

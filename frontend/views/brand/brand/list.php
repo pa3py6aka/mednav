@@ -4,12 +4,12 @@ use core\helpers\CategoryHelper;
 use core\helpers\BrandHelper;
 use core\helpers\HtmlHelper;
 use frontend\widgets\CategoriesListWidget;
-use yii\widgets\LinkPager;
 use core\helpers\PaginationHelper;
 use core\components\SettingsManager;
 use core\entities\Brand\BrandCategory;
 use frontend\widgets\ContentBlock\ShowContentBlock;
 use core\entities\ContentBlock;
+use core\components\ContextBlock;
 
 /* @var $this yii\web\View */
 /* @var $category \core\entities\Brand\BrandCategory|null */
@@ -43,9 +43,13 @@ CategoryHelper::registerHeadMeta('brand', $this, 'Бренды', $category);
 
         <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::BRANDS_DESCRIPTION_TOP, !$provider->pagination->page, $category) ?>
 
+        <?= ContextBlock::getBlock(1, null, $category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC) ?>
+
         <div class="card-items-block">
             <?= $this->render('card-items-block', ['provider' => $provider]) ?>
         </div>
+
+        <?= ContextBlock::getBlock(5) ?>
 
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use core\helpers\BrandHelper;
 use core\helpers\HtmlHelper;
+use core\components\ContextBlock;
 
 /* @var $provider \yii\data\ActiveDataProvider */
 
@@ -37,5 +38,6 @@ use core\helpers\HtmlHelper;
                 </div>
             </div>
         </div>
+        <?php ContextBlock::afterRow($provider->pagination->page, $provider->pagination->pageSize) ?>
     <?php endforeach; ?>
 <?php endif; ?>

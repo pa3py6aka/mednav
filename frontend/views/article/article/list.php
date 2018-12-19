@@ -7,7 +7,9 @@ use frontend\widgets\CategoriesListWidget;
 use core\components\SettingsManager;
 use core\entities\Article\ArticleCategory;
 use frontend\widgets\ContentBlock\ShowContentBlock;
+use core\helpers\PaginationHelper;
 use core\entities\ContentBlock;
+use core\components\ContextBlock;
 
 /* @var $this yii\web\View */
 /* @var $category \core\entities\Article\ArticleCategory|null */
@@ -41,9 +43,13 @@ CategoryHelper::registerHeadMeta('article', $this, 'Справочная инф�
 
         <?= HtmlHelper::categoryDescriptionBlock('top', SettingsManager::ARTICLE_DESCRIPTION_TOP, !$provider->pagination->page, $category) ?>
 
+        <?= ContextBlock::getBlock(1, null, $category && $category->pagination == PaginationHelper::PAGINATION_NUMERIC) ?>
+
         <div class="card-items-block">
             <?= $this->render('card-items-block', ['provider' => $provider]) ?>
         </div>
+
+        <?= ContextBlock::getBlock(5) ?>
 
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,

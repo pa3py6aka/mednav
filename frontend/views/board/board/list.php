@@ -6,7 +6,6 @@ use core\helpers\HtmlHelper;
 use frontend\widgets\BoardCategoriesListWidget;
 use frontend\widgets\RegionsModalWidget;
 use yii\helpers\Html;
-use yii\widgets\LinkPager;
 use core\helpers\PaginationHelper;
 use core\components\SettingsManager;
 use core\components\ContextBlock;

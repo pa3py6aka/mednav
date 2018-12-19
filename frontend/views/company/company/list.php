@@ -7,7 +7,6 @@ use core\entities\Company\CompanyCategory;
 use frontend\widgets\CategoriesListWidget;
 use frontend\widgets\RegionsModalWidget;
 use core\components\ContextBlock;
-use yii\widgets\LinkPager;
 use core\helpers\PaginationHelper;
 use core\components\SettingsManager;
 use frontend\widgets\ContentBlock\ShowContentBlock;

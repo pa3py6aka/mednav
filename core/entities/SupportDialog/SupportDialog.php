@@ -25,9 +25,10 @@ use yii\db\ActiveRecord;
 class SupportDialog extends ActiveRecord
 {
     public $not_read;
+    public $max;
 
-    const STATUS_ACTIVE = 1;
-    const STATUS_ARCHIVE = 5;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_ARCHIVE = 5;
 
     public static function create($userId, $subject, $name = '', $phone = '', $email = ''): SupportDialog
     {

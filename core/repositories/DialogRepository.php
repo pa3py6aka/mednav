@@ -31,7 +31,7 @@ class DialogRepository
     {
         $query = Dialog::find()
             ->alias('d')
-            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read'])
+            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read', 'MAX(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read_order'])
             ->with('userFrom', 'userTo', 'lastMessage')
             ->leftJoin('{{%messages}} m', 'm.dialog_id=d.id')
             ->where(['or', ['d.user_from' => $userId], ['d.user_to' => $userId]])
@@ -44,8 +44,8 @@ class DialogRepository
                 'defaultOrder' => ['date' => SORT_DESC],
                 'attributes' => [
                     'date' => [
-                        'asc' => ['not_read' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
-                        'desc' => ['not_read' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
+                        'asc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
+                        'desc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
                     ],
                 ],
             ],

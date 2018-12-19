@@ -22,16 +22,24 @@ class SupportDialogRepository
     {
         $query = SupportDialog::find()
             ->alias('d')
-            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read'])
+            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read', 'MAX(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read_order'])
             ->with('lastMessage')
             ->leftJoin('{{%support_messages}} m', 'm.dialog_id=d.id')
             ->where(['d.user_id' => $userId])
-            ->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
+            //->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
             ->groupBy('d.id');
 
         return new ActiveDataProvider([
             'query' => $query,
-            'sort' => false,
+            'sort' => [
+                'defaultOrder' => ['date' => SORT_DESC],
+                'attributes' => [
+                    'date' => [
+                        'asc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
+                        'desc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
+                    ],
+                ],
+            ],
             'pagination' => [
                 'pageSizeLimit' => [25, 250],
                 'defaultPageSize' => 25,
@@ -44,7 +52,7 @@ class SupportDialogRepository
     {
         $query = SupportDialog::find()
             ->alias('d')
-            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read'])
+            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read', 'MAX(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read_order'])
             ->with('lastMessage')
             ->leftJoin('{{%support_messages}} m', 'm.dialog_id=d.id')
             //->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
@@ -56,8 +64,8 @@ class SupportDialogRepository
                 'defaultOrder' => ['date' => SORT_DESC],
                 'attributes' => [
                     'date' => [
-                        'asc' => ['not_read' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
-                        'desc' => ['not_read' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
+                        'asc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
+                        'desc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
                     ],
                 ],
             ],

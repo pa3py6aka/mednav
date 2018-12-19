@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                 ],
                 [
+                    'attribute' => 'date',
                     'label' => 'Дата',
                     'value' => function (SupportDialog $dialog) {
                         return $dialog->lastMessage->created_at;

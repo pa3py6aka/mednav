@@ -14,6 +14,9 @@ class m181219_141938_update_fk_boards_author_id_key extends Migration
     {
         $this->dropForeignKey('fk-boards-author_id', '{{%boards}}');
         $this->addForeignKey('fk-boards-author_id', '{{%boards}}', 'author_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->dropForeignKey('fk-trades-user_id', '{{%trades}}');
+        $this->addForeignKey('fk-trades-user_id', '{{%trades}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**
@@ -23,5 +26,8 @@ class m181219_141938_update_fk_boards_author_id_key extends Migration
     {
         $this->dropForeignKey('fk-boards-author_id', '{{%boards}}');
         $this->addForeignKey('fk-boards-author_id', '{{%boards}}', 'author_id', '{{%users}}', 'id', 'RESTRICT', 'CASCADE');
+
+        $this->dropForeignKey('fk-trades-user_id', '{{%trades}}');
+        $this->addForeignKey('fk-trades-user_id', '{{%trades}}', 'user_id', '{{%users}}', 'id', 'RESTRICT', 'CASCADE');
     }
 }

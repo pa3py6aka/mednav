@@ -50,13 +50,13 @@ use yii\helpers\Html;
 
     <?= $form->field($model, 'items')->input('number', ['id' => 'items-input']) ?>
 
-    <div class="form-group<?= $model->type == ContentBlock::TYPE_HTML ? '' : ' hidden' ?>" id="html-group">
+    <div class="form-group<?= $model->type === ContentBlock::TYPE_HTML ? '' : ' hidden' ?>" id="html-group">
         <label class="col-sm-1">Html</label>
         <div class="col-sm-11" id="html-blocks">
             <?php foreach ($model->html as $n => $html): ?>
                 <div class="html-row" data-num="<?= $n ?>">
                     <button type="button" class="btn btn-xs btn-danger pull-right del-html-btn"><span class="fa fa-remove"></span></button>
-                    <?php if ($model->module != ContentBlock::MODULE_MAIN_PAGE) : ?>
+                    <?php if ($model->module !== ContentBlock::MODULE_MAIN_PAGE) : ?>
                         <?= Html::activeDropDownList($model, "htmlCategories[{$n}]", ContentBlocksWidget::getCategoriesFor($model->module), ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'cats-selector-' . $n]) ?>
                     <?php endif; ?>
                     <?= Html::activeTextarea($model, "html[{$n}]", ['rows' => 5, 'class' => 'form-control', 'placeholder' => 'Содержимое блока...']) ?>
@@ -75,7 +75,7 @@ use yii\helpers\Html;
 <div id="templates" class="hidden">
     <div class="html-row" data-num="">
         <button type="button" class="btn btn-xs btn-danger pull-right del-html-btn"><span class="fa fa-remove"></span></button>
-        <?php if ($model->module != ContentBlock::MODULE_MAIN_PAGE && $model->page == ContentBlock::PAGE_LISTING) : ?>
+        <?php if ($model->module !== ContentBlock::MODULE_MAIN_PAGE) : ?>
             <?= Html::activeDropDownList($model, 'htmlCategories[]', ContentBlocksWidget::getCategoriesFor($model->module), ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'cats-selector-']) ?>
         <?php endif; ?>
         <?= Html::activeTextarea($model, 'html[]', ['rows' => 5, 'class' => 'form-control', 'placeholder' => 'Содержимое блока...']) ?>
@@ -181,7 +181,7 @@ use yii\helpers\Html;
 
         var multiSelectConfig = {
             includeSelectAllOption: true,
-            selectAllValue: 'Выбрать все',
+            selectAllText: 'Выбрать все',
             preventInputChangeEvent: true,
             buttonText: function(options, select) {
                 if (options.length === 0) {

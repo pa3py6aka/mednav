@@ -13,11 +13,10 @@ $n = 1;
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <?php if ($widget->type === 'delivery'): ?>
-                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">Сохранить</button>
-                <?php else: ?>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <?php endif; ?>
+                <?php /*if ($widget->type === 'delivery'): ?>
+                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">Выбрать</button>
+                <?php endif;*/ ?>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4>Выбор региона</h4>
             </div>
             <div class="modal-body">
@@ -78,7 +77,7 @@ $n = 1;
             </div>
             <?php if ($widget->type === 'delivery'): ?>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Сохранить</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Выбрать</button>
             </div>
             <?php endif; ?>
         </div>

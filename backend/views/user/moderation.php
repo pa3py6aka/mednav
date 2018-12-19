@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="box-body table-responsive">
-        <?= $this->render('_tabs', ['tab' => 'deleted']) ?>
+        <?= $this->render('_tabs', ['tab' => 'moderation']) ?>
 
         <?= GridView::widget([
             'id' => 'grid',

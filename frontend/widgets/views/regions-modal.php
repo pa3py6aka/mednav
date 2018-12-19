@@ -6,17 +6,16 @@ use core\helpers\BoardHelper;
 /* @var $countries array */
 
 $n = 1;
-
 ?>
 <div id="modalRegion" class="modal fade"<?= $widget->type === 'delivery' && $widget->deliveryId ? ' data-delivery-id="' .$widget->deliveryId . '"'
     : ($widget->type === 'delivery' && $widget->countryId ? ' data-country-id="' .$widget->countryId . '"' : '') ?>>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <?php /*if ($widget->type === 'delivery'): ?>
-                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true">Выбрать</button>
-                <?php endif;*/ ?>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <?php if ($widget->type === 'delivery'): ?>
+                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" aria-hidden="true" style="margin-right:14px;">Выбрать</button>
+                <?php endif; ?>
                 <h4>Выбор региона</h4>
             </div>
             <div class="modal-body">

@@ -379,7 +379,7 @@ class TradeController extends Controller
                 }
             }
 
-            if ($action == 'remove') {
+            if ($action === 'remove') {
                 $count = $this->service->massRemove($ids);
                 Yii::$app->session->setFlash('info', 'Удалено товаров: ' . $count);
             }

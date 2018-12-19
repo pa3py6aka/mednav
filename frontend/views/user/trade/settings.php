@@ -7,7 +7,6 @@ use yii\helpers\Html;
 /* @var $userDeliveryRegions \core\entities\Company\CompanyDeliveryRegion[] */
 
 $this->params['tab'] = 'settings';
-
 ?>
 <div class="has-overlay" id="main-delivery-block">
     <?= Html::beginForm() ?>
@@ -31,7 +30,11 @@ $this->params['tab'] = 'settings';
                                 data-country-id="<?= $country->id ?>"
                                 style="border-bottom:1px dashed;color:#2d5d9c;"
                         ><?= \core\helpers\CompanyHelper::regionsSelectString($country->id, $userDeliveryRegions) ?></a>
-                        <div class="hidden region-inputs" data-country-id="<?= $country->id ?>"></div>
+                        <div class="hidden region-inputs" data-country-id="<?= $country->id ?>">
+                            <?php foreach ($userDeliveryRegions as $geoId => $countryId): ?>
+                                <?= $country->id == $countryId ? '<input name="regions[' . $countryId . '][]" value="' . $geoId . '">' : '' ?>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </td>

@@ -104,10 +104,6 @@ use yii\helpers\Html;
             }
         }
 
-        $('#block-form').find('select[name*="htmlCategories"]').each(function (k, selector) {
-            $(selector).multiselect(multiSelectConfig);
-        });
-
         $(document).on('click', '.del-html-btn', function () {
             $(this).parent().remove();
         });
@@ -204,6 +200,11 @@ use yii\helpers\Html;
                 }
             }
         };
+
+        // Инициализируем multiselect dropdown для выбора разделов для html-блоков
+        $('#block-form').find('select[name*="htmlCategories"]').each(function (k, selector) {
+            $(selector).multiselect(multiSelectConfig);
+        });
 
         typeSelectorDependency();
     });

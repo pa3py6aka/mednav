@@ -73,7 +73,7 @@ class CompanyForm extends Model
     public function rules()
     {
         return [
-            [['form', 'name', 'geoId', 'address', 'email', 'title', 'description'], 'required'],
+            [['form', 'name', 'geoId', 'address', 'email', 'title', 'description', 'user_id'], 'required'],
             ['categoriesHint', 'required', 'message' => 'Выберите нужные разделы'],
             [['slug', 'name', 'site', 'address', 'email', 'title'], 'string', 'max' => 255],
             [['user_id', 'geoId'], 'integer'],

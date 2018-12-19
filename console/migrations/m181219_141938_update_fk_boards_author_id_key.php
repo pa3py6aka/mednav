@@ -17,6 +17,9 @@ class m181219_141938_update_fk_boards_author_id_key extends Migration
 
         $this->dropForeignKey('fk-trades-user_id', '{{%trades}}');
         $this->addForeignKey('fk-trades-user_id', '{{%trades}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
+
+        $this->dropForeignKey('fk-order_items-trade_id', '{{%order_items}}');
+        $this->addForeignKey('fk-order_items-trade_id', '{{%order_items}}', 'trade_id', '{{%trades}}', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**
@@ -29,5 +32,8 @@ class m181219_141938_update_fk_boards_author_id_key extends Migration
 
         $this->dropForeignKey('fk-trades-user_id', '{{%trades}}');
         $this->addForeignKey('fk-trades-user_id', '{{%trades}}', 'user_id', '{{%users}}', 'id', 'RESTRICT', 'CASCADE');
+
+        $this->dropForeignKey('fk-order_items-trade_id', '{{%order_items}}');
+        $this->addForeignKey('fk-order_items-trade_id', '{{%order_items}}', 'trade_id', '{{%trades}}', 'id', 'RESTRICT', 'CASCADE');
     }
 }

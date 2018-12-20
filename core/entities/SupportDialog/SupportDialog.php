@@ -3,7 +3,6 @@
 namespace core\entities\SupportDialog;
 
 use core\entities\User\User;
-use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 

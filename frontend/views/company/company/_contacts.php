@@ -17,4 +17,4 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $company->getFullName
 <?= HtmlHelper::showIfIs('<b>Факс:</b> ' . Html::encode($company->fax) . '<br>', $company->fax) ?>
 <?= HtmlHelper::showIfIs('<b>Сайт:</b> <a href="' . Url::to(['/company/company/outsite', 'id' => $company->id]) . '" rel="nofollow" target="_blank">' . Html::encode($company->site) . '</a><br>', $company->site) ?>
 <?= HtmlHelper::showIfIs('<b>Почта:</b> <a href="mailto:' . $company->email . '">' . $company->email . '</a><br>', $company->email) ?>
-<?= HtmlHelper::showIfIs('<b>Дополнительная информация:</b> ' . Html::encode($company->info) . '<br>', $company->info) ?>
+<?= HtmlHelper::showIfIs('<b>Доп. информация:</b> ' . Html::encode($company->info) . '<br>', $company->info) ?>

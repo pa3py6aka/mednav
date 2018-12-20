@@ -22,7 +22,7 @@ use yii\web\IdentityInterface;
  * This is the model class for table "{{%users}}".
  *
  * @property int $id
- * @property string $email
+ * @property string $email [varchar(255)]
  * @property int $type
  * @property int $geo_id [int(11)]
  * @property string $last_name [varchar(255)]

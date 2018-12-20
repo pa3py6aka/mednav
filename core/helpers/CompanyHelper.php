@@ -178,7 +178,7 @@ class CompanyHelper
         return $categories;
     }
 
-    public static function getDeliveriesString(Company $company): string
+    public static function getDeliveriesString(Company $company, Geo $geo = null): string
     {
         $array = [];
         foreach ($company->deliveryRegions as $deliveryRegion) {
@@ -186,10 +186,13 @@ class CompanyHelper
                 $array[] = $deliveryRegion->geo_id;
             }
         }
-        if (count($array)) {
-            return 'Доставка в ваш регион';
+        if (\count($array) && $geo) {
+            return 'Доставка в ваш регион /';
         }
-        return 'Доставка по России';
+        if (!$geo) {
+            return 'Доставка по России /';
+        }
+        return '';
     }
 
     public static function regionsSelectString($countryId, array $companyDeliveryRegions): string

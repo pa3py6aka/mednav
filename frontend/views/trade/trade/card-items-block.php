@@ -38,7 +38,7 @@ use core\components\ContextBlock;
                         <a href="<?= $trade->user->company->getUrl() ?>"><?= $trade->user->company->getFullName() ?></a> /
                         <?php endif; ?>
                         <?= $trade->geo->name ?> /
-                        <?= $geo ? CompanyHelper::getDeliveriesString($trade->user->company) . ' /' : '' ?>
+                        <?= CompanyHelper::getDeliveriesString($trade->user->company, $geo) ?>
                         <?= TradeHelper::contextCategoryLink($trade) ?>
                     </div>
                 </div>

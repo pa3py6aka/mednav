@@ -158,7 +158,7 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
         return $phones ? current($phones) : '';
     }
 
-    private function setPhones($phones): void
+    public function setPhones($phones): void
     {
         if (!is_array($phones)) {
             $phones = (array) $phones;

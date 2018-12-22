@@ -115,7 +115,7 @@ class TradeManageService
     private function getWholesales(TradeUserCategory $userCategory, TradeManageForm $form): array
     {
         $wholesales = [];
-        if ($userCategory->wholesale && is_array($form->wholeSalePrice)) {
+        if ($userCategory->wholesale && \is_array($form->wholeSalePrice)) {
             foreach ($form->wholeSalePrice as $i => $price) {
                 if ((float) $price && isset($form->wholeSaleFrom[$i]) && $form->wholeSaleFrom[$i]) {
                     $wholesales[] = ['price' => PriceHelper::optimize($price),'from' => (int) $form->wholeSaleFrom[$i]];

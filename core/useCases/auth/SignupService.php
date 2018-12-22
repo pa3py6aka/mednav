@@ -4,7 +4,6 @@ namespace core\useCases\auth;
 
 
 use core\access\Rbac;
-use core\components\Settings;
 use core\entities\User\User;
 use core\forms\auth\SignupForm;
 use core\repositories\UserRepository;

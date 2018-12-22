@@ -9,7 +9,9 @@
     <?php foreach ($items as $item): ?>
         <div class="content-block-string">
             <?php if ($block->type === \core\entities\ContentBlock::TYPE_HTML): ?>
-                <?= $item ?>
+                <div class="col-xs-12">
+                    <?= $item ?>
+                </div>
             <?php else: ?>
                 <div class="col-md-2">
                     <a href="<?= $item->getUrl() ?>">

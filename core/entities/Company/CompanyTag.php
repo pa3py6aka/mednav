@@ -2,6 +2,7 @@
 
 namespace core\entities\Company;
 
+use core\behaviors\SluggableBehavior;
 use Yii;
 use yii\db\ActiveQuery;
 use Zelenin\yii\behaviors\Slug;
@@ -29,10 +30,8 @@ class CompanyTag extends \yii\db\ActiveRecord
     {
         return [
             'slug' => [
-                'class' => Slug::class,
-                'slugAttribute' => 'slug',
+                'class' => SluggableBehavior::class,
                 'attribute' => 'name',
-                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ]
         ];
     }

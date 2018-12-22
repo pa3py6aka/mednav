@@ -50,7 +50,7 @@ return [
         'company' => 'company/company/list',
 
         // Товары
-        'trade/<id:\d+>-<slug:[\w-]+>' => 'trade/trade/view',
+        'trade/<id:\d+>-<slug>' => 'trade/trade/view',
         'trade/<_a:(outsite|vendor)>' => 'trade/trade/<_a>',
 
         'trade/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'trade/trade/list',

@@ -12,7 +12,7 @@ use Yii;
 
 class ExpoPhotoService extends BasePhotoService
 {
-    public $component = 'brand';
+    public $component = 'expo';
     public $photoEntityClass = ExpoPhoto::class;
 
     public function __construct(ExpoPhotoRepository $repository, TransactionManager $transaction)

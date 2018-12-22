@@ -10,7 +10,7 @@ use frontend\widgets\ContentBlock\ShowContentBlock;
     <div class="sidebar-item-string">
         <div class="row">
             <?php if ($block->type == \core\entities\ContentBlock::TYPE_HTML): ?>
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <?= $item ?>
                 </div>
             <?php else: ?>

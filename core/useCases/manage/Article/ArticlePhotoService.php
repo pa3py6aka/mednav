@@ -12,7 +12,7 @@ use Yii;
 
 class ArticlePhotoService extends BasePhotoService
 {
-    public $component = 'article';
+    public $component = 'articles';
     public $photoEntityClass = ArticlePhoto::class;
 
     public function __construct(ArticlePhotoRepository $repository, TransactionManager $transaction)

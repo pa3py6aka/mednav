@@ -44,7 +44,7 @@ class UserController extends Controller
         }
 
         $user = $this->service->create($form);
-        $this->stdout("User created, id: " . $user->id . PHP_EOL, Console::FG_GREEN);
+        $this->stdout('User created, id: ' . $user->id . PHP_EOL, Console::FG_GREEN);
     }
 
     /**

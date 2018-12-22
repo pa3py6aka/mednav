@@ -44,6 +44,7 @@ use paulzi\nestedsets\NestedSetsBehavior;
  * @property CategoryInterface $next
  *
  * @method static ArticleCategoryQueryCommon|BoardCategoryQuery|TradeCategoryQuery find
+ * @method static ArticleCategoryQueryCommon deleteAll($condition)
  * @mixin NestedSetsBehavior
  */
 interface CategoryInterface

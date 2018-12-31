@@ -8,9 +8,9 @@ use yii\data\ActiveDataProvider;
 use core\entities\Page;
 
 /**
- * PageSearch represents the model behind the search form of `core\entities\Page`.
+ * FrontPageSearch represents the model behind the search form of `core\entities\Page`.
  */
-class PageSearch extends Page
+class FrontPageSearch extends Page
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class PageSearch extends Page
      */
     public function search($params)
     {
-        $query = Page::find()->forUCP();
+        $query = Page::find()->forFront();
 
         // add conditions that should always apply here
 

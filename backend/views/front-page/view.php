@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $page core\entities\Page */
 
 $this->title = Html::encode($page->name);
-$this->params['breadcrumbs'][] = ['label' => 'Страницы / ППУ', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Страницы / Фронт', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-view box box-primary">

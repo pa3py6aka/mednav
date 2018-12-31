@@ -17,8 +17,8 @@ class PageReadRepository
         return $page;
     }
 
-    public function getPagesLinks(): array
+    public function getUCPPagesLinks(): array
     {
-        return ArrayHelper::map(Page::find()->asArray()->all(), 'slug', 'name');
+        return ArrayHelper::map(Page::find()->forUCP()->asArray()->all(), 'slug', 'name');
     }
 }

@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 
+use core\entities\Page;
 use core\readModels\PageReadRepository;
 use Yii;
 use yii\base\Module;
@@ -24,8 +25,9 @@ class PageController extends Controller
     public function actionView($slug): string
     {
         $page = $this->repository->getBySlug($slug);
+        $view = $page->type == Page::TYPE_UCP_PAGE ? 'view' : 'front-view';
 
-        return $this->render('view', [
+        return $this->render($view, [
             'page' => $page,
         ]);
     }

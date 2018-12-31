@@ -5,7 +5,7 @@
 /* @var $model \core\forms\PageForm */
 
 $this->title = 'Редактирование страницы #' . $page->id;
-$this->params['breadcrumbs'][] = ['label' => 'Страницы / ППУ', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Страницы / Фронт', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $page->name, 'url' => ['view', 'id' => $page->id]];
 $this->params['breadcrumbs'][] = 'Редактирование';
 ?>

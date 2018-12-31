@@ -9,7 +9,7 @@ use core\entities\Page;
 /* @var $searchModel backend\forms\PageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Страницы / ППУ';
+$this->title = 'Страницы / Фронт';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-index box box-primary">

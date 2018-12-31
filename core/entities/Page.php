@@ -3,6 +3,7 @@
 namespace core\entities;
 
 use core\behaviors\SluggableBehavior;
+use core\entities\queries\PageQuery;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -21,6 +22,7 @@ use yii\db\ActiveRecord;
 class Page extends ActiveRecord
 {
     public const TYPE_UCP_PAGE = 1;
+    public const TYPE_FRONT_PAGE = 2;
 
     public $userSlug;
 
@@ -94,5 +96,14 @@ class Page extends ActiveRecord
             'meta_keywords' => 'Meta Keywords',
             'slug' => 'Slug',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     * @return PageQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PageQuery(static::class);
     }
 }

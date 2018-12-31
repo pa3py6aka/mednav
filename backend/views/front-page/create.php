@@ -4,7 +4,7 @@
 /* @var $model \core\forms\PageForm */
 
 $this->title = 'Новая страница';
-$this->params['breadcrumbs'][] = ['label' => 'Страницы / ППУ', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Страницы / Фронт', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-create">

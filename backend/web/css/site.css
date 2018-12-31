@@ -300,3 +300,4 @@ a.desc:after {
 .message-row.pull-right {background-color:#cedfe9;}
 .message-from {font-size:12px;color: #090938;font-weight:bold;margin-bottom:5px;}
 .message-date {color:#767677;margin-left:5px;}
+.dialog_text {border-bottom:1px solid #c7c1c1;padding-bottom:10px;margin-bottom:10px;}

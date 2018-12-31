@@ -16,6 +16,8 @@ use yii\db\ActiveRecord;
  * @property string $phone
  * @property string $email
  * @property int $status
+ * @property string $text Используется только для импортированных сообщений со старой версии сайта
+ * @property int $date [int(11)] Используется только для импортированных сообщений со старой версии сайта
  *
  * @property User $user
  * @property SupportMessage[] $messages
@@ -38,6 +40,8 @@ class SupportDialog extends ActiveRecord
         $dialog->phone = $phone;
         $dialog->email = $email;
         $dialog->status = self::STATUS_ACTIVE;
+        $dialog->text = '';
+        $dialog->date = time();
         return $dialog;
     }
 

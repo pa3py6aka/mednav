@@ -29,6 +29,11 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
         <h1>
             Тема: <?= Html::encode($dialog->subject) ?>
         </h1>
+        <?php if ($dialog->text): ?>
+            <div class="dialog_text">
+                <?= Yii::$app->formatter->asNtext($dialog->text) ?>
+            </div>
+        <?php endif; ?>
         <div class="message-block container-fluid">
             <?php foreach ($provider->models as $message): ?>
                 <?= $this->render('_message-row', ['message' => $message]) ?>

@@ -19,6 +19,8 @@ use yii\helpers\Html;
  * @property string $phone [varchar(255)]
  * @property string $email [varchar(255)]
  * @property int $status [tinyint(3)]
+ * @property string $text Используется только для импортированных сообщений со старой версии сайта
+ * @property int $date [int(11)] Используется только для импортированных сообщений со старой версии сайта
  *
  * @property User $userFrom
  * @property User $userTo
@@ -29,8 +31,8 @@ class Dialog extends ActiveRecord
 {
     public $not_read;
 
-    const STATUS_ACTIVE = 1;
-    const STATUS_ARCHIVE = 5;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_ARCHIVE = 5;
 
     public static function create($userFromId, $userToId, $subject, $name = '', $phone = '', $email = ''): Dialog
     {
@@ -42,6 +44,8 @@ class Dialog extends ActiveRecord
         $dialog->phone = $phone;
         $dialog->email = $email;
         $dialog->status = self::STATUS_ACTIVE;
+        $dialog->text = '';
+        $dialog->date = time();
         return $dialog;
     }
 

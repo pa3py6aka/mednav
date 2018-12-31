@@ -41,8 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'date',
                     'label' => 'Дата',
                     'value' => function (SupportDialog $dialog) {
-                        //return $dialog->max;
-                        return $dialog->lastMessage->created_at;
+                        return $dialog->lastMessage ? $dialog->lastMessage->created_at : $dialog->date;
                     },
                     'format' => 'datetime',
                 ],

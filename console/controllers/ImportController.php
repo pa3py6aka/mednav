@@ -28,6 +28,8 @@ use core\entities\Company\CompanyPhoto;
 use core\entities\Company\CompanyTag;
 use core\entities\Company\CompanyTagsAssignment;
 use core\entities\Contact;
+use core\entities\Dialog\Dialog;
+use core\entities\Dialog\Message;
 use core\entities\Expo\Expo;
 use core\entities\Expo\ExpoCategory;
 use core\entities\Expo\ExpoPhoto;
@@ -35,7 +37,12 @@ use core\entities\Geo;
 use core\entities\News\News;
 use core\entities\News\NewsCategory;
 use core\entities\News\NewsPhoto;
+use core\entities\Order\Order;
+use core\entities\Order\OrderItem;
+use core\entities\Order\UserOrder;
 use core\entities\PhotoInterface;
+use core\entities\SupportDialog\SupportDialog;
+use core\entities\SupportDialog\SupportMessage;
 use core\entities\Trade\Trade;
 use core\entities\Trade\TradeCategory;
 use core\entities\Trade\TradeCategoryRegion;
@@ -874,6 +881,196 @@ class ImportController extends Controller
             }
 
             $this->stdout('Импортировано ' . $n . ' товаров.' . PHP_EOL, Console::FG_GREEN);
+        });
+    }
+
+    public function actionSupportMessages(): void
+    {
+        $this->stdout('Стартуем импорт сообщений в службу поддержки...' . PHP_EOL, Console::FG_YELLOW);
+        $this->transaction->wrap(function () {
+            SupportDialog::deleteAll();
+            $sql = 'SELECT * FROM `subject` WHERE `to`=1 OR `from`=1';
+            foreach ($this->command->setSql($sql)->queryAll() as $subject) {
+                if ($subject['from'] && !User::find()->where(['id' => $subject['from']])->limit(1)->exists()) {
+                    echo 'Пропущен диалог: id' . $subject['id'] . PHP_EOL;
+                    continue;
+                }
+                if ($subject['to'] && !User::find()->where(['id' => $subject['to']])->limit(1)->exists()) {
+                    echo 'Пропущен диалог: id' . $subject['id'] . PHP_EOL;
+                    continue;
+                }
+                $dialog = new SupportDialog([
+                    'user_id' => $subject['from'] ?: null,
+                    'subject' => strip_tags(trim(str_replace('(Служба поддержки)', '', $subject['subject']))),
+                    'name' => $subject['from_name'] ?: '',
+                    'phone' => $subject['phone'] ?: '',
+                    'email' => $subject['email'] ?: '',
+                    'status' => SupportDialog::STATUS_ACTIVE,
+                    'text' => strip_tags(trim($subject['text'])),
+                    'date' => Yii::$app->formatter->asTimestamp($subject['date']),
+                ]);
+                $this->save($dialog);
+
+                /*$message = new SupportMessage([
+                    'dialog_id' => $dialog->id,
+                    'user_id' => $dialog->user_id,
+                    'text' => strip_tags($subject['text']),
+                    'status' => 1,
+                ]);
+                $this->save($message);
+                $message->updateAttributes([
+                    'created_at' => Yii::$app->formatter->asTimestamp($subject['date']),
+                    'updated_at' => Yii::$app->formatter->asTimestamp($subject['date']),
+                ]);*/
+
+                // Импорт сообщений
+                $sql = 'SELECT * FROM `messages` WHERE `subject_id`=' . $subject['id']. ' ORDER BY `id`';
+                $n = 0;
+                foreach ($this->command->setSql($sql)->queryAll() as $oldMessage) {
+                    if (!\in_array($oldMessage['user_id'], [1, $dialog->user_id])) {
+                        continue;
+                    }
+                    $message = new SupportMessage([
+                        'dialog_id' => $dialog->id,
+                        'user_id' => $oldMessage['user_id'],
+                        'text' => strip_tags(trim($oldMessage['text'])),
+                        'status' => 1,
+                    ]);
+                    $this->save($message);
+                    $message->updateAttributes([
+                        'created_at' => Yii::$app->formatter->asTimestamp($oldMessage['date']),
+                        'updated_at' => Yii::$app->formatter->asTimestamp($oldMessage['date']),
+                    ]);
+                    $n++;
+                }
+            }
+        });
+        $this->stdout('Импорт сообщений в службу поддержки завершён.' . PHP_EOL, Console::FG_GREEN);
+    }
+
+    public function actionDialogs(): void
+    {
+        $this->stdout('Стартуем импорт сообщений...' . PHP_EOL, Console::FG_YELLOW);
+        $this->transaction->wrap(function () {
+            Dialog::deleteAll();
+            $sql = 'SELECT * FROM `subject` WHERE `to`>1';
+            $n = 0;
+            foreach ($this->command->setSql($sql)->queryAll() as $subject) {
+                if ($subject['to'] && !User::find()->where(['id' => $subject['to']])->limit(1)->exists()) {
+                    echo 'Пропущен диалог: id' . $subject['id'] . ', to: ' . $subject['to'] . PHP_EOL;
+                    continue;
+                }
+                if ($subject['from'] && !User::find()->where(['id' => $subject['from']])->limit(1)->exists()) {
+                    echo 'Пропущен диалог: id' . $subject['id'] . ', from: ' . $subject['from'] . PHP_EOL;
+                    continue;
+                }
+                $dialog = new Dialog([
+                    'user_from' => $subject['from'] ?: null,
+                    'user_to' => $subject['to'],
+                    'subject' => strip_tags(trim($subject['subject'])),
+                    'name' => $subject['from_name'] ?: '',
+                    'phone' => $subject['phone'] ?: '',
+                    'email' => $subject['email'] ?: '',
+                    'status' => Dialog::STATUS_ACTIVE,
+                    'text' => strip_tags(trim($subject['text'])),
+                    'date' => Yii::$app->formatter->asTimestamp($subject['date']),
+                ]);
+                $this->save($dialog);
+
+                /*$message = new Message([
+                    'dialog_id' => $dialog->id,
+                    'user_id' => $dialog->user_from,
+                    'text' => strip_tags($subject['text']),
+                    'status' => 1,
+                ]);
+                $this->save($message);
+                $message->updateAttributes([
+                    'created_at' => Yii::$app->formatter->asTimestamp($subject['date']),
+                    'updated_at' => Yii::$app->formatter->asTimestamp($subject['date']),
+                ]);*/
+
+                // Импорт сообщений
+                $sql = 'SELECT * FROM `messages` WHERE `subject_id`=' . $subject['id']. ' ORDER BY `id`';
+                foreach ($this->command->setSql($sql)->queryAll() as $oldMessage) {
+                    if (!\in_array($oldMessage['user_id'], [$dialog->user_to, $dialog->user_from])) {
+                        continue;
+                    }
+                    $message = new Message([
+                        'dialog_id' => $dialog->id,
+                        'user_id' => $oldMessage['user_id'],
+                        'text' => strip_tags(trim($oldMessage['text'])),
+                        'status' => 1,
+                    ]);
+                    $this->save($message);
+                    $message->updateAttributes([
+                        'created_at' => Yii::$app->formatter->asTimestamp($oldMessage['date']),
+                        'updated_at' => Yii::$app->formatter->asTimestamp($oldMessage['date']),
+                    ]);
+                    $n++;
+                }
+            }
+            $this->stdout('Импортировано ' . $n . ' сообщений.' . PHP_EOL, Console::FG_GREEN);
+        });
+    }
+
+    public function actionOrders(): void
+    {
+        $this->stdout('Стартуем импорт заказов...' . PHP_EOL, Console::FG_YELLOW);
+        $this->transaction->wrap(function () {
+            UserOrder::deleteAll();
+            $sql = 'SELECT * FROM `orders` ORDER BY `id`';
+            $query = $this->command->setSql($sql);
+            $n = 0;
+            foreach ($query->queryAll() as $oldOrder) {
+                $text = $oldOrder['text'];
+                preg_match('/^.+ <a href="\/trade\/([0-9]+)-.+Количество: <b>([0-9]+)<\/b>.+Комментарий: ([^<]*)<br\/><br\/>Имя: <b>([^<]*)<\/b>.*Телефон: <b>([^<]*)<\/b>.*E-mail: <b>([^<]*)<\/b>/uis', $text, $out);
+                //print_r($out);
+                //echo PHP_EOL;
+                //break;
+                $tradeId = $out[1];
+                $amount = $out[2];
+                $comment = $out[3];
+                $name = $out[4];
+                $phone = $out[5];
+                $email = $out[6];
+
+                if (!Trade::find()->where(['id' => $tradeId])->limit(1)->exists()) {
+                    echo 'Товар id ' . $tradeId . ' пропущен(не найден)' . PHP_EOL;
+                    continue;
+                }
+
+                if (!$forUser = User::find()->where(['id' => $oldOrder['to']])->limit(1)->one()) {
+                    echo 'Пользователь с id ' . $oldOrder['to'] . ' пропущен(не найден)' . PHP_EOL;
+                    continue;
+                }
+
+                if (!$forUser->company) {
+                    echo 'Компания пользователя не найдена. Id: ' . $forUser->id . PHP_EOL;
+                    continue;
+                }
+
+                $fromUserId = User::find()->where(['id' => $oldOrder['from']])->limit(1)->exists() ? $oldOrder['from'] : null;
+                $userOrder = UserOrder::create($fromUserId, $name, $phone, $email, '');
+                $userOrder->status = Order::STATUS_SENT;
+                $this->save($userOrder);
+                $userOrder->updateAttributes([
+                    'created_at' => Yii::$app->formatter->asTimestamp($oldOrder['date']),
+                    'updated_at' => Yii::$app->formatter->asTimestamp($oldOrder['date']),
+                ]);
+
+                $order = Order::create($userOrder->id, $forUser->company->id, $fromUserId, null, $comment);
+                $order->status = Order::STATUS_SENT;
+                $this->save($order);
+                $userOrder->updateAttributes([
+                    'created_at' => Yii::$app->formatter->asTimestamp($oldOrder['date']),
+                    'updated_at' => Yii::$app->formatter->asTimestamp($oldOrder['date']),
+                ]);
+
+                $orderItem = OrderItem::create($order->id, $tradeId, $amount);
+                $this->save($orderItem);
+                $n++;
+            }
+            $this->stdout('Импортировано ' . $n . ' заказов.' . PHP_EOL, Console::FG_GREEN);
         });
     }
 

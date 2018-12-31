@@ -20,6 +20,11 @@ $this->registerJsFile(Yii::$app->params['frontendHostInfo'] . '/js/chat.js?v=' .
         <h3 class="box-title">[Служба поддержки] <?= Html::encode($dialog->subject) ?></h3>
     </div>
     <div class="box-body message-block">
+        <?php if ($dialog->text): ?>
+            <div class="dialog_text">
+                <?= Yii::$app->formatter->asNtext($dialog->text) ?>
+            </div>
+        <?php endif; ?>
         <?php foreach ($provider->models as $message): ?>
             <?= $this->render('_message-row', ['message' => $message]) ?>
         <?php endforeach; ?>

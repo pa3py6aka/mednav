@@ -41,7 +41,7 @@ $this->title = 'Личный кабинет | Служба поддержки';
                     'attribute' => 'date',
                     'label' => 'Дата',
                     'value' => function (SupportDialog $dialog) {
-                        return $dialog->lastMessage->created_at;
+                        return $dialog->lastMessage ? $dialog->lastMessage->created_at : $dialog->date;
                     },
                     'format' => 'datetime',
                 ],

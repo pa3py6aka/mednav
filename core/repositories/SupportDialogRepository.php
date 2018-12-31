@@ -22,7 +22,11 @@ class SupportDialogRepository
     {
         $query = SupportDialog::find()
             ->alias('d')
-            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read', 'MAX(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read_order'])
+            ->addSelect([
+                'd.*',
+                'SUM(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read',
+                'MAX(IF(m.`status`=0 AND (m.user_id<>'.$userId.' OR m.user_id is NULL), 1, 0)) as not_read_order',
+                'MAX(IF(m.created_at is NULL, d.date,m.created_at)) as max'])
             ->with('lastMessage')
             ->leftJoin('{{%support_messages}} m', 'm.dialog_id=d.id')
             ->where(['d.user_id' => $userId])
@@ -35,8 +39,8 @@ class SupportDialogRepository
                 'defaultOrder' => ['date' => SORT_DESC],
                 'attributes' => [
                     'date' => [
-                        'asc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
-                        'desc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
+                        'asc' => ['not_read_order' => SORT_DESC, 'max' => SORT_ASC],
+                        'desc' => ['not_read_order' => SORT_DESC, 'max' => SORT_DESC],
                     ],
                 ],
             ],
@@ -52,7 +56,12 @@ class SupportDialogRepository
     {
         $query = SupportDialog::find()
             ->alias('d')
-            ->addSelect(['d.*', 'SUM(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read', 'MAX(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read_order'])
+            ->addSelect([
+                'd.*',
+                'SUM(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read',
+                'MAX(IF(m.`status`=0 AND (m.user_id is NOT NULL), 1, 0)) as not_read_order',
+                'MAX(IF(m.created_at is NULL, d.date,m.created_at)) as max'
+            ])
             ->with('lastMessage')
             ->leftJoin('{{%support_messages}} m', 'm.dialog_id=d.id')
             //->orderBy(['not_read' => SORT_DESC,'d.id' => SORT_DESC])
@@ -64,8 +73,8 @@ class SupportDialogRepository
                 'defaultOrder' => ['date' => SORT_DESC],
                 'attributes' => [
                     'date' => [
-                        'asc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_ASC],
-                        'desc' => ['not_read_order' => SORT_DESC, 'MAX(m.created_at)' => SORT_DESC],
+                        'asc' => ['not_read_order' => SORT_DESC, 'max' => SORT_ASC],
+                        'desc' => ['not_read_order' => SORT_DESC, 'max' => SORT_DESC],
                     ],
                 ],
             ],

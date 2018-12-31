@@ -17,6 +17,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class OrderController extends Controller
 {
@@ -71,7 +72,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function actionOrder()
+    public function actionOrder(): Response
     {
         $form = new OrderForm();
         $form->load(Yii::$app->request->post());
@@ -90,7 +91,7 @@ class OrderController extends Controller
         throw new UserException(implode("<br>", $form->getFirstErrors()));
     }
 
-    public function actionOrders()
+    public function actionOrders(): string
     {
         $provider = (new OrderReadRepository())->getOrdersFor(Yii::$app->user->identity);
 

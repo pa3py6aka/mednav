@@ -3,6 +3,7 @@
 namespace core\behaviors;
 
 
+use core\entities\User\User;
 use Yii;
 use yii\base\Behavior;
 use yii\base\UserException;
@@ -43,5 +44,23 @@ class ActiveUserBehavior extends Behavior
         }
 
         return $event->isValid;
+    }
+
+    /**
+     * @param User|null $user
+     * @param bool $onlyForCompany
+     * @return bool
+     */
+    public static function checkAccess($user, $onlyForCompany = true): bool
+    {
+        if ($onlyForCompany && !$user->isCompany()) {
+            return false;
+        }
+
+        if ($user->isProfileEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 }

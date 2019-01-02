@@ -93,6 +93,9 @@ class CnewsController extends Controller
 
     public function actionActive()
     {
+        if (!ActiveUserBehavior::checkAccess($this->_user)){
+            return $this->redirect(['/user/account/index']);
+        }
         $this->selectedActionHandle();
         $provider = $this->readRepository->getCompanyActiveCNews($this->_user->company->id);
         Yii::$app->user->setReturnUrl(['/user/cnews/active']);
@@ -104,6 +107,9 @@ class CnewsController extends Controller
 
     public function actionWaiting()
     {
+        if (!ActiveUserBehavior::checkAccess($this->_user)){
+            return $this->redirect(['/user/account/index']);
+        }
         $this->selectedActionHandle();
         $provider = $this->readRepository->getCompanyOnModerationCNews($this->_user->company->id);
         Yii::$app->user->setReturnUrl(['/user/cnews/waiting']);

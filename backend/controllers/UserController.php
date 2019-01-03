@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 
+use core\components\Settings;
 use core\forms\manage\User\MessageToUserForm;
 use core\forms\manage\User\UserCreateForm;
 use core\forms\manage\User\UserEditForm;
@@ -183,7 +184,7 @@ class UserController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Mailer::send(
                 $user->email,
-                Yii::$app->params['siteName'] . ': Сообщение от администратора',
+                '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . ': Сообщение от администратора',
                 'manage/message-to-user',
                 ['user' => $user, 'message' => $form->message]
             );

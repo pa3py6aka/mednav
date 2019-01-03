@@ -4,12 +4,14 @@ namespace core\useCases\auth;
 
 
 use core\access\Rbac;
+use core\components\Settings;
 use core\entities\User\User;
 use core\forms\auth\SignupForm;
 use core\repositories\UserRepository;
 use core\services\Mailer;
 use core\services\RoleManager;
 use core\services\TransactionManager;
+use Yii;
 
 class SignupService
 {
@@ -41,7 +43,7 @@ class SignupService
             if ($user->status == User::STATUS_WAIT) {
                 Mailer::send(
                     $user->email,
-                    \Yii::$app->name . ': Подтверждение регистрации',
+                    '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Подтверждение регистрации',
                     'auth/confirm',
                     ['user' => $user]
                 );

@@ -4,6 +4,7 @@ namespace core\useCases;
 
 
 use core\components\Cart\Cart;
+use core\components\Settings;
 use core\entities\Order\Order;
 use core\entities\Order\OrderItem;
 use core\entities\Order\UserOrder;
@@ -73,7 +74,7 @@ class OrderService
         });
 
         if (!$newOrders) {
-            throw new \DomainException("Ни одного заказа не сформировано.");
+            throw new \DomainException('Ни одного заказа не сформировано.');
         }
 
         // Отправка email продавцам о новом заказе
@@ -81,7 +82,7 @@ class OrderService
             Yii::$app->queue->push(new SendMailJob([
                 'view' => 'order/new-order-received',
                 'params' => ['order' => $order],
-                'subject' => '[' . Yii::$app->params['siteName'] . '] Заказ № ' . $order->getNumber() . ' "' . substr($order->orderItems[0]->trade->name, 0, 25) . (strlen($order->orderItems[0]->trade->name) > 25 ? '...' : '') . '"',
+                'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Заказ № ' . $order->getNumber() . ' "' . substr($order->orderItems[0]->trade->name, 0, 25) . (strlen($order->orderItems[0]->trade->name) > 25 ? '...' : '') . '"',
                 'to' => [$order->forCompany->email => $order->forCompany->getFullName()],
             ]));
         }
@@ -90,7 +91,7 @@ class OrderService
             Yii::$app->queue->push(new SendMailJob([
                 'view' => 'order/new-order-for-user',
                 'params' => ['userOrder' => $userOrder],
-                'subject' => '[' . Yii::$app->params['siteName'] . '] Заказ № ' . $userOrder->id . ' "' . substr($userOrder->orders[0]->orderItems[0]->trade->name, 0, 25) . (strlen($userOrder->orders[0]->orderItems[0]->trade->name) > 25 ? '...' : '') . '"',
+                'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Заказ № ' . $userOrder->id . ' "' . substr($userOrder->orders[0]->orderItems[0]->trade->name, 0, 25) . (strlen($userOrder->orders[0]->orderItems[0]->trade->name) > 25 ? '...' : '') . '"',
                 'to' => [$userOrder->user_email => $userOrder->user_name],
             ]));
         }

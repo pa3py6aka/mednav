@@ -3,10 +3,12 @@
 namespace core\useCases\auth;
 
 
+use core\components\Settings;
 use core\forms\auth\PasswordResetRequestForm;
 use core\forms\auth\ResetPasswordForm;
 use core\repositories\UserRepository;
 use core\services\Mailer;
+use Yii;
 
 class PasswordResetService
 {
@@ -30,7 +32,7 @@ class PasswordResetService
 
         Mailer::send(
             $user->email,
-            \Yii::$app->name .': Сброс пароля',
+            '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сброс пароля',
             'auth/reset-password',
             ['user' => $user]
         );

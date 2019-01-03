@@ -169,7 +169,7 @@ class SiteController extends Controller
                     'to' => Yii::$app->settings->get(Settings::GENERAL_CONTACT_EMAIL),
                     'view' => 'contact',
                     'params' => ['contactForm' => $model],
-                    'subject' => 'Сообщение с формы обратной связи Mednav.ru'
+                    'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сообщение с формы обратной связи Mednav.ru'
                 ]));
                 Yii::$app->session->setFlash('success', 'Сообщение отправлено.');
             } catch (\DomainException $e) {

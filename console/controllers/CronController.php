@@ -3,8 +3,10 @@
 namespace console\controllers;
 
 
+use core\components\Settings;
 use core\entities\Board\Board;
 use core\helpers\Pluralize;
+use core\jobs\SendMailJob;
 use core\useCases\manage\Board\BoardManageService;
 use Yii;
 use yii\console\Controller;
@@ -37,5 +39,24 @@ class CronController extends Controller
             $n++;
         }
         echo 'В архив отправлено ' . Pluralize::get($n, 'объявление', 'объявления', 'объявлений') . PHP_EOL;
+    }
+
+    public function actionBoardExtendNotificator(): void
+    {
+        $queue = Yii::$app->queue;
+        $redis = Yii::$app->redis;
+        foreach (Board::find()->toExtend()->each() as $board) {
+            $redisKey = 'board-m-e-' . $board->id;
+            if ($board->author->email && $board->active_until > time() && !$redis->get($redisKey)) {
+                $queue->push(new SendMailJob([
+                    'view' => 'cron/must-extend-notification',
+                    'params' => ['board' => $board],
+                    'to' => $board->author->email,
+                    'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Уведомление - заканчивается срок публикации Вашего объявления.',
+                ]));
+                $redis->setex($redisKey, $board->active_until - time() + 3610, 1);
+                echo "отправлено: {$board->id}" . PHP_EOL;
+            }
+        }
     }
 }

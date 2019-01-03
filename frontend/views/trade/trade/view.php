@@ -98,17 +98,19 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($trade->
                         ]) ?>
                     </div>
 
-                    <div class="kt-item-infoset">Доставка</div>
-                    <div class="kt-item-delivery">
-                        <?php foreach ($trade->company->deliveries as $companyDelivery): ?>
-                        <input type="checkbox" id="hd-<?= $companyDelivery->id ?>" class="hide">
-                        - <label for="hd-<?= $companyDelivery->id ?>"><?= $companyDelivery->delivery->name ?></label>
-                        <div>
-                            <?= nl2br(Html::encode($companyDelivery->terms)) ?>
+                    <?php if ($trade->company->deliveries): ?>
+                        <div class="kt-item-infoset">Доставка</div>
+                        <div class="kt-item-delivery">
+                            <?php foreach ($trade->company->deliveries as $companyDelivery): ?>
+                            <input type="checkbox" id="hd-<?= $companyDelivery->id ?>" class="hide">
+                            - <label for="hd-<?= $companyDelivery->id ?>"><?= $companyDelivery->delivery->name ?></label>
+                            <div>
+                                <?= nl2br(Html::encode($companyDelivery->terms)) ?>
+                            </div>
+                            <br />
+                            <?php endforeach; ?>
                         </div>
-                        <br />
-                        <?php endforeach; ?>
-                    </div>
+                    <?php endif; ?>
                     <br>
                 </div>
             </div>

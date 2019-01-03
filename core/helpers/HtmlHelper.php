@@ -113,11 +113,11 @@ class HtmlHelper
 
     public static function infosetListItem($name, $value, $enable = null, $glue = ', '): string
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             $value = implode($glue, array_filter($value));
         }
 
-        if (func_num_args() > 2) {
+        if (\func_num_args() > 2) {
             $enable = (bool) func_get_arg(2);
         } else {
             $enable = (bool) $value;

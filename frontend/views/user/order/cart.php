@@ -34,7 +34,7 @@ $orderNumber = 1;
             <div class="cart-order"><div class="cart-order-number">Заказ № <?= $orderNumber ?></div>
                 <div class="cart-vendor">
                     Продавец:
-                    <a href="<?= current($order)->trade->company->getUrl() ?>"><?= current($order)->trade->company->getFullName() ?></a>
+                    <a href="<?= current($order)->trade->company->getUrl() ?>" target="_blank"><?= current($order)->trade->company->getFullName() ?></a>
                 </div>
             </div>
             <div class="row">

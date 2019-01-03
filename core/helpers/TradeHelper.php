@@ -40,9 +40,9 @@ class TradeHelper
                 if ($category->isRoot()) {
                     continue;
                 }
-                ?><li><a href="<?= self::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->getTitle() ?></a></li><?php
+                ?><li><a href="<?= self::categoryUrl($category, Yii::$app->session->get('geo', 'all')) ?>"><?= $category->name ?></a></li><?php
             } ?>
-            <li><a href="<?= self::categoryUrl($trade->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $trade->category->getTitle() ?></a></li>
+            <li><a href="<?= self::categoryUrl($trade->category, Yii::$app->session->get('geo', 'all')) ?>"><?= $trade->category->name ?></a></li>
         </ul>
         <?php
     }

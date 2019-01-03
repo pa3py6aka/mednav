@@ -112,13 +112,13 @@ class RegionsModalWidget extends Widget
                 'data-geo' => 'link',
             ]);
         } else if ($this->type === 'delivery' && $this->deliveryId) { // Не используется после изменения в ТЗ
-            return Html::checkbox('regions[' . $this->deliveryId . '][]', in_array($region->id, $this->selectedIds), [
+            return Html::checkbox('regions[' . $this->deliveryId . '][]', \in_array($region->id, $this->selectedIds), [
                 'label' => $text,
                 'class' => 'v-checkbox',
                 'value' => $region->id,
             ]);
         } else if ($this->type === 'delivery' && $this->countryId) {
-            return Html::checkbox("regions[{$this->countryId}][]", in_array($region->id, $this->selectedIds), [
+            return Html::checkbox("regions[{$this->countryId}][]", \in_array($region->id, $this->selectedIds), [
                 'label' => $text,
                 'class' => 'v-checkbox',
                 'value' => $region->id,

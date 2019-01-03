@@ -36,7 +36,7 @@ class BoardController extends Controller
     public function actionList($category = null, $region = null)
     {
         if (!$category && !$region) {
-            return $this->redirect(['list', 'region' => 'all']);
+            return $this->redirect(['list', 'region' => 'all'], 301);
         }
 
         $geo = $region && $region != 'all' ? $this->geoRepository->getBySlug($region) : null;

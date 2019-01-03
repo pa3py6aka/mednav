@@ -17,10 +17,7 @@ $this->title = 'Личный кабинет';
     <div class="col-md-9">
         <?= \frontend\widgets\AccountBreadcrumbs::show() ?>
         <br>
-        <div id="info" class="alert-info alert fade in">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            Добро пожаловать на сайт http://mednav.ru
-        </div>
+        <?= \core\helpers\TextHelper::welcomeUserBlock() ?>
         <?php if ($user->isProfileEmpty()): ?>
         <div id="info" class="alert-danger alert fade in">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

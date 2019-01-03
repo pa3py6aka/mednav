@@ -18,6 +18,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
 /**
@@ -297,7 +298,11 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
 
     public function getContentDescription() : string
     {
-        return Html::encode($this->note);
+        $text = Html::encode($this->note);
+        if (mb_strlen($text) > 100) {
+            $text = StringHelper::truncate($text, 97);
+        }
+        return $text;
     }
 
     public function getContentName(): string

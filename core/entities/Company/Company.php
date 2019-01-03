@@ -22,6 +22,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
 /**
@@ -290,7 +291,11 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
 
     public function getContentDescription() : string
     {
-        return Html::encode($this->short_description);
+        $text = Html::encode($this->short_description);
+        if (mb_strlen($text) > 100) {
+            $text = StringHelper::truncate($text, 97);
+        }
+        return $text;
     }
 
     public function getContentName(): string

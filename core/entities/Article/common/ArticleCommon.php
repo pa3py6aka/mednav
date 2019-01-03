@@ -17,6 +17,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 
 /**
  * @property int $id
@@ -103,7 +104,11 @@ class ArticleCommon extends ActiveRecord implements StatusesInterface, UserOwner
 
     public function getContentDescription(): string
     {
-        return Html::encode($this->intro);
+        $text = Html::encode($this->intro);
+        if (mb_strlen($text) > 100) {
+            $text = StringHelper::truncate($text, 97);
+        }
+        return $text;
     }
 
     public function getContentName(): string

@@ -30,7 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'format' => 'raw',
                 ],
-                'slug',
+                [
+                    'attribute' => 'slug',
+                    'value' => function(Page $page) {
+                        return Html::a(
+                            $page->slug,
+                            Yii::$app->frontendUrlManager->createAbsoluteUrl(['page/view', 'slug' => $page->slug], []),
+                            ['target' => '_blank']
+                        );
+                    },
+                    'format' => 'raw',
+                ],
                 ['class' => ActionColumn::class],
             ],
         ]); ?>

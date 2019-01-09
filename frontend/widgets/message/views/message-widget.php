@@ -66,7 +66,7 @@ use yii\captcha\Captcha;
                         <div class="checkbox">
                             <?= $form->field($model, 'agreement')
                                 ->checkbox()
-                                ->label('Подтверждаю свое согласие на обработку персональных данных в соответствии с <a href="/pages/terms-of-use" title="Пользовательское соглашение">пользовательским соглашением</a> и <a href="/pages/privacy-policy" title="Политика конфиденциальности">политикой конфиденциальности</a>') ?>
+                                ->label('Подтверждаю свое согласие на обработку персональных данных в соответствии с <a href="/pages/terms-of-use" title="Пользовательское соглашение" target="_blank">пользовательским соглашением</a> и <a href="/pages/privacy-policy" title="Политика конфиденциальности" target="_blank">политикой конфиденциальности</a>') ?>
                         </div>
 
                     <?php endif; ?>

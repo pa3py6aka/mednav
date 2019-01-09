@@ -49,7 +49,7 @@ class CronController extends Controller
             $redisKey = 'board-m-e-' . $board->id;
             if ($board->author->email && $board->active_until > time() && !$redis->get($redisKey)) {
                 $queue->push(new SendMailJob([
-                    'view' => 'cron/must-extend-notification',
+                    'view' => 'board/must-extend-notification',
                     'params' => ['board' => $board],
                     'to' => $board->author->email,
                     'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Уведомление - заканчивается срок публикации Вашего объявления.',

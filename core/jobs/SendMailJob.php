@@ -5,8 +5,8 @@ namespace core\jobs;
 
 use core\services\Mailer;
 use yii\base\BaseObject;
-use yii\queue\Queue;
-use yii\queue\RetryableJobInterface;
+use yii\queue\{Queue, RetryableJobInterface};
+
 
 class SendMailJob extends BaseObject implements RetryableJobInterface
 {

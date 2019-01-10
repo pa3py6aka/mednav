@@ -20,7 +20,7 @@ use core\entities\ContentBlock;
 /* @var $provider \yii\data\ActiveDataProvider */
 
 
-CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров', $category, $categoryRegion);
+CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров', $category, $categoryRegion, $geo);
 
 ?>
 <div class="row">

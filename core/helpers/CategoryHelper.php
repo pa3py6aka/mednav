@@ -7,6 +7,7 @@ use core\components\Settings;
 use core\entities\Board\BoardCategoryRegion;
 use core\entities\CategoryInterface;
 use core\entities\Company\CompanyCategoryRegion;
+use core\entities\Geo;
 use core\entities\Trade\TradeCategoryRegion;
 use Yii;
 use yii\web\View;
@@ -32,8 +33,9 @@ class CategoryHelper
      * @param string $defaultTitle
      * @param CategoryInterface|null $category
      * @param BoardCategoryRegion|TradeCategoryRegion|CompanyCategoryRegion|null $categoryRegion
+     * @param Geo|null $geo
      */
-    public static function registerHeadMeta($module, View $view, $defaultTitle, CategoryInterface $category = null, $categoryRegion = null): void
+    public static function registerHeadMeta($module, View $view, $defaultTitle, CategoryInterface $category = null, $categoryRegion = null, Geo $geo = null): void
     {
         $page = Yii::$app->request->get('page');
         $title = null;
@@ -54,6 +56,11 @@ class CategoryHelper
                 $description = $description ?: $category->meta_description;
                 $keywords = $keywords ?: $category->meta_keywords;
             }
+        }
+
+        // Выводим на главной странице компонентов ДО, КТ, КК при выборе региона <link re='canonical'..>
+        if (!$category && $geo && \in_array($module, ['company', 'trade', 'board'])) {
+            $view->registerLinkTag(['rel' => 'canonical', 'href' => Yii::$app->params['frontendHostInfo'] . "/{$module}/all"]);
         }
 
         if (!$category && !$categoryRegion) {

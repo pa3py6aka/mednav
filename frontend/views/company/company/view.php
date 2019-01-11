@@ -33,7 +33,15 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?php CompanyHelper::companyBreadcrumbs($company, $page) ?>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= $company->getFullName() ?></h1></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h1>
+                    <?php if ($page === 'contacts'): ?>
+                        Контакты <?= $company->getFullName() ?>
+                    <?php else: ?>
+                        <?= $company->getFullName() ?>
+                    <?php endif; ?>
+                </h1>
+            </div>
         </div>
 
         <div class="row">

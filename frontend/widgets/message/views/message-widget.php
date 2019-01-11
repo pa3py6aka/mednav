@@ -41,9 +41,11 @@ use yii\captcha\Captcha;
                         $form->field($model, 'subject')->hiddenInput()->label(false)
                         :$form->field($model, 'subject')->textInput(['placeholder' => 'Тема*'])->label(false)  ?>
 
-                    <div class="form-group">
-                        <b>Тема:</b> <?= $model->subject ?>
-                    </div>
+                    <?php if ($model->subject): ?>
+                        <div class="form-group">
+                            <b>Тема:</b> <?= $model->subject ?>
+                        </div>
+                    <?php endif; ?>
 
                     <?= $form->field($model, 'text')->textarea(['placeholder' => 'Текст сообщения*', 'rows' => 3])->label(false) ?>
 

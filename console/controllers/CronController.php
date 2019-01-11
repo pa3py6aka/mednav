@@ -7,6 +7,7 @@ use core\components\Settings;
 use core\entities\Board\Board;
 use core\helpers\Pluralize;
 use core\jobs\SendMailJob;
+use core\services\Mailer;
 use core\useCases\manage\Board\BoardManageService;
 use Yii;
 use yii\console\Controller;
@@ -45,18 +46,31 @@ class CronController extends Controller
     {
         $queue = Yii::$app->queue;
         $redis = Yii::$app->redis;
+        $userBoards = [];
         foreach (Board::find()->toExtend()->each() as $board) {
             $redisKey = 'board-m-e-' . $board->id;
             if ($board->author->email && $board->active_until > time() && !$redis->get($redisKey)) {
-                $queue->push(new SendMailJob([
-                    'view' => 'board/must-extend-notification',
-                    'params' => ['board' => $board],
-                    'to' => $board->author->email,
-                    'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Уведомление - заканчивается срок публикации Вашего объявления.',
-                ]));
+                $userBoards[$board->author->email][] = $board;
+
+                // Отмечаем что уведомление по данному объявлению отправлено(чтобы не слать повторные уведомления).
                 $redis->setex($redisKey, $board->active_until - time() + 3610, 1);
-                echo "отправлено: {$board->id}" . PHP_EOL;
             }
+        }
+
+        foreach ($userBoards as $email => $boards) {
+            /*Mailer::send(
+                $email,
+                '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Уведомление - заканчивается срок публикации Вашего объявления.',
+                'board/must-extend-notification',
+                ['boards' => $boards]
+            );*/
+            $queue->push(new SendMailJob([
+                'view' => 'board/must-extend-notification',
+                'params' => ['boards' => $boards],
+                'to' => $email,
+                'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Уведомление - заканчивается срок публикации Вашего объявления.',
+            ]));
+            echo "отправлено: {$email}" . PHP_EOL;
         }
     }
 }

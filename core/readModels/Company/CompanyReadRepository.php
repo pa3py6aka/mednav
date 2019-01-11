@@ -3,6 +3,7 @@
 namespace core\readModels\Company;
 
 
+use core\components\Settings;
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryAssignment;
@@ -72,8 +73,8 @@ class CompanyReadRepository
                 ],
             ],
             'pagination' => [
-                'pageSizeLimit' => [5, 250], //Todo Выставить 25 на продакшине
-                'defaultPageSize' => 5,
+                'pageSizeLimit' => [1, 250], //Todo Выставить 25 на продакшине
+                'defaultPageSize' => \Yii::$app->settings->get(Settings::COMPANY_PAGE_SIZE),
                 'forcePageParam' => false,
             ]
         ]);

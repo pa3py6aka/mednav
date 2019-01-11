@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use backend\actions\ErrorAction;
 use core\grid\TreeViewColumn;
 use core\useCases\auth\AuthService;
 use Yii;
@@ -61,7 +62,7 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => ErrorAction::class,
             ],
         ];
     }

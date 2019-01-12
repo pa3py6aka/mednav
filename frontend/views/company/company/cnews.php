@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use core\helpers\CompanyHelper;
 use core\components\Settings;
+use frontend\widgets\ContentBlock\ShowContentBlock;
+use core\entities\ContentBlock;
 
 /* @var $this \yii\web\View */
 /* @var $company \core\entities\Company\Company */
@@ -18,6 +20,15 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
 ?>
 <div class="row">
     <div class="col-md-9 col-sm-9 col-xs-12">
+
+        <?= ShowContentBlock::widget([
+            'module' => ContentBlock::MODULE_CNEWS,
+            'place' => ContentBlock::PLACE_MAIN,
+            'page' => ContentBlock::PAGE_LISTING,
+            'category' => $category,
+            'start' => 2
+        ]) ?>
+
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <?php CompanyHelper::companyBreadcrumbs($company, 'cnews') ?>
@@ -55,12 +66,29 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => Html::encode($company
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="md-12 col-sm-12 col-xs-12">
+                <?= ShowContentBlock::widget([
+                    'module' => ContentBlock::MODULE_CNEWS,
+                    'place' => ContentBlock::PLACE_MAIN,
+                    'page' => ContentBlock::PAGE_LISTING,
+                    'category' => $category,
+                    'start' => 2,
+                ]) ?>
+            </div>
+        </div>
     </div>
 
     <!-- right col -->
     <div class="col-md-3 col-sm-3 hidden-xs">
         <div id="rightCol">
-
+            <?= ShowContentBlock::widget([
+                'module' => ContentBlock::MODULE_CNEWS,
+                'place' => ContentBlock::PLACE_SIDEBAR_RIGHT,
+                'page' => ContentBlock::PAGE_LISTING,
+                'category' => $category,
+            ]) ?>
         </div><!-- // right col -->
     </div>
 </div>

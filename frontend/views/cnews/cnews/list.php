@@ -29,7 +29,7 @@ CategoryHelper::registerHeadMeta('cnews', $this, 'Новости компани�
         <?= CategoriesListWidget::widget([
             'category' => $category,
             'component' => 'cnews',
-            'categoryClass' =>CNewsCategory::class,
+            'categoryClass' => CNewsCategory::class,
             'helperClass' => CNewsHelper::class,
         ]) ?>
 

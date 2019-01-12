@@ -61,6 +61,7 @@ class CategoryController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => TradeCategory::find()->roots(),
             'sort' => ['defaultOrder' => ['lft' => SORT_ASC]],
+            'pagination' => false,
         ]);
 
         return $this->render('index', [

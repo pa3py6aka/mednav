@@ -57,6 +57,7 @@ class CategoryController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => CompanyCategory::find()->roots(),
             'sort' => ['defaultOrder' => ['lft' => SORT_ASC]],
+            'pagination' => false,
         ]);
 
         return $this->render('index', [

@@ -159,6 +159,41 @@ class CompanyHelper
 
     public static function companyTradeCategoriesItems(Company $company)
     {
+        /*$query = (new Query())
+            ->select('tc.*, COUNT(t.category_id) as t_count')
+            ->from(TradeCategory::tableName() . ' tc')
+            ->leftJoin(Trade::tableName() . ' t', 't.category_id=tc.id AND t.company_id=' . $company->id . ' AND t.status=' . Trade::STATUS_ACTIVE)
+            ->where(['>', 'tc.depth', 0])
+            ->orderBy('tc.lft')
+            ->groupBy('tc.id')
+            ->all();
+
+        $categories = [];
+        $current = 0;
+        $depth = 0;
+        foreach ($query as $category) {
+            if ($category['depth'] == 1) {
+                $categories[$category['id']]['name'] = $category['name'];
+                $categories[$category['id']]['count'] = $category['t_count'];
+                $current = $category['id'];
+                $depth = 1;
+                continue;
+            }
+
+            if ($category['depth'] > 1 && ) {
+                $categories[$current]['items'][] =
+            }
+        }
+        $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$brr) {
+
+            //    return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
+            //}
+        });
+        $categories = array_filter($categories);
+
+        return $categories;*/
+
+
         $query = (new Query())
             ->select('tc.*, COUNT(t.category_id) as t_count')
             ->from(TradeCategory::tableName() . ' tc')

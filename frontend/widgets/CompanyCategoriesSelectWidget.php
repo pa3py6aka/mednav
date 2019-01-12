@@ -44,6 +44,19 @@ $('#caterigoriesSelectModalSubmit').click(function() {
   //$('#company-form').yiiActiveForm('validate', true);
   $('[data-target*=caterigoriesSelectModal]').text(counts > 0 ? Mednav.public.pluralize(counts, ['Выбран', 'Выбрано', 'Выбрано']) + ' ' + counts + ' ' + Mednav.public.pluralize(counts, ['раздел', 'раздела', 'разделов']) : 'Выбрать');
 });
+
+$('#caterigoriesSelectModal').on('change', '[name*=categories]', function(e) {
+  var checked = $(this).is(':checked'),
+      margin = parseInt($(this).closest('div').css("margin-left"));
+  $.each($(this).closest('div').nextAll('div'), function (k, block) {
+      var blockMargin = parseInt($(block).css("margin-left"));
+      if (blockMargin <= margin) {
+          return false;
+      }
+      $(block).find('input[type=checkbox]').prop('checked', checked);
+  });
+  //alert(margin);
+});
 JS;
         $this->view->registerJs($js);
     }

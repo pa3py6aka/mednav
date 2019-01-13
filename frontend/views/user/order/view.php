@@ -76,10 +76,12 @@ $itemsSum = 0;
                         [
                             'label' => 'Покупатель',
                             'value' => function (Order $order) {
-                                return $order->user_id && $order->user->isCompany() && $order->user->isCompanyActive() ? Html::a(
-                                    $order->user->getVisibleName(),
-                                    $order->user->company->getFullName()
-                                ) : "Посетитель сайта";
+                                if ($order->user_id) {
+                                    return $order->user->isCompany() && $order->user->isCompanyActive() ?
+                                        Html::a($order->user->company->getFullName(), $order->user->company->getUrl())
+                                        : $order->user->getVisibleName();
+                                }
+                                return 'Посетитель сайта';
                             },
                             'format' => 'raw',
                         ],

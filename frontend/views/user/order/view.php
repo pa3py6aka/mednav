@@ -27,14 +27,21 @@ $itemsSum = 0;
         <div class="panel panel-default">
             <div class="panel-heading">Товары</div>
             <div class="panel-body">
+                <?php if (!$orderItemsProvider->models):
+                    echo '<b>Товар больше не продается</b><br>';
+                else: ?>
                 <?= \yii\grid\GridView::widget([
                     'dataProvider' => $orderItemsProvider,
-                    'layout' => "{items}",
+                    'layout' => '{items}',
                     'id' => 'grid',
+                    'showOnEmpty' => false,
                     'columns' => [
                         [
                             'label' => 'Наименование',
                             'value' => function (OrderItem $orderItem) {
+                                if (!$orderItem->trade) {
+                                    return 'Товар больше не продается';
+                                }
                                 return Html::a(Html::encode($orderItem->trade->name), $orderItem->trade->getUrl()) .
                                     "<br>Артикул: " . Html::encode($orderItem->trade->code);
                             },
@@ -44,6 +51,9 @@ $itemsSum = 0;
                         [
                             'label' => 'Цена',
                             'value' => function (OrderItem $orderItem) {
+                                if (!$orderItem->trade) {
+                                    return '-';
+                                }
                                 return $orderItem->trade->getPriceString() . "/" . $orderItem->trade->getUomString();
                             },
                         ],
@@ -56,7 +66,13 @@ $itemsSum = 0;
                         ],
                     ],
                 ]) ?>
-                <b class="pull-right">Итого: <?= \core\helpers\PriceHelper::normalize($itemsSum) . " " . current($orderItemsProvider->models)->trade->getCurrencyString() ?></b>
+                <?php endif; ?>
+                <b class="pull-right">
+                    Итого:
+                    <?= current($orderItemsProvider->models)
+                        ? \core\helpers\PriceHelper::normalize($itemsSum) . ' ' . current($orderItemsProvider->models)->trade->getCurrencyString()
+                        : '-' ?>
+                </b>
             </div>
         </div>
 

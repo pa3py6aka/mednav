@@ -50,7 +50,7 @@ class Cart
                     'name' => 'cartItems',
                     'value' => Json::encode($items),
                 ]));
-                return count($items);
+                return \count($items);
             }
         }
         return null;
@@ -67,7 +67,7 @@ class Cart
 
     public function getItemsCount(): int
     {
-        return count($this->getItems());
+        return \count($this->getItems());
     }
 
     public function getItemsForOrder(): array
@@ -99,6 +99,24 @@ class Cart
         return PriceHelper::normalize($price * $amount);
     }
 
+    public function updateAmount($productId, $amount): void
+    {
+        $items = $this->getItems(true);
+        if (isset($items[$productId])) {
+            $items[$productId]->amount = $amount;
+
+            if ($this->user) {
+                $items[$productId]->save();
+            } else {
+                $cookies = Yii::$app->response->cookies;
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'cartItems',
+                    'value' => Json::encode($items),
+                ]));
+            }
+        }
+    }
+
     private function saveToDatabase($productId, $amount): int
     {
         if (!$cartItem = CartItem::find()->where(['user_id' => $this->user->id, 'trade_id' => $productId])->limit(1)->one()) {
@@ -119,7 +137,7 @@ class Cart
     {
         $cartItems = $this->getItems();
         if (isset($cartItems[$productId])) {
-            $cartItems[$productId]['amount'] = $cartItems[$productId]['amount'] + $amount;
+            $cartItems[$productId]['amount'] += $amount;
         } else {
             $cartItems[$productId] = [
                 'amount' => $amount,

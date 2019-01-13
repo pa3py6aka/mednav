@@ -6,6 +6,7 @@ $(function(){
         if (input.attr('max') === undefined || parseInt(input.val()) < parseInt(input.attr('max'))) {
             input.val(parseInt(input.val(), 10) + 1);
             updateSum();
+            updateAmountOnServer(input);
         } else {
             btn.next("disabled", true);
         }
@@ -16,6 +17,7 @@ $(function(){
         if (input.attr('min') === undefined || parseInt(input.val()) > parseInt(input.attr('min'))) {
             input.val(parseInt(input.val(), 10) - 1);
             updateSum();
+            updateAmountOnServer(input);
         } else {
             btn.prev("disabled", true);
         }
@@ -23,6 +25,7 @@ $(function(){
 
     $(document).on('change', '.item-amount-input', function (e) {
         updateSum();
+        updateAmountOnServer($(this));
     });
 
     function updateSum() {
@@ -98,6 +101,20 @@ $(function(){
             }
         });
     });
+
+    function updateAmountOnServer($input)
+    {
+        var tradeId = $input.attr('data-trade-id'),
+            amount = $input.val();
+
+        // Сохраняем на сервере новое кол-во товара
+        $.ajax({
+            url: '/order/cart/update-amount',
+            method: "post",
+            dataType: "json",
+            data: {tradeId: tradeId, amount: amount}
+        });
+    }
 
     updateSum();
 });

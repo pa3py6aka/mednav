@@ -33,4 +33,13 @@ class CartController extends Controller
         }
         return ['result' => 'success', 'count' => $count];
     }
+
+    public function actionUpdateAmount()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $tradeId = (int) Yii::$app->request->post('tradeId');
+        $amount = (int) Yii::$app->request->post('amount');
+        $cart = new Cart(Yii::$app->user->identity);
+        $cart->updateAmount($tradeId, $amount);
+    }
 }

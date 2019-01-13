@@ -71,35 +71,56 @@ $(function(){
         e.preventDefault();
         var tradeId = $(this).attr('data-trade-id'),
             $loadBlock = $('[data-row-item=' + tradeId + ']');
-        $.ajax({
-            url: '/order/cart/remove-item',
-            method: "post",
-            dataType: "json",
-            data: {tradeId: tradeId},
-            beforeSend: function () {
-                $loadBlock.prepend(Mednav.overlay);
-            },
-            success: function(data, textStatus, jqXHR) {
-                if (data.result === 'success') {
-                    if (data.count === 0) {
-                        window.location.href = '/';
-                    } else {
-                        var $orderRow = $loadBlock.closest('[data-type=order-row]');
-                        $loadBlock.remove();
-                        if (!$orderRow.find('.row[data-row-item]').length) {
-                            $orderRow.remove();
-                        }
-                        updateSum();
-                        $('.cart-block-box').find('.products-amount').text(data.count);
+
+        $("#dialog").dialog({
+            buttons: [
+                {
+                    text: 'Да',
+                    click: function() {
+                        $.ajax({
+                            url: '/order/cart/remove-item',
+                            method: "post",
+                            dataType: "json",
+                            data: {tradeId: tradeId},
+                            beforeSend: function () {
+                                $loadBlock.prepend(Mednav.overlay);
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                if (data.result === 'success') {
+                                    if (data.count === 0) {
+                                        window.location.href = '/';
+                                    } else {
+                                        var $orderRow = $loadBlock.closest('[data-type=order-row]');
+                                        $loadBlock.remove();
+                                        if (!$orderRow.find('.row[data-row-item]').length) {
+                                            $orderRow.remove();
+                                        }
+                                        updateSum();
+                                        $('.cart-block-box').find('.products-amount').text(data.count);
+                                    }
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                            complete: function () {
+                                $loadBlock.find('.overlay').remove();
+                            }
+                        });
+                        $(this).dialog("close");
                     }
-                } else {
-                    alert(data.message);
+                },
+                {
+                    text: 'Нет',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
                 }
-            },
-            complete: function () {
-                $loadBlock.find('.overlay').remove();
-            }
+            ],
+            title: null,
+            dialogClass: 'confirm-dialog'
         });
+
+        $("#dialog").dialog("open");
     });
 
     function updateAmountOnServer($input)
@@ -115,6 +136,11 @@ $(function(){
             data: {tradeId: tradeId, amount: amount}
         });
     }
+
+    $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+    });
 
     updateSum();
 });

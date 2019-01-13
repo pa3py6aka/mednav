@@ -13,6 +13,7 @@ use yii\captcha\Captcha;
 /* @var $order \core\entities\Order\CartItem[] */
 /* @var $cartItem \core\entities\Order\CartItem */
 
+\yii\jui\JuiAsset::register($this);
 $this->registerJsFile('@web/js/cart-order.js?v=' . filemtime(Yii::getAlias('@webroot/js/cart-order.js')), ['depends' => JqueryAsset::class]);
 $orderNumber = 1;
 
@@ -101,7 +102,7 @@ $orderNumber = 1;
                     </div>
                     <div class="col-md-1 col-sm-6 col-xs-12">
                         <div>&nbsp;</div>
-                        <div><a href="#" data-button="cart-remove-item" data-trade-id="<?= $cartItem->trade_id ?>" title="Удалить" data-confirm="Удалить товар из корзины?"><i class="glyphicon glyphicon-remove city-icon-grey"></i></a></div>
+                        <div><a href="#" data-button="cart-remove-item" data-trade-id="<?= $cartItem->trade_id ?>" title="Удалить"><i class="glyphicon glyphicon-remove city-icon-grey"></i></a></div>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -206,6 +207,10 @@ $orderNumber = 1;
         </div>
         <?php endif; ?>
     </div>
+</div>
+
+<div id="dialog">
+    Удалить товар из корзины?
 </div>
 
 

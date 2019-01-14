@@ -82,7 +82,7 @@ class TradeUoMsForm extends Model
     private function checkUsing(TradeUoM $uom)
     {
         if (TradeUserCategory::find()->where(['uom_id' => $uom->id])->exists()) {
-            throw new \DomainException("Единица измерения {$uom->name} используется и не может быть удалена.");
+            throw new \DomainException("Единица измерения &laquo;{$uom->name}&raquo; используется и не может быть удалена.");
         }
     }
 

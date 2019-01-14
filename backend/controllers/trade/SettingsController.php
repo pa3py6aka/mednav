@@ -43,9 +43,13 @@ class SettingsController extends Controller
         $form = new TradeUoMsForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->save();
-            Yii::$app->session->setFlash("success", "Данные обновлены");
-            $form = new TradeUoMsForm();
+            try {
+                $form->save();
+                Yii::$app->session->setFlash('success', 'Данные обновлены');
+                $form = new TradeUoMsForm();
+            } catch (\DomainException $e) {
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('index', ['model' => $form, 'tab' => 'uoms']);

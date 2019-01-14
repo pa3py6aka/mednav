@@ -120,7 +120,7 @@ $orderNumber = 1;
                     </div>
                 </div>
                 <?php endif; ?>
-                <div class="col-md-7 col-sm-5 col-xs-12">
+                <div class="col-md-11 col-sm-11 col-xs-12">
                     <div class="cart-total-price"></div>
                 </div>
                 <div class="col-md-1 col-sm-1 hidden-xs">

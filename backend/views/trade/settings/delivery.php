@@ -11,7 +11,7 @@ $count = 10;
     <tr>
         <th>Наименование</th>
         <th>Выводить поле "Условия"</th>
-        <th>Выводить "Выбор региона"</th>
+        <?php //<th>Выводить "Выбор региона"</th> ?>
         <th></th>
     </tr>
     <?php for ($i = 1; $i <= $count; $i++): ?>
@@ -19,7 +19,7 @@ $count = 10;
         <tr>
             <td><?= Html::activeInput('text', $model, 'name[' . $i . ']', ['class' => 'form-control']) ?></td>
             <td class="text-center"><?= Html::activeCheckbox($model, 'terms[' . $i . ']', ['label' => '']) ?></td>
-            <td class="text-center"><?= Html::activeCheckbox($model, 'regions[' . $i . ']', ['label' => '']) ?></td>
+            <?php /*<td class="text-center"><?= Html::activeCheckbox($model, 'regions[' . $i . ']', ['label' => '']) ?></td> */ ?>
             <td><i class="del-row-btn glyphicon glyphicon-trash text-red" style="cursor:pointer;"></i></td>
         </tr>
         <?php elseif ($model->getMaxId() > $i): ?>

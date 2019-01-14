@@ -22,7 +22,7 @@ class TradeDeliveryForm extends Model
             $this->id[$delivery->id] = $delivery->id;
             $this->name[$delivery->id] = $delivery->name;
             $this->terms[$delivery->id] = $delivery->has_terms;
-            $this->regions[$delivery->id] = $delivery->has_regions;
+            //$this->regions[$delivery->id] = $delivery->has_regions;
             $this->maxId = $delivery->id;
         }
 
@@ -32,7 +32,7 @@ class TradeDeliveryForm extends Model
     public function rules(): array
     {
         return [
-            [['id', 'name', 'terms', 'regions'], 'required'],
+            [['id', 'name', 'terms'/*, 'regions'*/], 'required'],
             [['id'], 'each', 'rule' => ['integer']],
             [['name'], 'each', 'rule' => ['string']],
             [['terms', 'regions'], 'each', 'rule' => ['boolean']],
@@ -56,7 +56,7 @@ class TradeDeliveryForm extends Model
                 }
                 $delivery->name = $this->name[$id];
                 $delivery->has_terms = $this->terms[$id];
-                $delivery->has_regions = $this->regions[$id];
+                $delivery->has_regions = 0;//$this->regions[$id];
                 $delivery->save();
             } else {
                 if ($delivery = TradeDelivery::find()->where(['id' => $id])->one()) {

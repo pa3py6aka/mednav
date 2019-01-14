@@ -42,6 +42,9 @@ $sum = 0;
     </tr>
 </table>
 
+<?php if ($order->delivery): ?>
+    <p><b>Доставка:</b> <?= $order->delivery->name ?></p>
+<?php endif; ?>
 <p><b>Комментарий:</b> <?= Html::encode($order->comment) ?></p>
 <p>
     <b>Данные покупателя:</b><br>

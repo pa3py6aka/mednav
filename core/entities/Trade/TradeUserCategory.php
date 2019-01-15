@@ -5,6 +5,7 @@ namespace core\entities\Trade;
 
 use core\entities\Currency;
 use core\entities\User\User;
+use core\entities\UserOwnerInterface;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -20,6 +21,9 @@ use yii\db\ActiveRecord;
  * @property int $currency_id
  * @property int $wholesale
  *
+ * @property string $uomName
+ * @property string $currencyName
+ *
  * @property User $user
  * @property TradeCategory $category
  * @property Currency $currency
@@ -27,7 +31,7 @@ use yii\db\ActiveRecord;
  * @property Trade[] $trades
  * @property Trade[] $activeTrades
  */
-class TradeUserCategory extends ActiveRecord
+class TradeUserCategory extends ActiveRecord implements UserOwnerInterface
 {
     public static function create($userId, $name, $categoryId, $uomId, $currencyId, $wholeSale): TradeUserCategory
     {
@@ -48,6 +52,16 @@ class TradeUserCategory extends ActiveRecord
         $this->uom_id = $uomId;
         $this->currency_id = $currencyId;
         $this->wholesale = $wholeSale;
+    }
+
+    public function getUomName(): string
+    {
+        return $this->uom ? $this->uom->name : '-';
+    }
+
+    public function getCurrencyName(): string
+    {
+        return $this->currency ? $this->currency->name : '-';
     }
 
     /**
@@ -82,7 +96,9 @@ class TradeUserCategory extends ActiveRecord
             'name' => 'Название',
             'category_id' => 'Раздел',
             'uom_id' => 'Ед. изм.',
+            'uomName' => 'Ед. изм.',
             'currency_id' => 'Валюта',
+            'currencyName' => 'Валюта',
             'wholesale' => 'Опт',
         ];
     }
@@ -116,5 +132,15 @@ class TradeUserCategory extends ActiveRecord
     {
         return $this->hasMany(Trade::class, ['user_category_id' => 'id'])
             ->andWhere(['status' => Trade::STATUS_ACTIVE]);
+    }
+
+    public function getOwnerId(): int
+    {
+        return $this->user_id;
+    }
+
+    public function getOwnerUser(): User
+    {
+        return $this->user;
     }
 }

@@ -32,6 +32,9 @@ $.ajax({
         }
     }
 });
+
+var url = $('#add-user-category-link').attr('data-url') + '?userId=' + id;
+$('#add-user-category-link').attr('href', url);
 JS;
         return $js;
     }

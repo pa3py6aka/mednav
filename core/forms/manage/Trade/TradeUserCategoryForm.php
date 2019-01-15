@@ -17,6 +17,8 @@ class TradeUserCategoryForm extends Model
     public $currencyId;
     public $wholeSale;
 
+    public $userId;
+
     private $_userCategory;
     private $categories;
 
@@ -33,6 +35,7 @@ class TradeUserCategoryForm extends Model
             $this->uomId = $userCategory->uom_id;
             $this->currencyId = $userCategory->currency_id;
             $this->wholeSale = $userCategory->wholesale;
+            $this->userId = $userCategory->user_id;
         } else {
             $this->categoryId[] = '';
             $this->uomId = TradeUoM::getDefaultId();
@@ -50,7 +53,8 @@ class TradeUserCategoryForm extends Model
             ['categoryId', 'exist', 'targetClass' => TradeCategory::class, 'targetAttribute' => 'id'],
             ['categoryId', 'validateCategory'],
             [['uomId', 'currencyId'], 'integer'],
-            ['wholeSale', 'boolean']
+            ['wholeSale', 'boolean'],
+            ['userId', 'integer'],
         ];
     }
 
@@ -96,6 +100,7 @@ class TradeUserCategoryForm extends Model
             'uomId' => 'Ед. измерения',
             'currencyId' => 'Валюта',
             'wholeSale' => 'Оптовые цены',
+            'userId' => 'Пользователь',
         ];
     }
 }

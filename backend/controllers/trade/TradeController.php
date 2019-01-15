@@ -159,6 +159,7 @@ class TradeController extends Controller
      */
     public function actionCreate()
     {
+        Yii::$app->user->setReturnUrl(['trade/trade/create']);
         $form = new TradeManageForm();
         $form->scenario = TradeManageForm::SCENARIO_ADMIN_CREATE;
 
@@ -185,6 +186,7 @@ class TradeController extends Controller
      */
     public function actionUpdate($id)
     {
+        Yii::$app->user->setReturnUrl(['trade/trade/update', 'id' => $id]);
         $trade = $this->findModel($id);
         $form = new TradeManageForm($trade);
         $form->scenario = TradeManageForm::SCENARIO_ADMIN_EDIT;
@@ -208,6 +210,10 @@ class TradeController extends Controller
             Yii::$app->session->setFlash('success', 'Товар удалён' . ($hard ? ' полностью из базы' : ''));
         } catch (\DomainException $e) {
             Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        if (strpos(Yii::$app->user->getReturnUrl(), 'user-category') !== false) {
+            return $this->redirect(Yii::$app->user->getReturnUrl());
         }
 
         return $this->redirect(['active']);

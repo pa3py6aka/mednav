@@ -42,21 +42,25 @@ class TradeSearch extends Trade
      *
      * @param array $params
      *
+     * @param string $tab
+     * @param int|null $userCategoryId
      * @return ActiveDataProvider
      */
-    public function search($params, $tab = 'active')
+    public function search($params, $tab = 'active', $userCategoryId = null)
     {
         $query = Trade::find()
             ->alias('t')
             ->with('category')
             ->joinWith('company c');
 
-        if ($tab == 'active') {
+        if ($tab === 'active') {
             $query->active('t');
-        } else if ($tab == 'moderation') {
+        } else if ($tab === 'moderation') {
             $query->onModeration('t');
-        } else if ($tab == 'deleted') {
+        } else if ($tab === 'deleted') {
             $query->deleted('t');
+        } else if ($tab === 'user-category' && $userCategoryId) {
+            $query->andWhere(['t.user_category_id' => $userCategoryId]);
         }
 
         // add conditions that should always apply here

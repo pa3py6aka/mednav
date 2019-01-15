@@ -23,6 +23,7 @@
                     ]],
                     ['label' => 'Каталог товаров', 'icon' => 'cubes', 'items' => [
                         ['label' => 'Разделы', 'icon' => 'list', 'url' => ['/trade/category/index']],
+                        ['label' => 'Категории', 'icon' => 'list', 'url' => ['/trade/user-category/index']],
                         ['label' => 'Товары', 'icon' => 'cubes', 'url' => ['/trade/trade/active']],
                         ['label' => 'Заказы', 'icon' => 'sticky-note-o', 'url' => ['/trade/order/index']],
                         ['label' => 'Настройки', 'icon' => 'wrench', 'url' => ['/trade/settings/main']],

@@ -30,7 +30,8 @@ ImageManagerAsset::register($this);
             ->dropDownList($model->getUserCategories(), [
                 'prompt' => '',
                 'id' => \backend\widgets\UserFieldWidget\dependencies\UserCategoryDependency::CATEGORY_SELECTOR_ID,
-            ]) ?>
+            ])
+            ->hint(Html::a('Добавить категорию', ['/trade/user-category/create'], ['id' => 'add-user-category-link', 'data-url' => Url::to(['/trade/user-category/create'])])) ?>
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

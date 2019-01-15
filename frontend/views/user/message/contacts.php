@@ -18,7 +18,7 @@ $this->title = 'Личный кабинет | Контакты';
             [
                 'label' => 'Компания',
                 'value' => function (Contact $contact) {
-                    return Html::a($contact->contact->getVisibleName(), $contact->contact->getUrl());
+                    return Html::a($contact->contact->getVisibleName(), $contact->contact->getUrl(), ['target' => '_blank']);
                 },
                 'format' => 'raw',
             ],

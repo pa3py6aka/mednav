@@ -40,7 +40,7 @@ $this->title = 'Личный кабинет | Мои сообщения';
                 },
                 'format' => 'datetime',
             ],
-            ['class' => \yii\grid\ActionColumn::class, 'template' => '{view}']
+            ['class' => \yii\grid\ActionColumn::class, 'template' => '{view} {delete}']
         ],
     ]) ?>
 </div>

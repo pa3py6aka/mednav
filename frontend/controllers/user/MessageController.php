@@ -50,6 +50,8 @@ class MessageController extends Controller
                 'actions' => [
                     'send-message' => ['post'],
                     'add-contact' => ['post'],
+                    'delete' => ['post'],
+                    'contact-remove' => ['post'],
                 ]
             ]
         ];
@@ -101,6 +103,17 @@ class MessageController extends Controller
             'provider' => $provider,
             'user' => $this->_user,
         ]);
+    }
+
+    public function actionDelete($id)
+    {
+        try {
+            $this->service->remove($id);
+            Yii::$app->session->setFlash('success', 'Диалог удалён');
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['dialogs']);
     }
 
     public function actionAddContact()

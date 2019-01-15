@@ -60,7 +60,7 @@ class CnewsController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'delete' => ['post'],
+                    'remove' => ['post'],
                 ]
             ]
         ];

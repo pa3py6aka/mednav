@@ -107,4 +107,10 @@ class DialogService
 
         return $dialog;
     }
+
+    public function remove($id): void
+    {
+        $news = $this->repository->get($id);
+        $this->repository->remove($news);
+    }
 }

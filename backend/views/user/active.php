@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'lastOnline',
                     'label' => 'Был на сайте',
                     'value' => function(User $user) {
-                        return $user->last_online ? Yii::$app->formatter->asDatetime($user->last_online) : '-';
+                        return $user->last_online ? Yii::$app->formatter->asDate($user->last_online, 'php:d-m-Y') : '-';
                     },
                     'format' => 'raw'
                 ],

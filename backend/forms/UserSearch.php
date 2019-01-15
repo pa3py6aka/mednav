@@ -18,8 +18,9 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'type', 'last_online', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'type', 'last_online', 'status', 'updated_at'], 'integer'],
             [['email', 'auth_key', 'password_hash', 'password_reset_token'], 'safe'],
+            ['created_at', 'date', 'format' => 'php:d.m.Y'],
         ];
     }
 
@@ -66,13 +67,19 @@ class UserSearch extends User
             return $dataProvider;
         }
 
+        if ($this->created_at) {
+            $from = strtotime($this->created_at . ' 0:00');
+            $to = strtotime($this->created_at . ' 23:59');
+            $query->andWhere(['between', 'created_at', $from, $to]);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'type' => $this->type,
             'last_online' => $this->last_online,
             'status' => $this->status,
-            'created_at' => $this->created_at,
+            //'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 

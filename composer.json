@@ -23,7 +23,7 @@
         "yiisoft/yii2-imagine": "^2.1",
         "zelenin/yii2-slug-behavior": "~1.5.1",
         "kartik-v/yii2-widget-fileinput": "@dev",
-        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-datepicker": "dev-master",
         "yiisoft/yii2-jui": "^2.0",
         "bower-asset/fancytree": ">=2.28",
         "yiisoft/yii2-queue": "^2.1",

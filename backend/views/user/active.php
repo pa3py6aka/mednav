@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use core\entities\User\User;
 use core\helpers\PaginationHelper;
 use core\helpers\HtmlHelper;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\UserSearch */
@@ -44,7 +45,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'created_at',
-                    'format' => 'date'
+                    'format' => 'date',
+                    /*'filter' => DatePicker::widget([
+                        'model' => $searchModel,
+                        'attribute' => 'created_at',
+                        'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                        //'separator' => '-',
+                        'pickerButton' => false,
+                        'pluginOptions' => [
+                            'todayHighlight' => true,
+                            'autoclose' => true,
+                            'format' => 'dd.mm.yyyy',
+                        ],
+                    ])*/
+                    'filter' => \yii\widgets\MaskedInput::widget([
+                        'model' => $searchModel,
+                        'attribute' => 'created_at',
+                        'mask' => '99.99.9999',
+                    ])
                 ],
                 [
                     'attribute' => 'status',
@@ -52,6 +70,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $user->statusName;
                     },
                     'filter' => User::getStatusesArray(true),
+                ],
+                [
+                    'attribute' => 'lastOnline',
+                    'label' => 'Был на сайте',
+                    'value' => function(User $user) {
+                        return $user->last_online ? Yii::$app->formatter->asDatetime($user->last_online) : '-';
+                    },
+                    'format' => 'raw'
                 ],
 
                 ['class' => ActionColumn::class],

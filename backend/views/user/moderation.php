@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use core\entities\User\User;
 use core\helpers\PaginationHelper;
 use core\helpers\HtmlHelper;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\UserSearch */
@@ -51,7 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'created_at',
-                    'format' => 'date'
+                    'format' => 'date',
+                    'filter' => \yii\widgets\MaskedInput::widget([
+                        'model' => $searchModel,
+                        'attribute' => 'created_at',
+                        'mask' => '99.99.9999',
+                    ])
                 ],
 
                 ['class' => ModeratorActionColumn::class],

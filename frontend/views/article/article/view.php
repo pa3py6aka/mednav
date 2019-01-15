@@ -65,7 +65,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $article->getTagsStri
                 <div class="kk-content">
                     <?= TextHelper::out($article->full_text, 'articles', true, (bool) $article->indirect_links) ?>
                     <div>
-                        Опубликовано: <?= $article->company_id ? '<a href="'. $article->company->getUrl() .'">' . $article->company->getFullName() . '</a> / ' : '' ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $article->created_at) ?>
+                        Опубликовано: <?= ArticleHelper::authorString($article) ?>
+                        <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $article->created_at) ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="id-page"><span class="glyphicon glyphicon-eye-open btn-xs"></span><?= $article->views ?></div>

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use core\helpers\ArticleHelper;
 use core\helpers\ExpoHelper;
 use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
@@ -68,7 +69,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $expo->getTagsString(
                 <div class="kk-content">
                     <?= TextHelper::out($expo->full_text, 'expo', true, (bool) $expo->indirect_links) ?>
                     <div>
-                        Опубликовано: <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $expo->created_at) ?>
+                        Опубликовано: <?= ArticleHelper::authorString($expo) ?>
+                        <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $expo->created_at) ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="id-page"><span class="glyphicon glyphicon-eye-open btn-xs"></span><?= $expo->views ?></div>

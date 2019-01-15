@@ -4,6 +4,7 @@ namespace core\helpers;
 
 
 use core\components\SettingsManager;
+use core\entities\Article\common\ArticleCommon;
 use core\entities\Geo;
 use core\entities\Article\Article;
 use core\entities\Article\ArticleCategory;
@@ -66,5 +67,25 @@ class ArticleHelper
             ->andWhere(['<=', 'c.rgt', $category->rgt]);
 
         return $query->count();
+    }
+
+    public static function authorString(ArticleCommon $article)
+    {
+        if ($article->company_id) {
+            return '<a href="'. $article->company->getUrl() .'">' . $article->company->getFullName() . '</a> / ';
+        } else if ($article->user_id) {
+            $username = [];
+            if ($article->user->name) {
+                $username[] = $article->user->name;
+            }
+            if ($article->user->last_name) {
+                $username[] = $article->user->last_name;
+            }
+            $username = implode(' ', $username);
+            if ($username) {
+                return Html::encode($username) . ' / ';
+            }
+        }
+        return '';
     }
 }

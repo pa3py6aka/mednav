@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use core\helpers\ArticleHelper;
 use core\helpers\CNewsHelper;
 use core\helpers\HtmlHelper;
 use core\helpers\TextHelper;
@@ -65,7 +66,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $news->getTagsString(
                 <div class="kk-content">
                     <?= TextHelper::out($news->full_text, 'cnews', true, (bool) $news->indirect_links) ?>
                     <div>
-                        Опубликовано: <?= $news->company_id ? '<a href="'. $news->company->getUrl() .'">' . $news->company->getFullName() . '</a> / ' : '' ?><i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $news->created_at) ?>
+                        Опубликовано: <?= ArticleHelper::authorString($news) ?>
+                        <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $news->created_at) ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="id-page"><span class="glyphicon glyphicon-eye-open btn-xs"></span><?= $news->views ?></div>

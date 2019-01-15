@@ -6,6 +6,7 @@ use core\helpers\TextHelper;
 use core\helpers\HtmlHelper;
 use frontend\widgets\ContentBlock\ShowContentBlock;
 use core\entities\ContentBlock;
+use core\helpers\ArticleHelper;
 
 /* @var $this \yii\web\View */
 /* @var $brand \core\entities\Brand\Brand */
@@ -64,7 +65,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $brand->getTagsString
                 <div class="kk-content">
                     <?= TextHelper::out($brand->full_text, 'brand', true, (bool) $brand->indirect_links) ?>
                     <div>
-                        Опубликовано: <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $brand->created_at) ?>
+                        Опубликовано: <?= ArticleHelper::authorString($brand) ?>
+                        <i class="glyphicon glyphicon-calendar btn-xs city-icon-grey"></i><?= date('d-m-Y', $brand->created_at) ?>
                     </div>
                     <div class="clearfix"></div>
                     <div class="id-page"><span class="glyphicon glyphicon-eye-open btn-xs"></span><?= $brand->views ?></div>

@@ -49,7 +49,7 @@ CategoryHelper::registerHeadMeta('article', $this, 'Справочная инф�
             <?= $this->render('card-items-block', ['provider' => $provider]) ?>
         </div>
 
-        <?= ContextBlock::getBlock(5) ?>
+        <?= count($provider->models) > 16 ? ContextBlock::getBlock(5) : '' ?>
 
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,

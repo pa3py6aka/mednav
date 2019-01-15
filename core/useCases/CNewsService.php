@@ -123,13 +123,13 @@ class CNewsService
 
     public function publish($ids): void
     {
-        if (!is_array($ids)) {
+        if (!\is_array($ids)) {
             $ids = [$ids];
         }
         foreach ($ids as $id) {
-            $company = $this->repository->get($id);
-            $company->setStatus(CNews::STATUS_ACTIVE);
-            $this->repository->save($company);
+            $news = $this->repository->get($id);
+            $news->setStatus(CNews::STATUS_ACTIVE);
+            $this->repository->save($news);
         }
     }
 
@@ -140,11 +140,11 @@ class CNewsService
 
     public function remove($id, $safe = true): void
     {
-        $company = $this->repository->get($id);
+        $news = $this->repository->get($id);
         if ($safe) {
-            $this->repository->safeRemove($company);
+            $this->repository->safeRemove($news);
         } else {
-            $this->repository->remove($company);
+            $this->repository->remove($news);
         }
     }
 }

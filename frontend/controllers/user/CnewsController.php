@@ -178,6 +178,17 @@ class CnewsController extends Controller
         ]);
     }
 
+    public function actionRemove($id)
+    {
+        try {
+            $this->service->remove($id);
+            Yii::$app->session->setFlash('success', 'Новость удалена');
+        } catch (\DomainException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['active']);
+    }
+
     private function selectedActionHandle(): void
     {
         $ids = (array) Yii::$app->request->post('ids');
@@ -192,7 +203,7 @@ class CnewsController extends Controller
                 }
             }
 
-            if ($action == 'remove') {
+            if ($action === 'remove') {
                 $count = $this->service->massRemove($ids);
                 Yii::$app->session->setFlash('info', 'Удалено новостей: ' . $count);
             }

@@ -15,7 +15,6 @@ class ContextBlock
     public static function getBlock($id, $block = null, $paginationNumeric = null): string
     {
         if ($paginationNumeric !== null) {
-
             self::$paginationNumeric = $paginationNumeric;
         }
 
@@ -35,11 +34,11 @@ class ContextBlock
             }
         }
 
-        if (self::$number == 5) {
+        if (self::$number == 6) {
             echo self::getBlock(2);
-        } else if (self::$number == 10) {
+        } else if (self::$number == 11) {
             echo self::getBlock(3);
-        } elseif (self::$number == 15) {
+        } elseif (self::$number == 16) {
             echo self::getBlock(4);
         }
         self::$number++;

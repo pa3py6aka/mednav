@@ -19,6 +19,7 @@ use core\helpers\HtmlHelper;
     </div>
 <?php else: ?>
     <?php foreach ($provider->models as $company): ?>
+        <?php ContextBlock::afterRow($provider->pagination->page, $provider->pagination->pageSize) ?>
         <div class="list-item">
             <div class="row">
                 <div class="col-md-2 col-sm-2 col-xs-12">
@@ -41,6 +42,5 @@ use core\helpers\HtmlHelper;
                 </div>
             </div>
         </div>
-        <?php ContextBlock::afterRow($provider->pagination->page, $provider->pagination->pageSize) ?>
     <?php endforeach; ?>
 <?php endif; ?>

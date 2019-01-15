@@ -67,7 +67,7 @@ CategoryHelper::registerHeadMeta('company', $this, 'Компании', $category
             ]) ?>
         </div>
 
-        <?= ContextBlock::getBlock(5) ?>
+        <?= count($provider->models) > 16 ? ContextBlock::getBlock(5) : '' ?>
 
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,

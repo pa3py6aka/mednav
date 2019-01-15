@@ -28,7 +28,7 @@ CategoryHelper::registerHeadMeta('expo', $this, 'Выставки', $category);
 
         <?= CategoriesListWidget::widget([
             'category' => $category,
-            'component' => 'brand',
+            'component' => 'expo',
             'categoryClass' => ExpoCategory::class,
             'helperClass' => ExpoHelper::class,
         ]) ?>

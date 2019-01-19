@@ -929,6 +929,7 @@ a.footer-lnk-add, a.footer-lnk-green:hover {
 .no-padding {padding:0 !important;}
 .no-left-padding {padding-left:0 !important;}
 .no-right-padding {padding-right:0 !important;}
+.help-block.has-error {color:#dd4b39;}
 
 .required label:after {content:" *";color:red;}
 .main-container > .alert {margin-bottom:6px;}

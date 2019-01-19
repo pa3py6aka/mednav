@@ -52,7 +52,7 @@ class DialogService
         });
     }
 
-    public function sendFromChat($dialogId, $userId, $text): Message
+    public function sendFromChat($dialogId, $userId, $text, $subject = null): Message
     {
         $message = Message::create($dialogId, $userId, $text);
 
@@ -60,7 +60,15 @@ class DialogService
             throw new \DomainException('Пользователь удалён или заблокирован, отправка сообщений невозможна.');
         }
 
-        $this->repository->saveMessage($message);
+        $this->transaction->wrap(function () use ($message, $subject) {
+            if (!$message->dialog->subject && $subject) {
+                $dialog = $message->dialog;
+                $dialog->subject = $subject;
+                $this->repository->save($dialog);
+            }
+            $this->repository->saveMessage($message);
+        });
+
         if (!$message->dialog->getInterlocutor($message->user_id)->isOnline()) {
             $this->sendNotificationToEmail($message, true);
         }

@@ -26,9 +26,15 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
             ['label' => 'Сообщения', 'url' => ['/user/message/dialogs']],
             $dialog->getDialogName()
         ]) ?>
-        <h1>
-            Тема: <?= Html::encode($dialog->subject) ?>
-        </h1>
+
+        <div id="subject-block">
+            <?php if ($dialog->subject): ?>
+                <h1>
+                    Тема: <?= Html::encode($dialog->subject) ?>
+                </h1>
+            <?php endif; ?>
+        </div>
+
         <?php if ($dialog->text): ?>
             <div class="dialog_text">
                 <?= Yii::$app->formatter->asNtext($dialog->text) ?>
@@ -47,6 +53,12 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
                     Пользователь удалён или заблокирован, отправка сообщений невозможна.
                 </div>
             <?php else: ?>
+                <?php if (!$dialog->subject && !$provider->models): ?>
+                    <div class="form-group">
+                        <input type="text" name="subject" class="form-control" id="subject-input" placeholder="Укажите тему сообщения">
+                        <div class="help-block has-error" id="subject-error"></div>
+                    </div>
+                <?php endif; ?>
                 <div class="form-group">
                     <textarea name="message" class="form-control" rows="3" title="Сообщение" placeholder="Введите сообщение..."></textarea>
                 </div>

@@ -88,7 +88,7 @@ class MessageController extends Controller
 
         if ($text = Yii::$app->request->post('message')) {
             try {
-                $message = $this->service->sendFromChat($dialog->id, $this->_user->id, $text);
+                $message = $this->service->sendFromChat($dialog->id, $this->_user->id, $text, Yii::$app->request->post('subject'));
                 return $this->asJson([
                     'result' => 'success',
                     'message' => $this->renderPartial('_message-row', ['message' => $message])

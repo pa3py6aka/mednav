@@ -3,6 +3,7 @@
 namespace core\readModels\Board;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
@@ -19,8 +20,13 @@ class BoardReadRepository
     public function getByIdAndSlug($id, $slug): Board
     {
         if (!$board = Board::find()->notDeleted()->andWhere(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Объявление не найдено");
+            throw new NotFoundHttpException('Объявление не найдено');
         }
+
+        if (!$board->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Объявление не найдено');
+        }
+
         return $board;
     }
 

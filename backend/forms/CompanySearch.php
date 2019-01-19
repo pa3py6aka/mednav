@@ -47,11 +47,11 @@ class CompanySearch extends Company
             ->alias('c')
             ->joinWith('user u');
 
-        if ($tab == 'active') {
+        if ($tab === 'active') {
             $query->active('c');
-        } else if ($tab == 'moderation') {
+        } else if ($tab === 'moderation') {
             $query->onModeration('c');
-        } else if ($tab == 'deleted') {
+        } else if ($tab === 'deleted') {
             $query->deleted('c');
         }
 

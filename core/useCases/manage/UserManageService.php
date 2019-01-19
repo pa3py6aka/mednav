@@ -4,6 +4,7 @@ namespace core\useCases\manage;
 
 
 use core\components\Settings;
+use core\entities\Company\Company;
 use core\entities\User\User;
 use core\forms\manage\User\UserCreateForm;
 use core\forms\manage\User\UserEditForm;
@@ -65,13 +66,19 @@ class UserManageService
         $user->updateStatus($status);
         $this->repository->save($user);
 
-        if ($user->status == User::STATUS_ACTIVE && $oldStatus < User::STATUS_ACTIVE) {
+        // Активация пользователя
+        if ($user->status === User::STATUS_ACTIVE && $oldStatus < User::STATUS_ACTIVE) {
             Yii::$app->queue->push(new SendMailJob([
                 'to' => $user->email,
                 'subject' => '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Ваш профиль активирован',
                 'view' => 'auth/user-activated',
                 'params' => ['user' => $user],
             ]));
+        }
+
+        // Активация всего контента пользователя(если профиль активирован после его безопасного удаления)
+        if ($oldStatus == User::STATUS_DELETED && $user->status === User::STATUS_ACTIVE) {
+
         }
     }
 

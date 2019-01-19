@@ -77,9 +77,9 @@ class BoardController extends Controller
     {
         $board = $this->readRepository->getByIdAndSlug($id, $slug);
 
-        if ($board->isOnModeration() && !Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $board->author_id])) {
-            throw new UserException("Данное объявление находится на проверке");
-        }
+        /*if ($board->isOnModeration() && !Yii::$app->user->can(Rbac::PERMISSION_MANAGE, ['user_id' => $board->author_id])) {
+            throw new UserException('Данное объявление находится на проверке');
+        }*/
 
         $board->updateCounters(['views' => 1]);
 

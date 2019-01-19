@@ -3,8 +3,10 @@
 namespace core\readModels;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Article\Article;
+use Yii;
 use yii\web\NotFoundHttpException;
 
 class ArticleReadRepository extends ArticleReadCommonRepository
@@ -15,8 +17,13 @@ class ArticleReadRepository extends ArticleReadCommonRepository
     public function getByIdAndSlug($id, $slug): Article
     {
         if (!$article = Article::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Статья не найдена");
+            throw new NotFoundHttpException('Статья не найдена');
         }
+
+        if (!$article->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Статья не найдена');
+        }
+
         return $article;
     }
 

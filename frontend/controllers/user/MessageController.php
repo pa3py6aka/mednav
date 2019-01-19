@@ -80,7 +80,7 @@ class MessageController extends Controller
     {
         $dialog = $this->repository->get($id);
         if (!\in_array($this->_user->id, [$dialog->user_from, $dialog->user_to], true)) {
-            throw new ForbiddenHttpException("Это чужая переписка!");
+            throw new ForbiddenHttpException('Это чужая переписка!');
         }
 
         $provider = $this->repository->getDialogMessages($dialog);

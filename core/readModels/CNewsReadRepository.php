@@ -3,9 +3,11 @@
 namespace core\readModels;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Article\Article;
 use core\entities\CNews\CNews;
+use Yii;
 use yii\web\NotFoundHttpException;
 
 class CNewsReadRepository extends ArticleReadCommonRepository
@@ -16,8 +18,13 @@ class CNewsReadRepository extends ArticleReadCommonRepository
     public function getByIdAndSlug($id, $slug): CNews
     {
         if (!$news = CNews::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Новость не найдена");
+            throw new NotFoundHttpException('Новость не найдена');
         }
+
+        if (!$news->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Новость не найдена');
+        }
+
         return $news;
     }
 

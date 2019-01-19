@@ -42,12 +42,18 @@ $this->registerJsFile('@web/js/chat.js?v=' . filemtime(Yii::getAlias('@webroot/j
         <?= Html::beginForm('', 'post', ['id' => 'chat-message-form', 'class' => 'has-overlay']) ?>
 
         <?php if ($dialog->getInterlocutorId($user->id)): ?>
-            <div class="form-group">
-                <textarea name="message" class="form-control" rows="3" title="Сообщение" placeholder="Введите сообщение..."></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-info">Отправить</button>
-            </div>
+            <?php if (!$dialog->getInterlocutor($user->id)->isActive()): ?>
+                <div class="alert alert-danger">
+                    Пользователь удалён или заблокирован, отправка сообщений невозможна.
+                </div>
+            <?php else: ?>
+                <div class="form-group">
+                    <textarea name="message" class="form-control" rows="3" title="Сообщение" placeholder="Введите сообщение..."></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info">Отправить</button>
+                </div>
+            <?php endif; ?>
         <?php else: ?>
             <div class="chat-user-details">
                 <b>Имя:</b> <?= Html::encode($dialog->name) ?><br>

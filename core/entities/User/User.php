@@ -54,7 +54,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
 {
     use StatusesTrait;
 
-    public const STATUS_WAIT = 1;
+    public const STATUS_WAIT = 2;
 
     public const TYPE_USER = 1;
     public const TYPE_COMPANY = 2;

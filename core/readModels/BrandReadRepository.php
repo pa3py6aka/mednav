@@ -3,8 +3,10 @@
 namespace core\readModels;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Brand\Brand;
+use Yii;
 use yii\web\NotFoundHttpException;
 
 class BrandReadRepository extends ArticleReadCommonRepository
@@ -15,8 +17,13 @@ class BrandReadRepository extends ArticleReadCommonRepository
     public function getByIdAndSlug($id, $slug): Brand
     {
         if (!$brand = Brand::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Бренд не найден.");
+            throw new NotFoundHttpException('Бренд не найден.');
         }
+
+        if (!$brand->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Бренд не найден');
+        }
+
         return $brand;
     }
 

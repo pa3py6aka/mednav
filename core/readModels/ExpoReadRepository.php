@@ -3,8 +3,10 @@
 namespace core\readModels;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Expo\Expo;
+use Yii;
 use yii\web\NotFoundHttpException;
 
 class ExpoReadRepository extends ArticleReadCommonRepository
@@ -14,10 +16,15 @@ class ExpoReadRepository extends ArticleReadCommonRepository
 
     public function getByIdAndSlug($id, $slug): Expo
     {
-        if (!$brand = Expo::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Выставка не найдена.");
+        if (!$expo = Expo::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
+            throw new NotFoundHttpException('Выставка не найдена.');
         }
-        return $brand;
+
+        if (!$expo->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Выставка не найдена');
+        }
+
+        return $expo;
     }
 
     public function getCompanyActiveExpos($companyId)

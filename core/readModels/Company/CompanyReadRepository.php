@@ -3,11 +3,13 @@
 namespace core\readModels\Company;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Company\Company;
 use core\entities\Company\CompanyCategory;
 use core\entities\Company\CompanyCategoryAssignment;
 use core\entities\Geo;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\db\ActiveQuery;
@@ -19,15 +21,20 @@ class CompanyReadRepository
     public function getByIdAndSlug($id, $slug): Company
     {
         if (!$company = Company::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException('Объявление не найдено');
+            throw new NotFoundHttpException('Компания не найдена');
         }
+
+        if (!$company->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Компания не найдена');
+        }
+
         return $company;
     }
 
     public function getById($id): Company
     {
         if (!$company = Company::find()->where(['id' => $id])->limit(1)->one()) {
-            throw new NotFoundHttpException('Объявление не найдено');
+            throw new NotFoundHttpException('Компания не найдена');
         }
         return $company;
     }
@@ -74,7 +81,7 @@ class CompanyReadRepository
             ],
             'pagination' => [
                 'pageSizeLimit' => [1, 250], //Todo Выставить 25 на продакшине
-                'defaultPageSize' => \Yii::$app->settings->get(Settings::COMPANY_PAGE_SIZE),
+                'defaultPageSize' => Yii::$app->settings->get(Settings::COMPANY_PAGE_SIZE),
                 'forcePageParam' => false,
             ]
         ]);

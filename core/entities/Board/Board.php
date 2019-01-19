@@ -41,6 +41,7 @@ use yii\helpers\Url;
  * @property int $geo_id [int(11)]
  * @property int $main_photo_id [int(11)]
  * @property int $status
+ * @property int $prev_status
  * @property int $views [int(11)]
  * @property int $active_until [int(11)]
  * @property int $notification_date [int(11)]
@@ -66,7 +67,8 @@ use yii\helpers\Url;
 class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInterface, CategoryAssignmentInterface, SearchInterface
 {
     public const STATUS_DELETED = 0;
-    public const STATUS_ON_MODERATION = 1;
+    public const STATUS_OWNER_USER_DELETED = 1;
+    public const STATUS_ON_MODERATION = 2;
     public const STATUS_NOT_ACTIVE = 3;
     public const STATUS_ACTIVE = 5;
     public const STATUS_ARCHIVE = 8;

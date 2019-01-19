@@ -3,6 +3,7 @@
 namespace core\readModels\Trade;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\Company\CompanyDeliveryRegion;
 use core\entities\Trade\Trade;
@@ -30,8 +31,13 @@ class TradeReadRepository
     public function getByIdAndSlug($id, $slug): Trade
     {
         if (!$trade = Trade::find()->where(['id' => $id, 'slug' => $slug])->with('user.company.deliveries.delivery')->limit(1)->one()) {
-            throw new NotFoundHttpException("Товар не найден");
+            throw new NotFoundHttpException('Товар не найден');
         }
+
+        if (!$trade->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Товар не найден');
+        }
+
         return $trade;
     }
 

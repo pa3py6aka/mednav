@@ -31,6 +31,11 @@ class DialogService
     public function sendNew(NewMessageForm $form): void
     {
         $this->transaction->wrap(function () use ($form) {
+            $toUser = (new UserRepository())->get($form->toId);
+            if (!$toUser->isActive()) {
+                throw new \DomainException('Пользователь удалён или заблокирован, отправка сообщений невозможна.');
+            }
+
             if (!Yii::$app->user->isGuest) {
                 if (!$dialog = $this->repository->find(Yii::$app->user->id, $form->toId, $form->subject)) {
                     $dialog = Dialog::create(Yii::$app->user->id, $form->toId, $form->subject);
@@ -50,6 +55,11 @@ class DialogService
     public function sendFromChat($dialogId, $userId, $text): Message
     {
         $message = Message::create($dialogId, $userId, $text);
+
+        if (!$message->dialog->getInterlocutor($message->user_id)->isActive()) {
+            throw new \DomainException('Пользователь удалён или заблокирован, отправка сообщений невозможна.');
+        }
+
         $this->repository->saveMessage($message);
         if (!$message->dialog->getInterlocutor($message->user_id)->isOnline()) {
             $this->sendNotificationToEmail($message, true);

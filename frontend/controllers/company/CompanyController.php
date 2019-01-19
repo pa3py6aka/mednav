@@ -45,9 +45,9 @@ class CompanyController extends Controller
             return $this->redirect(['list', 'region' => 'all'], 301);
         }
 
-        $geo = $region && $region != 'all' ? (new GeoRepository())->getBySlug($region) : null;
+        $geo = $region && $region !== 'all' ? (new GeoRepository())->getBySlug($region) : null;
         if ($region) {
-            Yii::$app->session->set("geo", $region); // Сохраняем выбранный регион в сессию
+            Yii::$app->session->set('geo', $region); // Сохраняем выбранный регион в сессию
         }
 
         $category = $category ? $this->categoryRepository->getBySlug($category) : null;
@@ -87,7 +87,7 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function actionContacts($id, $slug)
+    public function actionContacts($id, $slug): string
     {
         $company = $this->repository->getByIdAndSlug($id, $slug);
 

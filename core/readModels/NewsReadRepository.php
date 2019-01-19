@@ -3,8 +3,10 @@
 namespace core\readModels;
 
 
+use core\access\Rbac;
 use core\components\Settings;
 use core\entities\News\News;
+use Yii;
 use yii\web\NotFoundHttpException;
 
 class NewsReadRepository extends ArticleReadCommonRepository
@@ -15,8 +17,13 @@ class NewsReadRepository extends ArticleReadCommonRepository
     public function getByIdAndSlug($id, $slug): News
     {
         if (!$news = News::find()->where(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
-            throw new NotFoundHttpException("Новость не найдена");
+            throw new NotFoundHttpException('Новость не найдена');
         }
+
+        if (!$news->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+            throw new NotFoundHttpException('Новость не найдена');
+        }
+
         return $news;
     }
 

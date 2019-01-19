@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
  * @property int $status [tinyint(3)]
  *
  * @property string $statusName
+ * @property int $prev_status
  *
  * @see \core\entities\StatusesInterface
  */

@@ -73,15 +73,15 @@ class CompanyHelper
             <li><a href="<?= Yii::$app->homeUrl ?>">Главная</a></li>
             <li><a href="<?= self::categoryUrl() ?>"><?= Yii::$app->settings->get(Settings::COMPANY_NAME) ?></a></li>
             <li><a href="<?= $company->getUrl() ?>"><?= $company->getFullName() ?></a></li>
-            <?php if ($page == 'contacts'): ?>
+            <?php if ($page === 'contacts'): ?>
                 <li><a href="<?= $company->getUrl('contacts') ?>">Контакты</a></li>
-            <?php elseif ($page == 'boards'): ?>
+            <?php elseif ($page === 'boards'): ?>
                 <li><a href="<?= $company->getUrl('boards') ?>">Объявления</a></li>
-            <?php elseif ($page == 'trades'): ?>
+            <?php elseif ($page === 'trades'): ?>
                 <li><a href="<?= $company->getUrl('trades') ?>">Товары</a></li>
-            <?php elseif ($page == 'articles'): ?>
+            <?php elseif ($page === 'articles'): ?>
                 <li><a href="<?= $company->getUrl('articles') ?>">Статьи</a></li>
-            <?php elseif ($page == 'cnews'): ?>
+            <?php elseif ($page === 'cnews'): ?>
                 <li><a href="<?= $company->getUrl('cnews') ?>">Новости</a></li>
             <?php endif; ?>
         </ul>
@@ -99,44 +99,8 @@ class CompanyHelper
             ->groupBy('bc.id')
             ->all();
 
-        /*$result = [];
-        $n = 0;
-        foreach ($query as $item) {
-            if ($item['depth'] === 1) {
-                $n++;
-                $result[$n][] = $item;
-            }
-        }
-        foreach ($result as $n => $cat) {
-            foreach ($cat as $item) {
-                if ($item['b_count']) {
-
-                }
-            }
-        }*/
-
         $yes = 0;
         $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
-            /*if ($category['depth'] == 1 && !$category['b_count']) {
-                return '';
-            }
-            if (!$category['b_count'] && !$yes) {
-                return '';
-            }
-
-            if ($category['b_count']) {
-                if ($category['depth'] > 1) {
-                    $yes = true;
-                } else {
-                    $yes = false;
-                }
-            } else {
-                if ($category['depth'] == 1) {
-                    $yes = false;
-                }
-            }*/
-
-
             if ($category['b_count'] || $category['depth'] < $yes || ($category['depth'] == $yes && $category['b_count'])) {
                 if ($category['b_count']) {
                     $yes = $category['depth'];
@@ -147,10 +111,6 @@ class CompanyHelper
 
                 return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
             }
-
-            //if ($category['b_count']) {
-                //return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
-            //}
         });
 
         $categories = array_reverse(array_filter($categories), true);
@@ -159,57 +119,30 @@ class CompanyHelper
 
     public static function companyTradeCategoriesItems(Company $company)
     {
-        /*$query = (new Query())
-            ->select('tc.*, COUNT(t.category_id) as t_count')
-            ->from(TradeCategory::tableName() . ' tc')
-            ->leftJoin(Trade::tableName() . ' t', 't.category_id=tc.id AND t.company_id=' . $company->id . ' AND t.status=' . Trade::STATUS_ACTIVE)
-            ->where(['>', 'tc.depth', 0])
-            ->orderBy('tc.lft')
-            ->groupBy('tc.id')
-            ->all();
-
-        $categories = [];
-        $current = 0;
-        $depth = 0;
-        foreach ($query as $category) {
-            if ($category['depth'] == 1) {
-                $categories[$category['id']]['name'] = $category['name'];
-                $categories[$category['id']]['count'] = $category['t_count'];
-                $current = $category['id'];
-                $depth = 1;
-                continue;
-            }
-
-            if ($category['depth'] > 1 && ) {
-                $categories[$current]['items'][] =
-            }
-        }
-        $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$brr) {
-
-            //    return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
-            //}
-        });
-        $categories = array_filter($categories);
-
-        return $categories;*/
-
-
         $query = (new Query())
             ->select('tc.*, COUNT(t.category_id) as t_count')
             ->from(TradeCategory::tableName() . ' tc')
             ->leftJoin(Trade::tableName() . ' t', 't.category_id=tc.id AND t.company_id=' . $company->id . ' AND t.status=' . Trade::STATUS_ACTIVE)
             ->where(['>', 'tc.depth', 0])
-            ->orderBy('tc.lft')
+            ->orderBy(['tc.lft' => SORT_DESC])
             ->groupBy('tc.id')
             ->all();
 
-        $categories = ArrayHelper::map($query, 'id', function (array $category) {
-            if ($category['t_count']) {
+        $yes = 0;
+        $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
+            if ($category['t_count'] || $category['depth'] < $yes || ($category['depth'] == $yes && $category['t_count'])) {
+                if ($category['t_count']) {
+                    $yes = $category['depth'];
+                }
+                if ($category['depth'] == 1) {
+                    $yes = 0;
+                }
+
                 return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
             }
         });
-        $categories = array_filter($categories);
 
+        $categories = array_reverse(array_filter($categories), true);
         return $categories;
     }
 

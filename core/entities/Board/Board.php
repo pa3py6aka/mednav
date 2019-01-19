@@ -69,7 +69,7 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
     public const STATUS_DELETED = 0;
     public const STATUS_OWNER_USER_DELETED = 1;
     public const STATUS_ON_MODERATION = 2;
-    public const STATUS_NOT_ACTIVE = 3;
+    public const STATUS_NOT_ACTIVE = 3; // Не используется
     public const STATUS_ACTIVE = 5;
     public const STATUS_ARCHIVE = 8;
 
@@ -199,11 +199,6 @@ class Board extends ActiveRecord implements UserOwnerInterface, ContentBlockInte
     public function isArchive(): bool
     {
         return $this->status == self::STATUS_ARCHIVE || (time() > $this->active_until && $this->status == self::STATUS_ACTIVE);
-    }
-
-    public function isActually(): bool
-    {
-        return time() < ($this->updated_at + (15 * 24 * 3600));
     }
 
     public function isOnModeration(): bool

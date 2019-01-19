@@ -26,6 +26,7 @@ class Settings
     public const BOARD_BIG_SIZE = 'boardBigSize';
     public const BOARD_MAX_SIZE = 'boardMaxSize';
     public const BOARD_MODERATION = 'boardModeration';
+    public const BOARD_SHOW_ARCHIVE_UNITS = 'boardShowArchiveUnits';
 
     public const BOARD_META_TITLE = 'boardMetaTitle';
     public const BOARD_META_DESCRIPTION = 'boardMetaDescription';
@@ -177,6 +178,7 @@ class Settings
         self::BOARD_BIG_SIZE => 250,
         self::BOARD_MAX_SIZE => 500,
         self::BOARD_MODERATION => 0,
+        self::BOARD_SHOW_ARCHIVE_UNITS => 0,
 
         self::BOARD_META_TITLE => 'Медицинская доска объявлений. Продать, купить новое и б/у медицинское оборудование, инструменты, медицинскую мебель и расходных мед. материалы.',
         self::BOARD_META_DESCRIPTION => 'Разместить объявление о продаже медицинского оборудования, медтехники новой и б/у, мед. инструментов, медицинской мебели и материалов. Медицинская доска объявлений MedNav.ru ',

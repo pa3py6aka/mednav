@@ -13,15 +13,33 @@ use yii\db\ActiveQuery;
  */
 class BoardQuery extends ActiveQuery
 {
-    public function active($alias = null)
+    public function active($alias = null, $withArchive = false)
     {
-        return $this->andWhere([($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ACTIVE])
-            ->andWhere(['>', ($alias ? $alias . '.' : '') . 'active_until', time()]);
+        $condition = [
+            'and',
+            [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ACTIVE],
+            ['>', ($alias ? $alias . '.' : '') . 'active_until', time()]
+        ];
+
+        if ($withArchive) {
+           $condition = [
+               'or',
+               $condition,
+               $this->getArchiveCondition($alias)
+           ];
+        }
+
+        return $this->andWhere($condition);
     }
 
     public function archive($alias = null)
     {
-        return $this->andWhere([
+        return $this->andWhere($this->getArchiveCondition($alias));
+    }
+
+    private function getArchiveCondition($alias): array
+    {
+        return [
             'or',
             [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ARCHIVE],
             [
@@ -29,7 +47,7 @@ class BoardQuery extends ActiveQuery
                 ['<=', ($alias ? $alias . '.' : '') . 'active_until', time()],
                 [($alias ? $alias . '.' : '') . 'status' => Board::STATUS_ACTIVE]
             ]
-        ]);
+        ];
     }
 
     public function onModeration($alias = null)

@@ -19,11 +19,11 @@ class BoardReadRepository
 {
     public function getByIdAndSlug($id, $slug): Board
     {
-        if (!$board = Board::find()->notDeleted()->andWhere(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
+        if (!$board = Board::find()->andWhere(['id' => $id, 'slug' => $slug])->limit(1)->one()) {
             throw new NotFoundHttpException('Объявление не найдено');
         }
 
-        if (!$board->isActive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
+        if (!$board->isActive() && !$board->isArchive() && !Yii::$app->user->can(Rbac::ROLE_MODERATOR)) {
             throw new NotFoundHttpException('Объявление не найдено');
         }
 
@@ -33,7 +33,7 @@ class BoardReadRepository
     public function getById($id): Board
     {
         if (!$board = Board::find()->notDeleted()->andWhere(['id' => $id])->limit(1)->one()) {
-            throw new NotFoundHttpException("Объявление не найдено");
+            throw new NotFoundHttpException('Объявление не найдено');
         }
         return $board;
     }
@@ -42,7 +42,7 @@ class BoardReadRepository
     {
         $query = Board::find()
             ->alias('b')
-            ->active('b')
+            ->active('b', Yii::$app->settings->get(Settings::BOARD_SHOW_ARCHIVE_UNITS))
             ->with('mainPhoto', 'category', 'geo', 'typeBoardParameter.option', 'currency');
 
         if ($category) {

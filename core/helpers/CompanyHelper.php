@@ -99,22 +99,7 @@ class CompanyHelper
             ->groupBy('bc.id')
             ->all();
 
-        $yes = 0;
-        $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
-            if ($category['b_count'] || $category['depth'] < $yes || ($category['depth'] == $yes && $category['b_count'])) {
-                if ($category['b_count']) {
-                    $yes = $category['depth'];
-                }
-                if ($category['depth'] == 1) {
-                    $yes = 0;
-                }
-
-                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['b_count'] ? ' (' . $category['b_count'] . ')' : '');
-            }
-        });
-
-        $categories = array_reverse(array_filter($categories), true);
-        return $categories;
+        return self::getCompanyCategoriesItemsList($query, 'b_count');
     }
 
     public static function companyTradeCategoriesItems(Company $company)
@@ -128,17 +113,28 @@ class CompanyHelper
             ->groupBy('tc.id')
             ->all();
 
-        $yes = 0;
-        $categories = ArrayHelper::map($query, 'id', function (array $category) use (&$yes) {
-            if ($category['t_count'] || $category['depth'] < $yes || ($category['depth'] == $yes && $category['t_count'])) {
-                if ($category['t_count']) {
-                    $yes = $category['depth'];
-                }
-                if ($category['depth'] == 1) {
-                    $yes = 0;
-                }
+        return self::getCompanyCategoriesItemsList($query, 't_count');
+    }
 
-                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category['t_count'] ? ' (' . $category['t_count'] . ')' : '');
+    private static function getCompanyCategoriesItemsList(array $items, $countKey)
+    {
+        $prevDepth = null;
+        $categories = ArrayHelper::map($items, 'id', function (array $category) use (&$prevDepth, $countKey) {
+            $add = false;
+            if ($category[$countKey]) {
+                $add = true;
+                $prevDepth = $category['depth'];
+            } else if ($prevDepth > $category['depth']) {
+                $add = true;
+                $prevDepth = $category['depth'];
+            }
+
+            if ($category['depth'] == 1) {
+                $prevDepth = null;
+            }
+
+            if ($add) {
+                return ($category['depth'] > 1 ? str_repeat('-', $category['depth'] - 1) . ' ' : '') . $category['name'] . ($category[$countKey] ? ' (' . $category[$countKey] . ')' : '');
             }
         });
 

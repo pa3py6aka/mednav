@@ -70,7 +70,7 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             ]) ?>
         </div>
 
-        <?= count($provider->models) > 16 ? ContextBlock::getBlock(5) : '' ?>
+        <?= $provider->totalCount > 16 ? ContextBlock::getBlock(5) : '' ?>
 
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,

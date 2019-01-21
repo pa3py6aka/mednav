@@ -32,7 +32,7 @@ class PasswordResetService
 
         Mailer::send(
             $user->email,
-            '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Сброс пароля',
+            '[' . Yii::$app->settings->get(Settings::GENERAL_EMAIL_FROM) . '] Восстановление доступа',
             'auth/reset-password',
             ['user' => $user]
         );
@@ -40,7 +40,7 @@ class PasswordResetService
 
     public function validateToken($token): void
     {
-        if (empty($token) || !is_string($token)) {
+        if (empty($token) || !\is_string($token)) {
             throw new \DomainException('Токен не может быть пустым.');
         }
         if (!$this->users->existsByPasswordResetToken($token)) {

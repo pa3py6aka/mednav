@@ -20,7 +20,7 @@ class UserNameColumn extends DataColumn
         /* @var $model UserOwnerInterface*/
         $user = $model->getOwnerUser();
         if ($user->isCompany() && $user->isCompanyActive()) {
-            return $user->company->id . ' ' . Html::a($user->company->getFullName(), ['/company/company/view', 'id' => $user->company->id], ['target' => '_blank']);
+            return $user->id . ' ' . Html::a($user->company->getFullName(), ['/company/company/view', 'id' => $user->company->id], ['target' => '_blank']);
         }
 
         return $user->id . ' ' . Html::a($user->getUserName(), ['/user/view', 'id' => $user->id], ['target' => '_blank']);

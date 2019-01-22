@@ -152,9 +152,8 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function actionArticles($id, $slug)
+    /*public function actionArticles($id, $slug)
     {
-        throw new NotFoundHttpException();
         $company = $this->repository->getByIdAndSlug($id, $slug);
         if ($category = Yii::$app->request->get('category') ?: null) {
             $category = (new ArticleCategoryRepository())->get((int) $category);
@@ -177,7 +176,7 @@ class CompanyController extends Controller
             'provider' => $provider,
             'category' => $category,
         ]);
-    }
+    }*/
 
     public function actionCnews($id, $slug)
     {

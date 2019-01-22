@@ -70,8 +70,6 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             ]) ?>
         </div>
 
-        <?= $provider->totalCount > 16 ? ContextBlock::getBlock(5) : '' ?>
-
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,
             'geo' => $geo,

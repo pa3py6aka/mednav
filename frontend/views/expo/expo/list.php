@@ -49,8 +49,6 @@ CategoryHelper::registerHeadMeta('expo', $this, 'Выставки', $category);
             <?= $this->render('card-items-block', ['provider' => $provider]) ?>
         </div>
 
-        <?= count($provider->models) > 16 ? ContextBlock::getBlock(5) : '' ?>
-
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,
             'category' => $category,

@@ -19,6 +19,7 @@ use Yii;
 use yii\base\Module;
 use yii\base\UserException;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class CompanyController extends Controller
 {
@@ -153,6 +154,7 @@ class CompanyController extends Controller
 
     public function actionArticles($id, $slug)
     {
+        throw new NotFoundHttpException();
         $company = $this->repository->getByIdAndSlug($id, $slug);
         if ($category = Yii::$app->request->get('category') ?: null) {
             $category = (new ArticleCategoryRepository())->get((int) $category);

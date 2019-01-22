@@ -71,8 +71,6 @@ CategoryHelper::registerHeadMeta('trade', $this, 'Каталог товаров'
             ]) ?>
         </div>
 
-        <?= count($provider->models) > 16 ? ContextBlock::getBlock(5) : '' ?>
-
         <?= \frontend\widgets\PaginationWidget\PaginationWidget::widget([
             'provider' => $provider,
             'geo' => $geo,

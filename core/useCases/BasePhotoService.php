@@ -5,6 +5,7 @@ namespace core\useCases;
 
 use core\entities\PhotoInterface;
 use core\services\TransactionManager;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Yii;
 use core\helpers\FileHelper;
 use yii\base\InvalidArgumentException;
@@ -97,17 +98,21 @@ class BasePhotoService
         $basePath = $this->getBaseFolder();
         $dirStart = Yii::getAlias('@frontend/web/') . $basePath;
         $fileName = FileHelper::createFileName($dirStart . '/' . $this->defaultType . '/' . $entity->id . '-' . $photo->name);
+
         if (!$photo->saveAs($dirStart . '/' . $this->defaultType . '/' . $fileName)) {
             Yii::error('Ошибка загрузки файла');
             throw new \DomainException('Ошибка загрузки файла');
         }
+
+        $optimizerChain = OptimizerChainFactory::create();
+        $optimizerChain->optimize($dirStart . '/' . $this->defaultType . '/' . $fileName);
 
         foreach ($this->sizes as $type => $item) {
             $width = isset($item['width']) && (int) $item['width'] ? (int) $item['width'] : null;
             $height = isset($item['height']) && (int) $item['height'] ? (int) $item['height'] : null;
 
             Image::resize($dirStart . '/' . $this->defaultType . '/' . $fileName, $width, $height)
-                ->save($dirStart . '/' . $type . '/' . $fileName);
+                ->save($dirStart . '/' . $type . '/' . $fileName, ['jpeg_quality' => 85, 'png_compression_level' => 6]);
         }
 
         $sort = (int) $entity->getPhotos()->max('sort') + 1;

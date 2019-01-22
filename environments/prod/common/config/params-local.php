@@ -1,7 +1,5 @@
 <?php
 return [
-    'robotEmail' => 'robot@mednav.ru',
-    'frontendHostInfo' => 'http://mednav.ru',
-    'backendHostInfo' => 'http://cp.mednav.ru',
-    'geoRussiaId' => 2,
+    'frontendHostInfo' => 'http://med-nav.ru',
+    'backendHostInfo' => 'http://cp.med-nav.ru',
 ];

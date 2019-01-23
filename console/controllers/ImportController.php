@@ -89,29 +89,37 @@ class ImportController extends Controller
             $query = $this->command->setSql($sql);
             $n = 0;
             foreach ($query->queryAll() as $oldUser) {
-                $user = new User([
-                    'id' => $oldUser['id'],
-                    'email' => $oldUser['email'],
-                    'type' => $oldUser['item_name'] === 'company' ? User::TYPE_COMPANY : User::TYPE_USER,
-                    'geo_id' => null,
-                    'last_name' => '',
-                    'name' => '',
-                    'patronymic' => '',
-                    'gender' => User::GENDER_NOT_SET,
-                    'birthday' => null,
-                    'phone' => '',
-                    'site' => '',
-                    'skype' => '',
-                    'organization' => '',
-                    'last_online' => 0,
-                    'status' => $oldUser['is_active'] == '1' ? User::STATUS_ACTIVE : User::STATUS_DELETED,
-                    'auth_key' => $oldUser['auth_key'],
-                    'password_hash' => $oldUser['password'],
-                    'password_reset_token' => null,
-                    'email_confirm_token' => $oldUser['confirm_hash'],
-                    'created_at' => Yii::$app->formatter->asTimestamp($oldUser['created_at']),
-                    'updated_at' => Yii::$app->formatter->asTimestamp($oldUser['created_at']),
-                ]);
+                if ($user = User::find()->where(['email' => $oldUser['email']])->limit(1)->one()) {
+                    $user->type = $oldUser['item_name'] === 'company' ? User::TYPE_COMPANY : User::TYPE_USER;
+                    $user->status = $oldUser['is_active'] == '1' ? User::STATUS_ACTIVE : User::STATUS_DELETED;
+                    $user->auth_key = $oldUser['auth_key'];
+                    $user->password_hash = $oldUser['password'];
+                    $user->email_confirm_token = $oldUser['confirm_hash'];
+                } else {
+                    $user = new User([
+                        'id' => $oldUser['id'],
+                        'email' => $oldUser['email'],
+                        'type' => $oldUser['item_name'] === 'company' ? User::TYPE_COMPANY : User::TYPE_USER,
+                        'geo_id' => null,
+                        'last_name' => '',
+                        'name' => '',
+                        'patronymic' => '',
+                        'gender' => User::GENDER_NOT_SET,
+                        'birthday' => null,
+                        'phone' => '',
+                        'site' => '',
+                        'skype' => '',
+                        'organization' => '',
+                        'last_online' => 0,
+                        'status' => $oldUser['is_active'] == '1' ? User::STATUS_ACTIVE : User::STATUS_DELETED,
+                        'auth_key' => $oldUser['auth_key'],
+                        'password_hash' => $oldUser['password'],
+                        'password_reset_token' => null,
+                        'email_confirm_token' => $oldUser['confirm_hash'],
+                        'created_at' => Yii::$app->formatter->asTimestamp($oldUser['created_at']),
+                        'updated_at' => Yii::$app->formatter->asTimestamp($oldUser['created_at']),
+                    ]);
+                }
 
                 if ($profile = $this->command->setSql('select * from profile where userid=' . $oldUser['id'])->queryOne()) {
                     //print_r($profile);

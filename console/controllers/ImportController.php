@@ -836,6 +836,31 @@ class ImportController extends Controller
                     }
                 }
 
+                if (!$user->company) {
+                    $company = new Company([
+                        'user_id' => $user->id,
+                        'form' => '',
+                        'name' => $user->last_name,
+                        'logo' => '',
+                        'userSlug' => $user->last_name,
+                        'site' => $user->site,
+                        'geo_id' => $user->geo_id,
+                        'address' => '',
+                        'phones' => '[]',
+                        'fax' => '',
+                        'email' => $user->email,
+                        'info' => '',
+                        'title' => $user->last_name,
+                        'short_description' => '',
+                        'description' => '',
+                        'main_photo_id' => null,
+                        'status' => Company::STATUS_ACTIVE,
+                        'views' => 0,
+                    ]);
+                    $company->setPhones([$user->phone]);
+                    $this->save($company);
+                }
+
                 $trade = new Trade([
                     'id' => $oldTrade['id'],
                     'user_id' => $oldTrade['userid'],

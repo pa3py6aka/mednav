@@ -859,6 +859,7 @@ class ImportController extends Controller
                     ]);
                     $company->setPhones([$user->phone]);
                     $this->save($company);
+                    $user->refresh();
                 }
 
                 $trade = new Trade([
@@ -1056,10 +1057,12 @@ class ImportController extends Controller
             $n = 0;
             foreach ($query->queryAll() as $oldOrder) {
                 $text = $oldOrder['text'];
-                preg_match('/^.+ <a href="\/trade\/([0-9]+)-.+Количество: <b>([0-9]+)<\/b>.+Комментарий: ([^<]*)<br\/><br\/>Имя: <b>([^<]*)<\/b>.*Телефон: <b>([^<]*)<\/b>.*E-mail: <b>([^<]*)<\/b>/uis', $text, $out);
-                //print_r($out);
-                //echo PHP_EOL;
-                //break;
+                preg_match('/^.+ <a href="\/trade\/([0-9]+)-.+Количество: <b>([0-9]+)<\/b>.+Комментарий: ([^<]*)<br\/><br\/>Имя: <b>(.*)<\/b><br \/>.*Телефон: <b>([^<]*)<\/b>.*E-mail: <b>([^<]*)<\/b>/uis', $text, $out);
+
+                if (!isset($out[1])) {
+                    throw new \DOMException($text);
+                }
+
                 $tradeId = $out[1];
                 $amount = $out[2];
                 $comment = $out[3];

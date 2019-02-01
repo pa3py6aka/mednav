@@ -47,6 +47,24 @@ class UserController extends Controller
         $this->stdout('User created, id: ' . $user->id . PHP_EOL, Console::FG_GREEN);
     }
 
+    public function actionSetPassword()
+    {
+        $username = $this->prompt('Username:', ['required' => true]);
+        $user = $this->findModel($username);
+        $password = $this->prompt('Set new password:', ['required' => true, 'validator' => function($input, &$error) {
+            if (\mb_strlen($input) < 6) {
+                $error = 'Минимальная длина пароля 6 символов';
+                return false;
+            }
+            return true;
+        }]);
+        $user->setPassword($password);
+        if (!$user->save()) {
+            throw new \DomainException('Ошибка записи в базу');
+        }
+        echo 'Пароль установлен' . PHP_EOL;
+    }
+
     /**
      * Adds role to user
      */

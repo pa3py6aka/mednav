@@ -45,17 +45,25 @@ class ContextBlock
         } else if ($totalCount > 16) {
             // Вывод пятого блока в конце списка
             if ($pagination->pageSize > 15) {
-                if ((self::$number - $pagination->page * $pagination->pageSize) === $pagination->pageSize && $pagination->page === 0) {
-                    echo self::getBlock(5);
+                if (!self::$paginationNumeric) {
+                    if ((self::$number - $pagination->page * $pagination->pageSize) === $pagination->pageSize/* && $pagination->page === 0*/) {
+                        echo self::getBlock(5);
+                    }
+                } else {
+                    if (self::$number === $pagination->pageSize) {
+                        echo self::getBlock(5);
+                    }
                 }
             } else {
-                $page = ceil(16 / $pagination->pageSize);
-                $last = $page * $pagination->pageSize;
-                if ($last > $totalCount) {
-                    $last = $totalCount;
-                }
-                if (self::$number == $last) {
-                    echo self::getBlock(5);
+                if (!self::$paginationNumeric) {
+                    $page = ceil(16 / $pagination->pageSize);
+                    $last = $page * $pagination->pageSize;
+                    if ($last > $totalCount) {
+                        $last = $totalCount;
+                    }
+                    if (self::$number == $last) {
+                        echo self::getBlock(5);
+                    }
                 }
             }
         }

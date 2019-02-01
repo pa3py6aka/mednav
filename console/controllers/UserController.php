@@ -49,8 +49,8 @@ class UserController extends Controller
 
     public function actionSetPassword()
     {
-        $username = $this->prompt('Username:', ['required' => true]);
-        $user = $this->findModel($username);
+        $email = $this->prompt('E-mail:', ['required' => true]);
+        $user = $this->findModel($email);
         $password = $this->prompt('Set new password:', ['required' => true, 'validator' => function($input, &$error) {
             if (\mb_strlen($input) < 6) {
                 $error = 'Минимальная длина пароля 6 символов';
@@ -70,16 +70,16 @@ class UserController extends Controller
      */
     public function actionAssign(): void
     {
-        $username = $this->prompt('Username:', ['required' => true]);
-        $user = $this->findModel($username);
+        $email = $this->prompt('Username:', ['required' => true]);
+        $user = $this->findModel($email);
         $role = $this->select('Role:', ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description'));
         $this->service->assignRole($user->id, $role);
         $this->stdout('Done!' . PHP_EOL);
     }
 
-    private function findModel($username): User
+    private function findModel($email): User
     {
-        if (!$model = User::findOne(['email' => $username])) {
+        if (!$model = User::findOne(['email' => $email])) {
             throw new Exception('User is not found');
         }
         return $model;

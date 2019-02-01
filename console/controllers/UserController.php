@@ -70,7 +70,7 @@ class UserController extends Controller
      */
     public function actionAssign(): void
     {
-        $email = $this->prompt('Username:', ['required' => true]);
+        $email = $this->prompt('E-mail:', ['required' => true]);
         $user = $this->findModel($email);
         $role = $this->select('Role:', ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description'));
         $this->service->assignRole($user->id, $role);

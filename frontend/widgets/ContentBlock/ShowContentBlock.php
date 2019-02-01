@@ -35,13 +35,16 @@ class ShowContentBlock extends Widget
     /* @var Board|Trade|Company|null */
     public $entity; // Объявление/товар/компания если виджет на странице контента
 
+    const CACHE_KEY_PREFIX = 'ConBlock-';
+
     public function run()
     {
-        /*return Yii::$app->cache->getOrSet('ContentBlock', function () {
+        $key = md5($this->module . $this->place . $this->page . $this->start . $this->count . ($this->category ? $this->category->id : 'NULL') . ($this->entity ? $this->entity->id : 'NULL'));
+        $cacheKey = self::CACHE_KEY_PREFIX . $key;
+        return Yii::$app->cache->getOrSet($cacheKey, function () {
             return $this->renderContent();
-        }, 60, new TagDependency(['tags' => $this->module . $this->place . $this->page . $this->start . $this->count . ($this->category ? $this->category->id : 'NULL') . ($this->entity ? $this->entity->id : 'NULL')
-        }]));*/
-        return $this->renderContent();
+        }, 60);
+        //return $this->renderContent();
     }
 
     private function renderContent(): string
@@ -184,10 +187,12 @@ class ShowContentBlock extends Widget
                 $url = $item->company->getUrl();
                 $name = $item->company->getFullName();
                 $geo = $item->company->geo->name;
-            } else {
+            } else if ($item instanceof Board) {
                 $url = $item->author->getUrl();
                 $name = $item->author->getVisibleName();
                 $geo = $item->geo->name;
+            } else {
+                return;
             }
             ?>
             <div class="sidebar-item-vendinfo">

@@ -2,7 +2,7 @@
  
  - Php 7.1 и выше
  - Mysql
- - SQLite
+ - SQLite и драйвер к нему для используемой версии php (например если установили sqlite3 и на сервере php7.2, то установить драйвер можно такой командой - `sudo apt install php7.2-sqlite3`)
  - Redis
  - Composer
 

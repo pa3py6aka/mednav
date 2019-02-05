@@ -14,8 +14,8 @@ return [
     ],
     'rules' => [
         '' => 'main/index',
-        'signup' => 'auth/signup/request',
-        'signup/<_a:[\w-]+>' => 'auth/signup/<_a>',
+        'register' => 'auth/signup/request',
+        'register/<_a:[\w-]+>' => 'auth/signup/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
         '<module:(brand|cnews|news|articles|expo|site|pages)>/outsite' => 'site/outsite',
 

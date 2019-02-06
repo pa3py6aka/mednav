@@ -40,7 +40,7 @@ $this->params['pagination'] = $provider->pagination;
             'label' => 'Размещено до',
             'value' => function (Board $board) {
                 return Yii::$app->formatter->asDatetime($board->active_until) .
-                    ($board->hasExtendNotification() ? ' ' . Html::a('Продлить', ['extend', 'id' => $board->id]) : '');
+                    ($board->hasExtendNotification() ? ' ' . Html::a('Продлить', ['extend', 'id' => $board->id], ['data-method' => 'post']) : '');
             },
             'format' => 'raw',
         ],

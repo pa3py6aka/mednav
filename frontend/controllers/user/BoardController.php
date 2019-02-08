@@ -215,7 +215,7 @@ class BoardController extends Controller
         if (Yii::$app->request->get('all')) {
             $ids = (new BoardReadRepository())->toExtendIds($this->_user->id);
         } else {
-            $ids = (array) Yii::$app->request->post('ids');
+            $ids = (array) Yii::$app->request->post('ids') ?: Yii::$app->request->get('id');
             $boards = Board::findAll(['id' => $ids]);
             foreach ($boards as $board) {
                 if (!$board->canExtend($this->_user->id)) {

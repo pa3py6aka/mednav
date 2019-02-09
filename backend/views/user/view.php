@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => function (User $user) {
                         return $user->geo_id ? $user->geo->name : '';
                     },
-                    'visible' => $model->isCompany(),
+                    'visible' => !$model->isCompany(),
                 ],
                 'genderName',
                 'birthday:date',

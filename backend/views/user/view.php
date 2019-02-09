@@ -41,6 +41,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => implode(', ', ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($model->id), 'description')),
                     'format' => 'raw',
                 ],
+                'last_name',
+                'name',
+                'patronymic',
+                [
+                    'label' => 'Регион',
+                    'value' => function (User $user) {
+                        return $user->geo_id ? $user->geo->name : '';
+                    },
+                    'visible' => $model->isCompany(),
+                ],
+                'genderName',
+                'birthday:date',
+                'phone',
+                'site:url',
+                'skype',
+                'organization',
                 //'auth_key',
                 //'password_hash',
                 //'password_reset_token',

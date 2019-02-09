@@ -8,6 +8,7 @@ use core\entities\Geo;
 use core\entities\StatusesInterface;
 use core\entities\StatusesTrait;
 use core\entities\User\queries\UserQuery;
+use core\forms\manage\User\UserEditForm;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -46,6 +47,7 @@ use yii\web\IdentityInterface;
 
  * @property string $typeName
  * @property string $visibleName
+ * @property string $genderName
  *
  * @property Company $company
  * @property Geo $geo
@@ -96,13 +98,24 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
         return $user;
     }
 
-    public function edit($email, $password, $type): void
+    public function edit(UserEditForm $form): void
     {
-        $this->email = $email;
-        if ($password) {
-            $this->setPassword($password);
+        $this->email = $form->email;
+        if ($form->password) {
+            $this->setPassword($form->password);
         }
-        $this->setType($type);
+        $this->setType($form->type);
+
+        $this->last_name = $form->lastName;
+        $this->name = $form->name;
+        $this->patronymic = $form->patronymic;
+        $this->gender = $form->gender;
+        $this->birthday = $form->birthday ? date('Y-m-d', strtotime($form->birthday)) : null;
+        $this->phone = $form->phone;
+        $this->site = $form->site;
+        $this->skype = $form->skype;
+        $this->organization = $form->organization;
+        $this->geo_id = $form->geoId;
     }
 
     public function confirmSignup(): void
@@ -207,6 +220,11 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
             self::GENDER_MALE => 'Мужской',
             self::GENDER_FEMALE => 'Женский',
         ];
+    }
+
+    public function getGenderName(): string
+    {
+        return ArrayHelper::getValue(self::gendersArray(), $this->gender);
     }
 
     public function getVisibleName(): string
@@ -399,6 +417,7 @@ class User extends ActiveRecord implements IdentityInterface, StatusesInterface
             'name' => 'Имя',
             'patronymic' => 'Отчество',
             'gender' => 'Пол',
+            'genderName' => 'Пол',
             'birthday' => 'Дата рождения',
             'phone' => 'Телефон',
             'site' => 'Вэб-сайт',

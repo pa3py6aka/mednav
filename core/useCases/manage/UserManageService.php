@@ -49,11 +49,7 @@ class UserManageService
     public function edit($id, UserEditForm $form): void
     {
         $user = $this->repository->get($id);
-        $user->edit(
-            $form->email,
-            $form->password,
-            $form->type
-        );
+        $user->edit($form);
         $this->transaction->wrap(function () use ($user, $form) {
             $this->repository->save($user);
             $this->roles->assign($user->id, $form->role);

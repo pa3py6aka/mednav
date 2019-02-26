@@ -199,8 +199,8 @@ class Company extends ActiveRecord implements StatusesInterface, UserOwnerInterf
 
     public function getMainPhotoUrl($type = 'small', $absolute = false): string
     {
-        return $this->main_photo_id ?
-            $this->mainPhoto->getUrl($type, $absolute)
+        return $this->logo ?
+            $this->getLogoUrl($absolute)
             : ($absolute ? Yii::$app->params['frontendHostInfo'] : '') . '/img/no-photo-250.jpg';
     }
 

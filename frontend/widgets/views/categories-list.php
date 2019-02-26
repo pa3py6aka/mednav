@@ -7,7 +7,8 @@ use frontend\widgets\CategoriesListWidget;
 ?>
 <div class="list-section">
     <div class="row">
-        <?php foreach ($categories as $category): ?>
+        <?= $widget->generateList($categories) ?>
+        <?php /*foreach ($categories as $category): ?>
         <div class="col-md-4 col-sm-12 col-xs-12">
             <div class="list-section-parent">
                  <span>&ndash;</span> <a href="<?= $widget->helperClass::categoryUrl($category, $widget->region, false, false) ?>"><?= $category->name ?></a>
@@ -15,6 +16,6 @@ use frontend\widgets\CategoriesListWidget;
             </div>
             <?= $widget->generateList($category) ?>
         </div>
-        <?php endforeach; ?>
+        <?php endforeach;*/ ?>
     </div>
 </div>

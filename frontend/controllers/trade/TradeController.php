@@ -4,6 +4,7 @@ namespace frontend\controllers\trade;
 
 
 use core\entities\Company\Company;
+use core\entities\Trade\TradeCategory;
 use core\readModels\Trade\TradeReadRepository;
 use core\repositories\Trade\TradeCategoryRepository;
 use core\repositories\GeoRepository;
@@ -35,9 +36,15 @@ class TradeController extends Controller
 
     public function actionList($category = null, $region = null)
     {
+        //Yii::$app->session->remove("geo");
         if (!$category && !$region) {
             return $this->redirect(['list', 'region' => 'all'], 301);
         }
+
+        /*// Редирект со старого урл типа https://mednav.ru/trade/rashodniki-dlya-vakuumformerov на https://mednav.ru/trade/all/rashodniki-dlya-vakuumformerov
+        if (!$category && $region && $region !== 'all' && TradeCategory::findOne($region)) {
+            return $this->redirect(['list', 'region' => 'all', 'category' => $category], 301);
+        }*/
 
         $geo = $region && $region != 'all' ? $this->geoRepository->getBySlug($region) : null;
         if ($region) {

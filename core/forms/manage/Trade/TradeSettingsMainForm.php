@@ -3,7 +3,7 @@
 namespace core\forms\manage\Trade;
 
 
-use core\components\SettingsManager;
+use core\components\Settings;
 use core\forms\manage\CommonSettingsForm;
 
 class TradeSettingsMainForm extends CommonSettingsForm
@@ -15,31 +15,33 @@ class TradeSettingsMainForm extends CommonSettingsForm
     public $tradeBigSize;
     public $tradeMaxSize;
     public $tradeModeration;
+    public $tradeShowEmptyCategories;
 
     public function rules()
     {
         return [
-            [[SettingsManager::TRADE_NAME, SettingsManager::TRADE_NAME_UP], 'string'],
+            [[Settings::TRADE_NAME, Settings::TRADE_NAME_UP], 'string'],
             [[
-                SettingsManager::TRADE_PAGE_SIZE,
-                SettingsManager::TRADE_SMALL_SIZE,
-                SettingsManager::TRADE_BIG_SIZE,
-                SettingsManager::TRADE_MAX_SIZE,
+                Settings::TRADE_PAGE_SIZE,
+                Settings::TRADE_SMALL_SIZE,
+                Settings::TRADE_BIG_SIZE,
+                Settings::TRADE_MAX_SIZE,
             ], 'integer'],
-            [SettingsManager::TRADE_MODERATION, 'boolean'],
+            [[Settings::TRADE_MODERATION, Settings::TRADE_SHOW_EMPTY_CATEGORIES], 'boolean'],
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            SettingsManager::TRADE_NAME => 'Название',
-            SettingsManager::TRADE_NAME_UP => 'Название ППУ',
-            SettingsManager::TRADE_PAGE_SIZE => 'Позиций в листинге',
-            SettingsManager::TRADE_SMALL_SIZE => 'Размер малой копии',
-            SettingsManager::TRADE_BIG_SIZE => 'Размер большой копии',
-            SettingsManager::TRADE_MAX_SIZE => 'Максимальный размер',
-            SettingsManager::TRADE_MODERATION => 'Модерация товаров',
+            Settings::TRADE_NAME => 'Название',
+            Settings::TRADE_NAME_UP => 'Название ППУ',
+            Settings::TRADE_PAGE_SIZE => 'Позиций в листинге',
+            Settings::TRADE_SMALL_SIZE => 'Размер малой копии',
+            Settings::TRADE_BIG_SIZE => 'Размер большой копии',
+            Settings::TRADE_MAX_SIZE => 'Максимальный размер',
+            Settings::TRADE_MODERATION => 'Модерация товаров',
+            Settings::TRADE_SHOW_EMPTY_CATEGORIES => 'Скрывать разделы без товаров',
         ];
     }
 

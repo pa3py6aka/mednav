@@ -3,7 +3,8 @@
 use core\helpers\BoardHelper;
 use core\helpers\CategoryHelper;
 use core\helpers\HtmlHelper;
-use frontend\widgets\BoardCategoriesListWidget;
+use frontend\widgets\CategoriesListWidget;
+use core\entities\Board\BoardCategory;
 use frontend\widgets\RegionsModalWidget;
 use yii\helpers\Html;
 use core\helpers\PaginationHelper;
@@ -31,7 +32,14 @@ CategoryHelper::registerHeadMeta('board', $this, 'Объявления', $catego
             <div class="col-md-12 col-sm-12 col-xs-12"><h1><?= HtmlHelper::getTitleForList(SettingsManager::BOARD_TITLE, $category, $categoryRegion, $provider->pagination->page) ?></h1></div>
         </div>
 
-        <?= BoardCategoriesListWidget::widget(['category' => $category, 'region' => $geo]) ?>
+        <?php //= BoardCategoriesListWidget::widget(['category' => $category, 'region' => $geo]) ?>
+        <?= CategoriesListWidget::widget([
+            'category' => $category,
+            'region' => $geo,
+            'component' => 'board',
+            'categoryClass' => BoardCategory::class,
+            'helperClass' => BoardHelper::class,
+        ]) ?>
 
         <?= ShowContentBlock::widget([
             'module' => ContentBlock::MODULE_BOARD,

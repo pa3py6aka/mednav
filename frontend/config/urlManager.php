@@ -38,8 +38,8 @@ return [
 
         // Компании
         'company/<_a:(outsite)>' => 'company/company/<_a>',
-        'company/<id:\d+>-<slug:[\w-]+>/<_a:contacts|boards|trades|articles|cnews>' => 'company/company/<_a>',
-        'company/<id:\d+>-<slug:[\w-]+>' => 'company/company/view',
+        'company/<id:\d+>-<slug:[^/]+>/<_a:contacts|boards|trades|articles|cnews>' => 'company/company/<_a>',
+        'company/<id:\d+>-<slug:[^/]+>' => 'company/company/view',
 
         'company/<region:[\w-]+>/<category:[\w-]+>/page<page:\d+>' => 'company/company/list',
         'company/<region:[\w-]+>/page<page:\d+>' => 'company/company/list',

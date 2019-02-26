@@ -3,6 +3,7 @@
 namespace core\helpers;
 
 
+use core\components\Settings;
 use core\components\SettingsManager;
 use core\entities\Board\Board;
 use core\entities\Board\BoardCategory;
@@ -78,7 +79,7 @@ class BoardHelper
         $query = Board::find()
             ->alias('b')
             ->leftJoin(BoardCategory::tableName() . ' c', 'b.category_id=c.id')
-            ->active('b')
+            ->active('b', Yii::$app->settings->get(Settings::BOARD_SHOW_ARCHIVE_UNITS))
             ->andWhere(['>=', 'c.lft', $category->lft])
             ->andWhere(['<=', 'c.rgt', $category->rgt]);
 

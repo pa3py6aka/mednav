@@ -13,6 +13,8 @@ class Settings
     public const GENERAL_MODALS_SHOWTIME = 'generalModalsShowtime';
     public const GENERAL_CONTACT_EMAIL = 'generalContactEmail';
 
+    public const CACHE_CONTENT_BLOCK_TIME = 'cacheContentBlockTime';
+
     public const USER_EMAIL_ACTIVATION = 'userEmailActivation';
     public const USER_PREMODERATION = 'userPremoderation';
 
@@ -27,6 +29,7 @@ class Settings
     public const BOARD_MAX_SIZE = 'boardMaxSize';
     public const BOARD_MODERATION = 'boardModeration';
     public const BOARD_SHOW_ARCHIVE_UNITS = 'boardShowArchiveUnits';
+    public const BOARD_SHOW_EMPTY_CATEGORIES = 'boardShowEmptyCategories';
 
     public const BOARD_META_TITLE = 'boardMetaTitle';
     public const BOARD_META_DESCRIPTION = 'boardMetaDescription';
@@ -61,6 +64,7 @@ class Settings
     public const TRADE_BIG_SIZE = 'tradeBigSize';
     public const TRADE_MAX_SIZE = 'tradeMaxSize';
     public const TRADE_MODERATION = 'tradeModeration';
+    public const TRADE_SHOW_EMPTY_CATEGORIES = 'tradeShowEmptyCategories';
 
     public const TRADE_META_TITLE = 'tradeMetaTitle';
     public const TRADE_META_DESCRIPTION = 'tradeMetaDescription';
@@ -165,6 +169,8 @@ class Settings
         self::GENERAL_MODALS_SHOWTIME => 4,
         self::GENERAL_CONTACT_EMAIL => 'contact@mednav.ru',
 
+        self::CACHE_CONTENT_BLOCK_TIME => 60,
+
         self::USER_EMAIL_ACTIVATION => 1,
         self::USER_PREMODERATION => 0,
 
@@ -179,6 +185,7 @@ class Settings
         self::BOARD_MAX_SIZE => 500,
         self::BOARD_MODERATION => 0,
         self::BOARD_SHOW_ARCHIVE_UNITS => 0,
+        self::BOARD_SHOW_EMPTY_CATEGORIES => 0,
 
         self::BOARD_META_TITLE => 'Медицинская доска объявлений. Продать, купить новое и б/у медицинское оборудование, инструменты, медицинскую мебель и расходных мед. материалы.',
         self::BOARD_META_DESCRIPTION => 'Разместить объявление о продаже медицинского оборудования, медтехники новой и б/у, мед. инструментов, медицинской мебели и материалов. Медицинская доска объявлений MedNav.ru ',
@@ -213,6 +220,7 @@ class Settings
         self::TRADE_BIG_SIZE => 250,
         self::TRADE_MAX_SIZE => 500,
         self::TRADE_MODERATION => 0,
+        self::TRADE_SHOW_EMPTY_CATEGORIES => 0,
 
         self::TRADE_META_TITLE => 'Медицинское оборудование, мебель, инструменты и расходные материалы',
         self::TRADE_META_DESCRIPTION => 'Производители и поставщики медицинского оборудования, мед. техники, инструментов, мебели для мед. учреждений. MedNav.ru',

@@ -4,6 +4,7 @@ namespace core\forms\manage\Board;
 
 
 use core\components\Settings;
+use core\entities\Board\Board;
 use core\forms\manage\CommonSettingsForm;
 
 class BoardSettingsMainForm extends CommonSettingsForm
@@ -16,6 +17,7 @@ class BoardSettingsMainForm extends CommonSettingsForm
     public $boardMaxSize;
     public $boardModeration;
     public $boardShowArchiveUnits;
+    public $boardShowEmptyCategories;
 
     public function rules()
     {
@@ -27,8 +29,7 @@ class BoardSettingsMainForm extends CommonSettingsForm
                 Settings::BOARD_BIG_SIZE,
                 Settings::BOARD_MAX_SIZE,
             ], 'integer'],
-            [Settings::BOARD_MODERATION, 'boolean'],
-            [Settings::BOARD_SHOW_ARCHIVE_UNITS, 'boolean'],
+            [[Settings::BOARD_MODERATION, Settings::BOARD_SHOW_ARCHIVE_UNITS, Settings::BOARD_SHOW_EMPTY_CATEGORIES], 'boolean'],
         ];
     }
 
@@ -43,6 +44,7 @@ class BoardSettingsMainForm extends CommonSettingsForm
             Settings::BOARD_MAX_SIZE => 'Максимальный размер',
             Settings::BOARD_MODERATION => 'Модерация обьявлений',
             Settings::BOARD_SHOW_ARCHIVE_UNITS => 'Показывать архивные объявления в листинге',
+            Settings::BOARD_SHOW_EMPTY_CATEGORIES => 'Скрывать разделы без объявлений',
         ];
     }
 

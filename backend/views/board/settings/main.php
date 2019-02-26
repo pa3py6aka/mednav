@@ -14,4 +14,5 @@ use core\components\Settings;
 <?= $form->field($model, Settings::BOARD_BIG_SIZE)->input('number') ?>
 <?= $form->field($model, Settings::BOARD_MAX_SIZE)->input('number') ?>
 <?= $form->field($model, Settings::BOARD_MODERATION)->checkbox() ?>
+<?= $form->field($model, Settings::BOARD_SHOW_EMPTY_CATEGORIES)->checkbox() ?>
 <?= $form->field($model, Settings::BOARD_SHOW_ARCHIVE_UNITS)->checkbox() ?>

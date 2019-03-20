@@ -59,10 +59,15 @@ class CategoriesListWidget extends Widget
         $cacheKey = $this->cacheKeyPrefix . ($this->category ? $this->category->id : 0) . '-' . ($this->region ? $this->region->id : 0);
         return Yii::$app->cache->getOrSet($cacheKey, function () {
             if ($this->category) {
-                $categories = $this->category->getChildren()->active()->all();
+                $categories = $this->category
+                    ->getChildren()
+                    ->active()
+                    ->orderBy(['lft' => SORT_ASC])
+                    ->all();
             } else {
                 $query = $this->categoryClass::find()->active()->roots();
                 $query->andWhere(['not_show_on_main' => 0]);
+                $query->orderBy(['lft' => SORT_ASC]);
                 $categories = $query->all();
             }
 
@@ -94,7 +99,7 @@ class CategoriesListWidget extends Widget
 
             // Рендеринг субразделов
             $result = $this->getChildrenList($category);
-            if (($result['count'] + $totalCounts > 0) || $this->showAll()) {
+            if ((int)($result['count'] + $totalCounts) > 0 || $this->showAll()) {
                 $html[$n] .= $result['html'];
                 $html[$n] .= '</div>';
             } else {
@@ -112,14 +117,14 @@ class CategoriesListWidget extends Widget
 
         // Проверка параметра "Выводить дочерние разделы только в родителе"
         if ($category->children_only_parent && (!$this->category || $this->category->id !== $category->id)) {
-            return ['html' => '', 'count' => $count];
+            return ['html' => $html, 'count' => $count];
         }
 
         $children = $this->isMainPage
             ? $category->getChildren()->andWhere(['not_show_on_main' => 0])->active()->all()
             : $category->children;
         if ($children) {
-            $html = '<ul class="list-section-listing">';
+            $html .= '<ul class="list-section-listing">';
             foreach ($children as $child) {
                 if (\in_array($this->component, ['board', 'trade', 'company'])) {
                     $count = $this->helperClass::getCountInCategory($child, $this->region ? $this->region->id : null);
@@ -128,7 +133,7 @@ class CategoriesListWidget extends Widget
                 }
                 $result = $this->getChildrenList($child);
                 $totalCount = $count + $result['count'];
-                if ($totalCount > 0) {
+                if ($totalCount > 0 || $this->showAll()) {
                     $html .= '<li>';
                     $html .= Html::a($child->name, $this->helperClass::categoryUrl($child, $this->region, false, false));
                     $html .= ' <sup class="list-section-count">' . $count . '</sup></li>';
@@ -137,8 +142,8 @@ class CategoriesListWidget extends Widget
                 }
             }
             $html .= '</ul>';
-            if (!$totalCount) {
-                return ['html' => '', 'count' => 0];
+            if (!$totalCount && !$this->showAll()) {
+                return ['html' => $html, 'count' => 0];
             }
         }
         return ['html' => $html, 'count' => $count];

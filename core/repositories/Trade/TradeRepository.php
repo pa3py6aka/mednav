@@ -47,6 +47,11 @@ class TradeRepository
         }
     }
 
+    public function updateTradesUserCategoriesAssignment($userCategoryId, $categoryId): void
+    {
+        Trade::updateAll(['category_id' => $categoryId], ['user_category_id' => $userCategoryId]);
+    }
+
     public function safeRemove(Trade $trade): void
     {
         $trade->setStatus(Trade::STATUS_DELETED);

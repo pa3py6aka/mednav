@@ -171,13 +171,20 @@ class TradeManageService
 
     public function editUserCategory(TradeUserCategory $userCategory, TradeUserCategoryForm $form): void
     {
-        $userCategory->edit($form->name, $form->categoryId, $form->uomId, $form->currencyId, $form->wholeSale);
-        $this->repository->saveUserCategory($userCategory);
+        $this->transaction->wrap(function () use ($userCategory, $form) {
+            $oldCategoryId = $userCategory->category_id;
+            $userCategory->edit($form->name, $form->categoryId, $form->uomId, $form->currencyId, $form->wholeSale);
+            $this->repository->saveUserCategory($userCategory);
+            if ($oldCategoryId != $form->categoryId) {
+                $this->repository->updateTradesUserCategoriesAssignment($userCategory->id, $form->categoryId);
+            }
+        });
+
     }
 
     public function publish($ids): void
     {
-        if (!is_array($ids)) {
+        if (!\is_array($ids)) {
             $ids = [$ids];
         }
         foreach ($ids as $id) {

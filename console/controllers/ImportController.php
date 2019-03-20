@@ -54,12 +54,16 @@ use core\helpers\PriceHelper;
 use core\services\RoleManager;
 use core\services\TransactionManager;
 use Yii;
+use yii\base\Model;
 use yii\base\Module;
 use yii\console\Controller;
+use yii\console\Exception;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\helpers\Console;
+use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+use yii\validators\UniqueValidator;
 
 class ImportController extends Controller
 {
@@ -1110,6 +1114,56 @@ class ImportController extends Controller
         });
     }
 
+    public function actionFixTradeUrls(): void
+    {
+        $this->transaction->wrap(function () {
+            $n = 0;
+            foreach (Trade::find()->each() as $trade) {
+                /* @var $trade Trade */
+                $slug = $this->transliterate($trade->slug);
+                $slug = substr(Inflector::slug($slug), 0, 100);
+                $slug = $this->makeUnique($slug, $trade);
+                $oldSlug = $trade->slug;
+                if ($trade->slug !== $slug) {
+                    $trade->slug = $slug;
+                    if ($trade->save()) {
+                        $n++;
+                        echo "Товар id {$trade->id}: {$trade->slug} : {$oldSlug}" . PHP_EOL;
+                    } else {
+                        echo "Товар id {$trade->id}: Ошибка сохранения" . PHP_EOL;
+                        throw new Exception('ошибка');
+                    }
+                }
+            }
+            echo 'Изменено урлов:' . $n . PHP_EOL;
+        });
+    }
+
+    public function actionFixCompanyUrls(): void
+    {
+        $this->transaction->wrap(function () {
+            $n = 0;
+            foreach (Company::find()->each() as $company) {
+                /* @var $company Company */
+                $slug = $this->transliterate($company->slug);
+                $slug = substr(Inflector::slug($slug), 0, 100);
+                $slug = $this->makeUnique($slug, $company);
+                $oldSlug = $company->slug;
+                if ($company->slug !== $slug) {
+                    $company->slug = $slug;
+                    if ($company->save()) {
+                        $n++;
+                        echo "Компания id {$company->id}: {$company->slug} : {$oldSlug}" . PHP_EOL;
+                    } else {
+                        echo "Компания id {$company->id}: Ошибка сохранения" . PHP_EOL;
+                        throw new Exception('ошибка');
+                    }
+                }
+            }
+            echo 'Изменено урлов:' . $n . PHP_EOL;
+        });
+    }
+
     private function getGeoId($oldGeoId): ?int
     {
         $regionName = $this->command->setSql('select name from geo where id=' . $oldGeoId)->queryScalar();
@@ -1256,5 +1310,88 @@ class ImportController extends Controller
             }
             $this->stdout('Импортировано ' . $n . ' ' . $name . PHP_EOL, Console::FG_GREEN);
         });
+    }
+
+    private function transliterate($str): string
+    {
+        // ГОСТ 7.79B
+        $transliteration = array(
+            'А' => 'A', 'а' => 'a',
+            'Б' => 'B', 'б' => 'b',
+            'В' => 'V', 'в' => 'v',
+            'Г' => 'G', 'г' => 'g',
+            'Д' => 'D', 'д' => 'd',
+            'Е' => 'E', 'е' => 'e',
+            'Ё' => 'Yo', 'ё' => 'yo',
+            'Ж' => 'Zh', 'ж' => 'zh',
+            'З' => 'Z', 'з' => 'z',
+            'И' => 'I', 'и' => 'i',
+            'Й' => 'J', 'й' => 'j',
+            'К' => 'K', 'к' => 'k',
+            'Л' => 'L', 'л' => 'l',
+            'М' => 'M', 'м' => 'm',
+            'Н' => "N", 'н' => 'n',
+            'О' => 'O', 'о' => 'o',
+            'П' => 'P', 'п' => 'p',
+            'Р' => 'R', 'р' => 'r',
+            'С' => 'S', 'с' => 's',
+            'Т' => 'T', 'т' => 't',
+            'У' => 'U', 'у' => 'u',
+            'Ф' => 'F', 'ф' => 'f',
+            'Х' => 'H', 'х' => 'h',
+            'Ц' => 'Cz', 'ц' => 'cz',
+            'Ч' => 'Ch', 'ч' => 'ch',
+            'Ш' => 'Sh', 'ш' => 'sh',
+            'Щ' => 'Shh', 'щ' => 'shh',
+            'Ъ' => 'ʺ', 'ъ' => 'ʺ',
+            'Ы' => 'Y`', 'ы' => 'y`',
+            'Ь' => '', 'ь' => '',
+            'Э' => 'E`', 'э' => 'e`',
+            'Ю' => 'Yu', 'ю' => 'yu',
+            'Я' => 'Ya', 'я' => 'ya',
+            '№' => '#', 'Ӏ' => '‡',
+            '’' => '`', 'ˮ' => '¨',
+        );
+
+        $str = strtr($str, $transliteration);
+        $str = mb_strtolower($str, 'UTF-8');
+        $str = preg_replace('|([\s]+)|s', '-', $str);
+        $str = preg_replace('/[^0-9a-z\-]/', '', $str);
+        $str = preg_replace('|([-]+)|s', '-', $str);
+        $str = trim($str, '-');
+
+        return $str;
+    }
+
+    private function makeUnique($slug, $model)
+    {
+        $uniqueSlug = $slug;
+        $iteration = 0;
+        while (!$this->validateSlug($uniqueSlug, $model)) {
+            $iteration++;
+            $uniqueSlug = $this->generateUniqueSlug($slug, $iteration);
+        }
+
+        return $uniqueSlug;
+    }
+
+    protected function validateSlug($slug, $baseModel): bool
+    {
+        /* @var $baseModel Model */
+        $validator = Yii::createObject([
+            'class' => UniqueValidator::class,
+        ]);
+
+        $model = clone $baseModel;
+        $model->clearErrors();
+        $model->slug = $slug;
+
+        $validator->validateAttribute($model, 'slug');
+        return !$model->hasErrors();
+    }
+
+    protected function generateUniqueSlug($baseSlug, $iteration): string
+    {
+        return $baseSlug . '-' . ($iteration + 1);
     }
 }

@@ -24,4 +24,9 @@ class MainController extends Controller
     {
         return $this->render('index');
     }
+
+    public function actionSearch()
+    {
+        return $this->render('search');
+    }
 }

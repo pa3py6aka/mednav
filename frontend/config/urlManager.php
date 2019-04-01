@@ -22,6 +22,8 @@ return [
         'account' => 'user/account/index',
         'account/<_a:[\w-]+>' => 'user/account/<_a>',
 
+        'search' => 'main/search',
+
         'contact' => 'site/contact',
 
         // Объявления

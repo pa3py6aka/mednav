@@ -53,6 +53,12 @@ return [
                 ],
             ],//*/
         ],
+        'reCaptcha' => [
+            'name' => 'reCaptcha',
+            'class' => 'himiklab\yii2\recaptcha\ReCaptcha',
+            'siteKey' => $params['ReCaptchaSiteKey'],
+            'secret' => $params['ReCaptchaSecret'],
+        ],
         'backendUrlManager' => require __DIR__ . '/../../backend/config/urlManager.php',
         'frontendUrlManager' => require __DIR__ . '/urlManager.php',
         'urlManager' => function () {

@@ -32,7 +32,7 @@ class SluggableBehavior extends Slug
                 $slugParts[] = $part;
             }
             $slug = $this->generateSlug($slugParts);
-            if (substr($slug, -1) == '-') {
+            if (\substr($slug, -1) === '-') {
                 $slug = substr($slug, 0, -1);
             }
         } else {

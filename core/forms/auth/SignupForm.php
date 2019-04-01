@@ -13,7 +13,7 @@ class SignupForm extends Model
     public $password;
     public $repeatPassword;
     public $captcha;
-    public $agreement = true;
+    public $agreement = false;
 
     public function rules()
     {
@@ -26,7 +26,8 @@ class SignupForm extends Model
             ['repeatPassword', 'required', 'message' => 'Повторите пароль'],
             ['repeatPassword', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли не совпадают'],
             ['captcha', 'required', 'message' => 'Укажите проверочный код'],
-            ['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
+            //['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
+            ['captcha', \himiklab\yii2\recaptcha\ReCaptchaValidator::class],
             ['agreement', 'required', 'requiredValue' => 1, 'message' => 'Вы должны подтвердить своё согласие'],
         ];
     }

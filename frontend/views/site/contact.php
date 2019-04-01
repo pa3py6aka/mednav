@@ -4,11 +4,9 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \core\forms\ContactForm */
 
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
 
-$this->title = 'Contact';
+$this->title = 'Обратная связь';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -34,13 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'email')->textInput() ?>
                 <?= $form->field($model, 'phone')->textInput() ?>
                 <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
-                <?= $form->field($model, 'captcha')->widget(Captcha::class, [
-                'captchaAction' => ['/auth/auth/captcha'],
-                'imageOptions' => ['style' => 'cursor:pointer;', 'title' => 'Обновить картинку'],
-                'options' => ['placeholder' => 'Введите код с картинки', 'class' => 'form-control'],
-                'template' => '<label class="label col-md-3">{image}</label><div class="col-md-9 no-padding">{input}</div>',
-
-                ])->label('Проверочный код') ?>
+                <?php /*= $form->field($model, 'captcha')->widget(Captcha::class, [
+                    'captchaAction' => ['/auth/auth/captcha'],
+                    'imageOptions' => ['style' => 'cursor:pointer;', 'title' => 'Обновить картинку'],
+                    'options' => ['placeholder' => 'Введите код с картинки', 'class' => 'form-control'],
+                    'template' => '<label class="label col-md-3">{image}</label><div class="col-md-9 no-padding">{input}</div>',
+                ])->label('Проверочный код')*/ ?>
+                <?= $form->field($model, 'captcha')->widget(\himiklab\yii2\recaptcha\ReCaptcha::class)->label('') ?>
 
             </div>
 

@@ -16,7 +16,7 @@ class ContactForm extends Model
     //public $subject;
     public $message;
     public $captcha;
-    public $agreement = 1;
+    public $agreement = false;
 
     /**
      * {@inheritdoc}
@@ -33,7 +33,8 @@ class ContactForm extends Model
             ['message', 'string', 'max' => 5000],
             // verifyCode needs to be entered correctly
             ['captcha', 'required', 'message' => 'Укажите проверочный код'],
-            ['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
+            //['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha'],
+            ['captcha', \himiklab\yii2\recaptcha\ReCaptchaValidator::class],
             ['agreement', 'required', 'requiredValue' => 1, 'message' => 'Вы должны подтвердить своё согласие'],
         ];
     }

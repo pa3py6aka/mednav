@@ -14,7 +14,7 @@ class NewMessageForm extends Model
     public $phone;
     public $captcha;
     public $toId;
-    public $agreement = 1;
+    public $agreement = false;
 
     public function rules()
     {
@@ -31,7 +31,13 @@ class NewMessageForm extends Model
 
             [['name', 'phone'], 'string', 'max' => 255],
             ['email', 'email', 'message' => ''],
-            ['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha', 'when' => function ($model) {
+            /*['captcha', 'captcha', 'captchaAction' => '/auth/auth/captcha', 'when' => function ($model) {
+                return \Yii::$app->user->isGuest;
+            }],*/
+            ['captcha', 'required', 'when' => function ($model) {
+                return \Yii::$app->user->isGuest;
+            }],
+            ['captcha', \himiklab\yii2\recaptcha\ReCaptchaValidator::class, 'when' => function ($model) {
                 return \Yii::$app->user->isGuest;
             }],
 

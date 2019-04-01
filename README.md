@@ -33,6 +33,7 @@
  - Инициализируем RBAC - `php yii rbac/init`
  - Добавляем администратора - `php yii user/create`: указываем e-mail, пароль, выбираем тип(пользователь или компания, по сути не важно), в поле `Role` указываем `admin`
  - Домены нужно настроить так, чтобы основной домен шел на папку `frontend/web`, а админка на `backend/web`
+ - В файле `frontend/config/params-local.php` прописать данные для ReCaptcha
  - В крон нужно добавить следующие задачи:
  
  `0 * * * * php /home/admin/web/mednav/yii cron/temp-cleaner`
